@@ -13,7 +13,7 @@ const OptionNavigation: React.FC<OptionNavigationProps> = ({ icon, text }) => {
         {icon}
       </Col>
       <Col>
-        <h3 className="mb-0 px-3">{text}</h3>
+        <h4 className="mb-0 px-3">{text}</h4>
       </Col>
     </>
   );

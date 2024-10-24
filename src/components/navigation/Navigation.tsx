@@ -1,8 +1,5 @@
 import { Col, Row } from "react-bootstrap";
-import {
-  ContainerNavigation,
-  ContainerOptionNavigation,
-} from "./StyledNavigation";
+
 import OptionNavigation from "../smallComponent/OptionNavigation";
 import home from "../../assets/home.svg";
 import imagem from "../../assets/imagem.svg";
@@ -14,6 +11,7 @@ import logo from "../../assets/logo.png";
 import chamada from "../../assets/chamada.svg";
 import sair from "../../assets/sair.svg";
 import { Link, useLocation } from "react-router-dom";
+import { ContainerNavigation, ContainerOptionNavigation } from "./_NavigationStyled";
 
 const Navigation = () => {
   const location = useLocation();
