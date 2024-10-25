@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { ContainerPage } from './StyledPage';
-import InputForm from '../components/smallComponent/InputForm';
-import ButtonRounded from '../components/smallComponent/ButtonRounded';
+import { ContainerPage } from './_StyledPage';
+import Input from '../components/Input';
+import ButtonRounded from '../components/Button';
+import HeaderTitle from '../view/HeaderTitle';
 
 const Dashboard = () => {
   // Estado do formulário
@@ -26,11 +27,11 @@ const Dashboard = () => {
 
   return (
     <ContainerPage>
-      <h1 className='mb-5'>Dashboard</h1>
+      <HeaderTitle title="Dashboard"></HeaderTitle>
       
-      <form onSubmit={handleSubmit} style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-        <InputForm
-          width="350"
+      <form onSubmit={handleSubmit} style={{display: "flex", flexDirection: "row", alignItems: "center", flexWrap: "wrap"}}>
+        <Input
+          width="300"
           type="text"
           placeholder="Nome"
           name="nome"
@@ -38,8 +39,8 @@ const Dashboard = () => {
           onChange={handleInputChange}
         />
         
-        <InputForm
-          width="350"
+        <Input
+          width="300"
           type="number"
           placeholder="Valor"
           name="valor"
@@ -47,8 +48,8 @@ const Dashboard = () => {
           onChange={handleInputChange}
         />
         
-        <InputForm
-          width="350"
+        <Input
+          width="300"
           type="number"
           placeholder="Duração"
           name="duracao"

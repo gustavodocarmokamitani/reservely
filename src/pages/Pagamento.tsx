@@ -1,10 +1,11 @@
 import React from "react";
-import { ContainerPage } from "./StyledPage";
+import { ContainerPage } from "./_StyledPage";
+import HeaderTitle from "../view/HeaderTitle";
 
 function Pagamento() {
   return (
     <ContainerPage>
-      <h1>Pagamento</h1>
+      <HeaderTitle title="Pagamentos" subTitle="Área destinada para gerenciamento de pagamentos."></HeaderTitle>
     </ContainerPage>
   );
 }

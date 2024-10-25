@@ -1,10 +1,11 @@
 import React from "react";
-import { ContainerPage } from "./StyledPage";
+import { ContainerPage } from "./_StyledPage";
+import HeaderTitle from "../view/HeaderTitle";
 
 function Profissional() {
   return (
     <ContainerPage>
-      <h1>Profissional</h1>
+       <HeaderTitle title="Profissionais" subTitle="Área destinada para gerenciamento de profissionais."></HeaderTitle>
     </ContainerPage>
   );
 }

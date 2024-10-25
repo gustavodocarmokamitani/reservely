@@ -1,18 +1,15 @@
 import React from "react";
-import { InputFormComponent } from "./_SmallComponentStyled";
 
-
-interface InputFormProps {
+interface InputProps {
   placeholder: string;
   width: string;
-  name: string;
-  value: string;
+  name?: string;
+  value?: string;
   type: string;
-
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const InputForm: React.FC<InputFormProps> = ({
+const Input: React.FC<InputProps> = ({
   placeholder,
   width,
   name,
@@ -21,7 +18,7 @@ const InputForm: React.FC<InputFormProps> = ({
   onChange
 }) => {
   return (
-    <InputFormComponent
+    <Input
       placeholder={placeholder}
       width={width}
       name={name}
@@ -32,4 +29,4 @@ const InputForm: React.FC<InputFormProps> = ({
   );
 };
 
-export default InputForm;
+export default Input;

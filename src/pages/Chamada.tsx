@@ -1,10 +1,11 @@
 import React from "react";
-import { ContainerPage } from "./StyledPage";
+import { ContainerPage } from "./_StyledPage";
+import HeaderTitle from "../view/HeaderTitle";
 
 function Chamada() {
   return (
     <ContainerPage>
-      <h1>Chamada</h1>
+       <HeaderTitle title="Chamados e ajudas" subTitle="Estamos aqui para ajudá-lo a resolver qualquer problema que você possa enfrentar."></HeaderTitle>
     </ContainerPage>
   );
 }

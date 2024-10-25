@@ -1,5 +1,5 @@
 import "./App.css";
-import Navigation from "./components/navigation/Navigation";
+import Navigation from "./view/Sidebar";
 import Dashboard from "./pages/Dashboard";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Servico from "./pages/Servico";

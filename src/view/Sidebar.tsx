@@ -1,17 +1,17 @@
 import { Col, Row } from "react-bootstrap";
 
-import OptionNavigation from "../smallComponent/OptionNavigation";
-import home from "../../assets/home.svg";
-import imagem from "../../assets/imagem.svg";
-import loja from "../../assets/loja.svg";
-import pagamento from "../../assets/pagamento.svg";
-import profissional from "../../assets/profissional.svg";
-import servico from "../../assets/servico.svg";
-import logo from "../../assets/logo.png";
-import chamada from "../../assets/chamada.svg";
-import sair from "../../assets/sair.svg";
+import OptionNavigation from "../components/Menu";
+import home from "../assets/home.svg";
+import imagem from "../assets/imagem.svg";
+import loja from "../assets/loja.svg";
+import pagamento from "../assets/pagamento.svg";
+import profissional from "../assets/profissional.svg";
+import servico from "../assets/servico.svg";
+import logo from "../assets/logo.png";
+import chamada from "../assets/chamada.svg";
+import sair from "../assets/sair.svg";
 import { Link, useLocation } from "react-router-dom";
-import { ContainerNavigation, ContainerOptionNavigation } from "./_NavigationStyled";
+import { ContainerNavigation, ContainerOptionNavigation } from "./Sidebar.styles";
 
 const Navigation = () => {
   const location = useLocation();

@@ -1,17 +1,17 @@
 import React from "react";
-import { ButtonRoundedComponent } from "./_SmallComponentStyled";
+import addIcon from '../assets/add.svg'; 
+import removeIcon from '../assets/remove.svg'; 
+import { Button } from "./Button.styles";
 
-import addIcon from '../../assets/add.svg'; 
-import removeIcon from '../../assets/remove.svg'; 
-
-interface ButtonRoundedProps {
+interface ButtonProps {
   text: string;
   type: "button" | "submit" | "reset";
   addIconIs: boolean;
   removeIconIs: boolean;
+  onClick?: () => void;
 }
 
-const ButtonRounded: React.FC<ButtonRoundedProps> = ({ text, type, addIconIs, removeIconIs }) => {
+const Btn: React.FC<ButtonProps> = ({ text, type, addIconIs, removeIconIs, onClick }) => {
   
   let icon = null;
   if (addIconIs && !removeIconIs) {
@@ -21,13 +21,13 @@ const ButtonRounded: React.FC<ButtonRoundedProps> = ({ text, type, addIconIs, re
   }
 
   return (
-    <ButtonRoundedComponent type={type} addIconIs={addIconIs} removeIconIs={removeIconIs}>
+    <Button type={type} addIconIs={addIconIs} removeIconIs={removeIconIs} style={{margin: "0 1rem"}} onClick={onClick}>
       <div className="d-flex align-items-center justify-content-center">
         {icon}
         {text}
       </div>
-    </ButtonRoundedComponent>
+    </Button>
   );
 };
 
-export default ButtonRounded;
+export default Btn;

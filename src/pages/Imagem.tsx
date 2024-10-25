@@ -1,10 +1,11 @@
 import React from "react";
-import { ContainerPage } from "./StyledPage";
+import { ContainerPage } from "./_StyledPage";
+import HeaderTitle from "../view/HeaderTitle";
 
 function Imagem() {
   return (
     <ContainerPage>
-      <h1>Imagem</h1>
+      <HeaderTitle title="Imagens" subTitle="Área destinada para gerenciamento de imagens."></HeaderTitle>
     </ContainerPage>
   );
 }

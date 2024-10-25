@@ -1,10 +1,11 @@
 import React from "react";
-import { ContainerPage } from "./StyledPage";
+import { ContainerPage } from "./_StyledPage";
+import HeaderTitle from "../view/HeaderTitle";
 
 function Loja() {
   return (
-    <ContainerPage>
-      <h1>Loja</h1>
+    <ContainerPage> 
+      <HeaderTitle title="Loja" subTitle="Área destinada para gerenciamento da loja."></HeaderTitle>
     </ContainerPage>
   );
 }
