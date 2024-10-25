@@ -43,27 +43,54 @@ const Modal: React.FC<ModalProps> = ({
     grande: "1050px",
   };
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChangeServico = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, type, checked, value } = event.target;
+    setFormValuesServico((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? (checked ? "true" : "false") : value,
+    }));
+  };
 
-    if (type === "checkbox") {
-      setFormValuesServico({
-        ...formValuesServico,
-        [name]: checked ? "true" : "false",
-      });
-    } else {
-      setFormValuesServico({
-        ...formValuesServico,
-        [name]: value,
-      });
-    }
+  const handleInputChangeProfissional = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, type, checked, value } = event.target;
+    setFormValuesProfissional((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? (checked ? "true" : "false") : value,
+    }));
+  };
+  
+
+  const handleServiceSelection = (selectedServices: number[]) => {
+    setFormValuesProfissional((prev) => ({
+      ...prev,
+      selectedServices,
+    }));
   };
 
   const handleSubmit = () => {
-    console.log("Dados do formulário:", formValuesServico);
+    if (type === "servico") {
+        console.log("Dados do formulário de serviço:", formValuesServico);
+    } else if (type === "profissional") {
+        // Exibir os dados do profissional
+        console.log("Dados do formulário de profissional:", formValuesProfissional);
 
-    handleClose();
-  };
+        // Exemplo de uso: enviar os dados para uma API
+        fetch("https://api.exemplo.com/profissionais", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formValuesProfissional),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Sucesso:", data);
+        })
+        .catch((error) => {
+            console.error("Erro:", error);
+        });
+    }
+}
 
   return (
     <S.Overlay>
@@ -102,7 +129,7 @@ const Modal: React.FC<ModalProps> = ({
             handleShow={handleShow}
             handleClose={handleClose}
             formValuesServico={formValuesServico}
-            handleInputChange={handleInputChange}
+            handleInputChange={handleInputChangeServico}
           />
         )}
          {type == "profissional" && (
@@ -112,7 +139,8 @@ const Modal: React.FC<ModalProps> = ({
             handleShow={handleShow}
             handleClose={handleClose}
             formValuesProfissional={formValuesProfissional}
-            handleInputChange={handleInputChange}
+            handleInputChange={handleInputChangeProfissional}
+            handleServiceSelection={handleServiceSelection}
           />
         )}
         <hr />

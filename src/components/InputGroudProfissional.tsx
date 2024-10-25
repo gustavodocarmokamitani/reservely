@@ -15,6 +15,7 @@ interface InputGroudProfissionalProps {
     ativo: string;
   };
   handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleServiceSelection: (selectedServices: number[]) => void;
 }
 
 const InputGroudProfissional: React.FC<InputGroudProfissionalProps> = ({
@@ -24,11 +25,12 @@ const InputGroudProfissional: React.FC<InputGroudProfissionalProps> = ({
   handleShow,
   handleInputChange,
   formValuesProfissional,
+  handleServiceSelection,
 }) => {
   return (
     <>
       <Row>
-        <Col md={5} className="mt-3 mb-3">
+        <Col md={4} className="mt-3 mb-3">
           <div style={{ marginBottom: "20px" }}>
             <Input
               width="300"
@@ -72,8 +74,17 @@ const InputGroudProfissional: React.FC<InputGroudProfissionalProps> = ({
             />
           </div>
         </Col>
-        <Col md={7}>
-            <Selected/>
+        <Col md={8}>
+          <Selected 
+            onChange={(selectedServices) => {
+              // Verifique se selectedServices não está vazio
+              if (selectedServices.length > 0) {
+                handleServiceSelection(selectedServices);
+              } else {
+                console.log("Nenhum serviço selecionado.");
+              }
+            }} 
+          />
         </Col>
       </Row>
     </>

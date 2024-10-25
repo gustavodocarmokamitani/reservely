@@ -6,6 +6,44 @@ import { Col, Row } from "react-bootstrap";
 import Button from "../components/Button";
 import Modal from "../view/Modal";
 
+const rows = [
+  {
+    id: 1,
+    nome: "Gustavo",
+    sobrenome: "Kamitani",
+    telefone: "123123123",
+    servico: true,
+  },
+  {
+    id: 2,
+    nome: "Rafaella",
+    sobrenome: "Menezes",
+    telefone: "123123131",
+    servico: true,
+  },
+  {
+    id: 3,
+    nome: "Misty",
+    sobrenome: "Carmo",
+    telefone: "1231313",
+    servico: true,
+  },
+  {
+    id: 4,
+    nome: "Luna",
+    sobrenome: "Carmo",
+    telefone: "12312313",
+    servico: true,
+  },
+  {
+    id: 5,
+    nome: "Nala",
+    sobrenome: "Carmo",
+    telefone: "213131231",
+    servico: true,
+  },
+];
+
 function Profissional() {
   const [show, setShow] = useState(false);
 
@@ -31,7 +69,7 @@ function Profissional() {
             <Button text="adicionar" type="button" onClick={handleShow} />
           </Col>
         </Row>
-        <DataTable />
+        <DataTable type="profissional" rowsProfissional={rows} />
         {show && (
           <Modal
             title="Adicionar profissional"
@@ -39,9 +77,17 @@ function Profissional() {
             type="profissional"
             handleClose={handleClose}
             handleShow={handleShow}
-            size="medio"
+            size="grande"
           />
         )}
+        <Row>
+          <Col
+            md={12}
+            className="mt-5 d-flex flex-row justify-content-end align-items-center"
+          >
+            <Button text="confirmar" type="button"  />
+          </Col>
+        </Row>
       </ContainerPage>
     </>
   );

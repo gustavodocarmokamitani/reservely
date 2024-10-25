@@ -6,6 +6,44 @@ import { Col, Row } from "react-bootstrap";
 import Button from "../components/Button";
 import Modal from "../view/Modal";
 
+const rows = [
+  {
+    id: 1,
+    nome: "Nome do serviço",
+    valor: "R$: 100,00",
+    duracao: "60",
+    ativo: true,
+  },
+  {
+    id: 2,
+    nome: "Nome do serviço 1 ",
+    valor: "R$: 100,00",
+    duracao: "60",
+    ativo: true,
+  },
+  {
+    id: 3,
+    nome: "Nome do serviço 2",
+    valor: "R$: 100,00",
+    duracao: "60",
+    ativo: true,
+  },
+  {
+    id: 4,
+    nome: "Nome do serviço 3",
+    valor: "R$: 100,00",
+    duracao: "60",
+    ativo: true,
+  },
+  {
+    id: 5,
+    nome: "Nome do serviço 4",
+    valor: "R$: 100,00",
+    duracao: "60",
+    ativo: true,
+  },
+];
+
 function Servico() {
   const [show, setShow] = useState(false);
 
@@ -31,7 +69,7 @@ function Servico() {
             <Button text="adicionar" type="button" onClick={handleShow} />
           </Col>
         </Row>
-        <DataTable />
+        <DataTable type="servico" rowsServico={rows} />
         {show && (
           <Modal
             title="Adicionar serviço"
@@ -42,6 +80,14 @@ function Servico() {
             size="pequeno"
           />
         )}
+        <Row>
+          <Col
+            md={12}
+            className="mt-5 d-flex flex-row justify-content-end align-items-center"
+          >
+            <Button text="confirmar" type="button" />
+          </Col>
+        </Row>
       </ContainerPage>
     </>
   );
