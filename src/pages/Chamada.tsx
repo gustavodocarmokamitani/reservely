@@ -1,5 +1,5 @@
 import React from "react";
-import { ContainerPage } from "./_StyledPage";
+import { ContainerPage } from "./_Page.styles";
 import HeaderTitle from "../view/HeaderTitle";
 
 function Chamada() {

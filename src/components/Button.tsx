@@ -1,33 +1,39 @@
 import React from "react";
 import addIcon from '../assets/add.svg'; 
 import removeIcon from '../assets/remove.svg'; 
-import { Button } from "./Button.styles";
+import confirmarIcon from '../assets/confirmar.svg'; 
+import fecharIcon from '../assets/fechar.svg'; 
+import * as S from "./Button.styles";
 
 interface ButtonProps {
-  text: string;
+  text: "adicionar" | "remover" | "fechar" | "confirmar";
   type: "button" | "submit" | "reset";
-  addIconIs: boolean;
-  removeIconIs: boolean;
   onClick?: () => void;
 }
 
-const Btn: React.FC<ButtonProps> = ({ text, type, addIconIs, removeIconIs, onClick }) => {
-  
+const Button: React.FC<ButtonProps> = ({ text, type, onClick }) => {
   let icon = null;
-  if (addIconIs && !removeIconIs) {
+
+  if (text === "adicionar") {
     icon = <img src={addIcon} alt="Add Icon" style={{ marginRight: "8px", verticalAlign: "middle" }} width={25} />;
-  } else if (!addIconIs && removeIconIs) {
+  } else if (text === "remover") {
     icon = <img src={removeIcon} alt="Remove Icon" style={{ marginRight: "8px" }} />;
+  } else if (text === "fechar") {
+    icon = <img src={fecharIcon} alt="Close Icon" style={{ marginRight: "8px" }} />; 
+  } else if (text === "confirmar") {
+    icon = <img src={confirmarIcon} alt="Confirm Icon" style={{ marginRight: "8px" }} />; 
   }
 
+  const formattedText = text.charAt(0).toUpperCase() + text.slice(1);
+
   return (
-    <Button type={type} addIconIs={addIconIs} removeIconIs={removeIconIs} style={{margin: "0 1rem"}} onClick={onClick}>
+    <S.Button type={type} text={text} style={{ margin: "0 1rem" }} onClick={onClick}>
       <div className="d-flex align-items-center justify-content-center">
         {icon}
-        {text}
+        {formattedText}
       </div>
-    </Button>
+    </S.Button>
   );
 };
 
-export default Btn;
+export default Button;

@@ -1,36 +1,30 @@
 import styled from "styled-components";
 
 interface ButtonProps {
-    addIconIs: boolean;
-    removeIconIs: boolean;
-  }
+  text: "adicionar" | "remover" | "fechar" | "confirmar";
+}
 
-  export const Button = styled.button<ButtonProps>`
+export const Button = styled.button<ButtonProps>`
   width: 150px;
   height: 45px;
   border: transparent;
   border-radius: 50px;
   box-shadow: 4px 4px 15px 0px rgba(0, 0, 0, 0.50);
   background-color: ${(props) => {
-    if (props.addIconIs && props.removeIconIs) {
-      return "#FF060B";
-    } else if (!props.addIconIs && !props.removeIconIs) {
-      return "#FF060B"; 
-    } else if (props.removeIconIs) {
-      return "#CDCDCD";
-    } else if (props.addIconIs) {
-      return "#2B2B2B";
+    switch (props.text) {
+      case "adicionar":
+        return "#2B2B2B"; 
+      case "remover":
+        return "#CDCDCD";
+      case "fechar":
+        return "#FF3535"; 
+      case "confirmar":
+        return "#1A8439"; 
+      default:
+        return "#FF060B"; 
     }
   }};
   color: ${(props) => {
-    if (props.addIconIs && props.removeIconIs) {
-      return "white";
-    } else if (!props.addIconIs && !props.removeIconIs) {
-      return "white"; 
-    } else if (props.removeIconIs) {
-      return "black";
-    } else if (props.addIconIs) {
-      return "white";
-    }
+    return (props.text === "remover") ? "black" : "white";
   }};
 `;

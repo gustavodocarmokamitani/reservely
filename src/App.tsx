@@ -16,6 +16,7 @@ function App() {
         <Navigation />
         <div style={{ flex: 1}}>
           <Routes>
+          <Route path="/" element={<h1>Home</h1>} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/servico" element={<Servico />} />
             <Route path="/profissional" element={<Profissional />} />

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { ContainerPage } from "./_StyledPage";
+import { ContainerPage } from "./_Page.styles";
 import HeaderTitle from "../view/HeaderTitle";
 import DataTable from "../view/DataTable";
 import { Col, Row } from "react-bootstrap";
-import Btn from "../components/Button";
+import Button from "../components/Button";
 import Modal from "../view/Modal";
 
 function Servico() {
@@ -17,25 +17,32 @@ function Servico() {
       <ContainerPage>
         <Row>
           <Col md={7}>
-            <HeaderTitle title="Serviço" subTitle="Área destinada para gerenciamento de serviços." />
+            <HeaderTitle
+              title="Serviço"
+              subTitle="Área destinada para gerenciamento de serviços."
+            />
           </Col>
 
-          <Col md={5} className="d-flex flex-row justify-content-end align-items-center">
-              <Btn text="Remover" 
-              type="button" 
-              addIconIs={false} 
-              removeIconIs={true} />
-            <Btn
-              text="Adicionar"
-              type="button"
-              addIconIs={true}
-              removeIconIs={false} 
-              onClick={handleShow} />
+          <Col
+            md={5}
+            className="d-flex flex-row justify-content-end align-items-center"
+          >
+            <Button text="remover" type="button" />
+            <Button text="adicionar" type="button" onClick={handleShow} />
           </Col>
         </Row>
         <DataTable />
-        {show && <Modal title="Adicionar serviço" handleClose={handleClose} handleShow={handleShow}/>}
-      </ContainerPage >
+        {show && (
+          <Modal
+            title="Adicionar serviço"
+            subTitle="Preencha as informações abaixo para criar um novo serviço."
+            type="servico"
+            handleClose={handleClose}
+            handleShow={handleShow}
+            size="pequeno"
+          />
+        )}
+      </ContainerPage>
     </>
   );
 }

@@ -1,11 +1,12 @@
 import React from "react";
+import * as S from "./Input.styles";
 
 interface InputProps {
-  placeholder: string;
+  placeholder?: string; 
   width: string;
   name?: string;
   value?: string;
-  type: string;
+  type: "text" | "toggle" | "number"; 
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -17,8 +18,22 @@ const Input: React.FC<InputProps> = ({
   type,
   onChange
 }) => {
+  if (type === "toggle") {
+    return (
+      <S.ToggleWrapper width={width}>
+      <S.ToggleLabel>Ativo</S.ToggleLabel>
+      <S.ToggleInput
+        type="checkbox"
+        name={name}
+        checked={value === "true"} // Lógica para o valor do toggle
+        onChange={onChange}
+      />
+    </S.ToggleWrapper>
+    );
+  }
+
   return (
-    <Input
+    <S.Input
       placeholder={placeholder}
       width={width}
       name={name}

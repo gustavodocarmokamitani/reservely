@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { ContainerPage } from './_StyledPage';
+import { ContainerPage } from './_Page.styles';
 import Input from '../components/Input';
-import ButtonRounded from '../components/Button';
+import Button from '../components/Button';
 import HeaderTitle from '../view/HeaderTitle';
 
 const Dashboard = () => {
-  // Estado do formulário
+
   const [formValues, setFormValues] = useState({
     nome: '',
     valor: '',
@@ -21,13 +21,13 @@ const Dashboard = () => {
   };
 
   const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
+    event.preventDefault()
     console.log('Dados do formulário:', formValues);
   };
 
   return (
     <ContainerPage>
-      <HeaderTitle title="Dashboard"></HeaderTitle>
+      {/* <HeaderTitle title="Dashboard"></HeaderTitle>
       
       <form onSubmit={handleSubmit} style={{display: "flex", flexDirection: "row", alignItems: "center", flexWrap: "wrap"}}>
         <Input
@@ -57,8 +57,8 @@ const Dashboard = () => {
           onChange={handleInputChange}
         />
         
-        <ButtonRounded text="Adicionar" type="submit" addIconIs={true} removeIconIs={false}/>
-      </form>
+        <Button text="adicionar" type="submit"/>
+      </form> */}
     </ContainerPage>
   );
 };

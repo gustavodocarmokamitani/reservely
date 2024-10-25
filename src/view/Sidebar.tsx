@@ -11,13 +11,13 @@ import logo from "../assets/logo.png";
 import chamada from "../assets/chamada.svg";
 import sair from "../assets/sair.svg";
 import { Link, useLocation } from "react-router-dom";
-import { ContainerNavigation, ContainerOptionNavigation } from "./Sidebar.styles";
+import * as S from "./Sidebar.styles";
 
 const Navigation = () => {
   const location = useLocation();
 
   return (
-    <ContainerNavigation className="d-flex flex-column" style={{ height: "100vh" }}>
+    <S.SidebarContainer className="d-flex flex-column" style={{ height: "100vh" }}>
       <Row className="pt-1 d-flex align-items-center justify-content-center" style={{ height: "130px" }}>
         <Col className="d-flex justify-content-center">
           <img src={logo} alt="AgendaI" />
@@ -41,7 +41,7 @@ const Navigation = () => {
           { path: "/pagamento", icon: pagamento, text: "Formas de Pagamentos" },
           { path: "/chamada", icon: chamada, text: "Chamadas e ajudas" },
         ].map(({ path, icon, text }) => (
-          <ContainerOptionNavigation key={path}>
+          <S.MenuContainer key={path}>
             <Link to={path} style={{ textDecoration: "none" }}>
               <Row
                 className="d-flex align-items-center justify-content-center"
@@ -60,19 +60,19 @@ const Navigation = () => {
                 />
               </Row>
             </Link>
-          </ContainerOptionNavigation>
+          </S.MenuContainer>
         ))}
       </div>
 
-      <ContainerOptionNavigation style={{ borderTop: "1px solid gray" }}>
+      <S.MenuContainer style={{ borderTop: "1px solid gray" }}>
         <Row className="d-flex align-items-center justify-content-center" style={{ height: "100%", paddingLeft: "20px" }}>
           <OptionNavigation
             icon={<img src={sair} alt="sair" style={{ width: "25px" }} />}
             text="Sair"
           />
         </Row>
-      </ContainerOptionNavigation>
-    </ContainerNavigation>
+      </S.MenuContainer>
+    </S.SidebarContainer>
   );
 };
 

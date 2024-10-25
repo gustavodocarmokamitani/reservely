@@ -1,73 +1,133 @@
-import React from 'react';
-import { Col, Row } from 'react-bootstrap';
-import Btn from '../components/Button';
-import closeIcon from '../assets/remove.svg';
-import { Overlay } from './Modal.styles';
-import Input from '../components/Input';
+import React, { useState } from "react";
+import { Col, Row } from "react-bootstrap";
+import Button from "../components/Button";
+import * as S from "./Modal.styles";
+import InputGroudServico from "../components/InputGroudServico";
+import closeIcon from "../assets/remove.svg";
+import InputGroudProfissional from "../components/InputGroudProfissional";
 
 interface ModalProps {
-    title: string;
-    handleShow: () => void;
-    handleClose: () => void;
+  title: string;
+  subTitle: string;
+  type: "servico" | "profissional";
+  handleShow: () => void;
+  handleClose: () => void;
+  size: "pequeno" | "medio" | "grande";
 }
 
-const Modal: React.FC<ModalProps> = ({ handleShow, handleClose, title }) => {
-    return (
-        <Overlay>
-            <div style={{ background: "white", padding: "20px", borderRadius: "8px", maxWidth: "900px", width: "100%" }}>
-                <Row>
-                    <Col><h3>{title}</h3></Col>
-                    <Col style={{ textAlign: "right", cursor: "pointer" }} onClick={handleClose}>
-                        <img src={closeIcon} alt="Close Icon" style={{ marginRight: "8px", verticalAlign: "middle" }} width={25} />
-                    </Col>
-                </Row>
-                <hr />
-                <Row styled="justify-content-center align-items-center">
-                    <Col md={6} className='mt-3 mb-3'>
-                        <Input
-                            width="300"
-                            type="text"
-                            placeholder="Nome"
-                            name="nome"
-                        />
-                    </Col>
-                    <Col md={6} className='mt-3 mb-3 '>
-                        <Input
-                            width="300"
-                            type="text"
-                            placeholder="Valor"
-                            name="valor"
-                        />
-                    </Col>
-                </Row>
-                <Row>
-                    <Col md={6} className='mt-3 mb-3 '>
-                        <Input
-                            width="300"
-                            type="text"
-                            placeholder="Duração"
-                            name="duracao"
-                        />
-                    </Col>
-                    <Col md={6} className='mt-3 mb-3 '>
-                        <Input
-                            width="300"
-                            type="text"
-                            placeholder="Ativo"
-                            name="ativo"
-                        />
-                    </Col>
-                </Row>
-                <hr />
-                <Row>
-                    <Col md={12} className="d-flex flex-row justify-content-center align-items-center">
-                        <Btn text="Close" type="button" addIconIs={false} removeIconIs={true} onClick={handleClose} />
-                        <Btn text="Adicionar" type="button" addIconIs={true} removeIconIs={false} />
-                    </Col>
-                </Row>
-            </div>
-        </Overlay>
-    )
-}
+const Modal: React.FC<ModalProps> = ({
+  handleShow,
+  handleClose,
+  title,
+  subTitle,
+  type,
+  size,
+}) => {
+  const [formValuesServico, setFormValuesServico] = useState({
+    nome: "",
+    valor: "",
+    duracao: "",
+    ativo: "false",
+  });
+
+  const [formValuesProfissional, setFormValuesProfissional] = useState({
+    nome: "",
+    sobrenome: "",
+    telefone: "",
+    ativo: "false",
+  });
+
+  const sizeMap = {
+    pequeno: "650px",
+    medio: "850px",
+    grande: "1050px",
+  };
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, type, checked, value } = event.target;
+
+    if (type === "checkbox") {
+      setFormValuesServico({
+        ...formValuesServico,
+        [name]: checked ? "true" : "false",
+      });
+    } else {
+      setFormValuesServico({
+        ...formValuesServico,
+        [name]: value,
+      });
+    }
+  };
+
+  const handleSubmit = () => {
+    console.log("Dados do formulário:", formValuesServico);
+
+    handleClose();
+  };
+
+  return (
+    <S.Overlay>
+      <div
+        style={{
+          background: "white",
+          padding: "20px",
+          borderRadius: "8px",
+          maxWidth: sizeMap[size],
+          width: "100%",
+        }}
+      >
+        <Row>
+          <Col md={10}>
+            <h3>{title}</h3>
+            <p>{subTitle}</p>
+          </Col>
+          <Col
+            md={2}
+            style={{ textAlign: "right", cursor: "pointer" }}
+            onClick={handleClose}
+          >
+            <img
+              src={closeIcon}
+              alt="Close Icon"
+              style={{ marginRight: "8px", verticalAlign: "middle" }}
+              width={25}
+            />
+          </Col>
+          <hr />
+        </Row>
+        {type == "servico" && (
+          <InputGroudServico
+            title={title}
+            subTitle={subTitle}
+            handleShow={handleShow}
+            handleClose={handleClose}
+            formValuesServico={formValuesServico}
+            handleInputChange={handleInputChange}
+          />
+        )}
+         {type == "profissional" && (
+          <InputGroudProfissional
+            title={title}
+            subTitle={subTitle}
+            handleShow={handleShow}
+            handleClose={handleClose}
+            formValuesProfissional={formValuesProfissional}
+            handleInputChange={handleInputChange}
+          />
+        )}
+        <hr />
+        <Row>
+          <Col
+            md={12}
+            className="d-flex flex-row justify-content-center align-items-center"
+          >
+            <Button text="fechar" type="button" onClick={handleClose} />
+            <Button text="confirmar" type="button" onClick={handleSubmit} />
+          </Col>
+        </Row>
+      </div>
+    </S.Overlay>
+  );
+};
 
 export default Modal;
