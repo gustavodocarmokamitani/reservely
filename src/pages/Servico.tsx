@@ -65,8 +65,12 @@ function Servico() {
             md={5}
             className="d-flex flex-row justify-content-end align-items-center"
           >
-            <Button text="remover" type="button" />
-            <Button text="adicionar" type="button" onClick={handleShow} />
+            <Button isRemover type="button" />
+            <Button
+              isAdicionar
+              type="button"
+              onClick={handleShow}
+            />
           </Col>
         </Row>
         <DataTable type="servico" rowsServico={rows} />
@@ -85,7 +89,7 @@ function Servico() {
             md={12}
             className="mt-5 d-flex flex-row justify-content-end align-items-center"
           >
-            <Button text="confirmar" type="button" />
+            <Button isConfirmar type="button" />
           </Col>
         </Row>
       </ContainerPage>

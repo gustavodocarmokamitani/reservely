@@ -1,7 +1,10 @@
 import styled from "styled-components";
 
 interface ButtonProps {
-  text: "adicionar" | "remover" | "fechar" | "confirmar";
+  isAdicionar?: boolean;
+  isRemover?: boolean;
+  isFechar?: boolean;
+  isConfirmar?: boolean;
 }
 
 export const Button = styled.button<ButtonProps>`
@@ -11,20 +14,11 @@ export const Button = styled.button<ButtonProps>`
   border-radius: 50px;
   box-shadow: 4px 4px 15px 0px rgba(0, 0, 0, 0.50);
   background-color: ${(props) => {
-    switch (props.text) {
-      case "adicionar":
-        return "#2B2B2B"; 
-      case "remover":
-        return "#CDCDCD";
-      case "fechar":
-        return "#FF3535"; 
-      case "confirmar":
-        return "#1A8439"; 
-      default:
-        return "#FF060B"; 
-    }
+    if (props.isAdicionar) return "#2B2B2B";
+    if (props.isRemover) return "#CDCDCD";
+    if (props.isFechar) return "#FF3535";
+    if (props.isConfirmar) return "#1A8439";
+    return "#FF060B"; // cor padrão
   }};
-  color: ${(props) => {
-    return (props.text === "remover") ? "black" : "white";
-  }};
+  color: ${(props) => (props.isRemover ? "black" : "white")};
 `;

@@ -149,8 +149,8 @@ const Modal: React.FC<ModalProps> = ({
             md={12}
             className="d-flex flex-row justify-content-center align-items-center"
           >
-            <Button text="fechar" type="button" onClick={handleClose} />
-            <Button text="confirmar" type="button" onClick={handleSubmit} />
+            <Button isFechar type="button" onClick={handleClose} />
+            <Button isConfirmar type="button" onClick={handleSubmit} />
           </Col>
         </Row>
       </div>
