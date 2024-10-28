@@ -21,7 +21,7 @@ export const SelectedContent = styled.div`
   border: 1px solid rgba(0, 0, 0, 0.25);
   border-radius: 15px;
   box-shadow: 4px 4px 15px 0px rgba(0, 0, 0, 0.25);
-  margin: 0 1rem 1rem 0;
+  margin: 0 1rem 1rem .5rem;
   cursor: pointer;
 
   p {

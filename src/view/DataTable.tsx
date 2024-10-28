@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
+import info from "../assets/info.svg";
+import Modal from "./Modal";
 
 interface DataTableProps {
   type: "servico" | "profissional",
@@ -22,6 +24,11 @@ interface DataTableProps {
 }
 
 const DataTable: React.FC<DataTableProps> = ({ rowsServico, rowsProfissional, type }) => {
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   const [columnWidth, setColumnWidth] = useState(250);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -44,21 +51,33 @@ const DataTable: React.FC<DataTableProps> = ({ rowsServico, rowsProfissional, ty
     };
   }, []);
 
+  const handleOpenModal = (id: number) => {
+    handleShow();
+  };
+
   const columns: GridColDef[] = type === "servico"
     ? [
-        { field: "id", headerName: "ID", width: columnWidth },
-        { field: "nome", headerName: "Nome", width: columnWidth },
-        { field: "valor", headerName: "Valor", width: columnWidth },
-        { field: "duracao", headerName: "Duração", width: columnWidth },
-        { field: "ativo", headerName: "Ativo", type: "boolean", width: columnWidth },
-      ]
+      { field: "id", headerName: "ID", width: columnWidth },
+      { field: "nome", headerName: "Nome", width: columnWidth },
+      { field: "valor", headerName: "Valor", width: columnWidth },
+      { field: "duracao", headerName: "Duração", width: columnWidth },
+      { field: "ativo", headerName: "Ativo", type: "boolean", width: columnWidth },
+    ]
     : [
-        { field: "id", headerName: "ID", width: columnWidth },
-        { field: "nome", headerName: "Nome", width: columnWidth },
-        { field: "sobrenome", headerName: "Sobrenome", width: columnWidth },
-        { field: "telefone", headerName: "Telefone", width: columnWidth },
-        { field: "servico", headerName: "Serviço", type: "boolean", width: columnWidth },
-      ];
+      { field: "id", headerName: "ID", width: columnWidth },
+      { field: "nome", headerName: "Nome", width: columnWidth },
+      { field: "sobrenome", headerName: "Sobrenome", width: columnWidth },
+      { field: "telefone", headerName: "Telefone", width: columnWidth },
+      {
+        field: "servicos",
+        headerName: "Serviços",
+        type: "boolean",
+        width: columnWidth,
+        renderCell: (params) => (
+          <img style={{cursor: "pointer"}} src={info} onClick={() => handleOpenModal(params.row.id)} />
+        ),
+      },
+    ];
 
   const rows = type === "servico" ? rowsServico : rowsProfissional;
 
@@ -81,6 +100,16 @@ const DataTable: React.FC<DataTableProps> = ({ rowsServico, rowsProfissional, ty
           sx={{ border: 0 }}
         />
       </Paper>
+      {show && (
+        <Modal
+          title="Informações do profissional"
+          type="info"
+          subTitle="Todos os serviço que contém esse profissional."
+          handleClose={handleClose}
+          handleShow={handleShow}
+          size="pequeno"
+        />
+      )}
     </div>
   );
 };

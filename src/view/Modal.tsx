@@ -5,11 +5,12 @@ import * as S from "./Modal.styles";
 import InputGroudServico from "../components/InputGroudServico";
 import closeIcon from "../assets/remove.svg";
 import InputGroudProfissional from "../components/InputGroudProfissional";
+import Selected from "../components/Selected";
 
 interface ModalProps {
   title: string;
   subTitle: string;
-  type: "servico" | "profissional";
+  type?: "servico" | "profissional" | "info";
   handleShow: () => void;
   handleClose: () => void;
   size: "pequeno" | "medio" | "grande";
@@ -58,7 +59,7 @@ const Modal: React.FC<ModalProps> = ({
       [name]: type === "checkbox" ? (checked ? "true" : "false") : value,
     }));
   };
-  
+
 
   const handleServiceSelection = (selectedServices: number[]) => {
     setFormValuesProfissional((prev) => ({
@@ -69,28 +70,29 @@ const Modal: React.FC<ModalProps> = ({
 
   const handleSubmit = () => {
     if (type === "servico") {
-        console.log("Dados do formulário de serviço:", formValuesServico);
+      console.log("Dados do formulário de serviço:", formValuesServico);
     } else if (type === "profissional") {
-        // Exibir os dados do profissional
-        console.log("Dados do formulário de profissional:", formValuesProfissional);
+      // Exibir os dados do profissional
+      console.log("Dados do formulário de profissional:", formValuesProfissional);
 
-        // Exemplo de uso: enviar os dados para uma API
-        fetch("https://api.exemplo.com/profissionais", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(formValuesProfissional),
-        })
+      // Exemplo de uso: enviar os dados para uma API
+      fetch("https://api.exemplo.com/profissionais", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formValuesProfissional),
+      })
         .then(response => response.json())
         .then(data => {
-            console.log("Sucesso:", data);
+          console.log("Sucesso:", data);
         })
         .catch((error) => {
-            console.error("Erro:", error);
+          console.error("Erro:", error);
         });
     }
-}
+    handleClose();
+  }
 
   return (
     <S.Overlay>
@@ -132,7 +134,7 @@ const Modal: React.FC<ModalProps> = ({
             handleInputChange={handleInputChangeServico}
           />
         )}
-         {type == "profissional" && (
+        {type == "profissional" && (
           <InputGroudProfissional
             title={title}
             subTitle={subTitle}
@@ -141,6 +143,17 @@ const Modal: React.FC<ModalProps> = ({
             formValuesProfissional={formValuesProfissional}
             handleInputChange={handleInputChangeProfissional}
             handleServiceSelection={handleServiceSelection}
+          />
+        )}
+        {type == "info" && (
+          <Selected
+            onChange={(selectedServices) => {
+              if (selectedServices.length > 0) {
+                handleServiceSelection(selectedServices);
+              } else {
+                console.log("Nenhum serviço selecionado.");
+              }
+            }}
           />
         )}
         <hr />
