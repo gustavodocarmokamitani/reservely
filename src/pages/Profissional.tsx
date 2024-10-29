@@ -74,7 +74,7 @@ function Profissional() {
           <Modal
             title="Adicionar profissional"
             subTitle="Preencha as informações abaixo para criar um novo profissional."
-            type="profissional"
+            profissional
             handleClose={handleClose}
             handleShow={handleShow}
             size="grande"
@@ -85,7 +85,7 @@ function Profissional() {
             md={12}
             className="mt-5 d-flex flex-row justify-content-end align-items-center"
           >
-            <Button type="button"  />
+            <Button isConfirmar type="button"  />
           </Col>
         </Row>
       </ContainerPage>

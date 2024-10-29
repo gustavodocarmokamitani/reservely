@@ -78,7 +78,7 @@ function Servico() {
           <Modal
             title="Adicionar serviço"
             subTitle="Preencha as informações abaixo para criar um novo serviço."
-            type="servico"
+            servico
             handleClose={handleClose}
             handleShow={handleShow}
             size="pequeno"

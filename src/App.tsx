@@ -14,10 +14,11 @@ function App() {
     <div className="App" style={{ display: "flex" }}>
       <Router>
         <Navigation />
-        <div style={{ flex: 1}}>
+        <div style={{ flex: 1, marginLeft: "18.75rem" }}>
           <Routes>
-          <Route path="/" element={<h1>Home</h1>} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/" element={<h1>Home</h1>} />
+            <Route path="/atendimento" element={<h1 style={{padding: "40px"}}>Atendimento</h1>} />
+            <Route path="/dashboard" element={<h1 style={{padding: "40px"}}>Dashboard</h1>} />
             <Route path="/servico" element={<Servico />} />
             <Route path="/profissional" element={<Profissional />} />
             <Route path="/imagem" element={<Imagem />} />

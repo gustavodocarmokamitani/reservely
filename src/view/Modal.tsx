@@ -6,11 +6,15 @@ import InputGroudServico from "../components/InputGroudServico";
 import closeIcon from "../assets/remove.svg";
 import InputGroudProfissional from "../components/InputGroudProfissional";
 import Selected from "../components/Selected";
+import ImagemUpload from "../components/ImagemUpload";
 
 interface ModalProps {
   title: string;
-  subTitle: string;
-  type?: "servico" | "profissional" | "info";
+  subTitle?: string;
+  servico?: boolean;
+  profissional?: boolean;
+  imagem?: boolean;
+  info?: boolean;
   handleShow: () => void;
   handleClose: () => void;
   size: "pequeno" | "medio" | "grande";
@@ -21,7 +25,10 @@ const Modal: React.FC<ModalProps> = ({
   handleClose,
   title,
   subTitle,
-  type,
+  servico, 
+  profissional, 
+  info,
+  imagem,
   size,
 }) => {
   const [formValuesServico, setFormValuesServico] = useState({
@@ -69,9 +76,9 @@ const Modal: React.FC<ModalProps> = ({
   };
 
   const handleSubmit = () => {
-    if (type === "servico") {
+    if (servico) {
       console.log("Dados do formulário de serviço:", formValuesServico);
-    } else if (type === "profissional") {
+    } else if (profissional) {
       // Exibir os dados do profissional
       console.log("Dados do formulário de profissional:", formValuesProfissional);
 
@@ -124,20 +131,20 @@ const Modal: React.FC<ModalProps> = ({
           </Col>
           <hr />
         </Row>
-        {type == "servico" && (
+        {servico && (
           <InputGroudServico
             title={title}
-            subTitle={subTitle}
+            subTitle={subTitle!}
             handleShow={handleShow}
             handleClose={handleClose}
             formValuesServico={formValuesServico}
             handleInputChange={handleInputChangeServico}
           />
         )}
-        {type == "profissional" && (
+        {profissional && (
           <InputGroudProfissional
             title={title}
-            subTitle={subTitle}
+            subTitle={subTitle!}
             handleShow={handleShow}
             handleClose={handleClose}
             formValuesProfissional={formValuesProfissional}
@@ -145,7 +152,7 @@ const Modal: React.FC<ModalProps> = ({
             handleServiceSelection={handleServiceSelection}
           />
         )}
-        {type == "info" && (
+        {info && (
           <Selected
             onChange={(selectedServices) => {
               if (selectedServices.length > 0) {
@@ -155,6 +162,9 @@ const Modal: React.FC<ModalProps> = ({
               }
             }}
           />
+        )}
+        {imagem && (
+          <ImagemUpload/>
         )}
         <hr />
         <Row>

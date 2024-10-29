@@ -103,7 +103,7 @@ const DataTable: React.FC<DataTableProps> = ({ rowsServico, rowsProfissional, ty
       {show && (
         <Modal
           title="Informações do profissional"
-          type="info"
+          info
           subTitle="Todos os serviço que contém esse profissional."
           handleClose={handleClose}
           handleShow={handleShow}

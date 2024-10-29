@@ -24,6 +24,7 @@ export const SelectedContent = styled.div`
   margin: 0 1rem 1rem .5rem;
   cursor: pointer;
 
+
   p {
     margin: 0;
     font-size: 0.8rem !important;
