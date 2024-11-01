@@ -45,7 +45,7 @@ function Imagem() {
           />
         </Col>
       </Row>
-      <S.ImagemGrid style={{ marginTop: "80px" }}>
+      <S.ImagemGrid style={{ marginTop: "50px" }}>
         <S.CardContainer >
           <S.CardHeader>
             <h2>Header</h2>
@@ -119,6 +119,7 @@ function Imagem() {
             title="Adicionar imagem"
             handleClose={handleClose}
             handleShow={handleShow}
+            imagem
             size="pequeno"
           />
         )}

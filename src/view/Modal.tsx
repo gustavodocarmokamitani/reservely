@@ -164,7 +164,10 @@ const Modal: React.FC<ModalProps> = ({
           />
         )}
         {imagem && (
-          <ImagemUpload/>
+          <Row style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+            <ImagemUpload/>
+
+          </Row>
         )}
         <hr />
         <Row>

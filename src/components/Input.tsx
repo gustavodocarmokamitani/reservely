@@ -25,7 +25,7 @@ const Input: React.FC<InputProps> = ({
       <S.ToggleInput
         type="checkbox"
         name={name}
-        checked={value === "true"} // Lógica para o valor do toggle
+        checked={value === "true"} 
         onChange={onChange}
       />
     </S.ToggleWrapper>
