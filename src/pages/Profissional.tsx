@@ -52,9 +52,9 @@ function Profissional() {
 
   return (
     <>
-      <ContainerPage>
+      <ContainerPage style={{ height: "100vh" }}>
         <Row>
-          <Col md={7}>
+          <Col md={7} style={{ padding: "0px" }}>
             <HeaderTitle
               title="Profissional"
               subTitle="Área destinada para gerenciamento de profissionais."
@@ -85,7 +85,7 @@ function Profissional() {
             md={12}
             className="mt-5 d-flex flex-row justify-content-end align-items-center"
           >
-            <Button isConfirmar type="button"  />
+            <Button isConfirmar type="button" />
           </Col>
         </Row>
       </ContainerPage>

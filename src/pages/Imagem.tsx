@@ -27,7 +27,7 @@ function Imagem() {
   return (
     <ContainerPage>
       <Row>
-        <Col md={7}>
+      <Col md={7} style={{padding: "0px"}}>
           <HeaderTitle
             title="Imagens"
             subTitle="Área destinada para gerenciamento de imagens."

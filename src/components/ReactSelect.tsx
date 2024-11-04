@@ -1,10 +1,16 @@
 import React, { useState } from "react";
 import Select from "react-select";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import * as S from "./ReactSelect.styles";
+import { Col, Row } from "react-bootstrap";
 
 interface ReactSelectProps {
   width: string;
   semana?: boolean;
   horario?: boolean;
+  diasFechados?: boolean;
+  pagamento?: boolean;
 }
 
 // Opções de semana
@@ -18,7 +24,13 @@ const semanaOptions = [
   { value: "domingo", label: "Domingo" },
 ];
 
-// Gera as opções de horário
+const pagamentoOptions = [
+  { value: "1", label: "Débito" },
+  { value: "2", label: "Crédito" },
+  { value: "3", label: "Dinheiro" },
+  { value: "4", label: "Pix" },
+];
+
 const generateHourOptions = (start: number, end: number) => {
   const options = [];
   for (let hour = start; hour <= end; hour++) {
@@ -27,6 +39,7 @@ const generateHourOptions = (start: number, end: number) => {
   }
   return options;
 };
+
 const horarioOptions = generateHourOptions(1, 23);
 
 const customStyles = {
@@ -75,25 +88,73 @@ const customStyles = {
   }),
 };
 
-const ReactSelect: React.FC<ReactSelectProps> = ({ width, semana, horario }) => {
+const ReactSelect: React.FC<ReactSelectProps> = ({ width, semana, horario, diasFechados, pagamento }) => {
   const [selectedOptions, setSelectedOptions] = useState<{ value: string; label: string }[]>([]);
+  const [selectedDates, setSelectedDates] = useState<Date[]>([]);
 
-  // Define as opções com base nas props
-  const options = semana ? semanaOptions : horario ? horarioOptions : [];
+  const options = semana ? semanaOptions : horario ? horarioOptions : pagamento ? pagamentoOptions : [];
 
-  const handleChange = (selected: any) => {
+  const handleSelectChange = (selected: any) => {
+    if (horario && selected.length > 2) {
+      selected = selected.slice(0, 2);
+    }
     setSelectedOptions(selected || []);
   };
 
+  const handleDateChange = (date: Date | null) => {
+    if (!date) return; // Ignora se o valor for `null`
+
+    setSelectedDates((prevDates) => {
+      const isAlreadySelected = prevDates.some(
+        (selectedDate) => selectedDate.getTime() === date.getTime()
+      );
+
+      if (isAlreadySelected) {
+        return prevDates.filter(
+          (selectedDate) => selectedDate.getTime() !== date.getTime()
+        );
+      } else {
+        return [...prevDates, date];
+      }
+    });
+  };
+
   return (
-    <Select
-      options={options}
-      isMulti
-      onChange={handleChange}
-      value={selectedOptions}
-      placeholder="Selecione opções..."
-      styles={customStyles}
-    />
+    <div style={{ width }}>
+      {diasFechados ? (
+        <Row>
+          <Col>
+            <S.StyledDatePicker style={{ width: "35rem" }}>
+              <DatePicker
+                selected={null}
+                onChange={handleDateChange}
+                dateFormat="dd/MM/yyyy"
+                placeholderText="Selecione uma data..."
+                className="custom-datepicker"
+                inline
+                filterDate={(date) => date > new Date()} // Permite apenas datas futuras
+              />
+              <div style={{ marginLeft: "10px", width: "200px" }}>
+                {selectedDates.map((date, index) => (
+                  <S.TextList key={index}>
+                    {date.toLocaleDateString("pt-BR", { day: '2-digit', month: 'short', year: "2-digit" }).replace('.', '')}
+                  </S.TextList>
+                ))}
+              </div>
+            </S.StyledDatePicker>
+          </Col>
+        </Row>
+      ) : (
+        <Select
+          options={options}
+          isMulti
+          onChange={handleSelectChange}
+          value={selectedOptions}
+          placeholder="Selecione opções..."
+          styles={customStyles}
+        />
+      )}
+    </div>
   );
 };
 

@@ -4,6 +4,8 @@ import HeaderTitle from "../view/HeaderTitle";
 import Input from "../components/Input";
 import { LojaContainer, LojaContent } from "./Loja.styles";
 import ReactSelect from "../components/ReactSelect";
+import { Col, Row } from "react-bootstrap";
+import Button from "../components/Button";
 
 function Loja() {
   const [formValuesLoja, setFormValuesLoja] = useState({
@@ -22,12 +24,22 @@ function Loja() {
   };
 
   return (
-    <ContainerPage>
-      <HeaderTitle
-        title="Loja"
-        subTitle="Área destinada para gerenciamento da loja."
-      />
+    <ContainerPage style={{ height: "100vh" }}>
+      <Row>
+        <Col md={7} style={{padding: "0px"}}>
+          <HeaderTitle
+            title="Loja"
+            subTitle="Área destinada para gerenciamento da loja."
+          />
+        </Col>
 
+        <Col
+          md={5}
+          className="d-flex flex-row justify-content-end align-items-center"
+        >
+          <Button isConfirmar type="button" />
+        </Col>
+      </Row>
       <LojaContainer>
         <LojaContent>
           <p>Loja</p>
@@ -40,16 +52,16 @@ function Loja() {
           />
         </LojaContent>
         <LojaContent>
-          <p>Dias de abertura</p>
-          <ReactSelect width="300px" semana={true} />
+          <p>Dias de funcionamento</p>
+          <ReactSelect width="350px" semana/>
         </LojaContent>
         <LojaContent>
-          <p>Horario de abertura e fechamento</p>
-          <ReactSelect width="300px" horario />
+          <p>Horários de abertura</p>
+          <ReactSelect width="350px" horario />
         </LojaContent>
         <LojaContent>
-          <p>Dias para fechamento da loja</p>
-          <ReactSelect width="300px" horario />
+          <p>Datas de fechamento</p>
+          <ReactSelect width="350px" diasFechados />
         </LojaContent>
       </LojaContainer>
     </ContainerPage>

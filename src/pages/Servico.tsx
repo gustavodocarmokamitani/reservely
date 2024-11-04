@@ -52,9 +52,9 @@ function Servico() {
 
   return (
     <>
-      <ContainerPage>
+      <ContainerPage style={{ height: "100vh" }}>
         <Row>
-          <Col md={7}>
+          <Col md={7} style={{ padding: "0px" }}>
             <HeaderTitle
               title="Serviço"
               subTitle="Área destinada para gerenciamento de serviços."
