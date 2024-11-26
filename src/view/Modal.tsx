@@ -7,17 +7,19 @@ import closeIcon from "../assets/remove.svg";
 import InputGroudProfissional from "../components/InputGroudProfissional";
 import Selected from "../components/Selected";
 import ImagemUpload from "../components/ImagemUpload";
+import api from "../axiosInstance";
 
 interface ModalProps {
   title: string;
   subTitle?: string;
   servico?: boolean;
   profissional?: boolean;
-  imagem?: boolean;
   info?: boolean;
+  imagem?: boolean;
   handleShow: () => void;
   handleClose: () => void;
   size: "pequeno" | "medio" | "grande";
+  services?: number[];
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -43,6 +45,7 @@ const Modal: React.FC<ModalProps> = ({
     sobrenome: "",
     telefone: "",
     ativo: "false",
+    selectedServices: [] as number[],  
   });
 
   const sizeMap = {
@@ -67,7 +70,6 @@ const Modal: React.FC<ModalProps> = ({
     }));
   };
 
-
   const handleServiceSelection = (selectedServices: number[]) => {
     setFormValuesProfissional((prev) => ({
       ...prev,
@@ -75,32 +77,40 @@ const Modal: React.FC<ModalProps> = ({
     }));
   };
 
-  const handleSubmit = () => {
-    if (servico) {
-      console.log("Dados do formulário de serviço:", formValuesServico);
-    } else if (profissional) {
-      // Exibir os dados do profissional
-      console.log("Dados do formulário de profissional:", formValuesProfissional);
-
-      // Exemplo de uso: enviar os dados para uma API
-      fetch("https://api.exemplo.com/profissionais", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formValuesProfissional),
-      })
-        .then(response => response.json())
-        .then(data => {
-          console.log("Sucesso:", data);
-        })
-        .catch((error) => {
-          console.error("Erro:", error);
-        });
+  const handleSubmit = async () => {
+    if (profissional) {
+      // Verifica se todos os campos obrigatórios estão preenchidos
+      if (!formValuesProfissional.nome || !formValuesProfissional.sobrenome || !formValuesProfissional.telefone) {
+        alert("Todos os campos de profissional devem ser preenchidos.");
+        return;
+      }
+  
+      // Preparar os dados no formato correto para a API
+      const dataToSend = [
+        {
+          id: 0, // ou outro valor de ID se necessário
+          nome: formValuesProfissional.nome,
+          email: "string",
+          telefone: formValuesProfissional.telefone,
+          senha: "string",
+          tipoUsuarioId: 3, // Exemplo de valor, ajuste conforme necessário
+        }
+      ];
+  
+      // Enviar os dados via POST
+      try {
+        const response = await api.post("/Usuario", dataToSend); 
+        console.log("Sucesso:", response.data);
+        alert("Profissional cadastrado com sucesso!");
+      } catch (error) {
+        console.error("Erro:", error);
+        alert("Erro ao cadastrar o profissional. Tente novamente.");
+      }
     }
     handleClose();
-  }
-
+  };
+  
+  
   return (
     <S.Overlay>
       <div
@@ -131,6 +141,7 @@ const Modal: React.FC<ModalProps> = ({
           </Col>
           <hr />
         </Row>
+
         {servico && (
           <InputGroudServico
             title={title}
@@ -141,6 +152,7 @@ const Modal: React.FC<ModalProps> = ({
             handleInputChange={handleInputChangeServico}
           />
         )}
+
         {profissional && (
           <InputGroudProfissional
             title={title}
@@ -149,9 +161,9 @@ const Modal: React.FC<ModalProps> = ({
             handleClose={handleClose}
             formValuesProfissional={formValuesProfissional}
             handleInputChange={handleInputChangeProfissional}
-            handleServiceSelection={handleServiceSelection}
           />
         )}
+
         {info && (
           <Selected
             onChange={(selectedServices) => {
@@ -163,12 +175,13 @@ const Modal: React.FC<ModalProps> = ({
             }}
           />
         )}
+
         {imagem && (
           <Row style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
             <ImagemUpload/>
-
           </Row>
         )}
+
         <hr />
         <Row>
           <Col

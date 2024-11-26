@@ -16,8 +16,8 @@ export const SelectedContent = styled.div`
   justify-content: center;
   align-items: center;
   text-align: center;
-  max-width: 13rem;
-  height: 2.5rem;
+  max-width: 20rem;
+  height: 3rem;
   border: 1px solid rgba(0, 0, 0, 0.25);
   border-radius: 15px;
   box-shadow: 4px 4px 15px 0px rgba(0, 0, 0, 0.25);

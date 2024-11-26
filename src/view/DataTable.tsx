@@ -19,10 +19,10 @@ interface DataTableProps {
   rowsProfissional?: Array<{
     id: number;
     nome: string;
-    sobrenome: string;
     telefone: string;
-    servico: boolean;
+    servicos: number[];
   }>;
+
 }
 
 const DataTable: React.FC<DataTableProps> = ({ rowsServico, rowsProfissional, servico, profissional, loja }) => {
@@ -33,6 +33,17 @@ const DataTable: React.FC<DataTableProps> = ({ rowsServico, rowsProfissional, se
 
   const [columnWidth, setColumnWidth] = useState(250);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const [selectedProfessionalServices, setSelectedProfessionalServices] = useState<number[]>([]);
+
+  const handleOpenModal = (id: number) => {
+    const professional = rowsProfissional?.find((row) => row.id === id);
+    if (professional) {
+      setSelectedProfessionalServices(professional.servicos);
+    }
+    handleShow();
+  };
+
 
   useEffect(() => {
     const updateColumnWidth = () => {
@@ -53,10 +64,6 @@ const DataTable: React.FC<DataTableProps> = ({ rowsServico, rowsProfissional, se
     };
   }, []);
 
-  const handleOpenModal = (id: number) => {
-    handleShow();
-  };
-
   const columns: GridColDef[] = servico
     ? [
       { field: "id", headerName: "ID", width: columnWidth },
@@ -76,7 +83,7 @@ const DataTable: React.FC<DataTableProps> = ({ rowsServico, rowsProfissional, se
         type: "boolean",
         width: columnWidth,
         renderCell: (params) => (
-          <img style={{cursor: "pointer"}} src={info} onClick={() => handleOpenModal(params.row.id)} />
+          <img style={{ cursor: "pointer" }} src={info} onClick={() => handleOpenModal(params.row.id)} />
         ),
       },
     ];
@@ -110,6 +117,7 @@ const DataTable: React.FC<DataTableProps> = ({ rowsServico, rowsProfissional, se
           handleClose={handleClose}
           handleShow={handleShow}
           size="pequeno"
+          
         />
       )}
     </div>

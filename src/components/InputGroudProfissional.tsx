@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import Input from "./Input";
 import Selected from "./Selected";
+import api from "../axiosInstance";  // Corrigido para importar a instância api
 
 interface InputGroudProfissionalProps {
   title: string;
@@ -15,7 +16,6 @@ interface InputGroudProfissionalProps {
     ativo: string;
   };
   handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  handleServiceSelection: (selectedServices: number[]) => void;
 }
 
 const InputGroudProfissional: React.FC<InputGroudProfissionalProps> = ({
@@ -25,8 +25,27 @@ const InputGroudProfissional: React.FC<InputGroudProfissionalProps> = ({
   handleShow,
   handleInputChange,
   formValuesProfissional,
-  handleServiceSelection,
 }) => {
+  const [tiposServico, setTiposServico] = useState<any[]>([]);
+  const [selectedServices, setSelectedServices] = useState<number[]>([]);
+
+  useEffect(() => {
+    const fetchTiposServico = async () => {
+      try {
+        const response = await api.get("http://localhost:5096/api/TipoServico"); 
+        setTiposServico(response.data);
+      } catch (error) {
+        console.error("Erro ao carregar os tipos de serviço:", error);
+      }
+    };
+    fetchTiposServico();
+  }, []);
+
+  // Atualiza os serviços selecionados
+  const handleServiceSelection = (selectedServices: number[]) => {
+    setSelectedServices(selectedServices);
+  };
+
   return (
     <>
       <Row>
@@ -76,14 +95,11 @@ const InputGroudProfissional: React.FC<InputGroudProfissionalProps> = ({
         </Col>
         <Col md={8}>
           <Selected 
-            onChange={(selectedServices) => {
-              // Verifique se selectedServices não está vazio
-              if (selectedServices.length > 0) {
-                handleServiceSelection(selectedServices);
-              } else {
-                console.log("Nenhum serviço selecionado.");
-              }
-            }} 
+            options={tiposServico.map((tipoServico) => ({
+              id: tipoServico.id,
+              nome: tipoServico.nome
+            }))}  
+            onChange={handleServiceSelection}
           />
         </Col>
       </Row>
@@ -92,3 +108,4 @@ const InputGroudProfissional: React.FC<InputGroudProfissionalProps> = ({
 };
 
 export default InputGroudProfissional;
+
