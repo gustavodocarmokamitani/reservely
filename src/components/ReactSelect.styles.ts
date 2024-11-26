@@ -4,17 +4,11 @@ export const StyledDatePicker = styled.div`
     display: flex;
     flex-direction: row;
     max-height: 300px;
+    
 
     & div {
-        overflow-y: auto;
-    }
-
-    & .react-datepicker__day--highlighted-date {
-        background-color: red; /* Cor de fundo vermelho */
-        color: white; /* Cor do texto branco */
-        border-radius: 50%; /* Para deixá-las redondas */
-    }
-      
+        overflow-y: scroll;
+    } 
 
   & .react-datepicker {
     font-family: Arial, sans-serif;

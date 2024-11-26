@@ -5,7 +5,9 @@ import info from "../assets/info.svg";
 import Modal from "./Modal";
 
 interface DataTableProps {
-  type: "servico" | "profissional",
+  servico?: boolean;
+  profissional?: boolean;
+  loja?: boolean;
   rowsServico?: Array<{
     id: number;
     nome: string;
@@ -23,7 +25,7 @@ interface DataTableProps {
   }>;
 }
 
-const DataTable: React.FC<DataTableProps> = ({ rowsServico, rowsProfissional, type }) => {
+const DataTable: React.FC<DataTableProps> = ({ rowsServico, rowsProfissional, servico, profissional, loja }) => {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -55,7 +57,7 @@ const DataTable: React.FC<DataTableProps> = ({ rowsServico, rowsProfissional, ty
     handleShow();
   };
 
-  const columns: GridColDef[] = type === "servico"
+  const columns: GridColDef[] = servico
     ? [
       { field: "id", headerName: "ID", width: columnWidth },
       { field: "nome", headerName: "Nome", width: columnWidth },
@@ -79,7 +81,7 @@ const DataTable: React.FC<DataTableProps> = ({ rowsServico, rowsProfissional, ty
       },
     ];
 
-  const rows = type === "servico" ? rowsServico : rowsProfissional;
+  const rows = servico ? rowsServico : rowsProfissional;
 
   return (
     <div ref={containerRef} style={{ marginTop: "3rem" }}>

@@ -8,6 +8,7 @@ import Imagem from "./pages/Imagem";
 import Loja from "./pages/Loja";
 import Pagamento from "./pages/Pagamento";
 import Chamada from "./pages/Chamada";
+import Atendimento from "./pages/Atendimento";
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
         <div style={{ flex: 1, marginLeft: "18.75rem" }}>
           <Routes>
             <Route path="/" element={<h1>Home</h1>} />
-            <Route path="/atendimento" element={<h1 style={{padding: "40px"}}>Atendimento</h1>} />
+            <Route path="/atendimento" element={<Atendimento/>} />
             <Route path="/dashboard" element={<h1 style={{padding: "40px"}}>Dashboard</h1>} />
             <Route path="/servico" element={<Servico />} />
             <Route path="/profissional" element={<Profissional />} />

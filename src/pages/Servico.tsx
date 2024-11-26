@@ -73,7 +73,7 @@ function Servico() {
             />
           </Col>
         </Row>
-        <DataTable type="servico" rowsServico={rows} />
+        <DataTable servico rowsServico={rows} />
         {show && (
           <Modal
             title="Adicionar serviço"

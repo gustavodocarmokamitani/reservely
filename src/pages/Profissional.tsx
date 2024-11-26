@@ -69,7 +69,7 @@ function Profissional() {
             <Button isAdicionar type="button" onClick={handleShow} />
           </Col>
         </Row>
-        <DataTable type="profissional" rowsProfissional={rows} />
+        <DataTable profissional rowsProfissional={rows} />
         {show && (
           <Modal
             title="Adicionar profissional"
