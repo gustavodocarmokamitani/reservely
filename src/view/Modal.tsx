@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
+import { Servico } from "../models/Servico";
+import { Usuario } from "../models/Profissional";
+import api from "../axiosInstance";
 import { Col, Row } from "react-bootstrap";
 import Button from "../components/Button";
 import * as S from "./Modal.styles";
@@ -7,7 +10,7 @@ import closeIcon from "../assets/remove.svg";
 import InputGroudProfissional from "../components/InputGroudProfissional";
 import Selected from "../components/Selected";
 import ImagemUpload from "../components/ImagemUpload";
-import api from "../axiosInstance";
+import { AxiosError } from 'axios';
 
 interface ModalProps {
   title: string;
@@ -18,8 +21,9 @@ interface ModalProps {
   imagem?: boolean;
   handleShow: () => void;
   handleClose: () => void;
+  fetchData: () => void;
   size: "pequeno" | "medio" | "grande";
-  services?: number[];
+  usuarioId?: number;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -27,31 +31,59 @@ const Modal: React.FC<ModalProps> = ({
   handleClose,
   title,
   subTitle,
-  servico, 
-  profissional, 
+  servico,
+  profissional,
   info,
   imagem,
   size,
+  fetchData,
+  usuarioId,
 }) => {
-  const [formValuesServico, setFormValuesServico] = useState({
+  const [formValuesServico, setFormValuesServico] = useState<Servico>({
+    id: 0,
     nome: "",
     valor: "",
     duracao: "",
     ativo: "false",
   });
 
-  const [formValuesProfissional, setFormValuesProfissional] = useState({
+  const [formValuesProfissional, setFormValuesProfissional] = useState<Usuario>({
     nome: "",
     sobrenome: "",
+    email: "",
     telefone: "",
     ativo: "false",
-    selectedServices: [] as number[],  
+    servicosId: [] as number[],
   });
+
+  const [tiposServico, setTiposServico] = useState([]);
 
   const sizeMap = {
     pequeno: "650px",
     medio: "850px",
     grande: "1050px",
+  };
+
+  useEffect(() => {
+    if (profissional) {
+      const fetchTiposServico = async () => {
+        try {
+          const response = await api.get("TipoServico");
+          setTiposServico(response.data);
+        } catch (error) {
+          console.error("Erro ao buscar tipos de serviço", error);
+        }
+      };
+
+      fetchTiposServico();
+    }
+  }, [profissional]);
+
+  const handleServiceSelection = (servicosId: number[]) => {
+    setFormValuesProfissional((prev) => ({
+      ...prev,
+      servicosId,
+    }));
   };
 
   const handleInputChangeServico = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,47 +102,59 @@ const Modal: React.FC<ModalProps> = ({
     }));
   };
 
-  const handleServiceSelection = (selectedServices: number[]) => {
-    setFormValuesProfissional((prev) => ({
-      ...prev,
-      selectedServices,
-    }));
+  const validateServico = () => {
+    if (!formValuesServico.nome || !formValuesServico.valor || !formValuesServico.duracao) {
+      alert("Todos os campos de serviço devem ser preenchidos.");
+      return false;
+    }
+    return true;
+  };
+
+  const validateProfissional = () => {
+    if (!formValuesProfissional.nome || !formValuesProfissional.sobrenome || !formValuesProfissional.telefone) {
+      alert("Todos os campos de profissional devem ser preenchidos.");
+      return false;
+    }
+    return true;
   };
 
   const handleSubmit = async () => {
-    if (profissional) {
-      // Verifica se todos os campos obrigatórios estão preenchidos
-      if (!formValuesProfissional.nome || !formValuesProfissional.sobrenome || !formValuesProfissional.telefone) {
-        alert("Todos os campos de profissional devem ser preenchidos.");
-        return;
+    if (servico && !validateServico()) {
+      return;
+    }
+
+    if (profissional && !validateProfissional()) {
+      return;
+    }
+
+    try {
+      if (servico) {
+        const response = await api.post("/api/servicos", formValuesServico);
+        console.log("Serviço criado com sucesso:", response.data);
       }
-  
-      // Preparar os dados no formato correto para a API
-      const dataToSend = [
-        {
-          id: 0, // ou outro valor de ID se necessário
-          nome: formValuesProfissional.nome,
-          email: "string",
-          telefone: formValuesProfissional.telefone,
-          senha: "string",
-          tipoUsuarioId: 3, // Exemplo de valor, ajuste conforme necessário
-        }
-      ];
-  
-      // Enviar os dados via POST
-      try {
-        const response = await api.post("/Usuario", dataToSend); 
-        console.log("Sucesso:", response.data);
-        alert("Profissional cadastrado com sucesso!");
-      } catch (error) {
-        console.error("Erro:", error);
-        alert("Erro ao cadastrar o profissional. Tente novamente.");
+
+      if (profissional) {
+        const profissionalData = {
+          ...formValuesProfissional,
+          servicosId: formValuesProfissional.servicosId,
+        };
+        console.log(profissionalData);
+
+        const response = await api.post("http://localhost:5096/api/Funcionario/criarUsuarioFuncionario", profissionalData);
+        console.log("Profissional criado com sucesso:", response.data);
+      }
+
+      fetchData();
+      handleClose();
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        alert(`Erro ao criar ${servico ? "serviço" : "profissional"}: ${error.message}`);
+      } else {
+        alert("Erro inesperado.");
       }
     }
-    handleClose();
   };
-  
-  
+
   return (
     <S.Overlay>
       <div
@@ -155,30 +199,18 @@ const Modal: React.FC<ModalProps> = ({
 
         {profissional && (
           <InputGroudProfissional
-            title={title}
-            subTitle={subTitle!}
-            handleShow={handleShow}
-            handleClose={handleClose}
             formValuesProfissional={formValuesProfissional}
             handleInputChange={handleInputChangeProfissional}
+            handleServiceSelection={handleServiceSelection}
+            dataTipoServico={tiposServico}
           />
         )}
 
-        {info && (
-          <Selected
-            onChange={(selectedServices) => {
-              if (selectedServices.length > 0) {
-                handleServiceSelection(selectedServices);
-              } else {
-                console.log("Nenhum serviço selecionado.");
-              }
-            }}
-          />
-        )}
+        {info && <Selected onChange={handleServiceSelection} usuarioId={usuarioId} infoProf />}
 
         {imagem && (
-          <Row style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
-            <ImagemUpload/>
+          <Row style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <ImagemUpload />
           </Row>
         )}
 
@@ -188,8 +220,8 @@ const Modal: React.FC<ModalProps> = ({
             md={12}
             className="d-flex flex-row justify-content-center align-items-center"
           >
-            <Button isFechar type="button" onClick={handleClose} />
-            <Button isConfirmar type="button" onClick={handleSubmit} />
+            <Button $isFechar type="button" onClick={handleClose} />
+            <Button $isConfirmar type="button" onClick={handleSubmit} />
           </Col>
         </Row>
       </div>

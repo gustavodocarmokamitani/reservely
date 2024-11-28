@@ -24,6 +24,8 @@ function Imagem() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const fetchData = async () => {}
+
   return (
     <ContainerPage>
       <Row>
@@ -39,7 +41,7 @@ function Imagem() {
           className="d-flex flex-row justify-content-end align-items-center"
         >
           <Button
-            isAdicionar
+            $isAdicionar
             type="button"
             onClick={handleShow}
           />
@@ -121,6 +123,7 @@ function Imagem() {
             handleShow={handleShow}
             imagem
             size="pequeno"
+            fetchData={fetchData}
           />
         )}
     </ContainerPage>

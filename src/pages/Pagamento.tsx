@@ -19,7 +19,7 @@ function Pagamento() {
           className="d-flex flex-row justify-content-end align-items-center"
         >
           <Button
-            isConfirmar
+            $isConfirmar
             type="button"
           />
         </Col>

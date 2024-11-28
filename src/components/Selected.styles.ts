@@ -5,7 +5,7 @@ export const SelectedWrap = styled.div`
   justity-content: center;
   flex-wrap: wrap;
   max-width: 40.5rem;
-  max-height: 19rem;
+  max-height: 22rem;
   padding-top: 1rem;
   overflow-y: auto;
   scroll-behavior: smooth;

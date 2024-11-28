@@ -50,6 +50,8 @@ function Servico() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const fetchData = async () => {}
+
   return (
     <>
       <ContainerPage style={{ height: "100vh" }}>
@@ -65,9 +67,9 @@ function Servico() {
             md={5}
             className="d-flex flex-row justify-content-end align-items-center"
           >
-            <Button isRemover type="button" />
+            <Button $isRemover type="button" />
             <Button
-              isAdicionar
+              $isAdicionar
               type="button"
               onClick={handleShow}
             />
@@ -82,6 +84,7 @@ function Servico() {
             handleClose={handleClose}
             handleShow={handleShow}
             size="pequeno"
+            fetchData={fetchData}
           />
         )}
         <Row>
@@ -89,7 +92,7 @@ function Servico() {
             md={12}
             className="mt-5 d-flex flex-row justify-content-end align-items-center"
           >
-            <Button isConfirmar type="button" />
+            <Button $isConfirmar type="button" />
           </Col>
         </Row>
       </ContainerPage>

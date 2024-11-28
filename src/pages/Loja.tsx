@@ -38,7 +38,7 @@ function Loja() {
           md={5}
           className="d-flex flex-row justify-content-end align-items-center"
         >
-          <Button isConfirmar type="button" />
+          <Button $isConfirmar type="button" />
         </Col>
       </Row>
       <Row>
