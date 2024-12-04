@@ -23,7 +23,8 @@ function Imagem() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
+  const [post, setPost] = useState(false);
+  const [update, setUpdate] = useState(false);
   const fetchData = async () => {}
 
   return (
@@ -124,6 +125,8 @@ function Imagem() {
             imagem
             size="pequeno"
             fetchData={fetchData}
+            setPost={setPost}
+            setUpdate={setUpdate}
           />
         )}
     </ContainerPage>

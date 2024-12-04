@@ -1,7 +1,7 @@
 // src/services/funcionarioService.js
 import api from '../axiosInstance';
 import { Funcionario } from '../models/Funcionario';
-import { UsuarioFuncionario } from '../models/UsuarioFuncionario';
+import { UsuarioFuncionario, UsuarioFuncionarioUpdate } from '../models/UsuarioFuncionario';
 import axios from 'axios';
 
 
@@ -84,3 +84,18 @@ export const deleteFuncionario = async (id: number) => {
         throw error;
     }
 };
+
+// Função para atualizar Usuário e Funcionario
+export const updateUsuarioFuncionario = async (
+    id: number,
+    funcionarioData: UsuarioFuncionarioUpdate
+  ) => {
+    try {
+      const response = await api.put(`funcionario/updateUsuarioFuncionario/${id}`, funcionarioData);
+      return response; // Retorne a resposta da requisição
+    } catch (error) {
+      console.error("Erro ao atualizar Usuário e Funcionario: ", error);
+      throw error; // Propague o erro para ser tratado na função chamadora
+    }
+  };
+  

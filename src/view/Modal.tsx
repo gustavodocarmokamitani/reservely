@@ -12,11 +12,11 @@ import closeIcon from "../assets/remove.svg";
 import InputGroudProfissional from "../components/InputGroudProfissional";
 import Selected from "../components/Selected";
 import ImagemUpload from "../components/ImagemUpload";
-import { AxiosError } from 'axios';
 import { getTipoServicos } from "../services/TipoServicoService";
-import { createFuncionarioUsuario, getFuncionarioIdByUsuarioId, updateFuncionario } from "../services/FuncionarioServices";
-import { getUsuarioById, updateUsuario } from "../services/UsuarioServices";
-import { setTimeout } from "timers/promises";
+import { createFuncionarioUsuario, getFuncionarioIdByUsuarioId, updateFuncionario, updateUsuarioFuncionario } from "../services/FuncionarioServices";
+import { getUsuarioById } from "../services/UsuarioServices";
+import { useContext } from "react";
+import { AppContext } from "../context/AppContext";
 
 interface ModalProps {
   title: string;
@@ -32,6 +32,8 @@ interface ModalProps {
   fetchData: () => void;
   size: "pequeno" | "medio" | "grande";
   usuarioId?: number;
+  setUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+  setPost: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 
@@ -47,10 +49,12 @@ const Modal: React.FC<ModalProps> = ({
   info = false,
   imagem,
   size,
-  fetchData,
   usuarioId,
   edit = false,
   addProf = false,
+  fetchData,
+  setUpdate,
+  setPost,
 }) => {
   const [formValuesServico, setFormValuesServico] = useState<Servico>({
     id: 0,
@@ -90,12 +94,17 @@ const Modal: React.FC<ModalProps> = ({
     servicosId: [] as number[],
   });
 
+  const {
+    setUsuarioContext,
+    setFuncionarioContext,
+    setUsuarioFuncionarioContext,
+    setUsuarioFuncionarioUpdateContext
+  } = useContext(AppContext)!;
 
   const [tiposServico, setTiposServico] = useState([]);
   const [funcionario, setFuncionario] = useState<UsuarioFuncionario[]>([]);
   const [usuario, setUsuario] = useState<Usuario[]>([]);
   const [combinedData, setCombinedData] = useState<CombinedData | null>(null);
-
 
   const sizeMap = {
     pequeno: "650px",
@@ -171,93 +180,34 @@ const Modal: React.FC<ModalProps> = ({
     }
   }, [profissional, edit]);
 
-  const createUserAndProfissional = async () => {
-    try {
-
+  const handleSubmit = async () => {
+    if (profissional) {
       const profissionalData = {
         ...formValuesProfissional,
         servicosId: formValuesProfissional.servicosId,
       };
-      await createFuncionarioUsuario(profissionalData);
-    } catch {
-      alert("Erro ao criar profissional.");
+      setUsuarioFuncionarioContext(profissionalData);
+      setPost(true);
     }
-  }
 
-  const updateUser = async () => {
-    const response = await getFuncionarioIdByUsuarioId(formValuesProfissional.id)
-    const funcionarioData = Array.isArray(response) ? response[0] : response;
-
-    if (funcionarioData) {
-      // Atualiza o usuário
-      const updatedUsuario = {
+    if (edit) {
+      const updatedUserFunc = {
         id: formValuesProfissional.id,
+        idFuncionario: 0,
+        usuarioId: 0,
+        tipoUsuarioId: 0,
         nome: formValuesProfissional.nome,
         sobrenome: formValuesProfissional.sobrenome,
         email: formValuesProfissional.email,
         telefone: formValuesProfissional.telefone,
         senha: formValuesProfissional.senha,
-        tipoUsuarioId: formValuesProfissional.tipoUsuarioId,
+        ativo: formValuesProfissional.ativo,
+        servicosId: formValuesProfissional.servicosId,
       };
 
-      try {
-        await updateUsuario(updatedUsuario.id, updatedUsuario);
-      } catch (error) {
-        console.error("Erro ao atualizar usuário:", error);
-        alert("Erro ao atualizar usuário.");
-        return;
-      }
-    }
-  }
-
-  const updateProfessional = async () => {
-    const response = await getFuncionarioIdByUsuarioId(formValuesProfissional.id);
-    const funcionarioData = Array.isArray(response) ? response[0] : response;
-
-    // Atualiza o funcionário
-    const updatedFuncionario = {
-      id: funcionarioData.id,
-      usuarioId: funcionarioData.usuarioId,
-      ativo: funcionarioData.ativo,
-      servicosId: formValuesProfissional.servicosId || [],
-    };
-
-    try {
-      await updateFuncionario(updatedFuncionario.id, updatedFuncionario);
-
-    } catch (error) {
-      console.error("Erro ao atualizar funcionário:", error);
-      alert("Erro ao atualizar funcionário.");
-      return;
-    }
-  }
-
-  const updateUserAndProfissional = () => {
-    updateUser();
-    updateProfessional();
-  };
-  
-
-  const handleLog = () => {
-    console.log('RODOU');
-    fetchData();
-    return
-  }
-
-  const handleSubmit = async () => {
-    try {
-      if (servico) {
-        const response = await api.post("/api/servicos", formValuesServico);
-      }
-    } catch (error) {
-      alert("Erro inesperado.");
-    }
-    if (profissional) {
-      createUserAndProfissional();
-    }
-
-    if (edit) {
-      updateUserAndProfissional();
+      setUsuarioFuncionarioUpdateContext(updatedUserFunc);
+      
+      setUpdate(true);
     }
     handleClose();
   };

@@ -49,7 +49,8 @@ function Servico() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
+  const [post, setPost] = useState(false);
+  const [update, setUpdate] = useState(false);
   const fetchData = async () => {}
 
   return (
@@ -75,7 +76,7 @@ function Servico() {
             />
           </Col>
         </Row>
-        <DataTable servico rowsServico={rows} />
+        <DataTable servico rowsServico={rows} setUpdate={setUpdate} fetchData={() => {}}/>
         {show && (
           <Modal
             title="Adicionar serviço"
@@ -85,6 +86,8 @@ function Servico() {
             handleShow={handleShow}
             size="pequeno"
             fetchData={fetchData}
+          setPost={setPost}
+          setUpdate={setUpdate}
           />
         )}
         <Row>
