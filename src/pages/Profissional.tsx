@@ -5,7 +5,8 @@ import DataTable from "../view/DataTable";
 import { Col, Row } from "react-bootstrap";
 import Button from "../components/Button";
 import Modal from "../view/Modal";
-import api from "../axiosInstance";
+import { getUsuarios, deleteUsuario } from "../services/UsuarioServices";
+import { getFuncionarios, deleteFuncionario } from "../services/FuncionarioServices";
 
 interface Usuario {
   id: number;
@@ -44,16 +45,13 @@ function Profissional() {
 
   const fetchData = async () => {
     try {
-      const [usuariosResponse, funcionariosResponse] = await Promise.all([
-        api.get<Usuario[]>("/usuario"),
-        api.get<Funcionario[]>("/funcionario"),
-      ]);
+      
+      // Usando os serviços para buscar dados
+      const usuariosData = await getUsuarios();
+      const funcionariosData = await getFuncionarios();
 
-      const usuariosData = usuariosResponse.data;
-      const funcionariosData = funcionariosResponse.data;
-
-      const mappedRows: Row[] = funcionariosData.map((funcionario) => {
-        const usuario = usuariosData.find((u) => u.id === funcionario.usuarioId);
+      const mappedRows: Row[] = funcionariosData.map((funcionario: Funcionario) => {
+        const usuario = usuariosData.find((u: any) => u.id === funcionario.usuarioId);
 
         if (usuario) {
           return {
@@ -86,20 +84,21 @@ function Profissional() {
           selectedUserIds.map(async (usuarioId) => {
             try {
               // Buscar o funcionário associado ao usuário
-              const response = await api.get(`/Funcionario?usuarioId=${usuarioId}`);
-              
-              if (response.data.length > 0) {
-                const funcionarioId = response.data[0].id; // O ID do funcionário associado
+              const funcionarioResponse = await getFuncionarios(); // Buscando todos os funcionários (pode otimizar aqui)
+              const funcionario = funcionarioResponse.find( (f: Funcionario) => f.usuarioId === usuarioId);
+  
+              if (funcionario) {
+                const funcionarioId = funcionario.id; // O ID do funcionário associado
   
                 // Deletar o funcionário
-                await api.delete(`/Funcionario/${funcionarioId}`);
+                await deleteFuncionario(funcionarioId);
                 console.log(`Funcionário com ID ${funcionarioId} removido com sucesso!`);
               } else {
                 console.log(`Nenhum funcionário encontrado para o usuário com ID ${usuarioId}`);
               }
   
               // Depois de deletar o funcionário, deletar o usuário
-              await api.delete(`Usuario/${usuarioId}`);
+              await deleteUsuario(usuarioId);
               console.log(`Usuário com ID ${usuarioId} removido com sucesso!`);
   
             } catch (error) {
@@ -161,6 +160,7 @@ function Profissional() {
             handleShow={handleShow}
             size="grande"
             fetchData={fetchData} 
+            addProf
           />
         )}
         <Row>

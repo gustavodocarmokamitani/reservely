@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Servico } from "../models/Servico";
-import { Usuario } from "../models/Profissional";
+import { Usuario } from "../models/Usuario";
+import { UsuarioFuncionario } from "../models/UsuarioFuncionario";
+import { Funcionario } from "../models/Funcionario";
 import api from "../axiosInstance";
 import { Col, Row } from "react-bootstrap";
 import Button from "../components/Button";
@@ -11,13 +13,19 @@ import InputGroudProfissional from "../components/InputGroudProfissional";
 import Selected from "../components/Selected";
 import ImagemUpload from "../components/ImagemUpload";
 import { AxiosError } from 'axios';
+import { getTipoServicos } from "../services/TipoServicoService";
+import { createFuncionarioUsuario, getFuncionarioIdByUsuarioId, updateFuncionario } from "../services/FuncionarioServices";
+import { getUsuarioById, updateUsuario } from "../services/UsuarioServices";
+import { setTimeout } from "timers/promises";
 
 interface ModalProps {
   title: string;
   subTitle?: string;
   servico?: boolean;
+  addProf?: boolean;
   profissional?: boolean;
   info?: boolean;
+  edit?: boolean;
   imagem?: boolean;
   handleShow: () => void;
   handleClose: () => void;
@@ -26,6 +34,9 @@ interface ModalProps {
   usuarioId?: number;
 }
 
+
+interface CombinedData extends Funcionario, Usuario { };
+
 const Modal: React.FC<ModalProps> = ({
   handleShow,
   handleClose,
@@ -33,11 +44,13 @@ const Modal: React.FC<ModalProps> = ({
   subTitle,
   servico,
   profissional,
-  info,
+  info = false,
   imagem,
   size,
   fetchData,
   usuarioId,
+  edit = false,
+  addProf = false,
 }) => {
   const [formValuesServico, setFormValuesServico] = useState<Servico>({
     id: 0,
@@ -47,16 +60,42 @@ const Modal: React.FC<ModalProps> = ({
     ativo: "false",
   });
 
-  const [formValuesProfissional, setFormValuesProfissional] = useState<Usuario>({
+  const [formValuesProfissional, setFormValuesProfissional] = useState<UsuarioFuncionario>({
+    id: 0,
+    usuarioId: 0,
     nome: "",
     sobrenome: "",
     email: "",
     telefone: "",
     ativo: "false",
+    senha: "",
+    tipoUsuarioId: 0,
     servicosId: [] as number[],
   });
 
+  const [formValuesUsuario, setFormValuesUsuario] = useState<Usuario>({
+    id: 0,
+    nome: "",
+    sobrenome: "",
+    email: "",
+    telefone: "",
+    senha: "",
+    tipoUsuarioId: 0,
+  });
+
+  const [formValuesFuncionario, setFormValuesFuncionario] = useState<Funcionario>({
+    id: 0,
+    usuarioId: 0,
+    ativo: "false",
+    servicosId: [] as number[],
+  });
+
+
   const [tiposServico, setTiposServico] = useState([]);
+  const [funcionario, setFuncionario] = useState<UsuarioFuncionario[]>([]);
+  const [usuario, setUsuario] = useState<Usuario[]>([]);
+  const [combinedData, setCombinedData] = useState<CombinedData | null>(null);
+
 
   const sizeMap = {
     pequeno: "650px",
@@ -68,16 +107,160 @@ const Modal: React.FC<ModalProps> = ({
     if (profissional) {
       const fetchTiposServico = async () => {
         try {
-          const response = await api.get("TipoServico");
+          const response = await getTipoServicos();
           setTiposServico(response.data);
         } catch (error) {
           console.error("Erro ao buscar tipos de serviço", error);
         }
       };
-
       fetchTiposServico();
     }
-  }, [profissional]);
+
+    if (edit) {
+      const fetchFuncionario = async () => {
+        try {
+          const resFuncionario = await getFuncionarioIdByUsuarioId(usuarioId!);
+
+          let funcionarioData = Array.isArray(resFuncionario)
+            ? resFuncionario
+            : [resFuncionario];
+
+          const mappedFuncionario = funcionarioData.map((funcionario: UsuarioFuncionario) => ({
+            id: funcionario.id,
+            usuarioId: funcionario.usuarioId,
+            nome: funcionario.nome,
+            sobrenome: funcionario.sobrenome,
+            email: funcionario.email,
+            telefone: funcionario.telefone,
+            senha: funcionario.senha,
+            ativo: funcionario.ativo,
+            tipoUsuarioId: funcionario.tipoUsuarioId,
+            servicosId: funcionario.servicosId || [],
+          }));
+
+          setFuncionario(mappedFuncionario);
+
+          if (mappedFuncionario.length > 0) {
+            const resUsuario = await getUsuarioById(mappedFuncionario[0].usuarioId);
+
+            let usuarioData = Array.isArray(resUsuario)
+              ? resUsuario
+              : [resUsuario];
+
+            const mappedUsuario = usuarioData.map((usuario: Usuario) => ({
+              id: usuario.id,
+              nome: usuario.nome,
+              sobrenome: usuario.sobrenome,
+              email: usuario.email,
+              telefone: usuario.telefone,
+              senha: usuario.senha,
+              tipoUsuarioId: usuario.tipoUsuarioId,
+            }));
+            setUsuario(mappedUsuario);
+            const combined = {
+              ...mappedFuncionario[0],
+              ...mappedUsuario[0],
+            };
+            setCombinedData(combined);
+          }
+        } catch (error) {
+          console.error("Erro ao buscar tipos de serviço", error);
+        }
+      };
+      fetchFuncionario();
+    }
+  }, [profissional, edit]);
+
+  const createUserAndProfissional = async () => {
+    try {
+
+      const profissionalData = {
+        ...formValuesProfissional,
+        servicosId: formValuesProfissional.servicosId,
+      };
+      await createFuncionarioUsuario(profissionalData);
+    } catch {
+      alert("Erro ao criar profissional.");
+    }
+  }
+
+  const updateUser = async () => {
+    const response = await getFuncionarioIdByUsuarioId(formValuesProfissional.id)
+    const funcionarioData = Array.isArray(response) ? response[0] : response;
+
+    if (funcionarioData) {
+      // Atualiza o usuário
+      const updatedUsuario = {
+        id: formValuesProfissional.id,
+        nome: formValuesProfissional.nome,
+        sobrenome: formValuesProfissional.sobrenome,
+        email: formValuesProfissional.email,
+        telefone: formValuesProfissional.telefone,
+        senha: formValuesProfissional.senha,
+        tipoUsuarioId: formValuesProfissional.tipoUsuarioId,
+      };
+
+      try {
+        await updateUsuario(updatedUsuario.id, updatedUsuario);
+      } catch (error) {
+        console.error("Erro ao atualizar usuário:", error);
+        alert("Erro ao atualizar usuário.");
+        return;
+      }
+    }
+  }
+
+  const updateProfessional = async () => {
+    const response = await getFuncionarioIdByUsuarioId(formValuesProfissional.id);
+    const funcionarioData = Array.isArray(response) ? response[0] : response;
+
+    // Atualiza o funcionário
+    const updatedFuncionario = {
+      id: funcionarioData.id,
+      usuarioId: funcionarioData.usuarioId,
+      ativo: funcionarioData.ativo,
+      servicosId: formValuesProfissional.servicosId || [],
+    };
+
+    try {
+      await updateFuncionario(updatedFuncionario.id, updatedFuncionario);
+
+    } catch (error) {
+      console.error("Erro ao atualizar funcionário:", error);
+      alert("Erro ao atualizar funcionário.");
+      return;
+    }
+  }
+
+  const updateUserAndProfissional = () => {
+    updateUser();
+    updateProfessional();
+  };
+  
+
+  const handleLog = () => {
+    console.log('RODOU');
+    fetchData();
+    return
+  }
+
+  const handleSubmit = async () => {
+    try {
+      if (servico) {
+        const response = await api.post("/api/servicos", formValuesServico);
+      }
+    } catch (error) {
+      alert("Erro inesperado.");
+    }
+    if (profissional) {
+      createUserAndProfissional();
+    }
+
+    if (edit) {
+      updateUserAndProfissional();
+    }
+    handleClose();
+  };
 
   const handleServiceSelection = (servicosId: number[]) => {
     setFormValuesProfissional((prev) => ({
@@ -100,59 +283,6 @@ const Modal: React.FC<ModalProps> = ({
       ...prev,
       [name]: type === "checkbox" ? (checked ? "true" : "false") : value,
     }));
-  };
-
-  const validateServico = () => {
-    if (!formValuesServico.nome || !formValuesServico.valor || !formValuesServico.duracao) {
-      alert("Todos os campos de serviço devem ser preenchidos.");
-      return false;
-    }
-    return true;
-  };
-
-  const validateProfissional = () => {
-    if (!formValuesProfissional.nome || !formValuesProfissional.sobrenome || !formValuesProfissional.telefone) {
-      alert("Todos os campos de profissional devem ser preenchidos.");
-      return false;
-    }
-    return true;
-  };
-
-  const handleSubmit = async () => {
-    if (servico && !validateServico()) {
-      return;
-    }
-
-    if (profissional && !validateProfissional()) {
-      return;
-    }
-
-    try {
-      if (servico) {
-        const response = await api.post("/api/servicos", formValuesServico);
-        console.log("Serviço criado com sucesso:", response.data);
-      }
-
-      if (profissional) {
-        const profissionalData = {
-          ...formValuesProfissional,
-          servicosId: formValuesProfissional.servicosId,
-        };
-        console.log(profissionalData);
-
-        const response = await api.post("http://localhost:5096/api/Funcionario/criarUsuarioFuncionario", profissionalData);
-        console.log("Profissional criado com sucesso:", response.data);
-      }
-
-      fetchData();
-      handleClose();
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        alert(`Erro ao criar ${servico ? "serviço" : "profissional"}: ${error.message}`);
-      } else {
-        alert("Erro inesperado.");
-      }
-    }
   };
 
   return (
@@ -202,11 +332,25 @@ const Modal: React.FC<ModalProps> = ({
             formValuesProfissional={formValuesProfissional}
             handleInputChange={handleInputChangeProfissional}
             handleServiceSelection={handleServiceSelection}
-            dataTipoServico={tiposServico}
+            data={tiposServico}
+            addProf
+          />
+        )}
+
+        {edit && (
+          <InputGroudProfissional
+            setFormValuesProfissional={setFormValuesProfissional}
+            formValuesProfissional={formValuesProfissional}
+            handleInputChange={handleInputChangeProfissional}
+            handleServiceSelection={handleServiceSelection}
+            data={combinedData ? [combinedData] : undefined}
+            edit
           />
         )}
 
         {info && <Selected onChange={handleServiceSelection} usuarioId={usuarioId} infoProf />}
+
+        {addProf === true ?? <Selected onChange={handleServiceSelection} usuarioId={usuarioId} addProf />}
 
         {imagem && (
           <Row style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>

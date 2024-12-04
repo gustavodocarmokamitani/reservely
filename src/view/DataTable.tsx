@@ -30,7 +30,7 @@ const DataTable: React.FC<DataTableProps> = ({ rowsServico, rowsProfissional, se
     const updateColumnWidth = () => {
       if (containerRef.current) {
         const totalWidth = containerRef.current.offsetWidth;
-        setColumnWidth(Math.floor(totalWidth / 4));
+        setColumnWidth(Math.floor(totalWidth / 5));
       }
     };
 
@@ -40,25 +40,27 @@ const DataTable: React.FC<DataTableProps> = ({ rowsServico, rowsProfissional, se
     return () => window.removeEventListener("resize", updateColumnWidth);
   }, []);
 
+
   const handleRowClick = (ids: number[]) => onRowSelect?.(ids);
 
   const columns: GridColDef[] = servico
     ? [
-        { field: "id", headerName: "ID", width: columnWidth },
-        { field: "nome", headerName: "Nome", width: columnWidth },
-        { field: "valor", headerName: "Valor", width: columnWidth },
-        { field: "duracao", headerName: "Duração", width: columnWidth },
-        { field: "ativo", headerName: "Ativo", type: "boolean", width: columnWidth },
+        { field: "id", headerName: "ID", width: columnWidth, align: "center", headerAlign: "center" },
+        { field: "nome", headerName: "Nome", width: columnWidth, align: "center", headerAlign: "center" },
+        { field: "valor", headerName: "Valor", width: columnWidth, align: "center", headerAlign: "center" },
+        { field: "duracao", headerName: "Duração", width: columnWidth, align: "center", headerAlign: "center" },
+        { field: "ativo", headerName: "Ativo", type: "boolean", width: columnWidth, align: "center", headerAlign: "center" },
       ]
     : [
-        { field: "nome", headerName: "Nome", width: columnWidth },
-        { field: "sobrenome", headerName: "Sobrenome", width: columnWidth },
-        { field: "telefone", headerName: "Telefone", width: columnWidth },
+        { field: "nome", headerName: "Nome", width: columnWidth, align: "center", headerAlign: "center" },
+        { field: "sobrenome", headerName: "Sobrenome", width: columnWidth, align: "center", headerAlign: "center" },
+        { field: "telefone", headerName: "Telefone", width: columnWidth, align: "center", headerAlign: "center" },
+        { field: "ativo", headerName: "Ativo", type: "boolean", width: columnWidth, align: "center", headerAlign: "center" },
         {
           field: "acoes",
           headerName: "Ações",
           renderCell: (params) => (
-            <div style={{ display: "flex", gap: "50px", justifyContent: "start", margin: '12.5px 0px 0px 5px' }}>
+            <div style={{ display: "flex", gap: "50px", justifyContent: "center", margin: '12.5px 0px 0px 5px' }}>
               <img
                 style={{ cursor: "pointer" }}
                 src={info}
@@ -74,6 +76,8 @@ const DataTable: React.FC<DataTableProps> = ({ rowsServico, rowsProfissional, se
             </div>
           ),
           width: columnWidth,
+          align: "center",
+          headerAlign: "center",
         },
       ];
 
@@ -108,8 +112,21 @@ const DataTable: React.FC<DataTableProps> = ({ rowsServico, rowsProfissional, se
           usuarioId={selectedFuncionarioId}
         />
       )}
+        {showModal.edit && (
+        <Modal
+          title="Editar profissional"
+          subTitle="Preencha as informações abaixo para editar o profissional."
+          edit
+          handleClose={handleClose}
+          handleShow={() => setShowModal({ ...showModal, edit: true })}
+          size="grande"
+          fetchData={() => { }}
+          usuarioId={selectedFuncionarioId} 
+        />
+      )}
     </div>
   );
 };
 
 export default DataTable;
+  

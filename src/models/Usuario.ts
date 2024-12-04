@@ -1,10 +1,10 @@
-// src/models/Profissional.ts
 export interface Usuario {
+    id: number;
     nome: string;
     sobrenome: string;
     email: string;
     telefone: string;
-    ativo: string;
-    servicosId: number[];
+    senha: string;
+    tipoUsuarioId: number;
   }
   

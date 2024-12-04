@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import * as S from "./Selected.styles";
 import api from "../axiosInstance";
 import { Funcionario } from '../models/Funcionario';
 import { Servico } from '../models/Servico';
+import { getTipoServicoById, getTipoServicos } from '../services/TipoServicoService';
+import { getFuncionarioIdByUsuarioId } from "../services/FuncionarioServices";
 
 interface ServiceProps {
   id: number;
@@ -15,53 +17,100 @@ interface ServiceProps {
 interface SelectedProps {
   onChange?: (selectedServices: number[]) => void;
   profissionalServices?: number[];
-  options?: ServiceProps[]; // Corrigido para usar ServiceProps[]
+  options?: {
+    id: number;
+    usuarioId: number;
+    nome: string;
+    sobrenome: string;
+    email: string;
+    telefone: string;
+    ativo: string;
+    servicosId: number[];
+  }[];
   usuarioId?: number;
   infoProf?: boolean;
   addProf?: boolean;
+  edit?: boolean;
 }
 
 const Selected: React.FC<SelectedProps> = ({
   onChange,
   profissionalServices = [],
-  options = [],
+  options,
   usuarioId,
-  infoProf,
-  addProf,
+  infoProf = false,
+  addProf = false,
+  edit = false
 }) => {
   const [selectedServices, setSelectedServices] = useState<number[]>(profissionalServices);
   const [services, setServices] = useState<ServiceProps[]>([]);
+  const [dataOptions, setDataOptions] = useState<number[]>([]);
 
+  // Atualiza dataOptions somente quando options mudar
   useEffect(() => {
-    if (addProf && options) {
-      setServices(options);
+    if (edit && options) {
+      setDataOptions(options[0]?.servicosId || []);
     }
-  }, [addProf, options]);
+  }, [edit, options]);
+
 
   useEffect(() => {
     const fetchFuncionario = async () => {
-      if (infoProf && usuarioId) {
-        try {
-          const { data } = await api.get<Funcionario>(`Funcionario/usuario/${usuarioId}`);
-          
-          if (data?.servicosId?.length) {
-            const serviceRequests = data.servicosId.map((serviceId) =>
-              api.get<Servico>(`TipoServico/${serviceId}`)
-            );
-            const serviceResponses = await Promise.all(serviceRequests);
-            const servicesData = serviceResponses.map((response) => response.data);
-            setServices(servicesData);
-          } else {
-            console.error("Funcionário não tem serviços associados.");
+      try {
+        let fetchedServices: ServiceProps[] = [];
+        let initialSelected: number[] = [];
+
+        if (edit) {
+          // Buscar todos os serviços
+          const allServices = await getTipoServicos();
+          fetchedServices = [...fetchedServices, ...allServices]; 
+
+          // Obter IDs dos serviços já associados no `options`
+          const existingServiceIds = dataOptions;
+          initialSelected = existingServiceIds;
+        } else if (infoProf) {
+          const userId = usuarioId;
+
+          if (userId) {
+            const data = await  getFuncionarioIdByUsuarioId(userId);
+            if (data?.servicosId?.length) {
+              const serviceRequests = data.servicosId.map((serviceId: number) =>
+                getTipoServicoById(serviceId)
+              );
+              const serviceResponses = await Promise.all(serviceRequests);
+              fetchedServices = serviceResponses.map((response) => {
+
+                return response.data;
+              });
+            }
           }
-        } catch (error) {
-          console.error("Erro ao buscar informações do funcionário e serviços:", error);
         }
+
+        if (addProf) {
+          const data  = await getTipoServicos();
+          fetchedServices = [...fetchedServices, ...data];
+        }
+
+        // Remover duplicatas
+        const uniqueServices = Array.from(
+          new Map(fetchedServices.map((service) => [service.id, service])).values()
+        );
+
+        setServices(uniqueServices);
+
+        // Definir os serviços já selecionados somente na inicialização
+        if (edit || infoProf) {
+          setSelectedServices(initialSelected);
+        }
+      } catch (error) {
+        console.error("Erro ao buscar informações do funcionário e serviços:", error);
       }
     };
 
-    fetchFuncionario();
-  }, [infoProf, usuarioId]);
+    if (infoProf || addProf || edit) {
+      fetchFuncionario();
+    }
+  }, [infoProf, addProf, edit, usuarioId, dataOptions]);
 
   const toggleService = (id: number) => {
     setSelectedServices((prev) => {
@@ -69,6 +118,7 @@ const Selected: React.FC<SelectedProps> = ({
         ? prev.filter((serviceId) => serviceId !== id)
         : [...prev, id];
 
+      // Notifica o pai sobre a mudança
       if (onChange) {
         onChange(newSelectedServices);
       }
@@ -92,7 +142,9 @@ const Selected: React.FC<SelectedProps> = ({
           </S.SelectedContent>
         ))
       ) : (
-        <p>Não há serviços disponíveis.</p>
+        <p style={{ marginLeft: '15px' }}>
+          Funcionário não possui serviços disponíveis.
+        </p>
       )}
     </S.SelectedWrap>
   );
