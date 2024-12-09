@@ -9,6 +9,8 @@ import { getUsuarios, deleteUsuario } from "../services/UsuarioServices";
 import { getFuncionarios, deleteFuncionario, createFuncionarioUsuario, updateUsuarioFuncionario } from "../services/FuncionarioServices";
 import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
+import { useSnackbar } from 'notistack';
+import AddUsuarioFuncionarioModal from "../view/Modal/AddUsuarioFuncionarioModal";
 
 interface Usuario {
   id: number;
@@ -44,6 +46,7 @@ function Profissional() {
   const [show, setShow] = useState(false);
   const [post, setPost] = useState(false);
   const [update, setUpdate] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   const { 
     setUsuarioFuncionarioContext,
@@ -56,8 +59,6 @@ function Profissional() {
 
   const fetchData = async () => {
     try {
-
-      // Usando os serviços para buscar dados
       const usuariosData = await getUsuarios();
       const funcionariosData = await getFuncionarios();
 
@@ -87,16 +88,27 @@ function Profissional() {
   };
 
   const request = async () => {
-    if (post) {
-      if (usuarioFuncionarioContext !== null) {
+    try {
+      console.log(post);
+      
+      if (post) {
+        if (!usuarioFuncionarioContext?.nome || !usuarioFuncionarioContext.sobrenome || !usuarioFuncionarioContext.telefone) {
+          setPost(false);
+          enqueueSnackbar("Por favor, preencha todos os dados obrigatórios antes de continuar.", { variant: "error" });
+          return; 
+        }
         await createFuncionarioUsuario(usuarioFuncionarioContext);
-      } else {
-        console.error("Falha na requisição");
+        console.log("Profissional criado com sucesso!");
+        enqueueSnackbar("Profissional criado com sucesso!", { variant: "success" });
+        setUsuarioFuncionarioContext(null); 
+        setPost(false);
       }
-      setUsuarioFuncionarioContext(null)
-      setPost(false);
+    } catch (error) {
+      console.error("Erro durante o request:", error);
+      enqueueSnackbar("Erro inesperado! Verifique os dados.", { variant: "error" });
     }
-  }
+  };
+  
 
   useEffect(() => {
     request();
@@ -104,39 +116,29 @@ function Profissional() {
   }, [post]);
 
   const handleDeleteUsers = async () => {
-    console.log("IDs selecionados para exclusão: ", selectedUserIds); // Depuração para ver os IDs selecionados
-
     if (selectedUserIds.length > 0) {
       try {
-        // Para cada ID de usuário selecionado, buscamos o ID do funcionário e deletamos o funcionário
         await Promise.all(
           selectedUserIds.map(async (usuarioId) => {
             try {
-              // Buscar o funcionário associado ao usuário
-              const funcionarioResponse = await getFuncionarios(); // Buscando todos os funcionários (pode otimizar aqui)
+              const funcionarioResponse = await getFuncionarios(); 
               const funcionario = funcionarioResponse.find((f: Funcionario) => f.usuarioId === usuarioId);
 
               if (funcionario) {
-                const funcionarioId = funcionario.id; // O ID do funcionário associado
+                const funcionarioId = funcionario.id;
 
-                // Deletar o funcionário
                 await deleteFuncionario(funcionarioId);
-                console.log(`Funcionário com ID ${funcionarioId} removido com sucesso!`);
+                enqueueSnackbar(`Profissional excluido com sucesso!`, { variant: "success" });
               } else {
-                console.log(`Nenhum funcionário encontrado para o usuário com ID ${usuarioId}`);
+                console.log();
+                enqueueSnackbar(`Nenhum funcionário encontrado para o usuário com ID ${usuarioId}`, { variant: "error" });
               }
-
-              // Depois de deletar o funcionário, deletar o usuário
               await deleteUsuario(usuarioId);
-              console.log(`Usuário com ID ${usuarioId} removido com sucesso!`);
-
             } catch (error) {
               console.error(`Erro ao remover o usuário ${usuarioId}:`, error);
             }
           })
         );
-
-        alert("Usuários e funcionários removidos com sucesso!");
         fetchData();
         setSelectedUserIds([]); 
       } catch (error) {
@@ -171,7 +173,7 @@ function Profissional() {
             md={5}
             className="d-flex flex-row justify-content-end align-items-center"
           >
-            <Button $isRemover type="button" onClick={handleDeleteUsers} /> {/* Botão para remover selecionados */}
+            <Button $isRemover type="button" onClick={handleDeleteUsers} />
             <Button $isAdicionar type="button" onClick={handleShow} />
           </Col>
         </Row>
@@ -183,7 +185,7 @@ function Profissional() {
           fetchData={fetchData}
         />
         {show && (
-          <Modal
+          <AddUsuarioFuncionarioModal
             title="Adicionar profissional"
             subTitle="Preencha as informações abaixo para criar um novo profissional."
             profissional
@@ -191,8 +193,6 @@ function Profissional() {
             handleShow={handleShow}
             size="grande"
             fetchData={fetchData}
-            addProf
-            setUpdate={setUpdate}
             setPost={setPost}
           />
         )}

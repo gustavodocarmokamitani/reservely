@@ -10,6 +10,7 @@ import ambiente2 from '../assets/ambiente2.png';
 import ambiente3 from '../assets/ambiente3.png';
 import Button from "../components/Button";
 import Modal from "../view/Modal";
+import AddImagemModal from "../view/Modal/AddImagemModal";
 
 function Imagem() {
 
@@ -118,15 +119,12 @@ function Imagem() {
         ))}
       </S.ImagemGrid>
       {show && (
-          <Modal
+          <AddImagemModal
             title="Adicionar imagem"
             handleClose={handleClose}
             handleShow={handleShow}
             imagem
             size="pequeno"
-            fetchData={fetchData}
-            setPost={setPost}
-            setUpdate={setUpdate}
           />
         )}
     </ContainerPage>

@@ -1,5 +1,6 @@
 import React, { createContext, useState, ReactNode } from "react";
 import { UsuarioFuncionarioUpdate } from "../models/UsuarioFuncionario";
+import { TipoServico } from "../models/TipoServico";
 
 // Definindo as interfaces para as entidades
 export interface Usuario {
@@ -42,6 +43,10 @@ interface AppContextType {
   setUsuarioFuncionarioContext: React.Dispatch<React.SetStateAction<UsuarioFuncionario | null>>;
   usuarioFuncionarioUpdateContext: UsuarioFuncionarioUpdate | null;
   setUsuarioFuncionarioUpdateContext: React.Dispatch<React.SetStateAction<UsuarioFuncionarioUpdate | null>>;
+  servicoContext: TipoServico | null;
+  setServicoContext: React.Dispatch<React.SetStateAction<TipoServico | null>>;
+  servicoUpdateContext: TipoServico | null;
+  setServicoUpdateContext: React.Dispatch<React.SetStateAction<TipoServico | null>>;
 }
 
 // Criando o contexto
@@ -57,9 +62,24 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [funcionarioContext, setFuncionarioContext] = useState<Funcionario | null>(null);
   const [usuarioFuncionarioContext, setUsuarioFuncionarioContext] = useState<UsuarioFuncionario | null>(null);
   const [usuarioFuncionarioUpdateContext, setUsuarioFuncionarioUpdateContext] = useState<UsuarioFuncionarioUpdate | null>(null);
+  const [servicoContext, setServicoContext] = useState<TipoServico | null>(null);
+  const [servicoUpdateContext, setServicoUpdateContext] = useState<TipoServico | null>(null);
 
   return (
-    <AppContext.Provider value={{ usuarioContext, setUsuarioContext, funcionarioContext, setFuncionarioContext, usuarioFuncionarioContext, setUsuarioFuncionarioContext, usuarioFuncionarioUpdateContext, setUsuarioFuncionarioUpdateContext }}>
+    <AppContext.Provider value={{ 
+      usuarioContext, 
+      setUsuarioContext,
+       funcionarioContext,
+       setFuncionarioContext,
+       usuarioFuncionarioContext,
+       setUsuarioFuncionarioContext,
+       usuarioFuncionarioUpdateContext,
+       setUsuarioFuncionarioUpdateContext,
+       servicoContext,
+       setServicoContext,
+       servicoUpdateContext,
+       setServicoUpdateContext,
+       }}>
       {children}
     </AppContext.Provider>
   );

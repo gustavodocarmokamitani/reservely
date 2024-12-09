@@ -3,15 +3,15 @@ import { ContainerPage } from './_Page.styles'
 import { Col, Row } from 'react-bootstrap'
 import HeaderTitle from '../view/HeaderTitle'
 import Button from '../components/Button'
-import * as S from './Atendimento.styles';
+import * as S from './Agendamento.styles';
 import ReactSelect from '../components/ReactSelect'
 
-export function Atendimento() {
+export function Agendamento() {
     return (
         <ContainerPage style={{ height: "100vh" }}>
             <Row>
                 <Col md={7} style={{ padding: "0px" }}>
-                    <HeaderTitle title="Atendimento" subTitle="Área destinada para realizar os atendimentos."></HeaderTitle>
+                    <HeaderTitle title="Agendamento" subTitle="Área destinada para realizar os agendamentos."></HeaderTitle>
                 </Col>
 
                 <Col
@@ -24,22 +24,22 @@ export function Atendimento() {
                     />
                 </Col>
             </Row>
-            <S.AtendimentoContainer>
-                <S.AtendimentoContent>
+            <S.AgendamentoContainer>
+                <S.AgendamentoContent>
                     <p>Funcionário</p>
                     <ReactSelect width='300' funcionario />
-                </S.AtendimentoContent>
-                <S.AtendimentoContent>
+                </S.AgendamentoContent>
+                <S.AgendamentoContent>
                     <p>Serviço</p>
                     <ReactSelect width='300' servico />
-                </S.AtendimentoContent>
-                <S.AtendimentoContent>
+                </S.AgendamentoContent>
+                <S.AgendamentoContent>
                     <p>Data do agendamento</p>
                     <ReactSelect width='300' agendamento />
-                </S.AtendimentoContent>
-            </S.AtendimentoContainer>
+                </S.AgendamentoContent>
+            </S.AgendamentoContainer>
         </ContainerPage>
     )
 }
 
-export default Atendimento
+export default Agendamento

@@ -5,49 +5,126 @@ import info from "../assets/info.svg";
 import edit from "../assets/edit.svg";
 import confirmar from "../assets/confirmarCardLoja.svg";
 import remover from "../assets/removerRed.svg";
-import Modal from "./Modal";
 import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import { updateUsuarioFuncionario } from "../services/FuncionarioServices";
+import { useSnackbar } from 'notistack';
+import { TipoServico } from "../models/TipoServico";
+import EditUsuarioFuncionarioModal from "./Modal/EditUsuarioFuncionarioModal";
+import InfoFuncionarioServicoModal from "./Modal/InfoFuncionarioServicoModal";
+import EditServicoModal from "./Modal/EditServicoModal";
+import { updateServico } from "../services/ServicoServices";
+import { updateTipoServico } from "../services/TipoServicoServices";
+import { UsuarioFuncionario, UsuarioFuncionarioUpdate } from "../models/UsuarioFuncionario";
+import { Agendamento } from "../models/Agendamento";
+import InfoAgendamentoServicoModal from "./Modal/InfoAgendamentoServicoModal";
 
 interface DataTableProps {
   servico?: boolean;
   profissional?: boolean;
+  agendamento?: boolean;
   loja?: boolean;
-  rowsServico?: Array<{ id: number; nome: string; valor: string; duracao: string; ativo: boolean }>;
+  rowsServico?: TipoServico[];
+  rowsAgendamento?: Agendamento[];
   rowsProfissional?: Array<{ id: number; nome: string; sobrenome: string; telefone: string; servicos: number[] }>;
   onRowSelect?: (id: number[]) => void;
   setUpdate: React.Dispatch<React.SetStateAction<boolean>>;
   fetchData: () => void;
 }
 
-const DataTable: React.FC<DataTableProps> = ({ rowsServico, rowsProfissional, servico, onRowSelect, fetchData }) => {
-  const [showModal, setShowModal] = useState({ edit: false, info: false });
+const DataTable: React.FC<DataTableProps> = ({
+  rowsAgendamento,
+  rowsServico,
+  rowsProfissional,
+  servico,
+  agendamento,
+  profissional,
+  onRowSelect,
+  fetchData,
+}) => {
+  const [showModal, setShowModal] = useState({ infoAgendamentoServico: false, edit: false, info: false, editServico: false, editAgendamento: false });
   const [selectedFuncionarioId, setSelectedFuncionarioId] = useState<number>();
   const [columnWidth, setColumnWidth] = useState(250);
+  const [columnWidthService, setColumnWidthService] = useState(200);
   const containerRef = useRef<HTMLDivElement>(null);
   const [post, setPost] = useState(false);
   const [update, setUpdate] = useState(false);
-  const handleClose = () => setShowModal({ edit: false, info: false });
-  const handleShowModal = (type: "edit" | "info", id: number) => {
+  const handleClose = () => setShowModal({ infoAgendamentoServico: false, edit: false, info: false, editServico: false, editAgendamento: false });
+  const handleShowModal = (type: "infoAgendamentoServico" | "edit" | "info" | "editServico" | "editAgendamento", id: number) => {
     setSelectedFuncionarioId(id);
     setShowModal({ ...showModal, [type]: true });
   };
+  const { usuarioFuncionarioUpdateContext, servicoUpdateContext } = useContext(AppContext)!;
+  const { enqueueSnackbar } = useSnackbar();
 
-  const { usuarioFuncionarioUpdateContext } = useContext(AppContext)!;
+  const updateUser = async (id: number, data: UsuarioFuncionarioUpdate) => {
+    try {
+      // Chame a função real que faz a requisição ao servidor
+      const response = await updateUsuarioFuncionario(id, data);
+      setUpdate(false);
+
+      if (response.status === 200 || response.status === 204) {
+        enqueueSnackbar(`Profissional editado com sucesso!`, { variant: "success" });
+      }
+    } catch (error: any) {
+      console.error("Erro ao editar o Usuário e Funcionario", error);
+
+      if (error.response) {
+        console.error('Status HTTP:', error.response.status);
+        console.error('Resposta:', error.response.data);
+      } else if (error.request) {
+        console.error('Erro na requisição:', error.request);
+      } else {
+        console.error('Erro desconhecido:', error.message);
+      }
+    }
+  };
+
+
+  const updateServico = async (id: number, data: TipoServico) => {
+    try {
+      if (servicoUpdateContext !== null) {
+        const updatedServico = {
+          id: servicoUpdateContext.id,
+          nome: servicoUpdateContext.nome,
+          valor: servicoUpdateContext.valor,
+          duracaoMinutos: servicoUpdateContext.duracaoMinutos,
+          ativo: servicoUpdateContext.ativo,
+          descricao: servicoUpdateContext.descricao,
+        };
+
+        const response = await updateTipoServico(servicoUpdateContext.id, updatedServico);
+
+        console.log(response);
+
+        setUpdate(false);
+
+        if (response.status === 200 || response.status === 204) {
+          enqueueSnackbar(`Serviço editado com sucesso!`, { variant: "success" });
+        }
+      }
+    } catch (error: any) {
+      console.error("Erro ao editar o serviço", error);
+
+      if (error.response) {
+        console.error('Status HTTP:', error.response.status);
+        console.error('Resposta:', error.response.data);
+      } else if (error.request) {
+        console.error('Erro na requisição:', error.request);
+      } else {
+        console.error('Erro desconhecido:', error.message);
+      }
+    }
+  };
 
   const request = async () => {
     if (update) {
-      if (usuarioFuncionarioUpdateContext !== null) {
-        
-        await updateUsuarioFuncionario(usuarioFuncionarioUpdateContext.id, usuarioFuncionarioUpdateContext);
-        setUpdate(false);
-      } else {
-        console.error("Falha na requisição");
-      }
+      if (usuarioFuncionarioUpdateContext) updateUser(usuarioFuncionarioUpdateContext.id, usuarioFuncionarioUpdateContext)
+
+      if (servicoUpdateContext) updateServico(servicoUpdateContext.id, servicoUpdateContext);
     }
-  }
-  
+  };
+
   useEffect(() => {
     request();
     fetchData();
@@ -67,17 +144,17 @@ const DataTable: React.FC<DataTableProps> = ({ rowsServico, rowsProfissional, se
   }, []);
 
   const handleRowClick = (ids: number[]) => onRowSelect?.(ids);
-  
+
   const columns: GridColDef[] = servico
     ? [
-      { field: "id", headerName: "ID", width: columnWidth, align: "center", headerAlign: "center" },
-      { field: "nome", headerName: "Nome", width: columnWidth, align: "center", headerAlign: "center" },
-      { field: "valor", headerName: "Valor", width: columnWidth, align: "center", headerAlign: "center" },
-      { field: "duracao", headerName: "Duração", width: columnWidth, align: "center", headerAlign: "center" },
+      { field: "id", headerName: "ID", flex: 1, align: "center", headerAlign: "center" },
+      { field: "nome", headerName: "Nome", flex: 3, align: "center", headerAlign: "center" },
+      { field: "valor", headerName: "Valor", flex: 1, align: "center", headerAlign: "center" },
+      { field: "duracao", headerName: "Duração", flex: 1, align: "center", headerAlign: "center" },
       {
-        field: "ativo", headerName: "Ativo", type: "boolean", width: columnWidth, align: "center", headerAlign: "center",
+        field: "ativo", headerName: "Ativo", type: "boolean", flex: 1, align: "center", headerAlign: "center",
         renderCell: (params) => (
-          params.value === "true" ? (
+          params.value === true ? (
             <img
               style={{ cursor: "pointer" }}
               src={confirmar}
@@ -86,14 +163,31 @@ const DataTable: React.FC<DataTableProps> = ({ rowsServico, rowsProfissional, se
           ) : (
             <img
               style={{ cursor: "pointer" }}
-              src="icone-inativo.svg"
+              src={remover}
               alt="Inativo"
             />
           )
         ),
       },
+      {
+        field: "acoes",
+        headerName: "Ações",
+        renderCell: (params) => (
+          <div style={{ display: "flex", gap: "50px", justifyContent: "center", margin: '12.5px 0px 0px 5px' }}>
+            <img
+              style={{ cursor: "pointer" }}
+              src={edit}
+              onClick={() => handleShowModal("editServico", params.row.id)}
+              alt="Editar"
+            />
+          </div>
+        ),
+        width: columnWidth,
+        align: "center",
+        headerAlign: "center",
+      },
     ]
-    : [
+    : profissional ? [
       { field: "nome", headerName: "Nome", width: columnWidth, align: "center", headerAlign: "center" },
       { field: "sobrenome", headerName: "Sobrenome", width: columnWidth, align: "center", headerAlign: "center" },
       { field: "telefone", headerName: "Telefone", width: columnWidth, align: "center", headerAlign: "center" },
@@ -138,18 +232,49 @@ const DataTable: React.FC<DataTableProps> = ({ rowsServico, rowsProfissional, se
         align: "center",
         headerAlign: "center",
       },
-    ];
-    
-  const rows = servico ? rowsServico : rowsProfissional;
+    ]
+      : agendamento
+        ? [
+          { field: "clienteId", headerName: "Cliente", flex: 2, align: "center", headerAlign: "center" },
+          { field: "funcionarioId", headerName: "Funcionario", flex: 2, align: "center", headerAlign: "center" },
+          { field: "dataAgendamento", headerName: "Data Agendamento", flex: 1, align: "center", headerAlign: "center" },
+          { field: "statusAgendamento", headerName: "Status", flex: 1, align: "center", headerAlign: "center" },
+          {
+            field: "acoes",
+            headerName: "Ações",
+            renderCell: (params) => (
+              <div style={{ display: "flex", gap: "50px", justifyContent: "center", margin: '12.5px 0px 0px 5px' }}>
+                <img
+                  style={{ cursor: "pointer" }}
+                  src={info}
+                  onClick={() => handleShowModal("infoAgendamentoServico", params.row.servicosId)}
+                  alt="Informações"
+                />
+              </div>
+            ),
+            width: columnWidth,
+            align: "center",
+            headerAlign: "center",
+          },
+        ]
+        : [];
+
+  let rows: any[] = [];
+
+  if (servico) rows = rowsServico || [];
+  else if (profissional) rows = rowsProfissional || [];
+  else if (agendamento) rows = rowsAgendamento || [];
+  else if (agendamento) rows = rowsAgendamento || [];
+
 
   return (
     <div ref={containerRef} style={{ marginTop: "3rem" }}>
-      <Paper sx={{ height: 400, width: "100%", borderRadius: "15px", overflow: "hidden" }}>
+      <Paper sx={{ height: 800, width: "100%", borderRadius: "15px", overflow: "hidden" }}>
         <DataGrid
           rows={rows}
           columns={columns}
-          initialState={{ pagination: { paginationModel: { pageSize: 5 } } }}
-          pageSizeOptions={[5, 10]}
+          initialState={{ pagination: { paginationModel: { pageSize: 13 } } }}
+          pageSizeOptions={[13, 20, 25]}
           checkboxSelection
           disableRowSelectionOnClick
           onRowSelectionModelChange={(newSelection: GridRowSelectionModel) => {
@@ -160,7 +285,7 @@ const DataTable: React.FC<DataTableProps> = ({ rowsServico, rowsProfissional, se
         />
       </Paper>
       {showModal.info && (
-        <Modal
+        <InfoFuncionarioServicoModal
           title="Informações do profissional"
           info
           subTitle="Todos os serviços que contém esse profissional."
@@ -168,23 +293,43 @@ const DataTable: React.FC<DataTableProps> = ({ rowsServico, rowsProfissional, se
           handleShow={() => setShowModal({ ...showModal, info: true })}
           size="pequeno"
           fetchData={() => { }}
-          usuarioId={selectedFuncionarioId}
-          setPost={setPost}
-          setUpdate={setUpdate}
+          rowId={selectedFuncionarioId}
+        />
+      )}
+      {showModal.infoAgendamentoServico && (
+        <InfoAgendamentoServicoModal
+          title="Informações do agendamento"
+          info
+          subTitle="Todos os serviços que contém esse agendamento."
+          handleClose={handleClose}
+          handleShow={() => setShowModal({ ...showModal, infoAgendamentoServico: true })}
+          size="pequeno"
+          fetchData={() => { }}
+          rowId={selectedFuncionarioId}
         />
       )}
       {showModal.edit && (
-        <Modal
+        <EditUsuarioFuncionarioModal
           title="Editar profissional"
           subTitle="Preencha as informações abaixo para editar o profissional."
           edit
           handleClose={handleClose}
           handleShow={() => setShowModal({ ...showModal, edit: true })}
           size="grande"
-          fetchData={() => { }}
-          usuarioId={selectedFuncionarioId}
-          setPost={setPost}
+          rowId={selectedFuncionarioId}
           setUpdate={setUpdate}
+        />
+      )}
+      {showModal.editServico && (
+        <EditServicoModal
+          title="Editar serviço"
+          subTitle="Preencha as informações abaixo para editar o serviço."
+          handleClose={handleClose}
+          handleShow={() => setShowModal({ ...showModal, editServico: true })}
+          size="pequeno"
+          rowId={selectedFuncionarioId}
+          setUpdate={setUpdate}
+          editServico
         />
       )}
     </div>

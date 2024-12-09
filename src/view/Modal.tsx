@@ -12,8 +12,8 @@ import closeIcon from "../assets/remove.svg";
 import InputGroudProfissional from "../components/InputGroudProfissional";
 import Selected from "../components/Selected";
 import ImagemUpload from "../components/ImagemUpload";
-import { getTipoServicos } from "../services/TipoServicoService";
-import { createFuncionarioUsuario, getFuncionarioIdByUsuarioId, updateFuncionario, updateUsuarioFuncionario } from "../services/FuncionarioServices";
+import { getTipoServico, getTipoServicoById } from "../services/TipoServicoServices";
+import { getFuncionarioIdByUsuarioId } from "../services/FuncionarioServices";
 import { getUsuarioById } from "../services/UsuarioServices";
 import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
@@ -26,12 +26,13 @@ interface ModalProps {
   profissional?: boolean;
   info?: boolean;
   edit?: boolean;
+  editServico?: boolean;
   imagem?: boolean;
   handleShow: () => void;
   handleClose: () => void;
   fetchData: () => void;
   size: "pequeno" | "medio" | "grande";
-  usuarioId?: number;
+  rowId?: number;
   setUpdate: React.Dispatch<React.SetStateAction<boolean>>;
   setPost: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -49,18 +50,19 @@ const Modal: React.FC<ModalProps> = ({
   info = false,
   imagem,
   size,
-  usuarioId,
+  rowId,
   edit = false,
   addProf = false,
-  fetchData,
+  editServico = false,
   setUpdate,
   setPost,
 }) => {
   const [formValuesServico, setFormValuesServico] = useState<Servico>({
     id: 0,
     nome: "",
+    descricao: "",
     valor: "",
-    duracao: "",
+    duracaoMinutos: "",
     ativo: "false",
   });
 
@@ -77,31 +79,12 @@ const Modal: React.FC<ModalProps> = ({
     servicosId: [] as number[],
   });
 
-  const [formValuesUsuario, setFormValuesUsuario] = useState<Usuario>({
-    id: 0,
-    nome: "",
-    sobrenome: "",
-    email: "",
-    telefone: "",
-    senha: "",
-    tipoUsuarioId: 0,
-  });
-
-  const [formValuesFuncionario, setFormValuesFuncionario] = useState<Funcionario>({
-    id: 0,
-    usuarioId: 0,
-    ativo: "false",
-    servicosId: [] as number[],
-  });
-
   const {
-    setUsuarioContext,
-    setFuncionarioContext,
     setUsuarioFuncionarioContext,
     setUsuarioFuncionarioUpdateContext
   } = useContext(AppContext)!;
 
-  const [tiposServico, setTiposServico] = useState([]);
+  const [tipoServico, setTipoServico] = useState([]);
   const [funcionario, setFuncionario] = useState<UsuarioFuncionario[]>([]);
   const [usuario, setUsuario] = useState<Usuario[]>([]);
   const [combinedData, setCombinedData] = useState<CombinedData | null>(null);
@@ -113,11 +96,12 @@ const Modal: React.FC<ModalProps> = ({
   };
 
   useEffect(() => {
+
     if (profissional) {
       const fetchTiposServico = async () => {
         try {
-          const response = await getTipoServicos();
-          setTiposServico(response.data);
+          const response = await getTipoServico();
+          setTipoServico(response.data);
         } catch (error) {
           console.error("Erro ao buscar tipos de serviço", error);
         }
@@ -125,10 +109,11 @@ const Modal: React.FC<ModalProps> = ({
       fetchTiposServico();
     }
 
+
     if (edit) {
       const fetchFuncionario = async () => {
         try {
-          const resFuncionario = await getFuncionarioIdByUsuarioId(usuarioId!);
+          const resFuncionario = await getFuncionarioIdByUsuarioId(rowId!);
 
           let funcionarioData = Array.isArray(resFuncionario)
             ? resFuncionario
@@ -178,7 +163,20 @@ const Modal: React.FC<ModalProps> = ({
       };
       fetchFuncionario();
     }
-  }, [profissional, edit]);
+
+    if (editServico) {
+
+      const fetchServico = async () => {
+
+
+        const response = await getTipoServicoById(rowId!);
+        setTipoServico(response?.data );
+        console.log(response);
+
+        fetchServico();
+      }
+    }
+  }, [profissional, edit, editServico]);
 
   const handleSubmit = async () => {
     if (profissional) {
@@ -206,7 +204,7 @@ const Modal: React.FC<ModalProps> = ({
       };
 
       setUsuarioFuncionarioUpdateContext(updatedUserFunc);
-      
+
       setUpdate(true);
     }
     handleClose();
@@ -236,90 +234,103 @@ const Modal: React.FC<ModalProps> = ({
   };
 
   return (
-    <S.Overlay>
-      <div
-        style={{
-          background: "white",
-          padding: "20px",
-          borderRadius: "8px",
-          maxWidth: sizeMap[size],
-          width: "100%",
-        }}
-      >
-        <Row>
-          <Col md={10}>
-            <h3>{title}</h3>
-            <p>{subTitle}</p>
-          </Col>
-          <Col
-            md={2}
-            style={{ textAlign: "right", cursor: "pointer" }}
-            onClick={handleClose}
-          >
-            <img
-              src={closeIcon}
-              alt="Close Icon"
-              style={{ marginRight: "8px", verticalAlign: "middle" }}
-              width={25}
-            />
-          </Col>
-          <hr />
-        </Row>
+    <h1>teste</h1>
+//     <S.Overlay>
+//       <div
+//         style={{
+//           background: "white",
+//           padding: "20px",
+//           borderRadius: "8px",
+//           maxWidth: sizeMap[size],
+//           width: "100%",
+//         }}
+//       >
+//         <Row>
+//           <Col md={10}>
+//             <h3>{title}</h3>
+//             <p>{subTitle}</p>
+//           </Col>
+//           <Col
+//             md={2}
+//             style={{ textAlign: "right", cursor: "pointer" }}
+//             onClick={handleClose}
+//           >
+//             <img
+//               src={closeIcon}
+//               alt="Close Icon"
+//               style={{ marginRight: "8px", verticalAlign: "middle" }}
+//               width={25}
+//             />
+//           </Col>
+//           <hr />
+//         </Row>
 
-        {servico && (
-          <InputGroudServico
-            title={title}
-            subTitle={subTitle!}
-            handleShow={handleShow}
-            handleClose={handleClose}
-            formValuesServico={formValuesServico}
-            handleInputChange={handleInputChangeServico}
-          />
-        )}
+//         {servico && (
+//           <InputGroudServico
+//             title={title}
+//             subTitle={subTitle!}
+//             handleShow={handleShow}
+//             handleClose={handleClose}
+//             formValuesServico={formValuesServico}
+//             handleInputChange={handleInputChangeServico}
+//           />
+//         )}
 
-        {profissional && (
-          <InputGroudProfissional
-            formValuesProfissional={formValuesProfissional}
-            handleInputChange={handleInputChangeProfissional}
-            handleServiceSelection={handleServiceSelection}
-            data={tiposServico}
-            addProf
-          />
-        )}
+//         {profissional && (
+//           <InputGroudProfissional
+//             formValuesProfissional={formValuesProfissional}
+//             handleInputChange={handleInputChangeProfissional}
+//             handleServiceSelection={handleServiceSelection}
+//             data={tipoServico}
+//             addProf
+//           />
+//         )}
 
-        {edit && (
-          <InputGroudProfissional
-            setFormValuesProfissional={setFormValuesProfissional}
-            formValuesProfissional={formValuesProfissional}
-            handleInputChange={handleInputChangeProfissional}
-            handleServiceSelection={handleServiceSelection}
-            data={combinedData ? [combinedData] : undefined}
-            edit
-          />
-        )}
+//         {edit && (
+//           <InputGroudProfissional
+//             setFormValuesProfissional={setFormValuesProfissional}
+//             formValuesProfissional={formValuesProfissional}
+//             handleInputChange={handleInputChangeProfissional}
+//             handleServiceSelection={handleServiceSelection}
+//             data={combinedData ? [combinedData] : undefined}
+//             edit
+//           />
+//         )}
 
-        {info && <Selected onChange={handleServiceSelection} usuarioId={usuarioId} infoProf />}
+//         {editServico && (
+//           <InputGroudServico
+//             title={title}
+//             subTitle={subTitle!}
+//             handleShow={handleShow}
+//             handleClose={handleClose}
+//             formValuesServico={formValuesServico}
+//             handleInputChange={handleInputChangeServico}
 
-        {addProf === true ?? <Selected onChange={handleServiceSelection} usuarioId={usuarioId} addProf />}
+//           />
+//         )}
 
-        {imagem && (
-          <Row style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-            <ImagemUpload />
-          </Row>
-        )}
+//         {info && <Selected onChange={handleServiceSelection} usuarioId={rowId} infoProf />}
 
-        <hr />
-        <Row>
-          <Col
-            md={12}
-            className="d-flex flex-row justify-content-center align-items-center"
-          >
-            <Button $isFechar type="button" onClick={handleClose} />
-            <Button $isConfirmar type="button" onClick={handleSubmit} />
-          </Col>
-        </Row>
-      </div>
-    </S.Overlay>
+//         {addProf === true ?? <Selected onChange={handleServiceSelection} usuarioId={rowId} addProf />}
+
+//         {imagem && (
+//           <Row style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+//             <ImagemUpload />
+//           </Row>
+//         )}
+
+//         <hr />
+//         <Row>
+//           <Col
+//             md={12}
+//             className="d-flex flex-row justify-content-center align-items-center"
+//           >
+//             <Button $isFechar type="button" onClick={handleClose} />
+//             <Button $isConfirmar type="button" onClick={handleSubmit} />
+//           </Col>
+//         </Row>
+//       </div>
+//     </S.Overlay>
   );
 };
 

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { AppProvider } from './context/AppContext';
+import { SnackbarProvider } from 'notistack';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -10,7 +11,13 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <AppProvider>
-      <App />
+      <SnackbarProvider maxSnack={3}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}>
+        <App />
+      </SnackbarProvider>
     </AppProvider>
   </React.StrictMode>
 );

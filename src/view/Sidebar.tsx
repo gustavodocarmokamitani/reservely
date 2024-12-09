@@ -33,7 +33,8 @@ const Navigation = () => {
 
       <div className="flex-grow-1">
         {[
-          { path: "/atendimento", icon: chamada, text: "Atendimento" },
+          { path: "/agendamento", icon: chamada, text: "Agendamento" },
+          { path: "/agendamento-historico", icon: chamada, text: "Histórico Agendamento" },
           { path: "/dashboard", icon: home, text: "Dashboard" },
           { path: "/servico", icon: servico, text: "Serviços" },
           { path: "/profissional", icon: profissional, text: "Profissionais" },

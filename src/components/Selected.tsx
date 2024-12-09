@@ -3,7 +3,7 @@ import * as S from "./Selected.styles";
 import api from "../axiosInstance";
 import { Funcionario } from '../models/Funcionario';
 import { Servico } from '../models/Servico';
-import { getTipoServicoById, getTipoServicos } from '../services/TipoServicoService';
+import { getTipoServicoById, getTipoServico } from '../services/TipoServicoServices';
 import { getFuncionarioIdByUsuarioId } from "../services/FuncionarioServices";
 
 interface ServiceProps {
@@ -31,6 +31,7 @@ interface SelectedProps {
   infoProf?: boolean;
   addProf?: boolean;
   edit?: boolean;
+  infoAgendamentoServico?: boolean;
 }
 
 const Selected: React.FC<SelectedProps> = ({
@@ -40,7 +41,8 @@ const Selected: React.FC<SelectedProps> = ({
   usuarioId,
   infoProf = false,
   addProf = false,
-  edit = false
+  edit = false,
+  infoAgendamentoServico = false
 }) => {
   const [selectedServices, setSelectedServices] = useState<number[]>(profissionalServices);
   const [services, setServices] = useState<ServiceProps[]>([]);
@@ -53,7 +55,6 @@ const Selected: React.FC<SelectedProps> = ({
     }
   }, [edit, options]);
 
-
   useEffect(() => {
     const fetchFuncionario = async () => {
       try {
@@ -62,8 +63,9 @@ const Selected: React.FC<SelectedProps> = ({
 
         if (edit) {
           // Buscar todos os serviços
-          const allServices = await getTipoServicos();
-          fetchedServices = [...fetchedServices, ...allServices]; 
+          const allServices = await getTipoServico();
+          
+          fetchedServices = [...fetchedServices, ...allServices.data];
 
           // Obter IDs dos serviços já associados no `options`
           const existingServiceIds = dataOptions;
@@ -72,7 +74,7 @@ const Selected: React.FC<SelectedProps> = ({
           const userId = usuarioId;
 
           if (userId) {
-            const data = await  getFuncionarioIdByUsuarioId(userId);
+            const data = await getFuncionarioIdByUsuarioId(userId);
             if (data?.servicosId?.length) {
               const serviceRequests = data.servicosId.map((serviceId: number) =>
                 getTipoServicoById(serviceId)
@@ -84,14 +86,31 @@ const Selected: React.FC<SelectedProps> = ({
               });
             }
           }
+        } else if (infoAgendamentoServico) {
+          const userIdArray = usuarioId; 
+          if (userIdArray && Array.isArray(userIdArray)) {
+            try {
+              // Realizar múltiplos GETs em paralelo para cada `id`
+              const serviceRequests = userIdArray.map((id) => getTipoServicoById(id));
+        
+              // Esperar todas as requisições serem concluídas
+              const serviceResponses = await Promise.all(serviceRequests);
+        
+              // Atualizar `fetchedServices` com os dados retornados
+              fetchedServices = serviceResponses.map((response) => response?.data);
+        
+              console.log("Serviços retornados:", fetchedServices);
+            } catch (error) {
+              console.error("Erro ao buscar serviços:", error);
+            }
+          }
         }
-
+        
         if (addProf) {
-          const data  = await getTipoServicos();
-          fetchedServices = [...fetchedServices, ...data];
+          const data = await getTipoServico();
+          fetchedServices = [...fetchedServices, ...data.data];
         }
 
-        // Remover duplicatas
         const uniqueServices = Array.from(
           new Map(fetchedServices.map((service) => [service.id, service])).values()
         );
@@ -107,10 +126,10 @@ const Selected: React.FC<SelectedProps> = ({
       }
     };
 
-    if (infoProf || addProf || edit) {
+    if (infoProf || addProf || edit || infoAgendamentoServico) {
       fetchFuncionario();
     }
-  }, [infoProf, addProf, edit, usuarioId, dataOptions]);
+  }, [infoProf, addProf, edit, usuarioId, infoAgendamentoServico, dataOptions]);
 
   const toggleService = (id: number) => {
     setSelectedServices((prev) => {
