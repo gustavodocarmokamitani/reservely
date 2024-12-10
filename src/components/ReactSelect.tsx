@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import * as S from "./ReactSelect.styles";
 import { Col, Row } from "react-bootstrap";
+import { getTipoUsuarioIdById } from "../services/UsuarioServices";
+import { getTipoServico } from "../services/TipoServicoServices";
+import { useContext } from "react";
+import { AppContext } from "../context/AppContext";
+import { Agendamento } from "../models/Agendamento";
 
 interface ReactSelectProps {
   width: string;
@@ -12,56 +17,10 @@ interface ReactSelectProps {
   diasFechados?: boolean;
   pagamento?: boolean;
   funcionario?: boolean;
-  agendamento?: boolean;
+  cliente?: boolean;
+  dataAgendamento?: boolean;
   servico?: boolean;
 }
-
-// Opções de semana
-const semanaOptions = [
-  { value: "segunda", label: "Segunda" },
-  { value: "terca", label: "Terça" },
-  { value: "quarta", label: "Quarta" },
-  { value: "quinta", label: "Quinta" },
-  { value: "sexta", label: "Sexta" },
-  { value: "sabado", label: "Sábado" },
-  { value: "domingo", label: "Domingo" },
-];
-
-// Opções de pagamento
-const pagamentoOptions = [
-  { value: "1", label: "Débito" },
-  { value: "2", label: "Crédito" },
-  { value: "3", label: "Dinheiro" },
-  { value: "4", label: "Pix" },
-];
-
-// Opções de funcionário
-const funcionarioOptions = [
-  { value: "1", label: "João Silva" },
-  { value: "2", label: "Maria Oliveira" },
-  { value: "3", label: "Carlos Souza" },
-  { value: "4", label: "Ana Santos" },
-];
-
-// Opções de servico
-const servicoOptions = [
-  { value: "1", label: "Corte Masculino" },
-  { value: "2", label: "Barba e bigode" },
-  { value: "3", label: "Coloração" },
-  { value: "4", label: "Progressiva" },
-];
-
-// Função para gerar opções de horário
-const generateHourOptions = (start: number, end: number) => {
-  const options = [];
-  for (let hour = start; hour <= end; hour++) {
-    const label = hour < 10 ? `0${hour}:00` : `${hour}:00`;
-    options.push({ value: label, label });
-  }
-  return options;
-};
-
-const horarioOptions = generateHourOptions(1, 23);
 
 const customStyles = {
   control: (provided: any) => ({
@@ -109,49 +68,135 @@ const customStyles = {
   }),
 };
 
-const ReactSelect: React.FC<ReactSelectProps> = ({ width, semana, horario, diasFechados, pagamento, funcionario, agendamento, servico }) => {
-  const [selectedOptions, setSelectedOptions] = useState<{ value: string; label: string }[]>([]);
-  const [selectedFuncionario, setSelectedFuncionario] = useState<{ value: string; label: string } | null>(null);
+const ReactSelect: React.FC<ReactSelectProps> = ({
+  width,
+  semana,
+  horario,
+  diasFechados,
+  pagamento,
+  funcionario,
+  dataAgendamento,
+  cliente,
+  servico
+}) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [optionsData, setOptionsData] = useState([]);
+  const [selectedFuncionario, setSelectedFuncionario] = useState<{ value: string; label: string } | null>(null);
+  const [selectedCliente, setSelectedCliente] = useState<{ value: string; label: string } | null>(null);
+  const [selectedServicos, setSelectedServicos] = useState<{ value: string; label: string }[]>([]);
+  const [selectedDataAgendamento, setSelectedDataAgendamento] = useState<Date | null>(null);
+  const [selectedHorario, setSelectedHorario] = useState<string | null>(null);
 
-  // Determina as opções de acordo com o prop ativo
-  const options = semana 
-    ? semanaOptions 
-    : horario 
-    ? horarioOptions 
-    : pagamento 
-    ? pagamentoOptions 
-    : funcionario 
-    ? funcionarioOptions 
-    : servico 
-    ? servicoOptions
-    : [];
+  const { setAgendamentoUpdateContext } = useContext(AppContext)!;
 
-  const handleSelectChange = (selected: any) => {
-    if (funcionario) {
-      setSelectedFuncionario(selected);
-    } else {
-      if (horario && selected.length > 2) {
-        selected = selected.slice(0, 2);
-      }
-      setSelectedOptions(selected || []);
-    }
+  const horarios = [
+    "09:00",
+    "09:30",
+    "10:00",
+    "10:30",
+    "11:00",
+    "11:30",
+    "12:00",
+    "12:30",
+    "13:00",
+    "13:30",
+    "14:00",
+    "14:30",
+    "15:00",
+    "15:30",
+    "16:00",
+    "16:30",
+    "17:00",
+    "17:30",
+    "18:00",
+  ];
+
+  const handleSelectChangeHorario = (selected: any) => {
+    setSelectedHorario(selected?.value);
   };
 
-  const handleDateChange = (date: Date | null) => {
+  const handleSelectChangeFuncionario = (selected: any) => {
+    setSelectedFuncionario(selected);
+  };
+
+  const handleSelectChangeCliente = (selected: any) => {
+    setSelectedCliente(selected);
+  };
+
+  const handleSelectChangeServico = (selected: any) => {
+    const updatedServicos = selected ? selected.map((item: any) => item.value) : [];
+    setSelectedServicos(updatedServicos);
+  };
+
+  const handleSelectChangeDataAgendamento = (date: Date | null) => {
     setSelectedDate(date);
   };
 
+  useEffect(() => {
+    const fetchOptions = async () => {
+      try {
+        let optionsFetched = [];
+  
+        if (funcionario) {
+          const response = await getTipoUsuarioIdById(2);
+          optionsFetched = response.map((item: any) => ({
+            value: item.id,
+            label: item.nome,
+          }));
+        } else if (cliente) {
+          const response = await getTipoUsuarioIdById(3);
+          optionsFetched = response.map((item: any) => ({
+            value: item.id,
+            label: item.nome,
+          }));
+        } else if (servico) {
+          const response = await getTipoServico();
+          optionsFetched = response.data.map((item: any) => ({
+            value: item.id,
+            label: item.nome,
+          }));
+        }
+  
+        setOptionsData(optionsFetched); 
+      } catch (err) {
+        console.error('Erro ao buscar os dados:', err);
+      }
+    };
+  
+    fetchOptions();
+  }, [funcionario, cliente, servico]);
+  
+
+  useEffect(() => {
+    if (selectedDate && selectedHorario && selectedCliente && selectedFuncionario) {
+      console.log(2);
+      const dataAgendamento = new Date(selectedDate);
+      const [horarioHoras, horarioMinutos] = selectedHorario.split(":");
+      dataAgendamento.setHours(parseInt(horarioHoras), parseInt(horarioMinutos));
+  
+      const agendamento: Agendamento = {
+        id: 0,
+        clienteId: parseInt(selectedCliente.value),
+        funcionarioId: parseInt(selectedFuncionario.value),
+        dataAgendamento: dataAgendamento,
+        statusAgendamentoId: 1,
+        servicosId: [],
+      };
+  
+      setAgendamentoUpdateContext(agendamento);
+      console.log("Agendamento Context Atualizado:", agendamento);
+    }
+  }, [selectedDate, selectedHorario, selectedCliente, selectedFuncionario]);
+  
   return (
     <div style={{ width: `${width}` }}>
       {diasFechados ? (
-        // Componente de datas fechadas com seleção de múltiplas datas
         <Row>
           <Col>
-            <S.StyledDatePicker style={{ width: "35rem"}}>
+            <S.StyledDatePicker style={{ width: "35rem" }}>
               <DatePicker
                 selected={null}
-                onChange={(date) => handleDateChange(date)}
+                onChange={(date) => handleSelectChangeDataAgendamento(date)}
                 dateFormat="dd/MM/yyyy"
                 placeholderText="Selecione uma data..."
                 className="custom-datepicker"
@@ -168,28 +213,55 @@ const ReactSelect: React.FC<ReactSelectProps> = ({ width, semana, horario, diasF
             </S.StyledDatePicker>
           </Col>
         </Row>
-      ) : agendamento ? (
-        <S.StyledDatePicker style={{ width: "35rem"}}>
-        <DatePicker
-          selected={selectedDate}
-          onChange={(date) => handleDateChange(date)}
-          dateFormat="dd/MM/yyyy"
-          placeholderText="Selecione a data de agendamento..."
-          minDate={new Date()}
-          className="custom-datepicker"
-          inline
-        />
-       </S.StyledDatePicker>
+      ) : dataAgendamento ? (
+        <S.StyledDatePicker style={{ width: "25rem" }}>
+          <DatePicker
+            selected={selectedDate}
+            onChange={(date) => handleSelectChangeDataAgendamento(date)}
+            dateFormat="dd/MM/yyyy"
+            placeholderText="Selecione a data de agendamento..."
+            minDate={new Date()}
+            className="custom-datepicker"
+            inline
+          />
+        </S.StyledDatePicker>
       ) : (
-        <Select
-          options={options}
-          isMulti={!funcionario || servico}
-          onChange={handleSelectChange}
-          value={funcionario ? selectedFuncionario : selectedOptions}
-          placeholder="Selecione opções..."
-          styles={customStyles}
-        />
-      )}
+        funcionario ? (
+          <Select
+            options={optionsData}
+            onChange={handleSelectChangeFuncionario}
+            placeholder="Selecione um funcionário"
+            styles={customStyles}
+          />
+        ) : cliente ? (
+          <Select
+            options={optionsData}
+            onChange={handleSelectChangeCliente}
+            placeholder="Selecione um cliente"
+            styles={customStyles}
+          />
+        ) : (
+          servico ? (
+            <Select
+              options={optionsData}
+              isMulti
+              placeholder="Selecione um serviço"
+              onChange={handleSelectChangeServico}
+              styles={customStyles}
+            />
+          ) : (
+            horario && (
+              <Select
+                options={horarios.map((horario) => ({
+                  value: horario,
+                  label: horario,
+                }))}
+                onChange={handleSelectChangeHorario}
+                placeholder="Selecione um horário"
+                styles={customStyles}
+              />
+            )
+          )))}
     </div>
   );
 };

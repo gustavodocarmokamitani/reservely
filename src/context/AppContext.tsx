@@ -1,6 +1,7 @@
 import React, { createContext, useState, ReactNode } from "react";
 import { UsuarioFuncionarioUpdate } from "../models/UsuarioFuncionario";
 import { TipoServico } from "../models/TipoServico";
+import { Agendamento } from "../models/Agendamento";
 
 // Definindo as interfaces para as entidades
 export interface Usuario {
@@ -47,6 +48,8 @@ interface AppContextType {
   setServicoContext: React.Dispatch<React.SetStateAction<TipoServico | null>>;
   servicoUpdateContext: TipoServico | null;
   setServicoUpdateContext: React.Dispatch<React.SetStateAction<TipoServico | null>>;
+  agendamentoUpdateContext: Agendamento | null;
+  setAgendamentoUpdateContext: React.Dispatch<React.SetStateAction<Agendamento | null>>;
 }
 
 // Criando o contexto
@@ -64,6 +67,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [usuarioFuncionarioUpdateContext, setUsuarioFuncionarioUpdateContext] = useState<UsuarioFuncionarioUpdate | null>(null);
   const [servicoContext, setServicoContext] = useState<TipoServico | null>(null);
   const [servicoUpdateContext, setServicoUpdateContext] = useState<TipoServico | null>(null);
+  const [agendamentoUpdateContext, setAgendamentoUpdateContext] = useState<Agendamento | null>(null);
 
   return (
     <AppContext.Provider value={{ 
@@ -79,6 +83,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
        setServicoContext,
        servicoUpdateContext,
        setServicoUpdateContext,
+       agendamentoUpdateContext,
+       setAgendamentoUpdateContext
        }}>
       {children}
     </AppContext.Provider>

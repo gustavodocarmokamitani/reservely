@@ -7,5 +7,5 @@ export const AgendamentoContainer= styled.div`
 `
 
 export const AgendamentoContent = styled.div`
-    margin-right: 25px;
+    margin-right: 35px;
 `

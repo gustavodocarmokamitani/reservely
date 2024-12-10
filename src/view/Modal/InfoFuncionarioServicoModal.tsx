@@ -6,7 +6,7 @@ import * as S from "../Modal.styles";
 import closeIcon from "../../assets/remove.svg";
 import Selected from "../../components/Selected";
 
-interface ModalProps {
+interface InfoFuncionarioServicoModalProps {
   title: string;
   subTitle?: string;
   info?: boolean;
@@ -17,7 +17,7 @@ interface ModalProps {
   rowId?: number;
 }
 
-const Modal: React.FC<ModalProps> = ({
+const InfoFuncionarioServicoModal: React.FC<InfoFuncionarioServicoModalProps> = ({
   handleClose,
   title,
   subTitle,
@@ -102,4 +102,4 @@ const Modal: React.FC<ModalProps> = ({
   );
 };
 
-export default Modal;
+export default InfoFuncionarioServicoModal;

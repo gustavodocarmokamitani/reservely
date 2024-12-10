@@ -25,7 +25,7 @@ export const getAgendamentoById = async (id: number) => {
 };
 
 // Função para criar um novo agendamento
-export const createAgendamento = async (agendamentoData: Agendamento) => {
+export const createAgendamento = async (agendamentoData: Agendamento[]) => {
     try {
         const response = await api.post('agendamento', agendamentoData);
         return response.data;

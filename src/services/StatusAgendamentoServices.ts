@@ -2,7 +2,7 @@ import api from '../axiosInstance';
 import { StatusAgendamento } from '../models/StatusAgendamento';
 
 // Função para obter todos os tipos de agendamento
-export const getTiposAgendamento = async () => {
+export const getStatusAgendamento = async () => {
     try {
         const response = await api.get('statusAgendamento');
         return response.data;

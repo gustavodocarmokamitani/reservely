@@ -24,6 +24,17 @@ export const getUsuarioById = async (id: number) => {
     }
 };
 
+// Função para obter um usuário específico pelo ID
+export const getTipoUsuarioIdById = async (id: number) => {
+    try {
+        const response = await api.get(`usuario/tipo/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error("Erro ao obter o usuário:", error);
+        throw error;
+    }
+};
+
 // Função para criar um novo usuário
 export const createUsuario = async (usuarioData: Usuario) => {
     try {
