@@ -111,7 +111,6 @@ const InputGroudProfissional: React.FC<InputGroudProfissionalProps> = ({
       </Col>
       <Col md={8}>
       {edit &&
-      //precisa passar o usuario Id para o formValuesProfissional
           <Selected
             options={profissionalData ? [profissionalData] : undefined}
             onChange={handleServiceSelection}

@@ -8,6 +8,7 @@ import InputGroudProfissional from "../../components/InputGroudProfissional";
 import { getTipoServico } from "../../services/TipoServicoServices";
 import { useContext } from "react";
 import { AppContext } from "../../context/AppContext";
+import { getServicos } from "../../services/ServicoServices";
 
 interface AddUsuarioFuncionarioModalProps {
   title: string;
@@ -51,26 +52,27 @@ const AddUsuarioFuncionarioModal: React.FC<AddUsuarioFuncionarioModalProps> = ({
     grande: "1050px",
   };
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    if (profissional) {
-      const fetchTiposServico = async () => {
-        try {
-          const response = await getTipoServico();
-          setTipoServico(response.data);
-        } catch (error) {
-          console.error("Erro ao buscar tipos de serviço", error);
-        }
-      };
-      fetchTiposServico();
-    }
-  }, [profissional]);
+  //   if (profissional) {
+  //     const fetchTiposServico = async () => {
+  //       try {
+  //         const response = await getServicos();
+  //         setTipoServico(response.data);
+  //       } catch (error) {
+  //         console.error("Erro ao buscar tipos de serviço", error);
+  //       }
+  //     };
+  //     fetchTiposServico();
+  //   }
+  // }, [profissional]);
 
   const handleSubmit = async () => {
     if (profissional) {
       const profissionalData = {
         ...formValuesProfissional,
         servicosId: formValuesProfissional.servicosId,
+        lojaId: 1
       };
       setUsuarioFuncionarioContext(profissionalData);
       setPost(true);

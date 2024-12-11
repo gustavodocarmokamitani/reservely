@@ -4,6 +4,7 @@ import Select from "react-select";
 import { getTipoServico } from "../../services/TipoServicoServices";
 import customStyles from "./styles/customStyles";
 import { SelectOption } from "../../models/SelectOptions";
+import { TipoServico } from "../../models/TipoServico";
 
 interface ServicoSelectProps {
   setServico: (option: SelectOption[] | null) => void;
@@ -17,21 +18,27 @@ const ServicoSelect: React.FC<ServicoSelectProps> = ({ setServico, value }) => {
     const fetchServicos = async () => {
       try {
         const response = await getTipoServico();
-        const formattedOptions = response.data.map((item: any) => ({
+  
+        // Filtra apenas os serviços ativos
+        const tipoServicosAtivos = response.data.filter((tipoServico: TipoServico) => tipoServico.ativo === true);
+  
+        // Formata as opções corretamente para o select
+        const formattedOptions = tipoServicosAtivos.map((item: any) => ({
           value: item.id,
           label: item.nome,
         }));
-
+  
         formattedOptions.unshift({ value: 0, label: "Selecione...", isDisabled: true });
+  
         setOptions(formattedOptions);
       } catch (error) {
         console.error("Erro ao buscar serviços:", error);
       }
     };
-
+  
     fetchServicos();
   }, []);
-
+  
   const handleChange = (selectedOptions: any) => {
     const filteredOptions = selectedOptions?.filter((option: SelectOption) => option.value !== 0) || [];
     setServico(filteredOptions.length > 0 ? filteredOptions : null);

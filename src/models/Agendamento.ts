@@ -5,5 +5,6 @@ export interface Agendamento {
     dataAgendamento: Date;
     statusAgendamentoId: number;
     servicosId: number[];
+    lojaId: number;
   }
   

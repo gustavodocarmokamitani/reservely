@@ -59,12 +59,27 @@ export const updateTipoServico = async (id: number, tipoServicoData: TipoServico
 };
 
 // Função para excluir um tipo de serviço
-export const deleteTipoServico = async (id: number) => {
+    export const deleteTipoServico = async (id: number) => {
+        try {
+            const response = await api.delete(`tipoServico/${id}`);
+            return response.data;
+        } catch (error) {
+            console.error("Erro ao excluir tipo de serviço:", error);
+            throw error;
+        }
+};
+
+// Função para criar serviços por lojaId
+export const createTipoServicoByLojaId = async (lojaId:number, tipoServicoData: TipoServico[]) => {
+    if (!lojaId || !tipoServicoData) {
+        console.error("LojaId e dados do serviço são obrigatórios");
+        return;
+    }
     try {
-        const response = await api.delete(`tipoServico/${id}`);
+        const response = await api.post(`tipoServico/api/tiposservico/${lojaId}`, tipoServicoData);
         return response.data;
     } catch (error) {
-        console.error("Erro ao excluir tipo de serviço:", error);
+        console.error(`Erro ao criar tipos de serviço para a lojaId ${lojaId}:`, error);
         throw error;
     }
 };

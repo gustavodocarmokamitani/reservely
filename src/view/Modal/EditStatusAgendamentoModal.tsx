@@ -56,7 +56,8 @@ const EditStatusAgendamentoModal: React.FC<EditStatusAgendamentoModalProps> = ({
                         funcionarioId: response.funcionarioId,
                         dataAgendamento: response.dataAgendamento,
                         statusAgendamentoId: statusAgendamento?.value,
-                        servicosId: response.servicosId
+                        servicosId: response.servicosId,
+                        lojaId: 1
                     }
 
                     setAgendamentoUpdateContext(mappedAgendamento);

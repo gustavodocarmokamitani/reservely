@@ -34,6 +34,7 @@ const AddServicoModal: React.FC<AddServicoModalProps> = ({
     valor: "",
     duracaoMinutos: "",
     ativo: "false",
+    lojaId: 0
   });
 
   const {

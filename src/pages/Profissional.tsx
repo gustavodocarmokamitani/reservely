@@ -89,8 +89,6 @@ function Profissional() {
 
   const request = async () => {
     try {
-      console.log(post);
-      
       if (post) {
         if (!usuarioFuncionarioContext?.nome || !usuarioFuncionarioContext.sobrenome || !usuarioFuncionarioContext.telefone) {
           setPost(false);
@@ -98,7 +96,7 @@ function Profissional() {
           return; 
         }
         await createFuncionarioUsuario(usuarioFuncionarioContext);
-        console.log("Profissional criado com sucesso!");
+        
         enqueueSnackbar("Profissional criado com sucesso!", { variant: "success" });
         setUsuarioFuncionarioContext(null); 
         setPost(false);
@@ -182,6 +180,7 @@ function Profissional() {
           rowsProfissional={rows}
           onRowSelect={handleRowSelect} 
           setUpdate={setUpdate}
+          update={update}
           fetchData={fetchData}
         />
         {show && (

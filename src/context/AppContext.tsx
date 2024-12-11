@@ -50,6 +50,8 @@ interface AppContextType {
   setServicoUpdateContext: React.Dispatch<React.SetStateAction<TipoServico | null>>;
   agendamentoUpdateContext: Agendamento | null;
   setAgendamentoUpdateContext: React.Dispatch<React.SetStateAction<Agendamento | null>>;
+  tipoServicoContext: TipoServico | null;
+  setTipoServicoContext: React.Dispatch<React.SetStateAction<TipoServico | null>>;
 }
 
 // Criando o contexto
@@ -68,6 +70,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [servicoContext, setServicoContext] = useState<TipoServico | null>(null);
   const [servicoUpdateContext, setServicoUpdateContext] = useState<TipoServico | null>(null);
   const [agendamentoUpdateContext, setAgendamentoUpdateContext] = useState<Agendamento | null>(null);
+  const [tipoServicoContext, setTipoServicoContext] = useState<TipoServico | null>(null);
 
   return (
     <AppContext.Provider value={{ 
@@ -84,7 +87,9 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
        servicoUpdateContext,
        setServicoUpdateContext,
        agendamentoUpdateContext,
-       setAgendamentoUpdateContext
+       setAgendamentoUpdateContext,
+       tipoServicoContext,
+       setTipoServicoContext
        }}>
       {children}
     </AppContext.Provider>

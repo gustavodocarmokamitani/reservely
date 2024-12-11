@@ -99,6 +99,7 @@ const EditUsuarioFuncionarioModal: React.FC<EditUsuarioFuncionarioModal> = ({
               telefone: usuario.telefone,
               senha: usuario.senha,
               tipoUsuarioId: usuario.tipoUsuarioId,
+              lojaId: 1
             }));
             setUsuario(mappedUsuario);
             const combined = {

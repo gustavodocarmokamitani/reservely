@@ -6,4 +6,5 @@ export interface Servico {
   valor: string;
   duracaoMinutos: string;
   ativo: string;
+  lojaId: number;
 }

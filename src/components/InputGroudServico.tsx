@@ -25,6 +25,7 @@ interface InputGroudServicoProps {
     valor: string;
     ativo: string;
     duracaoMinutos: string;
+    lojaId: number;
 }>>;
   handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -52,6 +53,7 @@ const InputGroudServico: React.FC<InputGroudServicoProps> = ({
         valor: String(item.valor),
         ativo: item.ativo ? "true" : "false",
         duracaoMinutos: String(item.duracaoMinutos),
+        lojaId: 1
       };
       setFormValuesServico(newState);
       setIsInitialized(true); 

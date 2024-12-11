@@ -71,8 +71,9 @@ export function Agendamento() {
                 dataAgendamento: agendamentoData,
                 statusAgendamentoId: 1,
                 servicosId: servico.map((item) => item.value),
+                lojaId: 1
             };
-    
+            
             await createAgendamento([mapped]);
             setFuncionario({ value: 0, label: "Nenhum" });
             setCliente({ value: 0, label: "Nenhum" });
@@ -121,6 +122,7 @@ export function Agendamento() {
                     <p>Horário</p>
                     <HorarioSelect value={horario?.value} setHorario={setHorario} />
                 </S.AgendamentoContent>
+                
             </S.AgendamentoContainer>
 
             <S.AgendamentoContainer>

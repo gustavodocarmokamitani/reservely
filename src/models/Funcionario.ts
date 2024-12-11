@@ -3,5 +3,6 @@ export interface Funcionario {
     usuarioId: number;
     ativo: string;
     servicosId: number[];
+    lojaId: number;
   }
   

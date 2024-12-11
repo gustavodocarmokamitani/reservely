@@ -100,6 +100,7 @@ function AgendamentoHistorico() {
                     rowsAgendamento={rows}
                     onRowSelect={handleRowSelect}
                     setUpdate={setUpdate}
+                    update={update}
                     fetchData={fetchData}
                 />
             </ContainerPage>

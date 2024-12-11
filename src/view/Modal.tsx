@@ -64,6 +64,7 @@ const Modal: React.FC<ModalProps> = ({
     valor: "",
     duracaoMinutos: "",
     ativo: "false",
+    lojaId: 0
   });
 
   const [formValuesProfissional, setFormValuesProfissional] = useState<UsuarioFuncionario>({
@@ -149,6 +150,7 @@ const Modal: React.FC<ModalProps> = ({
               telefone: usuario.telefone,
               senha: usuario.senha,
               tipoUsuarioId: usuario.tipoUsuarioId,
+              lojaId: 1
             }));
             setUsuario(mappedUsuario);
             const combined = {

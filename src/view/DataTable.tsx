@@ -30,6 +30,7 @@ interface DataTableProps {
   rowsProfissional?: Array<{ id: number; nome: string; sobrenome: string; telefone: string; servicos: number[] }>;
   onRowSelect?: (id: number[]) => void;
   setUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+  update: boolean;
   fetchData: () => void;
 }
 
@@ -42,12 +43,13 @@ const DataTable: React.FC<DataTableProps> = ({
   profissional,
   onRowSelect,
   fetchData,
+  update,
+  setUpdate
 }) => {
   const [showModal, setShowModal] = useState({ editStatusAgendamento: false, infoAgendamentoServico: false, edit: false, info: false, editServico: false, editAgendamento: false });
   const [selectedFuncionarioId, setSelectedFuncionarioId] = useState<number>();
   const [columnWidth, setColumnWidth] = useState(250);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [update, setUpdate] = useState(false);
   const handleClose = () => setShowModal({ editStatusAgendamento: false, infoAgendamentoServico: false, edit: false, info: false, editServico: false, editAgendamento: false });
   const handleShowModal = (type: "infoAgendamentoServico" | "edit" | "info" | "editServico" | "editAgendamento" | "editStatusAgendamento", id: number) => {
     setSelectedFuncionarioId(id);
@@ -59,6 +61,8 @@ const DataTable: React.FC<DataTableProps> = ({
   const updateUser = async (id: number, data: UsuarioFuncionarioUpdate) => {
     try {
       // Chame a função real que faz a requisição ao servidor
+      console.log(data);
+      
       const response = await updateUsuarioFuncionario(id, data);
       setUpdate(false);
 
@@ -90,6 +94,7 @@ const DataTable: React.FC<DataTableProps> = ({
         enqueueSnackbar(`Status do agendamento editado com sucesso!`, { variant: "success" });
       }
       setUpdate(false);
+      fetchData();
     } catch (error) {
       console.error("Erro ao editar o serviço", error);
     }

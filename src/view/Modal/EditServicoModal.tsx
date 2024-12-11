@@ -42,6 +42,7 @@ const EditServicoModal: React.FC<EditServicoModalProps> = ({
     valor: "",
     duracaoMinutos: "",
     ativo: "false",
+    lojaId: 0
   });
 
   const sizeMap = {

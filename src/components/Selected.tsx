@@ -5,6 +5,7 @@ import { Funcionario } from '../models/Funcionario';
 import { Servico } from '../models/Servico';
 import { getTipoServicoById, getTipoServico } from '../services/TipoServicoServices';
 import { getFuncionarioIdByUsuarioId } from "../services/FuncionarioServices";
+import { getServicos } from "../services/ServicoServices";
 
 interface ServiceProps {
   id: number;
@@ -64,7 +65,7 @@ const Selected: React.FC<SelectedProps> = ({
         if (edit) {
           // Buscar todos os serviços
           const allServices = await getTipoServico();
-          
+
           fetchedServices = [...fetchedServices, ...allServices.data];
 
           // Obter IDs dos serviços já associados no `options`
@@ -87,36 +88,50 @@ const Selected: React.FC<SelectedProps> = ({
             }
           }
         } else if (infoAgendamentoServico) {
-          const userIdArray = usuarioId; 
+          const userIdArray = usuarioId;
           if (userIdArray && Array.isArray(userIdArray)) {
             try {
               // Realizar múltiplos GETs em paralelo para cada `id`
               const serviceRequests = userIdArray.map((id) => getTipoServicoById(id));
-        
+
               // Esperar todas as requisições serem concluídas
               const serviceResponses = await Promise.all(serviceRequests);
-        
+
               // Atualizar `fetchedServices` com os dados retornados
               fetchedServices = serviceResponses.map((response) => response?.data);
-        
+
               console.log("Serviços retornados:", fetchedServices);
             } catch (error) {
               console.error("Erro ao buscar serviços:", error);
             }
           }
         }
-        
-        if (addProf) {
-          const data = await getTipoServico();
-          fetchedServices = [...fetchedServices, ...data.data];
-        }
 
+        if (addProf) {
+          const dataServico = await getServicos(); // Obtém todos os serviços
+          if (dataServico) {
+            const servicosFiltrados = dataServico.filter((servico: any) => servico.lojaId === 1);
+        
+            const tipoServicoPromises = servicosFiltrados.map(async (servico: any) => {
+              try {
+                const dataTipoServico = await getTipoServicoById(servico.tipoServicoId);
+                return dataTipoServico?.data || []; // Retorna os dados ou array vazio
+              } catch (error) {
+                console.error(`Erro ao buscar TipoServico para o id ${servico.tipoServicoId}:`, error);
+                return [];
+              }
+            });
+        
+            const tiposServicoData = await Promise.all(tipoServicoPromises);
+            fetchedServices = [...fetchedServices, ...tiposServicoData.flat()];
+          }
+        }
+        
         const uniqueServices = Array.from(
           new Map(fetchedServices.map((service) => [service.id, service])).values()
         );
-
         setServices(uniqueServices);
-
+        
         // Definir os serviços já selecionados somente na inicialização
         if (edit || infoProf) {
           setSelectedServices(initialSelected);
@@ -125,7 +140,7 @@ const Selected: React.FC<SelectedProps> = ({
         console.error("Erro ao buscar informações do funcionário e serviços:", error);
       }
     };
-
+    
     if (infoProf || addProf || edit || infoAgendamentoServico) {
       fetchFuncionario();
     }

@@ -181,6 +181,7 @@ const ReactSelect: React.FC<ReactSelectProps> = ({
         dataAgendamento: dataAgendamento,
         statusAgendamentoId: 1,
         servicosId: [],
+        lojaId: 1
       };
   
       setAgendamentoUpdateContext(agendamento);

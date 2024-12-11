@@ -4,7 +4,7 @@ import HeaderTitle from "../view/HeaderTitle";
 import DataTable from "../view/DataTable";
 import { Col, Row } from "react-bootstrap";
 import Button from "../components/Button";
-import { createTipoServico, deleteTipoServico, getTipoServico } from "../services/TipoServicoServices";
+import { createTipoServico, createTipoServicoByLojaId, deleteTipoServico, getTipoServico, updateTipoServico } from "../services/TipoServicoServices";
 import { TipoServico } from "../models/TipoServico";
 import Modal from "../view/Modal/AddServicoModal";
 import AddServicoModal from "../view/Modal/AddServicoModal";
@@ -33,7 +33,8 @@ function Servico() {
   const { enqueueSnackbar } = useSnackbar();
   const {
     servicoContext,
-    setServicoContext
+    setServicoContext,
+    tipoServicoContext
   } = useContext(AppContext)!;
 
   useEffect(() => {
@@ -49,31 +50,30 @@ function Servico() {
     }
   };
 
-  const request = async () => {
+  const handleCreateTipoServico = async () => {
     try {
-      if (post) {
-        if (!servicoContext?.nome || !servicoContext.descricao || !servicoContext.valor || !servicoContext.duracaoMinutos) {
-          setPost(false);
-          enqueueSnackbar("Por favor, preencha todos os dados obrigatórios antes de continuar.", { variant: "error" });
-          return;
-        }
-        const defaultServico = [
-          {
-            id: servicoContext?.id || 0,
-            nome: servicoContext?.nome || "string",
-            descricao: servicoContext?.descricao || "string",
-            valor: servicoContext?.valor || 0,
-            ativo: servicoContext?.ativo || true,
-            duracaoMinutos: servicoContext?.duracaoMinutos || 0,
-          },
-        ];
 
-        await createTipoServico(defaultServico);
-        console.log("Serviço criado com sucesso!");
-        enqueueSnackbar("Serviço criado com sucesso!", { variant: "success" });
-        setServicoContext(null);
+      if (!servicoContext?.nome || !servicoContext.descricao || !servicoContext.valor || !servicoContext.duracaoMinutos) {
         setPost(false);
+        enqueueSnackbar("Por favor, preencha todos os dados obrigatórios antes de continuar.", { variant: "error" });
+        return;
       }
+      const defaultServico = [
+        {
+          id: servicoContext?.id || 0,
+          nome: servicoContext?.nome || "string",
+          descricao: servicoContext?.descricao || "string",
+          valor: servicoContext?.valor || 0,
+          ativo: servicoContext?.ativo || true,
+          duracaoMinutos: servicoContext?.duracaoMinutos || 0,
+        },
+      ];
+
+      await createTipoServicoByLojaId(1, defaultServico);
+      enqueueSnackbar("Serviço criado com sucesso!", { variant: "success" });
+      setServicoContext(null);
+      setPost(false);
+
     } catch (error) {
       console.error("Erro durante o request:", error);
       enqueueSnackbar("Erro inesperado! Verifique os dados.", { variant: "error" });
@@ -102,8 +102,8 @@ function Servico() {
             }
           })
         );
-        fetchData();  // Recarrega os dados após a exclusão
-        setSelectedServicoIds([]);  // Limpa a seleção
+        fetchData(); 
+        setSelectedServicoIds([]); 
       } catch (error) {
         console.error("Erro ao remover os serviços:", error);
         enqueueSnackbar("Erro inesperado ao remover os serviços.", { variant: "error" });
@@ -114,12 +114,11 @@ function Servico() {
   };
 
   const handleRowSelect = (ids: number[]) => {
-    console.log("IDs selecionados na tabela: ", ids);
     setSelectedServicoIds(ids);
   };
 
   useEffect(() => {
-    request();
+    if(post)  handleCreateTipoServico();
     fetchData();
   }, [post]);
 
@@ -151,7 +150,8 @@ function Servico() {
           rowsServico={rows}
           onRowSelect={handleRowSelect}
           setUpdate={setUpdate}
-          fetchData={() => { }}
+          update={update}
+          fetchData={fetchData}
         />
         {show && (
           <AddServicoModal
