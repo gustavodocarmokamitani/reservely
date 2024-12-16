@@ -5,10 +5,12 @@ interface ButtonProps {
   $isRemover?: boolean;
   $isFechar?: boolean;
   $isConfirmar?: boolean;
+  $isConfigurar?: boolean;
+  $isVoltar?: boolean;
 }
 
 export const Button = styled.button<ButtonProps>`
-  width: 150px;
+  width: 200px;
   height: 45px;
   border: transparent;
   border-radius: 50px;
@@ -18,8 +20,11 @@ export const Button = styled.button<ButtonProps>`
     if (props.$isRemover) return "#CDCDCD";
     if (props.$isFechar) return "#FF3535";
     if (props.$isConfirmar) return "#1A8439";
-    return "#FF060B"; // cor padrão
+    if (props.$isConfigurar) return "#346eba";
+    if (props.$isVoltar) return "#fff";
+    return "#FF060B"; 
   }};
-  color: ${(props) => (props.$isRemover ? "black" : "white")};
+  color: ${(props) => (props.$isRemover || props.$isVoltar ? "black" : "white")};
+  border: 1px solid ${(props) => (props.$isVoltar ? "black" : "none")};
 `;
 

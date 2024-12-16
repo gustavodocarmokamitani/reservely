@@ -1,4 +1,4 @@
-export interface Funcionario {
+export interface Loja {
     id: number;
     nome: string;
     endereco: string;

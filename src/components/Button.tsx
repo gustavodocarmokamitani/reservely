@@ -10,11 +10,13 @@ interface ButtonProps {
   $isRemover?: boolean;
   $isFechar?: boolean;
   $isConfirmar?: boolean;
+  $isConfigurar?: boolean;
+  $isVoltar?: boolean;
   type: "button" | "submit" | "reset";
   onClick?: () => void;
 }
 
-const Button: React.FC<ButtonProps> = ({ $isAdicionar, $isRemover, $isFechar, $isConfirmar, type, onClick }) => {
+const Button: React.FC<ButtonProps> = ({ $isAdicionar, $isRemover, $isFechar, $isConfirmar, $isConfigurar, $isVoltar, type, onClick }) => {
   let icon = null;
   let buttonText = "";
 
@@ -30,10 +32,16 @@ const Button: React.FC<ButtonProps> = ({ $isAdicionar, $isRemover, $isFechar, $i
   } else if ($isConfirmar) {
     icon = <img src={confirmarIcon} alt="Confirm Icon" style={{ marginRight: "8px" }} />;
     buttonText = "Confirmar";
+  } else if ($isConfigurar) {
+    icon = <img src={confirmarIcon} alt="Confirm Icon" style={{ marginRight: "8px" }} />;
+    buttonText = "Configuração";
+  } else if ($isVoltar) {
+    icon = <img src={removeIcon} alt="Confirm Icon" style={{ marginRight: "8px" }} />;
+    buttonText = "Voltar";
   }
 
   return (
-    <S.Button type={type} $isAdicionar={$isAdicionar} $isRemover={$isRemover} $isFechar={$isFechar} $isConfirmar={$isConfirmar} style={{ margin: "0 1rem" }} onClick={onClick}>
+    <S.Button type={type} $isVoltar={$isVoltar} $isAdicionar={$isAdicionar} $isConfigurar={$isConfigurar}  $isRemover={$isRemover} $isFechar={$isFechar} $isConfirmar={$isConfirmar} style={{ margin: "0 1rem" }} onClick={onClick}>
       <div className="d-flex align-items-center justify-content-center">
         {icon}
         {buttonText}

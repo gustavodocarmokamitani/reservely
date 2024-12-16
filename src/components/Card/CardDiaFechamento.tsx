@@ -1,17 +1,17 @@
 import React from 'react';
-import * as S from "./CardLoja.styles";
+import * as S from "./styles/Card.styles";
 
-import remover from '../assets/remove.svg';
-import confirmar from '../assets/confirmarCardLoja.svg';
+import remover from '../../assets/removerRed.svg';
+import confirmar from '../../assets/confirmarCardLoja.svg';
 import { Col, Row } from 'react-bootstrap';
-import calendario from '../assets/calendario.svg';
-import { Loja } from '../models/Loja';
+import calendario from '../../assets/calendario.svg';
+import { Loja } from '../../models/Loja';
 
-interface CardLojaProps {
+interface CardDiaFechamentoProps {
     title?: string;
     texto?: string;
     icon?: "remover" | "confirmar" | 'calendario';
-    data: Loja | undefined;
+    onRemove?: () => void;
 }
 
 const iconMap = {
@@ -20,7 +20,7 @@ const iconMap = {
     calendario
 };
 
-const CardLoja: React.FC<CardLojaProps> = ({ title, texto, icon, data }) => {
+const CardDiaFechamento: React.FC<CardDiaFechamentoProps> = ({ title, texto, icon, onRemove }) => {
     return (
         <S.CardLojaContainer>
             <S.CardLojaContent>
@@ -34,6 +34,8 @@ const CardLoja: React.FC<CardLojaProps> = ({ title, texto, icon, data }) => {
                             <img
                                 src={iconMap[icon]}
                                 alt={icon}
+                                onClick={icon === "remover" ? onRemove : undefined}
+                                style={{cursor: "pointer"}}
                             />
                         </Col>
                     </Row>
@@ -43,4 +45,4 @@ const CardLoja: React.FC<CardLojaProps> = ({ title, texto, icon, data }) => {
     );
 }
 
-export default CardLoja;
+export default CardDiaFechamento;

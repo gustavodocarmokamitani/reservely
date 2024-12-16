@@ -9,6 +9,7 @@ import { Funcionario } from "../../models/Funcionario";
 
 interface FuncionarioSelectProps {
   setFuncionario: (option: SelectOption | null) => void;
+  handleFuncionarioChange: (option: SelectOption | null) => void;
   value?: number;
 }
 
@@ -18,7 +19,7 @@ interface Option {
   isDisabled?: boolean;
 }
 
-const FuncionarioSelect: React.FC<FuncionarioSelectProps> = ({ setFuncionario, value }) => {
+const FuncionarioSelect: React.FC<FuncionarioSelectProps> = ({ setFuncionario, value, handleFuncionarioChange }) => {
   const [options, setOptions] = useState<SelectOption[]>([]);
 
   useEffect(() => {
@@ -58,6 +59,7 @@ const FuncionarioSelect: React.FC<FuncionarioSelectProps> = ({ setFuncionario, v
 
   const handleChange = (option: any) => {
     setFuncionario(option);
+    handleFuncionarioChange(option)
   };
 
   return (

@@ -1,17 +1,17 @@
-import React from 'react';
-import * as S from "./CardLoja.styles";
+import React, { useEffect } from 'react';
+import * as S from "./styles/Card.styles";
 
-import remover from '../assets/remove.svg';
-import confirmar from '../assets/confirmarCardLoja.svg';
+import remover from '../../assets/remove.svg';
+import confirmar from '../../assets/confirmarCardLoja.svg';
 import { Col, Row } from 'react-bootstrap';
-import calendario from '../assets/calendario.svg';
-import { Loja } from '../models/Loja';
+import calendario from '../../assets/calendario.svg';
+import { Loja } from '../../models/Loja';
 
-interface CardLojaProps {
+interface CardStatusProps {
     title?: string;
-    texto?: string;
     icon?: "remover" | "confirmar" | 'calendario';
     data: Loja | undefined;
+    statusLoja?: boolean;
 }
 
 const iconMap = {
@@ -20,7 +20,7 @@ const iconMap = {
     calendario
 };
 
-const CardLoja: React.FC<CardLojaProps> = ({ title, texto, icon, data }) => {
+const CardStatus: React.FC<CardStatusProps> = ({ title, icon, data, statusLoja = data?.status }) => {   
     return (
         <S.CardLojaContainer>
             <S.CardLojaContent>
@@ -28,7 +28,10 @@ const CardLoja: React.FC<CardLojaProps> = ({ title, texto, icon, data }) => {
                 {icon && iconMap[icon] && (
                     <Row>
                         <Col md={8}>
-                            <p style={{ textAlign: 'center' }}>{texto}</p>
+                            {
+                                <p style={{ textAlign: 'center' }}>{statusLoja ? "Ativa" : "Fechada"}</p>
+                            }
+
                         </Col>
                         <Col md={4}>
                             <img
@@ -43,4 +46,4 @@ const CardLoja: React.FC<CardLojaProps> = ({ title, texto, icon, data }) => {
     );
 }
 
-export default CardLoja;
+export default CardStatus;

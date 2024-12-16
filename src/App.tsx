@@ -10,6 +10,7 @@ import Pagamento from "./pages/Pagamento";
 import Chamada from "./pages/Chamada";
 import { Agendamento } from "./pages/Agendamento";
 import AgendamentoHistorico from "./pages/AgendamentoHistorico";
+import LojaConfigurar from "./pages/LojaConfigurar";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             <Route path="/profissional" element={<Profissional />} />
             <Route path="/imagem" element={<Imagem />} />
             <Route path="/loja" element={<Loja />} />
+            <Route path="/loja-configurar" element={<LojaConfigurar />} />
             <Route path="/pagamento" element={<Pagamento />} />
             <Route path="/chamada" element={<Chamada />} />
           </Routes>

@@ -15,55 +15,61 @@ import { SelectOption } from "../models/SelectOptions";
 import { getFuncionarioIdByUsuarioId } from "../services/FuncionarioServices";
 import { useSnackbar } from 'notistack';
 
+
 export function Agendamento() {
-    // Agendamento.tsx
+    const { enqueueSnackbar } = useSnackbar();
     const [funcionario, setFuncionario] = useState<SelectOption | null>(null);
     const [cliente, setCliente] = useState<SelectOption | null>(null);
     const [servico, setServico] = useState<SelectOption[] | null>([]);
     const [horario, setHorario] = useState<SelectOption | null>(null);
     const [dataAgendamento, setDataAgendamento] = useState<Date | null>(null);
-    const { enqueueSnackbar } = useSnackbar();
+    const [selectedFuncionario, setSelectedFuncionario] = useState<SelectOption | null>(null);
+    const [servicoIds, setServicoIds] = useState<number[]>([]);
 
+    const handleFuncionarioChange = async (funcionario: SelectOption | null) => {
+        setSelectedFuncionario(funcionario);
+    };
+    
     const handleSubmit = async () => {
         try {
             if (!funcionario?.value) {
                 enqueueSnackbar("Por favor, selecione um funcionário.", { variant: "warning" });
                 return;
             }
-            
+
             if (!cliente?.value) {
                 enqueueSnackbar("Por favor, selecione um cliente.", { variant: "warning" });
                 return;
             }
-    
+
             if (!servico || servico.length === 0 || servico[0].value === 0) {
                 enqueueSnackbar("Por favor, selecione pelo menos um serviço.", { variant: "warning" });
                 return;
             }
-    
+
             if (!horario?.value) {
                 enqueueSnackbar("Por favor, selecione um horário.", { variant: "warning" });
                 return;
             }
-    
+
             if (!dataAgendamento) {
                 enqueueSnackbar("Por favor, selecione uma data para o agendamento.", { variant: "warning" });
                 return;
             }
-    
+
             const horarioStr = horario?.value?.toString();
             if (!horarioStr) {
                 enqueueSnackbar("Horário inválido.", { variant: "warning" });
                 return;
             }
-    
+
             const [horarioHoras, horarioMinutos] = horarioStr.split(":");
-    
+
             const agendamentoData = new Date(dataAgendamento);
             agendamentoData.setHours(parseInt(horarioHoras), parseInt(horarioMinutos));
-    
+
             const funcionarioId = await getFuncionarioIdByUsuarioId(funcionario.value);
-    
+
             const mapped = {
                 id: 0,
                 clienteId: cliente.value,
@@ -73,7 +79,7 @@ export function Agendamento() {
                 servicosId: servico.map((item) => item.value),
                 lojaId: 1
             };
-            
+
             await createAgendamento([mapped]);
             setFuncionario({ value: 0, label: "Nenhum" });
             setCliente({ value: 0, label: "Nenhum" });
@@ -85,7 +91,7 @@ export function Agendamento() {
             console.error("Erro ao criar agendamento", error);
             enqueueSnackbar("Erro ao criar agendamento!", { variant: "error" });
         }
-    };    
+    };
 
     return (
         <ContainerPage style={{ height: "100vh" }}>
@@ -102,7 +108,7 @@ export function Agendamento() {
             <S.AgendamentoContainer>
                 <S.AgendamentoContent>
                     <p>Funcionário</p>
-                    <FuncionarioSelect value={funcionario?.value} setFuncionario={setFuncionario} />
+                    <FuncionarioSelect value={funcionario?.value} setFuncionario={setFuncionario} handleFuncionarioChange={handleFuncionarioChange} />
                 </S.AgendamentoContent>
 
                 <S.AgendamentoContent>
@@ -113,16 +119,17 @@ export function Agendamento() {
                 <S.AgendamentoContent>
                     <p>Serviço</p>
                     <ServicoSelect
-                        value={servico?.map(s => s.value) || undefined}
+                        value={servico?.map((s) => s.value) || undefined}
                         setServico={setServico}
-                    />
+                        selectedFuncionario={selectedFuncionario}
+                    />  
                 </S.AgendamentoContent>
 
                 <S.AgendamentoContent>
                     <p>Horário</p>
                     <HorarioSelect value={horario?.value} setHorario={setHorario} />
                 </S.AgendamentoContent>
-                
+
             </S.AgendamentoContainer>
 
             <S.AgendamentoContainer>

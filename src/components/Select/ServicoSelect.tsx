@@ -1,43 +1,94 @@
 // ServicoSelect.tsx
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
-import { getTipoServico } from "../../services/TipoServicoServices";
+import { getTipoServico, getTipoServicoById } from "../../services/TipoServicoServices";
 import customStyles from "./styles/customStyles";
 import { SelectOption } from "../../models/SelectOptions";
 import { TipoServico } from "../../models/TipoServico";
+import { getFuncionarioIdByUsuarioId } from "../../services/FuncionarioServices";
+import { getServicoById } from "../../services/ServicoServices";
 
 interface ServicoSelectProps {
   setServico: (option: SelectOption[] | null) => void;
   value?: number[] | undefined;
+  selectedFuncionario: SelectOption | null;
 }
 
-const ServicoSelect: React.FC<ServicoSelectProps> = ({ setServico, value }) => {
+const ServicoSelect: React.FC<ServicoSelectProps> = ({ setServico, value, selectedFuncionario}) => {
   const [options, setOptions] = useState<SelectOption[]>([]);
-
+  
   useEffect(() => {
     const fetchServicos = async () => {
       try {
         const response = await getTipoServico();
   
-        // Filtra apenas os serviços ativos
-        const tipoServicosAtivos = response.data.filter((tipoServico: TipoServico) => tipoServico.ativo === true);
+        if (response && response.data) {
+          const tipoServicosAtivos = response.data.filter((tipoServico: TipoServico) => tipoServico.ativo === true);
   
-        // Formata as opções corretamente para o select
-        const formattedOptions = tipoServicosAtivos.map((item: any) => ({
-          value: item.id,
-          label: item.nome,
-        }));
+          if (selectedFuncionario) {
+            try {
+              const responseFuncionario = await getFuncionarioIdByUsuarioId(selectedFuncionario.value);
   
-        formattedOptions.unshift({ value: 0, label: "Selecione...", isDisabled: true });
+              if (responseFuncionario && responseFuncionario.servicosId) {
+                const responseNomesServicos = await Promise.all(
+                  responseFuncionario.servicosId.map(async (item: any) => {
+                    try {
+                      const resp = await getTipoServicoById(item);
+                      return resp && resp.data ? resp.data : null;
+                    } catch (error) {
+                      console.error("Erro ao buscar serviço específico:", error);
+                      return null;
+                    }
+                  })
+                );
   
-        setOptions(formattedOptions);
+                const formattedOptions2 = responseNomesServicos.filter(Boolean).map((item: any) => ({
+                  value: item.id,
+                  label: item.nome
+                }));
+  
+                setOptions(formattedOptions2);
+              } else {
+                const formattedOptions = tipoServicosAtivos.map((item: any) => ({
+                  value: item.id,
+                  label: item.nome
+                }));
+  
+                formattedOptions.unshift({ value: 0, label: "Selecione..." });
+                setOptions(formattedOptions);
+              }
+            } catch (error) {
+              console.error("Erro ao buscar serviços do funcionário:", error);
+  
+              const formattedOptions = tipoServicosAtivos.map((item: any) => ({
+                value: item.id,
+                label: item.nome
+              }));
+  
+              formattedOptions.unshift({ value: 0, label: "Selecione..." });
+              setOptions(formattedOptions);
+            }
+          } else {
+            const formattedOptions = tipoServicosAtivos.map((item: any) => ({
+              value: item.id,
+              label: item.nome
+            }));
+  
+            formattedOptions.unshift({ value: 0, label: "Selecione..." });
+            setOptions(formattedOptions);
+          }
+        } else {
+          console.error("Erro ao buscar todos os serviços: resposta inválida.");
+        }
       } catch (error) {
-        console.error("Erro ao buscar serviços:", error);
+        console.error("Erro ao buscar todos os serviços:", error);
       }
     };
   
     fetchServicos();
-  }, []);
+  }, [selectedFuncionario]);
+  
+  
   
   const handleChange = (selectedOptions: any) => {
     const filteredOptions = selectedOptions?.filter((option: SelectOption) => option.value !== 0) || [];
