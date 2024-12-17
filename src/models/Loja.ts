@@ -6,5 +6,6 @@ export interface Loja {
     horarioFuncionamento: string;
     diasFechamento: string[];
     diasFuncionamento: string[];
+    metodosPagamento: number[];
   }
   

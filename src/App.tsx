@@ -11,27 +11,54 @@ import Chamada from "./pages/Chamada";
 import { Agendamento } from "./pages/Agendamento";
 import AgendamentoHistorico from "./pages/AgendamentoHistorico";
 import LojaConfigurar from "./pages/LojaConfigurar";
+import Login from "./pages/Login";
 
 function App() {
+  const isAuthenticated = false; // Troque para sua lógica de autenticação
+
   return (
     <div className="App" style={{ display: "flex" }}>
       <Router>
-        <Navigation />
-        <div style={{ flex: 1, marginLeft: "18.75rem" }}>
-          <Routes>
-            <Route path="/" element={<h1>Home</h1>} />
-            <Route path="/agendamento" element={<Agendamento/>} />
-            <Route path="/agendamento-historico" element={<AgendamentoHistorico/>} />
-            <Route path="/dashboard" element={<h1 style={{padding: "40px"}}>Dashboard</h1>} />
-            <Route path="/servico" element={<Servico />} />
-            <Route path="/profissional" element={<Profissional />} />
-            <Route path="/imagem" element={<Imagem />} />
-            <Route path="/loja" element={<Loja />} />
-            <Route path="/loja-configurar" element={<LojaConfigurar />} />
-            <Route path="/pagamento" element={<Pagamento />} />
-            <Route path="/chamada" element={<Chamada />} />
-          </Routes>
-        </div>
+        <Routes>
+          {/* Tela de Login, isolada */}
+          <Route path="/" element={<Login />} />
+
+          {/* Rotas protegidas para usuários autenticados */}
+          {isAuthenticated && (
+            <Route
+              path="/*"
+              element={
+                <>
+                  <Navigation />
+                  <div style={{ flex: 1, marginLeft: "18.75rem" }}>
+                    <Routes>
+                      <Route path="/home" element={<h1>Home</h1>} />
+                      <Route path="/agendamento" element={<Agendamento />} />
+                      <Route
+                        path="/agendamento-historico"
+                        element={<AgendamentoHistorico />}
+                      />
+                      <Route
+                        path="/dashboard"
+                        element={<h1 style={{ padding: "40px" }}>Dashboard</h1>}
+                      />
+                      <Route path="/servico" element={<Servico />} />
+                      <Route path="/profissional" element={<Profissional />} />
+                      <Route path="/imagem" element={<Imagem />} />
+                      <Route path="/loja" element={<Loja />} />
+                      <Route
+                        path="/loja-configurar"
+                        element={<LojaConfigurar />}
+                      />
+                      <Route path="/pagamento" element={<Pagamento />} />
+                      <Route path="/chamada" element={<Chamada />} />
+                    </Routes>
+                  </div>
+                </>
+              }
+            />
+          )}
+        </Routes>
       </Router>
     </div>
   );

@@ -30,7 +30,6 @@ export const ToggleWrapper = styled.div<InputProps>`
   border: 1px solid rgba(0, 0, 0, 0.25);
   border-radius: 15px;  
   box-shadow: 4px 4px 15px 0px rgba(0, 0, 0, 0.25);
-  margin: 10px 0;
 
   &:focus {
     outline: none;

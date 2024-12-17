@@ -19,6 +19,7 @@ import DataLojaSelect from "../components/Select/DataLojaSelect";
 
 import { useNavigate } from "react-router-dom";
 import CardDiaFechamento from "../components/Card/CardDiaFechamento";
+import CardMetodoPagamento from "../components/Card/CardMetodoPagamento";
 
 function Loja() {
   const navigate = useNavigate();
@@ -110,47 +111,21 @@ function Loja() {
         </Col>
       </Row>
       <Row>
-        <Col md={4} style={{ padding: "0px" }}>
-          {/* <S.LojaContainer>
-            <S.LojaContent>
-              <p>Loja</p>
-              <Input
-                type="toggle"
-                name="ativo"
-                value={formValuesLoja.ativo.toString()}
-                onChange={handleInputChangeLoja}
-                width="300"
-              />
-            </S.LojaContent>
-            <S.LojaContent>
-              <p>Horários de funcionamento</p>
-              <HorarioFuncionamentoSelect setHorario={setHorariosSelecionados} />
-            </S.LojaContent>
-            <S.LojaContent>
-              <p>Dias de funcionamento</p>
-              <DiasSFuncionamentoSelect setDiasSFuncionamento={setDiasSFuncionamento} />
-            </S.LojaContent>
-            <S.LojaContent>
-              <p>Datas de fechamento</p>
-              <DataLojaSelect setDatasFechamento={handleDateChange} />
-            </S.LojaContent>
-          </S.LojaContainer> */}
-        </Col>
         <Col md={12}>
-          <h3 style={{ margin: "50px 0 25px 0" }}>Dados da loja</h3>
+          <h3 style={{ margin: "20px 0 25px 0" }}>Dados da loja</h3>
           <S.CardLojaWrapper className="d-flex justify-content-start align-items-center">
             <CardStatus data={loja} title="Status" icon="confirmar" />
             <CardHorario horariosSelecionados={horariosSelecionados} data={loja} title="Hora de abertura" texto="09:00" icon="calendario" />
             <CardHorario horariosSelecionados={horariosSelecionados} data={loja} title="Hora de fechamento" texto="18:00" icon="calendario" />
           </S.CardLojaWrapper>
-          <h3 style={{ margin: '50px 0 25px 0' }}>Dias de funcionamento</h3>
+          <h3 style={{ margin: '20px 0 25px 0' }}>Dias de funcionamento</h3>
           <S.CardLojaWrapper className="d-flex justify-content-start align-items-center flex-wrap">
             {loja?.diasFuncionamento?.map((dia, index) => (
               <CardDiaSemana key={index} texto={dia} icon="confirmar" />
             ))}
           </S.CardLojaWrapper>
 
-          <h3 style={{ margin: '50px 0 25px 0' }}>Dias de fechamento</h3>
+          <h3 style={{ margin: '20px 0 25px 0' }}>Dias de fechamento</h3>
           <S.CardLojaWrapper className="d-flex justify-content-start align-items-center flex-wrap">
             {loja?.diasFechamento?.map((dia, index) => {
               const dataFormatada = new Date(dia).toLocaleDateString("pt-BR", {
@@ -162,8 +137,6 @@ function Loja() {
               return <CardDiaFechamento key={index} texto={dataFormatada} icon="confirmar" />;
             })}
           </S.CardLojaWrapper>
-
-
         </Col>
       </Row>
     </ContainerPage>

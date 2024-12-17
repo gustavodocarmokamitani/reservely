@@ -98,22 +98,15 @@ function LojaConfigurar() {
     };
 
     const handleSubmit = async () => {
-        console.log("horariosSelecionados", horariosSelecionados);
-        console.log("diasSFuncionamento", diasSFuncionamento);
-        console.log("datasFechamento", datasFechamento);
-        console.log("statusLoja", statusLoja);
-
         if (loja) {
             const lojaMapped: Loja = {
-                id: loja.id,
-                nome: loja.nome,
-                endereco: loja.endereco,
-                status: loja.status,
+                ...loja,
+                status: formValuesLoja.ativo,
                 horarioFuncionamento: horariosSelecionados.join(" - "),
                 diasFechamento: datasFechamento
                     ? datasFechamento.map((data) => data.toISOString())
                     : [],
-                diasFuncionamento: diasSFuncionamento
+                diasFuncionamento: diasSFuncionamento,
             };
 
             try {
@@ -200,10 +193,10 @@ function LojaConfigurar() {
                     <S.CardLojaWrapper className="d-flex justify-content-start align-items-center flex-wrap">
                         {
                             diasSFuncionamento.map((item: any) => (
-                                <CardDiaSemana 
-                                texto={item} 
-                                icon="remover" 
-                                onRemove={() => handleRemoveDiaFuncionamento(item)}
+                                <CardDiaSemana
+                                    texto={item}
+                                    icon="remover"
+                                    onRemove={() => handleRemoveDiaFuncionamento(item)}
                                 />
                             ))
                         }

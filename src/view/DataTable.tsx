@@ -163,13 +163,14 @@ const DataTable: React.FC<DataTableProps> = ({
   }, []);
 
   const handleRowClick = (ids: number[]) => onRowSelect?.(ids);
-
+  
+  
   const columns: GridColDef[] = servico
     ? [
       { field: "id", headerName: "ID", flex: 1, align: "center", headerAlign: "center" },
       { field: "nome", headerName: "Nome", flex: 3, align: "center", headerAlign: "center" },
       { field: "valor", headerName: "Valor", flex: 1, align: "center", headerAlign: "center" },
-      { field: "duracao", headerName: "Duração", flex: 1, align: "center", headerAlign: "center" },
+      { field: "duracaoMinutos", headerName: "Duração", flex: 1, align: "center", headerAlign: "center" },
       {
         field: "ativo", headerName: "Ativo", type: "boolean", flex: 1, align: "center", headerAlign: "center",
         renderCell: (params) => (

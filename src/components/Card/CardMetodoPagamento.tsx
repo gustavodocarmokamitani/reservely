@@ -7,12 +7,10 @@ import { Col, Row } from 'react-bootstrap';
 import calendario from '../../assets/calendario.svg';
 import { Loja } from '../../models/Loja';
 
-interface CardHorarioProps {
+interface CardMetodoPagamentoProps {
     title?: string;
     texto?: string;
     icon?: "remover" | "confirmar" | 'calendario';
-    data: Loja | undefined;
-    horariosSelecionados?: string[];
 }
 
 const iconMap = {
@@ -21,7 +19,7 @@ const iconMap = {
     calendario
 };
 
-const CardHorario: React.FC<CardHorarioProps> = ({ title, texto, icon, data, horariosSelecionados }) => {
+const CardMetodoPagamento: React.FC<CardMetodoPagamentoProps> = ({ title, texto, icon }) => {
     return (
         <S.CardLojaContainer>
             <S.CardLojaContent>
@@ -29,12 +27,7 @@ const CardHorario: React.FC<CardHorarioProps> = ({ title, texto, icon, data, hor
                 {icon && iconMap[icon] && (
                     <Row>
                         <Col md={8}>
-                            {
-                                title === 'Hora de abertura' ?
-                                    <p style={{ textAlign: 'center' }}>{horariosSelecionados ? horariosSelecionados[0] : null}</p>
-                                    :
-                                    <p style={{ textAlign: 'center' }}>{horariosSelecionados ? horariosSelecionados[1] : null}</p>
-                            }
+                            <p style={{ textAlign: 'center' }}>{texto}</p>
                         </Col>
                         <Col md={4}>
                             <img
@@ -49,4 +42,4 @@ const CardHorario: React.FC<CardHorarioProps> = ({ title, texto, icon, data, hor
     );
 }
 
-export default CardHorario;
+export default CardMetodoPagamento;

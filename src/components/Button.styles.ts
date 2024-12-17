@@ -7,6 +7,8 @@ interface ButtonProps {
   $isConfirmar?: boolean;
   $isConfigurar?: boolean;
   $isVoltar?: boolean;
+  $isLogin?: boolean;
+  $isRegistrar?: boolean;
 }
 
 export const Button = styled.button<ButtonProps>`
@@ -22,9 +24,11 @@ export const Button = styled.button<ButtonProps>`
     if (props.$isConfirmar) return "#1A8439";
     if (props.$isConfigurar) return "#346eba";
     if (props.$isVoltar) return "#fff";
+    if (props.$isLogin) return "#2A2A2A";
+    if (props.$isRegistrar) return "#fff";
     return "#FF060B"; 
   }};
-  color: ${(props) => (props.$isRemover || props.$isVoltar ? "black" : "white")};
+  color: ${(props) => (props.$isRemover || props.$isVoltar || props.$isRegistrar ? "black" : "white")};
   border: 1px solid ${(props) => (props.$isVoltar ? "black" : "none")};
 `;
 
