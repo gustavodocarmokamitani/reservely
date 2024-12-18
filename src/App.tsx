@@ -2,19 +2,19 @@ import "./App.css";
 import Navigation from "./view/Sidebar";
 import Dashboard from "./pages/Dashboard";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Servico from "./pages/Servico";
-import Profissional from "./pages/Profissional";
-import Imagem from "./pages/Imagem";
-import Loja from "./pages/Loja";
-import Pagamento from "./pages/Pagamento";
+import Service from "./pages/Service";
+import Professional from "./pages/Professional";
+import Image from "./pages/Image";
+import Store from "./pages/Store";
+import Payment from "./pages/Payment";
 import Chamada from "./pages/Chamada";
-import { Agendamento } from "./pages/Agendamento";
-import AgendamentoHistorico from "./pages/AgendamentoHistorico";
-import LojaConfigurar from "./pages/LojaConfigurar";
+import { Appointment } from "./pages/Appointment";
+import AppointmentHistory from "./pages/AppointmentHistory";
+import StoreConfigurar from "./pages/StoreConfigure";
 import Login from "./pages/Login";
 
 function App() {
-  const isAuthenticated = false; // Troque para sua lógica de autenticação
+  const isAuthenticated = false;
 
   return (
     <div className="App" style={{ display: "flex" }}>
@@ -33,24 +33,24 @@ function App() {
                   <div style={{ flex: 1, marginLeft: "18.75rem" }}>
                     <Routes>
                       <Route path="/home" element={<h1>Home</h1>} />
-                      <Route path="/agendamento" element={<Agendamento />} />
+                      <Route path="/appointment" element={<Appointment />} />
                       <Route
-                        path="/agendamento-historico"
-                        element={<AgendamentoHistorico />}
+                        path="/appointment-history"
+                        element={<AppointmentHistory />}
                       />
                       <Route
                         path="/dashboard"
                         element={<h1 style={{ padding: "40px" }}>Dashboard</h1>}
                       />
-                      <Route path="/servico" element={<Servico />} />
-                      <Route path="/profissional" element={<Profissional />} />
-                      <Route path="/imagem" element={<Imagem />} />
-                      <Route path="/loja" element={<Loja />} />
+                      <Route path="/service" element={<Service />} />
+                      <Route path="/professional" element={<Professional />} />
+                      <Route path="/image" element={<Image />} />
+                      <Route path="/store" element={<Store />} />
                       <Route
-                        path="/loja-configurar"
-                        element={<LojaConfigurar />}
+                        path="/store-configure"
+                        element={<StoreConfigurar />}
                       />
-                      <Route path="/pagamento" element={<Pagamento />} />
+                      <Route path="/payment" element={<Payment />} />
                       <Route path="/chamada" element={<Chamada />} />
                     </Routes>
                   </div>

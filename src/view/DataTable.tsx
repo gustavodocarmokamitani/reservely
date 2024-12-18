@@ -1,33 +1,33 @@
 import React, { useEffect, useRef, useState } from "react";
 import { DataGrid, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
+import { useContext } from "react";
+import { AppContext } from "../context/AppContext";
+import { updateUserEmployee } from "../services/EmployeeServices";
+import { useSnackbar } from 'notistack';
+import { ServiceType } from "../models/ServiceType";
+import { updateServiceType } from "../services/ServiceTypeServices";
+import { UserEmployeeUpdate } from "../models/UserEmployee";
+import { Appointment } from "../models/Appointment";
+import { updateAppointment } from "../services/AppointmentServices";
 import Paper from "@mui/material/Paper";
 import info from "../assets/info.svg";
 import edit from "../assets/edit.svg";
 import confirmar from "../assets/confirmarCardLoja.svg";
 import remover from "../assets/removerRed.svg";
-import { useContext } from "react";
-import { AppContext } from "../context/AppContext";
-import { updateUsuarioFuncionario } from "../services/FuncionarioServices";
-import { useSnackbar } from 'notistack';
-import { TipoServico } from "../models/TipoServico";
-import EditUsuarioFuncionarioModal from "./Modal/EditUsuarioFuncionarioModal";
-import InfoFuncionarioServicoModal from "./Modal/InfoFuncionarioServicoModal";
-import EditServicoModal from "./Modal/EditServicoModal";
-import { updateTipoServico } from "../services/TipoServicoServices";
-import { UsuarioFuncionarioUpdate } from "../models/UsuarioFuncionario";
-import { Agendamento } from "../models/Agendamento";
-import InfoAgendamentoServicoModal from "./Modal/InfoAgendamentoServicoModal";
-import EditStatusAgendamentoModal from "./Modal/EditStatusAgendamentoModal";
-import { updateAgendamento } from "../services/AgendamentoServices";
+import EditUserEmployeeModal from "./Modal/EditUserEmployeeModal";
+import InfoEmployeeServiceModal from "./Modal/InfoEmployeeServiceModal";
+import EditServiceModal from "./Modal/EditServiceModal";
+import InfoAppointmentServiceModal from "./Modal/InfoAppointmentServiceModal";
+import EditStatusAppointmentModal from "./Modal/EditStatusAppointmentModal";
 
 interface DataTableProps {
-  servico?: boolean;
-  profissional?: boolean;
-  agendamento?: boolean;
+  service?: boolean;
+  professional?: boolean;
+  appointment?: boolean;
   loja?: boolean;
-  rowsServico?: TipoServico[];
-  rowsAgendamento?: Agendamento[];
-  rowsProfissional?: Array<{ id: number; nome: string; sobrenome: string; telefone: string; servicos: number[] }>;
+  rowsService?: ServiceType[];
+  rowsAppointment?: Appointment[];
+  rowsProfessional?: Array<{ id: number; name: string; lastname: string; phone: string; services: number[] }>;
   onRowSelect?: (id: number[]) => void;
   setUpdate: React.Dispatch<React.SetStateAction<boolean>>;
   update: boolean;
@@ -35,35 +35,34 @@ interface DataTableProps {
 }
 
 const DataTable: React.FC<DataTableProps> = ({
-  rowsAgendamento,
-  rowsServico,
-  rowsProfissional,
-  servico,
-  agendamento,
-  profissional,
+  rowsAppointment,
+  rowsService,
+  rowsProfessional,
+  service,
+  appointment,
+  professional,
   onRowSelect,
   fetchData,
   update,
   setUpdate
 }) => {
-  const [showModal, setShowModal] = useState({ editStatusAgendamento: false, infoAgendamentoServico: false, edit: false, info: false, editServico: false, editAgendamento: false });
-  const [selectedFuncionarioId, setSelectedFuncionarioId] = useState<number>();
+  const [showModal, setShowModal] = useState({ editAppointmentStatus: false, infoAppointmentService: false, edit: false, info: false, editService: false, editAppointment: false });
+  const [selectedEmployeeId, setSelectedEmployeeId] = useState<number>();
   const [columnWidth, setColumnWidth] = useState(250);
   const containerRef = useRef<HTMLDivElement>(null);
-  const handleClose = () => setShowModal({ editStatusAgendamento: false, infoAgendamentoServico: false, edit: false, info: false, editServico: false, editAgendamento: false });
-  const handleShowModal = (type: "infoAgendamentoServico" | "edit" | "info" | "editServico" | "editAgendamento" | "editStatusAgendamento", id: number) => {
-    setSelectedFuncionarioId(id);
+  const handleClose = () => setShowModal({ editAppointmentStatus: false, infoAppointmentService: false, edit: false, info: false, editService: false, editAppointment: false });
+  const handleShowModal = (type: "infoAppointmentService" | "edit" | "info" | "editService" | "editAppointment" | "editAppointmentStatus", id: number) => {
+    setSelectedEmployeeId(id);
     setShowModal({ ...showModal, [type]: true });
   };
-  const { usuarioFuncionarioUpdateContext, servicoUpdateContext, agendamentoUpdateContext } = useContext(AppContext)!;
+  const { userEmployeeUpdateContext, serviceUpdateContext, appointmentUpdateContext } = useContext(AppContext)!;
   const { enqueueSnackbar } = useSnackbar();
 
-  const updateUser = async (id: number, data: UsuarioFuncionarioUpdate) => {
+  const updateUser = async (id: number, data: UserEmployeeUpdate) => {
     try {
-      // Chame a função real que faz a requisição ao servidor
       console.log(data);
       
-      const response = await updateUsuarioFuncionario(id, data);
+      const response = await updateUserEmployee(id, data);
       setUpdate(false);
 
       if (response.status === 200 || response.status === 204) {
@@ -72,26 +71,26 @@ const DataTable: React.FC<DataTableProps> = ({
     } catch (error: any) {
       console.error("Erro ao editar o Usuário e Funcionario", error);
 
+    } else {
+      console.error('Erro desconhecido:', error.message);
+    }
+  }
+};
+console.log('inicio do function', update);
+
+if (appointmentUpdateContext !== null) {
+  const response = await updateAppointment(appointmentUpdateContext.id, appointmentUpdateContext);
       if (error.response) {
         console.error('Status HTTP:', error.response.status);
         console.error('Resposta:', error.response.data);
       } else if (error.request) {
         console.error('Erro na requisição:', error.request);
-      } else {
-        console.error('Erro desconhecido:', error.message);
-      }
-    }
-  };
 
-  const updateStatusAgendamento = async () => {
+  const updateAppointmentStatus = async () => {
     try {
-      console.log('inicio do function', update);
-      
-      if (agendamentoUpdateContext !== null) {
-        console.log(agendamentoUpdateContext);
+        console.log(appointmentUpdateContext);
         
-        const response = await updateAgendamento(agendamentoUpdateContext.id, agendamentoUpdateContext);
-        enqueueSnackbar(`Status do agendamento editado com sucesso!`, { variant: "success" });
+        enqueueSnackbar(`Status do appointment editado com sucesso!`, { variant: "success" });
       }
       setUpdate(false);
       fetchData();
@@ -101,19 +100,19 @@ const DataTable: React.FC<DataTableProps> = ({
     console.log('final do function', update);
   };
 
-  const updateServico = async (id: number, data: TipoServico) => {
+  const updateService = async (id: number, data: ServiceType) => {
     try {
-      if (servicoUpdateContext !== null) {
+      if (serviceUpdateContext !== null) {
         const updatedServico = {
-          id: servicoUpdateContext.id,
-          nome: servicoUpdateContext.nome,
-          valor: servicoUpdateContext.valor,
-          duracaoMinutos: servicoUpdateContext.duracaoMinutos,
-          ativo: servicoUpdateContext.ativo,
-          descricao: servicoUpdateContext.descricao,
+          id: serviceUpdateContext.id,
+          name: serviceUpdateContext.name,
+          value: serviceUpdateContext.value,
+          durationMinutes: serviceUpdateContext.durationMinutes,
+          ativo: serviceUpdateContext.ativo,
+          descricao: serviceUpdateContext.descricao,
         };
 
-        const response = await updateTipoServico(servicoUpdateContext.id, updatedServico);
+        const response = await updateServiceType(serviceUpdateContext.id, updatedServico);
         setUpdate(false);
 
         if (response.status === 200 || response.status === 204) {
@@ -136,11 +135,11 @@ const DataTable: React.FC<DataTableProps> = ({
 
   const request = async () => {
     if (update) {
-      if (usuarioFuncionarioUpdateContext) updateUser(usuarioFuncionarioUpdateContext.id, usuarioFuncionarioUpdateContext)
+      if (userEmployeeUpdateContext) updateUser(userEmployeeUpdateContext.id, userEmployeeUpdateContext)
 
-      if (servicoUpdateContext) updateServico(servicoUpdateContext.id, servicoUpdateContext);
+      if (serviceUpdateContext) updateService(serviceUpdateContext.id, serviceUpdateContext);
 
-      if (agendamentoUpdateContext) updateStatusAgendamento();
+      if (appointmentUpdateContext) updateAppointmentStatus();
     }
   };
 
@@ -165,12 +164,12 @@ const DataTable: React.FC<DataTableProps> = ({
   const handleRowClick = (ids: number[]) => onRowSelect?.(ids);
   
   
-  const columns: GridColDef[] = servico
+  const columns: GridColDef[] = service
     ? [
       { field: "id", headerName: "ID", flex: 1, align: "center", headerAlign: "center" },
-      { field: "nome", headerName: "Nome", flex: 3, align: "center", headerAlign: "center" },
-      { field: "valor", headerName: "Valor", flex: 1, align: "center", headerAlign: "center" },
-      { field: "duracaoMinutos", headerName: "Duração", flex: 1, align: "center", headerAlign: "center" },
+      { field: "name", headerName: "Nome", flex: 3, align: "center", headerAlign: "center" },
+      { field: "value", headerName: "Valor", flex: 1, align: "center", headerAlign: "center" },
+      { field: "durationMinutes", headerName: "Duração", flex: 1, align: "center", headerAlign: "center" },
       {
         field: "ativo", headerName: "Ativo", type: "boolean", flex: 1, align: "center", headerAlign: "center",
         renderCell: (params) => (
@@ -197,7 +196,7 @@ const DataTable: React.FC<DataTableProps> = ({
             <img
               style={{ cursor: "pointer" }}
               src={edit}
-              onClick={() => handleShowModal("editServico", params.row.id)}
+              onClick={() => handleShowModal("editService", params.row.id)}
               alt="Editar"
             />
           </div>
@@ -207,10 +206,10 @@ const DataTable: React.FC<DataTableProps> = ({
         headerAlign: "center",
       },
     ]
-    : profissional ? [
-      { field: "nome", headerName: "Nome", width: columnWidth, align: "center", headerAlign: "center" },
-      { field: "sobrenome", headerName: "Sobrenome", width: columnWidth, align: "center", headerAlign: "center" },
-      { field: "telefone", headerName: "Telefone", width: columnWidth, align: "center", headerAlign: "center" },
+    : professional ? [
+      { field: "name", headerName: "Nome", width: columnWidth, align: "center", headerAlign: "center" },
+      { field: "lastname", headerName: "Sobrename", width: columnWidth, align: "center", headerAlign: "center" },
+      { field: "phone", headerName: "Telefone", width: columnWidth, align: "center", headerAlign: "center" },
       {
         field: "ativo", headerName: "Ativo", type: "boolean", width: columnWidth, align: "center", headerAlign: "center",
         renderCell: (params) => (
@@ -253,11 +252,11 @@ const DataTable: React.FC<DataTableProps> = ({
         headerAlign: "center",
       },
     ]
-      : agendamento
+      : appointment
         ? [
           { field: "clienteId", headerName: "Cliente", flex: 2, align: "center", headerAlign: "center" },
           { field: "funcionarioId", headerName: "Funcionario", flex: 2, align: "center", headerAlign: "center" },
-          { field: "dataAgendamento", headerName: "Data Agendamento", flex: 1, align: "center", headerAlign: "center" },
+          { field: "appointmentDate", headerName: "Data Appointment", flex: 1, align: "center", headerAlign: "center" },
           { field: "statusAgendamento", headerName: "Status", flex: 1, align: "center", headerAlign: "center" },
           {
             field: "acoes",
@@ -267,13 +266,13 @@ const DataTable: React.FC<DataTableProps> = ({
                 <img
                   style={{ cursor: "pointer" }}
                   src={info}
-                  onClick={() => handleShowModal("infoAgendamentoServico", params.row.servicosId)}
+                  onClick={() => handleShowModal("infoAppointmentService", params.row.servicesId)}
                   alt="Informações"
                 />
                 <img
                   style={{ cursor: "pointer" }}
                   src={edit}
-                  onClick={() => handleShowModal("editStatusAgendamento", params.row.id)}
+                  onClick={() => handleShowModal("editAppointmentStatus", params.row.id)}
                   alt="Alterar status"
                 />
               </div>
@@ -287,10 +286,10 @@ const DataTable: React.FC<DataTableProps> = ({
 
   let rows: any[] = [];
 
-  if (servico) rows = rowsServico || [];
-  else if (profissional) rows = rowsProfissional || [];
-  else if (agendamento) {
-    rows = (rowsAgendamento || []).slice().sort((a, b) => new Date(b.dataAgendamento).getTime() - new Date(a.dataAgendamento).getTime());
+  if (service) rows = rowsService || [];
+  else if (professional) rows = rowsProfessional || [];
+  else if (appointment) {
+    rows = (rowsAppointment || []).slice().sort((a, b) => new Date(b.appointmentDate).getTime() - new Date(a.appointmentDate).getTime());
 }
 
   return (
@@ -311,61 +310,61 @@ const DataTable: React.FC<DataTableProps> = ({
         />
       </Paper>
       {showModal.info && (
-        <InfoFuncionarioServicoModal
-          title="Informações do profissional"
+        <InfoEmployeeServiceModal
+          title="Informações do professional"
           info
-          subTitle="Todos os serviços que contém esse profissional."
+          subTitle="Todos os serviços que contém esse professional."
           handleClose={handleClose}
           handleShow={() => setShowModal({ ...showModal, info: true })}
           size="pequeno"
           fetchData={() => { }}
-          rowId={selectedFuncionarioId}
+          rowId={selectedEmployeeId}
         />
       )}
-      {showModal.infoAgendamentoServico && (
-        <InfoAgendamentoServicoModal
-          title="Informações do agendamento"
+      {showModal.infoAppointmentService && (
+        <InfoAppointmentServiceModal
+          title="Informações do appointment"
           info
-          subTitle="Todos os serviços que contém esse agendamento."
+          subTitle="Todos os serviços que contém esse appointment."
           handleClose={handleClose}
-          handleShow={() => setShowModal({ ...showModal, infoAgendamentoServico: true })}
+          handleShow={() => setShowModal({ ...showModal, infoAppointmentService: true })}
           size="pequeno"
           fetchData={() => { }}
-          rowId={selectedFuncionarioId}
+          rowId={selectedEmployeeId}
         />
       )}
       {showModal.edit && (
-        <EditUsuarioFuncionarioModal
-          title="Editar profissional"
-          subTitle="Preencha as informações abaixo para editar o profissional."
+        <EditUserEmployeeModal
+          title="Editar professional"
+          subTitle="Preencha as informações abaixo para editar o professional."
           edit
           handleClose={handleClose}
           handleShow={() => setShowModal({ ...showModal, edit: true })}
           size="grande"
-          rowId={selectedFuncionarioId}
+          rowId={selectedEmployeeId}
           setUpdate={setUpdate}
         />
       )}
-      {showModal.editServico && (
-        <EditServicoModal
+      {showModal.editService && (
+        <EditServiceModal
           title="Editar serviço"
           subTitle="Preencha as informações abaixo para editar o serviço."
           handleClose={handleClose}
-          handleShow={() => setShowModal({ ...showModal, editServico: true })}
+          handleShow={() => setShowModal({ ...showModal, editService: true })}
           size="pequeno"
-          rowId={selectedFuncionarioId}
+          rowId={selectedEmployeeId}
           setUpdate={setUpdate}
-          editServico
+          editService
         />
       )}
-      {showModal.editStatusAgendamento && (
-        <EditStatusAgendamentoModal
-          title="Editar status de agendamento"
+      {showModal.editAppointmentStatus && (
+        <EditStatusAppointmentModal
+          title="Editar status de appointment"
           subTitle="Preencha as informações abaixo para editar o status."
           handleClose={handleClose}
-          handleShow={() => setShowModal({ ...showModal, editServico: true })}
+          handleShow={() => setShowModal({ ...showModal, editService: true })}
           size="pequeno"
-          rowId={selectedFuncionarioId}
+          rowId={selectedEmployeeId}
           setUpdate={setUpdate}
         />
       )}

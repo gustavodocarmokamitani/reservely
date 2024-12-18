@@ -1,16 +1,15 @@
 import React from 'react';
-import * as S from "./CardStore.styles";
-
-import remove from '../assets/remove.svg';
-import confirm from '../assets/confirmCardStore.svg';
 import { Col, Row } from 'react-bootstrap';
-import calendar from '../assets/calendar.svg';
-import { Store } from '../models/Store';
+import * as S from "./styles/Card.styles";
+import remove from '../../assets/removeRed.svg';
+import confirm from '../../assets/confirmCardStore.svg';
+import calendar from '../../assets/calendar.svg';
 
-interface CardStoreProps {
+interface ClosingDateCardProps {
     title?: string;
     text?: string;
     icon?: "remove" | "confirm" | 'calendar';
+    onRemove?: () => void;
 }
 
 const iconMap = {
@@ -19,7 +18,7 @@ const iconMap = {
     calendar
 };
 
-const CardStore: React.FC<CardStoreProps> = ({ title, text, icon }) => {
+const ClosingDateCard: React.FC<ClosingDateCardProps> = ({ title, text, icon, onRemove }) => {
     return (
         <S.CardStoreContainer>
             <S.CardStoreContent>
@@ -33,6 +32,8 @@ const CardStore: React.FC<CardStoreProps> = ({ title, text, icon }) => {
                             <img
                                 src={iconMap[icon]}
                                 alt={icon}
+                                onClick={icon === "remove" ? onRemove : undefined}
+                                style={{cursor: "pointer"}}
                             />
                         </Col>
                     </Row>
@@ -42,4 +43,4 @@ const CardStore: React.FC<CardStoreProps> = ({ title, text, icon }) => {
     );
 }
 
-export default CardStore;
+export default ClosingDateCard;

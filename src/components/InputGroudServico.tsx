@@ -1,64 +1,56 @@
 import React, { useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
 import Input from "./Input";
-import { Servico } from "../models/Servico";
+import { Service } from "../models/Service";
 
-interface InputGroudServicoProps {
-  title: string;
-  subTitle: string;
-  handleShow: () => void;
-  handleClose: () => void;
-  editServico?: boolean;
-  formValuesServico: {
+interface InputGroupServiceProps {
+  editService?: boolean;
+  formValuesService: {
     id: number;
-    nome: string;
-    descricao: string;
-    valor: string;
-    ativo: string;
-    duracaoMinutos: string;
+    name: string;
+    description: string;
+    value: string;
+    active: string;
+    durationMinute: string;
   };
-  data?: Servico | Servico[];
-  setFormValuesServico: React.Dispatch<React.SetStateAction<{
+  data?: Service | Service[];
+  setFormValuesService: React.Dispatch<React.SetStateAction<{
     id: number;
-    nome: string;
-    descricao: string;
-    valor: string;
-    ativo: string;
-    duracaoMinutos: string;
-    lojaId: number;
+    name: string;
+    description: string;
+    value: string;
+    active: string;
+    durationMinute: string;
+    storeId: number;
 }>>;
   handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const InputGroudServico: React.FC<InputGroudServicoProps> = ({
-  title,
-  subTitle,
-  handleClose,
-  handleShow,
+const InputGroupService: React.FC<InputGroupServiceProps> = ({
   handleInputChange,
-  formValuesServico,
+  formValuesService,
   data,
-  editServico = false,
-  setFormValuesServico,
+  editService = false,
+  setFormValuesService,
 }) => {
   const [isInitialized, setIsInitialized] = React.useState(false);
 
   useEffect(() => {
-    if (!isInitialized && editServico && Array.isArray(data) && data.length > 0) {
+    if (!isInitialized && editService && Array.isArray(data) && data.length > 0) {
       const item = data[0];
       const newState = {
         id: item.id,
-        nome: item.nome,
-        descricao: item.descricao,
-        valor: String(item.valor),
-        ativo: item.ativo ? "true" : "false",
-        duracaoMinutos: String(item.duracaoMinutos),
-        lojaId: 1
+        name: item.name,
+        description: item.description,
+        value: String(item.value),
+        active: item.active ? "true" : "false",
+        durationMinute: String(item.durationMinute),
+        storeId: 1
       };
-      setFormValuesServico(newState);
+      setFormValuesService(newState);
       setIsInitialized(true); 
     }
-  }, [data, editServico, isInitialized, setFormValuesServico]);
+  }, [data, editService, isInitialized, setFormValuesService]);
 
   return (
     <>
@@ -71,8 +63,8 @@ const InputGroudServico: React.FC<InputGroudServicoProps> = ({
             width="300"
             type="text"
             placeholder="Nome"
-            name="nome"
-            value={formValuesServico.nome}
+            name="name"
+            value={formValuesService.name}
             onChange={(e) => handleInputChange(e as React.ChangeEvent<HTMLInputElement>)}
           />
         </Col>
@@ -84,8 +76,8 @@ const InputGroudServico: React.FC<InputGroudServicoProps> = ({
             width="300"
             type="text"
             placeholder="Valor"
-            name="valor"
-            value={formValuesServico.valor}
+            name="value"
+            value={formValuesService.value}
             onChange={(e) => handleInputChange(e as React.ChangeEvent<HTMLInputElement>)}
           />
         </Col>
@@ -99,8 +91,8 @@ const InputGroudServico: React.FC<InputGroudServicoProps> = ({
             width="300"
             type="text"
             placeholder="Duração"
-            name="duracaoMinutos"
-            value={formValuesServico.duracaoMinutos}
+            name="durationMinute"
+            value={formValuesService.durationMinute}
             onChange={(e) => handleInputChange(e as React.ChangeEvent<HTMLInputElement>)}
           />
         </Col>
@@ -111,8 +103,8 @@ const InputGroudServico: React.FC<InputGroudServicoProps> = ({
           <Input
             width="300"
             type="toggle"
-            name="ativo"
-            value={formValuesServico.ativo}
+            name="active"
+            value={formValuesService.active}
             onChange={(e) => handleInputChange(e as React.ChangeEvent<HTMLInputElement>)}
           />
         </Col>
@@ -126,8 +118,8 @@ const InputGroudServico: React.FC<InputGroudServicoProps> = ({
             width="600"
             type="text"
             placeholder="Descrição"
-            name="descricao"
-            value={formValuesServico.descricao}
+            name="description"
+            value={formValuesService.description}
             onChange={(e) => handleInputChange(e as React.ChangeEvent<HTMLInputElement>)}
           />
         </Col>
@@ -136,4 +128,4 @@ const InputGroudServico: React.FC<InputGroudServicoProps> = ({
   );
 };
 
-export default InputGroudServico;
+export default InputGroupService;

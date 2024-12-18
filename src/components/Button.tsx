@@ -6,48 +6,48 @@ import fecharIcon from '../assets/fechar.svg';
 import * as S from "./Button.styles";
 
 interface ButtonProps {
-  $isAdicionar?: boolean;
-  $isRemover?: boolean;
-  $isFechar?: boolean;
-  $isConfirmar?: boolean;
-  $isConfigurar?: boolean;
-  $isVoltar?: boolean;
+  $isAdd?: boolean;
+  $isRemove?: boolean;
+  $isClosed?: boolean;
+  $isConfirm?: boolean;
+  $isConfigure?: boolean;
+  $isBack?: boolean;
   $isLogin?: boolean;
-  $isRegistrar?: boolean;
+  $isRegister?: boolean;
   type: "button" | "submit" | "reset";
   onClick?: () => void;
 }
 
-const Button: React.FC<ButtonProps> = ({ $isAdicionar, $isRemover, $isFechar, $isConfirmar, $isConfigurar, $isVoltar, $isLogin, $isRegistrar, type, onClick }) => {
+const Button: React.FC<ButtonProps> = ({ $isAdd, $isRemove, $isClosed, $isConfirm, $isConfigure, $isBack, $isLogin, $isRegister, type, onClick }) => {
   let icon = null;
   let buttonText = "";
 
-  if ($isAdicionar) {
+  if ($isAdd) {
     icon = <img src={addIcon} alt="Add Icon" style={{ marginRight: "8px", verticalAlign: "middle" }} width={25} />;
     buttonText = "Adicionar";
-  } else if ($isRemover) {
+  } else if ($isRemove) {
     icon = <img src={removeIcon} alt="Remove Icon" style={{ marginRight: "8px" }} />;
     buttonText = "Remover";
-  } else if ($isFechar) {
+  } else if ($isClosed) {
     icon = <img src={fecharIcon} alt="Close Icon" style={{ marginRight: "8px" }} />;
     buttonText = "Fechar";
-  } else if ($isConfirmar) {
+  } else if ($isConfirm) {
     icon = <img src={confirmarIcon} alt="Confirm Icon" style={{ marginRight: "8px" }} />;
     buttonText = "Confirmar";
-  } else if ($isConfigurar) {
+  } else if ($isConfigure) {
     icon = <img src={confirmarIcon} alt="Confirm Icon" style={{ marginRight: "8px" }} />;
     buttonText = "Configuração";
-  } else if ($isVoltar) {
+  } else if ($isBack) {
     icon = <img src={removeIcon} alt="Confirm Icon" style={{ marginRight: "8px" }} />;
     buttonText = "Voltar";
   } else if ($isLogin) {
     buttonText = "Login";
-  } else if ($isRegistrar) {
+  } else if ($isRegister) {
     buttonText = "Registrar";
   }
 
   return (
-    <S.Button type={type} $isRegistrar={$isRegistrar} $isLogin={$isLogin} $isVoltar={$isVoltar} $isAdicionar={$isAdicionar} $isConfigurar={$isConfigurar}  $isRemover={$isRemover} $isFechar={$isFechar} $isConfirmar={$isConfirmar} style={{ margin: "0 1rem" }} onClick={onClick}>
+    <S.Button type={type} $isRegister={$isRegister} $isLogin={$isLogin} $isBack={$isBack} $isAdd={$isAdd} $isConfigure={$isConfigure}  $isRemove={$isRemove} $isClosed={$isClosed} $isConfirm={$isConfirm} style={{ margin: "0 1rem" }} onClick={onClick}>
       <div className="d-flex align-items-center justify-content-center">
         {icon}
         {buttonText}

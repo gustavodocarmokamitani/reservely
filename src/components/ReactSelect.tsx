@@ -4,22 +4,22 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import * as S from "./ReactSelect.styles";
 import { Col, Row } from "react-bootstrap";
-import { getTipoUsuarioIdById } from "../services/UsuarioServices";
-import { getTipoServico } from "../services/TipoServicoServices";
+import { getUserTypeIdById } from "../services/UserServices";
+import { getServiceTypes } from "../services/ServiceTypeServices";
 import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
-import { Agendamento } from "../models/Agendamento";
+import { Appointment } from "../models/Appointment";
 
 interface ReactSelectProps {
   width: string;
   semana?: boolean;
-  horario?: boolean;
-  diasFechados?: boolean;
+  time?: boolean;
+  closedDays?: boolean;
   pagamento?: boolean;
-  funcionario?: boolean;
-  cliente?: boolean;
-  dataAgendamento?: boolean;
-  servico?: boolean;
+  employee?: boolean;
+  client?: boolean;
+  appointmentDate?: boolean;
+  service?: boolean;
 }
 
 const customStyles = {
@@ -71,25 +71,24 @@ const customStyles = {
 const ReactSelect: React.FC<ReactSelectProps> = ({
   width,
   semana,
-  horario,
-  diasFechados,
+  time,
+  closedDays,
   pagamento,
-  funcionario,
-  dataAgendamento,
-  cliente,
-  servico
+  employee,
+  appointmentDate,
+  client,
+  service
 }) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [optionsData, setOptionsData] = useState([]);
-  const [selectedFuncionario, setSelectedFuncionario] = useState<{ value: string; label: string } | null>(null);
-  const [selectedCliente, setSelectedCliente] = useState<{ value: string; label: string } | null>(null);
-  const [selectedServicos, setSelectedServicos] = useState<{ value: string; label: string }[]>([]);
-  const [selectedDataAgendamento, setSelectedDataAgendamento] = useState<Date | null>(null);
-  const [selectedHorario, setSelectedHorario] = useState<string | null>(null);
+  const [selectedEmployee, setSelectedEmployee] = useState<{ value: string; label: string } | null>(null);
+  const [selectedClient, setSelectedClient] = useState<{ value: string; label: string } | null>(null);
+  const [selectedServices, setSelectedServices] = useState<{ value: string; label: string }[]>([]);
+  const [selectedTime, setSelectedTime] = useState<string | null>(null);
 
-  const { setAgendamentoUpdateContext } = useContext(AppContext)!;
+  const { setAppointmentUpdateContext } = useContext(AppContext)!;
 
-  const horarios = [
+  const times = [
     "09:00",
     "09:30",
     "10:00",
@@ -111,24 +110,24 @@ const ReactSelect: React.FC<ReactSelectProps> = ({
     "18:00",
   ];
 
-  const handleSelectChangeHorario = (selected: any) => {
-    setSelectedHorario(selected?.value);
+  const handleSelectChangeTime = (selected: any) => {
+    setSelectedTime(selected?.value);
   };
 
-  const handleSelectChangeFuncionario = (selected: any) => {
-    setSelectedFuncionario(selected);
+  const handleSelectChangeEmployee = (selected: any) => {
+    setSelectedEmployee(selected);
   };
 
-  const handleSelectChangeCliente = (selected: any) => {
-    setSelectedCliente(selected);
+  const handleSelectChangeClient = (selected: any) => {
+    setSelectedClient(selected);
   };
 
-  const handleSelectChangeServico = (selected: any) => {
-    const updatedServicos = selected ? selected.map((item: any) => item.value) : [];
-    setSelectedServicos(updatedServicos);
+  const handleSelectChangeService = (selected: any) => {
+    const updatedServices = selected ? selected.map((item: any) => item.value) : [];
+    setSelectedServices(updatedServices);
   };
 
-  const handleSelectChangeDataAgendamento = (date: Date | null) => {
+  const handleSelectChangeAppointmentDate = (date: Date | null) => {
     setSelectedDate(date);
   };
 
@@ -137,23 +136,23 @@ const ReactSelect: React.FC<ReactSelectProps> = ({
       try {
         let optionsFetched = [];
   
-        if (funcionario) {
-          const response = await getTipoUsuarioIdById(2);
+        if (employee) {
+          const response = await getUserTypeIdById(2);
           optionsFetched = response.map((item: any) => ({
             value: item.id,
-            label: item.nome,
+            label: item.name,
           }));
-        } else if (cliente) {
-          const response = await getTipoUsuarioIdById(3);
+        } else if (client) {
+          const response = await getUserTypeIdById(3);
           optionsFetched = response.map((item: any) => ({
             value: item.id,
-            label: item.nome,
+            label: item.name,
           }));
-        } else if (servico) {
-          const response = await getTipoServico();
+        } else if (service) {
+          const response = await getServiceTypes();
           optionsFetched = response.data.map((item: any) => ({
             value: item.id,
-            label: item.nome,
+            label: item.name,
           }));
         }
   
@@ -164,40 +163,40 @@ const ReactSelect: React.FC<ReactSelectProps> = ({
     };
   
     fetchOptions();
-  }, [funcionario, cliente, servico]);
+  }, [employee, client, service]);
   
 
   useEffect(() => {
-    if (selectedDate && selectedHorario && selectedCliente && selectedFuncionario) {
+    if (selectedDate && selectedTime && selectedClient && selectedEmployee) {
       console.log(2);
-      const dataAgendamento = new Date(selectedDate);
-      const [horarioHoras, horarioMinutos] = selectedHorario.split(":");
-      dataAgendamento.setHours(parseInt(horarioHoras), parseInt(horarioMinutos));
+      const appointmentDate = new Date(selectedDate);
+      const [timeHours, timeMinute] = selectedTime.split(":");
+      appointmentDate.setHours(parseInt(timeHours), parseInt(timeMinute));
   
-      const agendamento: Agendamento = {
+      const appointment: Appointment = {
         id: 0,
-        clienteId: parseInt(selectedCliente.value),
-        funcionarioId: parseInt(selectedFuncionario.value),
-        dataAgendamento: dataAgendamento,
-        statusAgendamentoId: 1,
-        servicosId: [],
-        lojaId: 1
+        clientId: parseInt(selectedClient.value),
+        employeeId: parseInt(selectedEmployee.value),
+        appointmentDate: appointmentDate,
+        appointmentStatusId: 1,
+        servicesId: [],
+        storeId: 1
       };
   
-      setAgendamentoUpdateContext(agendamento);
-      console.log("Agendamento Context Atualizado:", agendamento);
+      setAppointmentUpdateContext(appointment);
+      console.log("Appointment Context Atualizado:", appointment);
     }
-  }, [selectedDate, selectedHorario, selectedCliente, selectedFuncionario]);
+  }, [selectedDate, selectedTime, selectedClient, selectedEmployee]);
   
   return (
     <div style={{ width: `${width}` }}>
-      {diasFechados ? (
+      {closedDays ? (
         <Row>
           <Col>
             <S.StyledDatePicker style={{ width: "35rem" }}>
               <DatePicker
                 selected={null}
-                onChange={(date) => handleSelectChangeDataAgendamento(date)}
+                onChange={(date) => handleSelectChangeAppointmentDate(date)}
                 dateFormat="dd/MM/yyyy"
                 placeholderText="Selecione uma data..."
                 className="custom-datepicker"
@@ -214,50 +213,50 @@ const ReactSelect: React.FC<ReactSelectProps> = ({
             </S.StyledDatePicker>
           </Col>
         </Row>
-      ) : dataAgendamento ? (
+      ) : appointmentDate ? (
         <S.StyledDatePicker style={{ width: "25rem" }}>
           <DatePicker
             selected={selectedDate}
-            onChange={(date) => handleSelectChangeDataAgendamento(date)}
+            onChange={(date) => handleSelectChangeAppointmentDate(date)}
             dateFormat="dd/MM/yyyy"
-            placeholderText="Selecione a data de agendamento..."
+            placeholderText="Selecione a data de appointment..."
             minDate={new Date()}
             className="custom-datepicker"
             inline
           />
         </S.StyledDatePicker>
       ) : (
-        funcionario ? (
+        employee ? (
           <Select
             options={optionsData}
-            onChange={handleSelectChangeFuncionario}
+            onChange={handleSelectChangeEmployee}
             placeholder="Selecione um funcionário"
             styles={customStyles}
           />
-        ) : cliente ? (
+        ) : client ? (
           <Select
             options={optionsData}
-            onChange={handleSelectChangeCliente}
-            placeholder="Selecione um cliente"
+            onChange={handleSelectChangeClient}
+            placeholder="Selecione um client"
             styles={customStyles}
           />
         ) : (
-          servico ? (
+          service ? (
             <Select
               options={optionsData}
               isMulti
               placeholder="Selecione um serviço"
-              onChange={handleSelectChangeServico}
+              onChange={handleSelectChangeService}
               styles={customStyles}
             />
           ) : (
-            horario && (
+            time && (
               <Select
-                options={horarios.map((horario) => ({
-                  value: horario,
-                  label: horario,
+                options={times.map((time) => ({
+                  value: time,
+                  label: time,
                 }))}
-                onChange={handleSelectChangeHorario}
+                onChange={handleSelectChangeTime}
                 placeholder="Selecione um horário"
                 styles={customStyles}
               />

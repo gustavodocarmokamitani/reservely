@@ -1,8 +1,6 @@
 import styled from "styled-components";
 
-
 export const CardStoreContainer = styled.div`
-    min-width: 220px;
     height: 125px;
     padding: 25px;
     border: 1px solid rgba(0, 0, 0, 0.25);

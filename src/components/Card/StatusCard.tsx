@@ -1,16 +1,17 @@
-import React from 'react';
-import * as S from "./CardStore.styles";
+import React, { useEffect } from 'react';
+import * as S from "./styles/Card.styles";
 
-import remove from '../assets/remove.svg';
-import confirm from '../assets/confirmCardStore.svg';
+import remove from '../../assets/remove.svg';
+import confirm from '../../assets/confirmCardStore.svg';
 import { Col, Row } from 'react-bootstrap';
-import calendar from '../assets/calendar.svg';
-import { Store } from '../models/Store';
+import calendar from '../../assets/calendar.svg';
+import { Store } from '../../models/Store';
 
-interface CardStoreProps {
+interface CardStatusProps {
     title?: string;
-    text?: string;
     icon?: "remove" | "confirm" | 'calendar';
+    data: Store | undefined;
+    statusStore?: boolean;
 }
 
 const iconMap = {
@@ -19,7 +20,7 @@ const iconMap = {
     calendar
 };
 
-const CardStore: React.FC<CardStoreProps> = ({ title, text, icon }) => {
+const CardStatus: React.FC<CardStatusProps> = ({ title, icon, data, statusStore = data?.status }) => {   
     return (
         <S.CardStoreContainer>
             <S.CardStoreContent>
@@ -27,7 +28,9 @@ const CardStore: React.FC<CardStoreProps> = ({ title, text, icon }) => {
                 {icon && iconMap[icon] && (
                     <Row>
                         <Col md={8}>
-                            <p style={{ textAlign: 'center' }}>{text}</p>
+                            {
+                                <p style={{ textAlign: 'center' }}>{statusStore ? "Active" : "Closed"}</p>
+                            }
                         </Col>
                         <Col md={4}>
                             <img
@@ -42,4 +45,4 @@ const CardStore: React.FC<CardStoreProps> = ({ title, text, icon }) => {
     );
 }
 
-export default CardStore;
+export default CardStatus;

@@ -1,14 +1,14 @@
 import styled from "styled-components";
 
 interface ButtonProps {
-  $isAdicionar?: boolean;
-  $isRemover?: boolean;
-  $isFechar?: boolean;
-  $isConfirmar?: boolean;
-  $isConfigurar?: boolean;
-  $isVoltar?: boolean;
+  $isAdd?: boolean;
+  $isRemove?: boolean;
+  $isClosed?: boolean;
+  $isConfirm?: boolean;
+  $isConfigure?: boolean;
+  $isBack?: boolean;
   $isLogin?: boolean;
-  $isRegistrar?: boolean;
+  $isRegister?: boolean;
 }
 
 export const Button = styled.button<ButtonProps>`
@@ -18,17 +18,17 @@ export const Button = styled.button<ButtonProps>`
   border-radius: 50px;
   box-shadow: 4px 4px 15px 0px rgba(0, 0, 0, 0.50);
   background-color: ${(props) => {
-    if (props.$isAdicionar) return "#2B2B2B";
-    if (props.$isRemover) return "#CDCDCD";
-    if (props.$isFechar) return "#FF3535";
-    if (props.$isConfirmar) return "#1A8439";
-    if (props.$isConfigurar) return "#346eba";
-    if (props.$isVoltar) return "#fff";
+    if (props.$isAdd) return "#2B2B2B";
+    if (props.$isRemove) return "#CDCDCD";
+    if (props.$isClosed) return "#FF3535";
+    if (props.$isConfirm) return "#1A8439";
+    if (props.$isConfigure) return "#346eba";
+    if (props.$isBack) return "#fff";
     if (props.$isLogin) return "#2A2A2A";
-    if (props.$isRegistrar) return "#fff";
+    if (props.$isRegister) return "#fff";
     return "#FF060B"; 
   }};
-  color: ${(props) => (props.$isRemover || props.$isVoltar || props.$isRegistrar ? "black" : "white")};
-  border: 1px solid ${(props) => (props.$isVoltar ? "black" : "none")};
+  color: ${(props) => (props.$isRemove || props.$isBack || props.$isRegister ? "black" : "white")};
+  border: 1px solid ${(props) => (props.$isBack ? "black" : "none")};
 `;
 

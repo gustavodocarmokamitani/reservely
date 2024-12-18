@@ -1,84 +1,78 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as S from "./Selected.styles";
-import api from "../axiosInstance";
-import { Funcionario } from '../models/Funcionario';
-import { Servico } from '../models/Servico';
-import { getTipoServicoById, getTipoServico } from '../services/TipoServicoServices';
-import { getFuncionarioIdByUsuarioId } from "../services/FuncionarioServices";
-import { getServicos } from "../services/ServicoServices";
+import { getServiceTypeById, getServiceTypes } from '../services/ServiceTypeServices';
+import { getEmployeeIdByUserId } from "../services/EmployeeServices";
+import { getServices } from "../services/ServiceServices";
 
 interface ServiceProps {
   id: number;
-  nome: string;
-  descricao?: string;
-  valor?: string;
-  duracaoMinutos?: number;
+  name: string;
+  description?: string;
+  value?: string;
+  durationMinutes?: number;
 }
 
 interface SelectedProps {
   onChange?: (selectedServices: number[]) => void;
-  profissionalServices?: number[];
+  professionalServices?: number[];
   options?: {
     id: number;
-    usuarioId: number;
-    nome: string;
-    sobrenome: string;
+    userId: number;
+    name: string;
+    lastname: string;
     email: string;
-    telefone: string;
-    ativo: string;
-    servicosId: number[];
+    phone: string;
+    active: string;
+    servicesId: number[];
   }[];
-  usuarioId?: number;
+  userId?: number;
   infoProf?: boolean;
   addProf?: boolean;
   edit?: boolean;
-  infoAgendamentoServico?: boolean;
+  infoAppointmentService?: boolean;
 }
 
 const Selected: React.FC<SelectedProps> = ({
   onChange,
-  profissionalServices = [],
+  professionalServices = [],
   options,
-  usuarioId,
+  userId,
   infoProf = false,
   addProf = false,
   edit = false,
-  infoAgendamentoServico = false
+  infoAppointmentService = false
 }) => {
-  const [selectedServices, setSelectedServices] = useState<number[]>(profissionalServices);
+  const [selectedServices, setSelectedServices] = useState<number[]>(professionalServices);
   const [services, setServices] = useState<ServiceProps[]>([]);
   const [dataOptions, setDataOptions] = useState<number[]>([]);
 
-  // Atualiza dataOptions somente quando options mudar
   useEffect(() => {
     if (edit && options) {
-      setDataOptions(options[0]?.servicosId || []);
+      setDataOptions(options[0]?.servicesId || []);
     }
   }, [edit, options]);
 
   useEffect(() => {
-    const fetchFuncionario = async () => {
+    const fetchEmployee = async () => {
       try {
         let fetchedServices: ServiceProps[] = [];
         let initialSelected: number[] = [];
 
         if (edit) {
-          // Buscar todos os serviços
-          const allServices = await getTipoServico();
+          const allServices = await getServiceTypes();
 
           fetchedServices = [...fetchedServices, ...allServices.data];
 
-          // Obter IDs dos serviços já associados no `options`
           const existingServiceIds = dataOptions;
           initialSelected = existingServiceIds;
         } else if (infoProf) {
-          const userId = usuarioId;
+          const userId = userId;
 
           if (userId) {
-            const data = await getFuncionarioIdByUsuarioId(userId);
-            if (data?.servicosId?.length) {
-              const serviceRequests = data.servicosId.map((serviceId: number) =>
-                getTipoServicoById(serviceId)
+            const data = await getEmployeeIdByUserId(userId);
+            if (data?.servicesId?.length) {
+              const serviceRequests = data.servicesId.map((serviceId: number) =>
+                getServiceTypeById(serviceId)
               );
               const serviceResponses = await Promise.all(serviceRequests);
               fetchedServices = serviceResponses.map((response) => {
@@ -87,43 +81,39 @@ const Selected: React.FC<SelectedProps> = ({
               });
             }
           }
-        } else if (infoAgendamentoServico) {
-          const userIdArray = usuarioId;
+        } else if (infoAppointmentService) {
+          const userIdArray = userId;
           if (userIdArray && Array.isArray(userIdArray)) {
             try {
-              // Realizar múltiplos GETs em paralelo para cada `id`
-              const serviceRequests = userIdArray.map((id) => getTipoServicoById(id));
+              const serviceRequests = userIdArray.map((id) => getServiceTypeById(id));
 
-              // Esperar todas as requisições serem concluídas
               const serviceResponses = await Promise.all(serviceRequests);
 
-              // Atualizar `fetchedServices` com os dados retornados
               fetchedServices = serviceResponses.map((response) => response?.data);
 
-              console.log("Serviços retornados:", fetchedServices);
             } catch (error) {
-              console.error("Erro ao buscar serviços:", error);
+              console.error("Error fetching services:", error);
             }
           }
         }
 
         if (addProf) {
-          const dataServico = await getServicos(); // Obtém todos os serviços
-          if (dataServico) {
-            const servicosFiltrados = dataServico.filter((servico: any) => servico.lojaId === 1);
+          const serviceData = await getServices(); 
+          if (serviceData) {
+            const filteredData = serviceData.filter((servico: any) => servico.lojaId === 1);
         
-            const tipoServicoPromises = servicosFiltrados.map(async (servico: any) => {
+            const serviceTypePromises = filteredData.map(async (servico: any) => {
               try {
-                const dataTipoServico = await getTipoServicoById(servico.tipoServicoId);
-                return dataTipoServico?.data || []; // Retorna os dados ou array vazio
+                const serviceTypeData = await getServiceTypeById(servico.serviceTypeId);
+                return serviceTypeData?.data || []; 
               } catch (error) {
-                console.error(`Erro ao buscar TipoServico para o id ${servico.tipoServicoId}:`, error);
+                console.error(`Error when searching for the type of service for the id ${servico.serviceTypeId}:`, error);
                 return [];
               }
             });
         
-            const tiposServicoData = await Promise.all(tipoServicoPromises);
-            fetchedServices = [...fetchedServices, ...tiposServicoData.flat()];
+            const serviceTypeData = await Promise.all(serviceTypePromises);
+            fetchedServices = [...fetchedServices, ...serviceTypeData.flat()];
           }
         }
         
@@ -132,19 +122,18 @@ const Selected: React.FC<SelectedProps> = ({
         );
         setServices(uniqueServices);
         
-        // Definir os serviços já selecionados somente na inicialização
         if (edit || infoProf) {
           setSelectedServices(initialSelected);
         }
       } catch (error) {
-        console.error("Erro ao buscar informações do funcionário e serviços:", error);
+        console.error("Error when searching for employee and service information:", error);
       }
     };
     
-    if (infoProf || addProf || edit || infoAgendamentoServico) {
-      fetchFuncionario();
+    if (infoProf || addProf || edit || infoAppointmentService) {
+      fetchEmployee();
     }
-  }, [infoProf, addProf, edit, usuarioId, infoAgendamentoServico, dataOptions]);
+  }, [infoProf, addProf, edit, userId, infoAppointmentService, dataOptions]);
 
   const toggleService = (id: number) => {
     setSelectedServices((prev) => {
@@ -152,11 +141,9 @@ const Selected: React.FC<SelectedProps> = ({
         ? prev.filter((serviceId) => serviceId !== id)
         : [...prev, id];
 
-      // Notifica o pai sobre a mudança
       if (onChange) {
         onChange(newSelectedServices);
       }
-
       return newSelectedServices;
     });
   };
@@ -172,7 +159,7 @@ const Selected: React.FC<SelectedProps> = ({
               background: selectedServices.includes(service.id) ? "#B6B6B6" : "white",
             }}
           >
-            <p>{service.nome}</p>
+            <p>{service.name}</p>
           </S.SelectedContent>
         ))
       ) : (

@@ -7,9 +7,9 @@ import HeaderTitle from '../view/HeaderTitle';
 const Dashboard = () => {
 
   const [formValues, setFormValues] = useState({
-    nome: '',
-    valor: '',
-    duracao: ''
+    name: '',
+    value: '',
+    duration: ''
   });
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,7 +22,6 @@ const Dashboard = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
-    console.log('Dados do formulário:', formValues);
   };
 
   return (
@@ -34,8 +33,8 @@ const Dashboard = () => {
           width="300"
           type="text"
           placeholder="Nome"
-          name="nome"
-          value={formValues.nome}
+          name="name"
+          value={formValues.name}
           onChange={handleInputChange}
         />
         
@@ -43,8 +42,8 @@ const Dashboard = () => {
           width="300"
           type="number"
           placeholder="Valor"
-          name="valor"
-          value={formValues.valor}
+          name="value"
+          value={formValues.value}
           onChange={handleInputChange}
         />
         
@@ -52,8 +51,8 @@ const Dashboard = () => {
           width="300"
           type="number"
           placeholder="Duração"
-          name="duracao"
-          value={formValues.duracao}
+          name="duration"
+          value={formValues.duration}
           onChange={handleInputChange}
         />
         

@@ -1,16 +1,14 @@
 import React from 'react';
-import * as S from "./CardStore.styles";
-
-import remove from '../assets/remove.svg';
-import confirm from '../assets/confirmCardStore.svg';
 import { Col, Row } from 'react-bootstrap';
-import calendar from '../assets/calendar.svg';
-import { Store } from '../models/Store';
+import * as S from "./styles/Card.styles";
+import calendar from '../../assets/calendar.svg';
+import remove from '../../assets/remove.svg';
+import confirm from '../../assets/confirmCardStore.svg';
 
-interface CardStoreProps {
+interface CardTimeProps {
     title?: string;
-    text?: string;
     icon?: "remove" | "confirm" | 'calendar';
+    selectedTimes?: string[];
 }
 
 const iconMap = {
@@ -19,7 +17,7 @@ const iconMap = {
     calendar
 };
 
-const CardStore: React.FC<CardStoreProps> = ({ title, text, icon }) => {
+const CardTime: React.FC<CardTimeProps> = ({ title, icon, selectedTimes }) => {
     return (
         <S.CardStoreContainer>
             <S.CardStoreContent>
@@ -27,7 +25,12 @@ const CardStore: React.FC<CardStoreProps> = ({ title, text, icon }) => {
                 {icon && iconMap[icon] && (
                     <Row>
                         <Col md={8}>
-                            <p style={{ textAlign: 'center' }}>{text}</p>
+                            {
+                                title === 'Hora de abertura' ?
+                                    <p style={{ textAlign: 'center' }}>{selectedTimes ? selectedTimes[0] : null}</p>
+                                    :
+                                    <p style={{ textAlign: 'center' }}>{selectedTimes ? selectedTimes[1] : null}</p>
+                            }
                         </Col>
                         <Col md={4}>
                             <img
@@ -42,4 +45,4 @@ const CardStore: React.FC<CardStoreProps> = ({ title, text, icon }) => {
     );
 }
 
-export default CardStore;
+export default CardTime;

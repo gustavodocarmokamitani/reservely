@@ -1,6 +1,7 @@
 import { Col, Row } from "react-bootstrap";
-
-import OptionNavigation from "../components/Menu";
+import { Link, useLocation } from "react-router-dom";
+import * as S from "./Sidebar.styles";
+import OptionNavigation from "../components/OptionNavigation";
 import home from "../assets/home.svg";
 import imagem from "../assets/imagem.svg";
 import loja from "../assets/loja.svg";
@@ -10,8 +11,6 @@ import servico from "../assets/servico.svg";
 import logo from "../assets/logo.png";
 import chamada from "../assets/chamada.svg";
 import sair from "../assets/sair.svg";
-import { Link, useLocation } from "react-router-dom";
-import * as S from "./Sidebar.styles";
 
 const Navigation = () => {
   const location = useLocation();
@@ -33,14 +32,14 @@ const Navigation = () => {
 
       <div className="flex-grow-1">
         {[
-          { path: "/agendamento", icon: chamada, text: "Agendamento" },
-          { path: "/agendamento-historico", icon: chamada, text: "Histórico Agendamento" },
+          { path: "/appointment", icon: chamada, text: "Agendamento" },
+          { path: "/appointment-history", icon: chamada, text: "Histórico Agendamento" },
           { path: "/dashboard", icon: home, text: "Dashboard" },
-          { path: "/servico", icon: servico, text: "Serviços" },
-          { path: "/profissional", icon: profissional, text: "Profissionais" },
-          { path: "/imagem", icon: imagem, text: "Imagens" },
-          { path: "/loja", icon: loja, text: "Loja" },
-          { path: "/pagamento", icon: pagamento, text: "Formas de Pagamentos" },
+          { path: "/servic", icon: servico, text: "Serviços" },
+          { path: "/professional", icon: profissional, text: "Profissionais" },
+          { path: "/image", icon: imagem, text: "Imagens" },
+          { path: "/store", icon: loja, text: "Loja" },
+          { path: "/payment", icon: pagamento, text: "Formas de Pagamentos" },
           { path: "/chamada", icon: chamada, text: "Chamadas e ajudas" },
         ].map(({ path, icon, text }) => (
           <S.MenuContainer key={path}>
