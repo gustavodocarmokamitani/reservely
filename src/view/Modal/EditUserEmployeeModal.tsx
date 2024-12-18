@@ -121,7 +121,7 @@ const EditUserEmployeeModal: React.FC<EditUserEmployeeModal> = ({
     if (edit) {
       const updatedUserFunc = {
         id: formValuesProfissional.id,
-        idEmployee: 0,
+        employeeId: 0,
         userId: 0,
         userTypeId: 0,
         name: formValuesProfissional.name,
@@ -187,8 +187,8 @@ const EditUserEmployeeModal: React.FC<EditUserEmployeeModal> = ({
         </Row>
         {edit && (
           <InputGroudProfissional
-            setFormValuesProfissional={setFormValuesProfissional}
-            formValuesProfissional={formValuesProfissional}
+            setFormValuesProfessional={setFormValuesProfissional}
+            formValuesProfessional={formValuesProfissional}
             handleInputChange={handleInputChangeProfissional}
             handleServiceSelection={handleServiceSelection}
             data={combinedData ? [combinedData] : undefined}

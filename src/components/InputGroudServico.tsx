@@ -11,7 +11,7 @@ interface InputGroupServiceProps {
     description: string;
     value: string;
     active: string;
-    durationMinute: string;
+    durationMinutes: string;
   };
   data?: Service | Service[];
   setFormValuesService: React.Dispatch<React.SetStateAction<{
@@ -20,7 +20,7 @@ interface InputGroupServiceProps {
     description: string;
     value: string;
     active: string;
-    durationMinute: string;
+    durationMinutes: string;
     storeId: number;
 }>>;
   handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -44,7 +44,7 @@ const InputGroupService: React.FC<InputGroupServiceProps> = ({
         description: item.description,
         value: String(item.value),
         active: item.active ? "true" : "false",
-        durationMinute: String(item.durationMinute),
+        durationMinutes: String(item.durationMinutes),
         storeId: 1
       };
       setFormValuesService(newState);
@@ -91,8 +91,8 @@ const InputGroupService: React.FC<InputGroupServiceProps> = ({
             width="300"
             type="text"
             placeholder="Duração"
-            name="durationMinute"
-            value={formValuesService.durationMinute}
+            name="durationMinutes"
+            value={formValuesService.durationMinutes}
             onChange={(e) => handleInputChange(e as React.ChangeEvent<HTMLInputElement>)}
           />
         </Col>

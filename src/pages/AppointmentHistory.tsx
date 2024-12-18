@@ -4,7 +4,7 @@ import HeaderTitle from "../view/HeaderTitle";
 import DataTable from "../view/DataTable";
 import { Col, Row } from "react-bootstrap";
 import Button from "../components/Button";
-import { deleteAppointment, getAppointment } from "../services/AppointmentServices";
+import { deleteAppointment, getAppointments } from "../services/AppointmentServices";
 import { Appointment } from "../models/Appointment";
 import { getEmployeeById } from "../services/EmployeeServices";
 import { getUserById } from "../services/UserServices";
@@ -22,7 +22,7 @@ function AppointmentHistory() {
 
     const fetchData = async () => {
         try {
-            const appointmentData = await getAppointment();
+            const appointmentData = await getAppointments();
 
             const mappedAppointment = await Promise.all(appointmentData.map(async (appointment: Appointment) => {
                 const employeeData = await getEmployeeById(appointment.employeeId);
@@ -37,7 +37,7 @@ function AppointmentHistory() {
                     employeeId: userData.name,
                     clientId: userClientData.namw,
                     appointmentDate: formattedDate,
-                    servicesId: appointment.serviceId,
+                    servicesId: appointment.servicesId,
                     appointmentStatus: appointmentStatusData.name,
                 };
             }));
@@ -57,7 +57,7 @@ function AppointmentHistory() {
         try {
             await Promise.all(selectedAppointmentIds.map(async (appointmentId) => {
                 try {
-                    const responseAppointment = await getAppointment(); 
+                    const responseAppointment = await getAppointments(); 
                     const appointment = responseAppointment.find((a: Appointment) => a.id === appointmentId);
                     
                     if (appointment) { 
@@ -92,12 +92,12 @@ function AppointmentHistory() {
                         md={5}
                         className="d-flex flex-row justify-content-end align-items-center"
                     >
-                        <Button onClick={handleDeleteAppointment} $isRemover type="button" />
+                        <Button onClick={handleDeleteAppointment} $isRemove type="button" />
                     </Col>
                 </Row>
                 <DataTable
                     appointment
-                    rowsAgendamento={rows}
+                    rowsAppointment={rows}
                     onRowSelect={handleRowSelect}
                     setUpdate={setUpdate}
                     update={update}

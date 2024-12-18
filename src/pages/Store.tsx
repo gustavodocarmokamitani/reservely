@@ -21,7 +21,7 @@ function Store() {
   const [closedDates, setClosedDates] = useState<Date[] | null>([]);
   const [storeStatus, setStoreStatus] = useState<boolean>();
 
-  const handleInputChangeLoja = (
+  const handleInputChangeStore = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const { name, type, checked, value } = event.target;
@@ -97,27 +97,27 @@ function Store() {
           md={5}
           className="d-flex flex-row justify-content-end align-items-center"
         >
-          <Button $isConfigurar onClick={handleButtonClick} type="button" />
+          <Button $isConfigure onClick={handleButtonClick} type="button" />
         </Col>
       </Row>
       <Row>
         <Col md={12}>
           <h3 style={{ margin: "20px 0 25px 0" }}>Dados da store</h3>
-          <S.CardLojaWrapper className="d-flex justify-content-start align-items-center">
+          <S.CardStoreWrapper className="d-flex justify-content-start align-items-center">
             <CardStatus data={store} title="Status" icon="confirm" />
             <CardHorario selectedTimes={selectedTimes} title="Hora de abertura" icon="calendar" />
             <CardHorario selectedTimes={selectedTimes} title="Hora de fechamento" icon="calendar" />
-          </S.CardLojaWrapper>
+          </S.CardStoreWrapper>
           <h3 style={{ margin: '20px 0 25px 0' }}>Dias de funcionamento</h3>
-          <S.CardLojaWrapper className="d-flex justify-content-start align-items-center flex-wrap">
-            {store?.daysOperation?.map((day, index) => (
+          <S.CardStoreWrapper className="d-flex justify-content-start align-items-center flex-wrap">
+            {store?.openingDays?.map((day, index) => (
               <CardDiaSemana key={index} text={day} icon="confirm" />
             ))}
-          </S.CardLojaWrapper>
+          </S.CardStoreWrapper>
 
           <h3 style={{ margin: '20px 0 25px 0' }}>Dias de fechamento</h3>
-          <S.CardLojaWrapper className="d-flex justify-content-start align-items-center flex-wrap">
-            {store?.daysFechamento?.map((day, index) => {
+          <S.CardStoreWrapper className="d-flex justify-content-start align-items-center flex-wrap">
+            {store?.closingDays?.map((day, index) => {
               const formattedData = new Date(day).toLocaleDateString("pt-BR", {
                 day: "2-digit",
                 month: "2-digit",
@@ -126,7 +126,7 @@ function Store() {
 
               return <CardDiaFechamento key={index} text={formattedData} icon="confirm" />;
             })}
-          </S.CardLojaWrapper>
+          </S.CardStoreWrapper>
         </Col>
       </Row>
     </ContainerPage>

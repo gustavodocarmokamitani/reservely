@@ -66,10 +66,10 @@ const Selected: React.FC<SelectedProps> = ({
           const existingServiceIds = dataOptions;
           initialSelected = existingServiceIds;
         } else if (infoProf) {
-          const userId = userId;
+          const userIdAlt = userId;
 
-          if (userId) {
-            const data = await getEmployeeIdByUserId(userId);
+          if (userIdAlt) {
+            const data = await getEmployeeIdByUserId(userIdAlt);
             if (data?.servicesId?.length) {
               const serviceRequests = data.servicesId.map((serviceId: number) =>
                 getServiceTypeById(serviceId)

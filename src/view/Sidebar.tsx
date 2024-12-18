@@ -3,14 +3,14 @@ import { Link, useLocation } from "react-router-dom";
 import * as S from "./Sidebar.styles";
 import OptionNavigation from "../components/OptionNavigation";
 import home from "../assets/home.svg";
-import imagem from "../assets/imagem.svg";
-import loja from "../assets/loja.svg";
-import pagamento from "../assets/pagamento.svg";
-import profissional from "../assets/profissional.svg";
-import servico from "../assets/servico.svg";
+import image from "../assets/image.svg";
+import store from "../assets/store.svg";
+import payment from "../assets/payment.svg";
+import professional from "../assets/professional.svg";
+import service from "../assets/service.svg";
 import logo from "../assets/logo.png";
 import chamada from "../assets/chamada.svg";
-import sair from "../assets/sair.svg";
+import exit from "../assets/exit.svg";
 
 const Navigation = () => {
   const location = useLocation();
@@ -35,11 +35,11 @@ const Navigation = () => {
           { path: "/appointment", icon: chamada, text: "Agendamento" },
           { path: "/appointment-history", icon: chamada, text: "Histórico Agendamento" },
           { path: "/dashboard", icon: home, text: "Dashboard" },
-          { path: "/servic", icon: servico, text: "Serviços" },
-          { path: "/professional", icon: profissional, text: "Profissionais" },
-          { path: "/image", icon: imagem, text: "Imagens" },
-          { path: "/store", icon: loja, text: "Loja" },
-          { path: "/payment", icon: pagamento, text: "Formas de Pagamentos" },
+          { path: "/service", icon: service, text: "Serviços" },
+          { path: "/professional", icon: professional, text: "Profissionais" },
+          { path: "/image", icon: image, text: "Imagens" },
+          { path: "/store", icon: store, text: "Loja" },
+          { path: "/payment", icon: payment, text: "Formas de Pagamentos" },
           { path: "/chamada", icon: chamada, text: "Chamadas e ajudas" },
         ].map(({ path, icon, text }) => (
           <S.MenuContainer key={path}>
@@ -68,7 +68,7 @@ const Navigation = () => {
       <S.MenuContainer style={{ borderTop: "1px solid gray" }}>
         <Row className="d-flex align-items-center justify-content-center" style={{ height: "100%", paddingLeft: "20px" }}>
           <OptionNavigation
-            icon={<img src={sair} alt="sair" style={{ width: "25px" }} />}
+            icon={<img src={exit} alt="exit" style={{ width: "25px" }} />}
             text="Sair"
           />
         </Row>

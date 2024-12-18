@@ -25,8 +25,8 @@ interface InputGroupProfessionalProps {
     email: string;
     phone: string;
     active: string;
-    servciesId: number[];
-    senha: string;
+    servicesId: number[];
+    password: string;
     userTypeId: number;
   }[];
 }
@@ -50,8 +50,8 @@ const InputGroupProfessional: React.FC<InputGroupProfessionalProps> = ({
         phone: data[0].phone,
         active: data[0].active,
         userTypeId: data[0].userTypeId,
-        senha: data[0].senha,
-        servciesId: data[0].servciesId,
+        password: data[0].password,
+        servicesId: data[0].servicesId,
       };
   
       setFormValuesProfessional?.(prevState => {

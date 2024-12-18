@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { UserEmployee } from "../../models/UserEmployee";
+
 import { Col, Row } from "react-bootstrap";
 import { useContext } from "react";
 import { AppContext } from "../../context/AppContext";
@@ -7,6 +7,7 @@ import * as S from "./Modal.styles";
 import Button from "../../components/Button";
 import closeIcon from "../../assets/remove.svg";
 import InputGroudProfessional from "../../components/InputGroupProfessional";
+import { UserEmployee } from "../../models/UserEmployee";
 
 interface AddUserEmployeeModalProps {
   title: string;

@@ -30,7 +30,6 @@ function Payment() {
         }
       } catch (error) {
         console.error("Erro when load store:", error);
-        enqueueSnackbar("Erro when load store data.", { variant: "success" });
       } 
     };
 

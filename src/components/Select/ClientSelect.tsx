@@ -6,11 +6,11 @@ import Select from "react-select";
 import customStyles from "./styles/customStyles";
 
 interface ClientSelectProps {
-  setCliente: (option: SelectOption | null) => void;
+  setClient: (option: SelectOption | null) => void;
   value?: number;
 }
 
-const ClientSelect: React.FC<ClientSelectProps> = ({ setCliente, value }) => {
+const ClientSelect: React.FC<ClientSelectProps> = ({ setClient, value }) => {
   const [options, setOptions] = useState<SelectOption[]>([]);
   const [selectedOption, setSelectedOption] = useState(null);
 
@@ -34,7 +34,7 @@ const ClientSelect: React.FC<ClientSelectProps> = ({ setCliente, value }) => {
 
   const handleChange = (option: any) => {
     setSelectedOption(option);
-    setCliente(option);
+    setClient(option);
   };
 
   return (

@@ -6,32 +6,32 @@ import { Appointment } from "../models/Appointment";
 // Definindo as interfaces para as entidades
 export interface User {
   id: number;
-  nome: string;
-  sobrenome: string;
+  name: string;
+  lastname: string;
   email: string;
-  telefone: string;
-  senha: string;
-  tipoUsuarioId: number;
+  phone: string;
+  password: string;
+  userTypeId: number;
 }
 
 export interface Employee {
   id: number;
-  usuarioId: number;
-  ativo: string;
-  servicosId: number[];
+  userId: number;
+  active: string;
+  servicesId: number[];
 }
 
 export interface UserEmployee {
   id: number;
-  usuarioId: number;
-  nome: string;
-  sobrenome: string;
+  userId: number;
+  name: string;
+  lastname: string;
   email: string;
-  telefone: string;
-  ativo: string;
-  servicosId: number[];
-  senha: string;
-  tipoUsuarioId: number;
+  phone: string;
+  active: string;
+  servicesId: number[];
+  password: string;
+  userTypeId: number;
 }
 
 // Definindo o tipo do contexto, incluindo todos os dados

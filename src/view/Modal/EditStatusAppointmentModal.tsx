@@ -52,7 +52,7 @@ const EditStatusAppointmentModal: React.FC<EditStatusAppointmentModalProps> = ({
                         id: rowId,
                         clientId: response.clientId,
                         employeeId: response.employeeId,
-                        appointmentData: response.appointmentData,
+                        appointmentDate: response.appointmentData,
                         appointmentStatusId: statusAppointment?.value,
                         servicesId: response.servicesId,
                         storeId: 1

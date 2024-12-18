@@ -39,7 +39,7 @@ const EditServiceModal: React.FC<EditServiceModalProps> = ({
     name: "",
     description: "",
     value: "",
-    durationMinute: "",
+    durationMinutes: "",
     active: "false",
     storeId: 0
   });
@@ -71,7 +71,7 @@ const EditServiceModal: React.FC<EditServiceModalProps> = ({
       id: formValuesService.id,
       name:formValuesService.name,
       value: parseFloat(formValuesService.value),
-      durationMinute: parseFloat(formValuesService.durationMinute),
+      durationMinutes: parseFloat(formValuesService.durationMinutes),
       active:formValuesService.active == "true" ? true : false,
       description:formValuesService.description,
     };
@@ -123,10 +123,6 @@ const EditServiceModal: React.FC<EditServiceModalProps> = ({
         </Row>
         {editService && (
           <InputGroupService
-            title={title}
-            subTitle={subTitle!}
-            handleShow={handleShow}
-            handleClose={handleClose}
             formValuesService={formValuesService}
             handleInputChange={handleInputChangeService}
             data={serviceType ? [serviceType] : []}

@@ -1,230 +1,230 @@
-import { useEffect, useState } from "react";
-import { Service } from "../../models/Service";
-import { User } from "../../models/User";
-import { UserEmployee } from "../../models/UserEmployee";
-import { Employee } from "../../models/Employee";
-import { getTipoServico, getTipoServicoById } from "../../services/ServiceTypeServices";
-import { getFuncionarioIdByUsuarioId } from "../../services/EmployeeServices";
-import { getUsuarioById } from "../../services/UserServices";
-import { useContext } from "react";
-import { AppContext } from "../../context/AppContext";
+// import { useEffect, useState } from "react";
+// import { Service } from "../../models/Service";
+// import { User } from "../../models/User";
+// import { UserEmployee } from "../../models/UserEmployee";
+// import { Employee } from "../../models/Employee";
+// import { getTipoServico, getTipoServicoById } from "../../services/ServiceTypeServices";
+// import { getFuncionarioIdByUsuarioId } from "../../services/EmployeeServices";
+// import { getUsuarioById } from "../../services/UserServices";
+// import { useContext } from "react";
+// import { AppContext } from "../../context/AppContext";
 
-interface ModalProps {
-  title: string;
-  subTitle?: string;
-  servico?: boolean;
-  addProf?: boolean;
-  profissional?: boolean;
-  info?: boolean;
-  edit?: boolean;
-  editServico?: boolean;
-  imagem?: boolean;
-  handleShow: () => void;
-  handleClose: () => void;
-  fetchData: () => void;
-  size: "pequeno" | "medio" | "grande";
-  rowId?: number;
-  setUpdate: React.Dispatch<React.SetStateAction<boolean>>;
-  setPost: React.Dispatch<React.SetStateAction<boolean>>;
-}
+// interface ModalProps {
+//   title: string;
+//   subTitle?: string;
+//   servico?: boolean;
+//   addProf?: boolean;
+//   profissional?: boolean;
+//   info?: boolean;
+//   edit?: boolean;
+//   editServico?: boolean;
+//   imagem?: boolean;
+//   handleShow: () => void;
+//   handleClose: () => void;
+//   fetchData: () => void;
+//   size: "pequeno" | "medio" | "grande";
+//   rowId?: number;
+//   setUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+//   setPost: React.Dispatch<React.SetStateAction<boolean>>;
+// }
 
 
-interface CombinedData extends Employee, User { };
+// interface CombinedData extends Employee, User { };
 
-const Modal: React.FC<ModalProps> = ({
-  handleShow,
-  handleClose,
-  title,
-  subTitle,
-  servico,
-  profissional,
-  info = false,
-  imagem,
-  size,
-  rowId,
-  edit = false,
-  addProf = false,
-  editServico = false,
-  setUpdate,
-  setPost,
+const Modal: React.FC = ({
+  // handleShow,
+  // handleClose,
+  // title,
+  // subTitle,
+  // servico,
+  // profissional,
+  // info = false,
+  // imagem,
+  // size,
+  // rowId,
+  // edit = false,
+  // addProf = false,
+  // editServico = false,
+  // setUpdate,
+  // setPost,
 }) => {
-  const [formValuesServico, setFormValuesServico] = useState<Service>({
-    id: 0,
-    nome: "",
-    descricao: "",
-    valor: "",
-    duracaoMinutos: "",
-    ativo: "false",
-    lojaId: 0
-  });
+  // const [formValuesServico, setFormValuesServico] = useState<Service>({
+  //   id: 0,
+  //   nome: "",
+  //   descricao: "",
+  //   valor: "",
+  //   duracaoMinutos: "",
+  //   ativo: "false",
+  //   lojaId: 0
+  // });
 
-  const [formValuesProfissional, setFormValuesProfissional] = useState<UserEmployee>({
-    id: 0,
-    usuarioId: 0,
-    nome: "",
-    sobrenome: "",
-    email: "",
-    telefone: "",
-    ativo: "false",
-    senha: "",
-    tipoUsuarioId: 0,
-    servicosId: [] as number[],
-  });
+  // const [formValuesProfissional, setFormValuesProfissional] = useState<UserEmployee>({
+  //   id: 0,
+  //   usuarioId: 0,
+  //   nome: "",
+  //   sobrenome: "",
+  //   email: "",
+  //   telefone: "",
+  //   ativo: "false",
+  //   senha: "",
+  //   tipoUsuarioId: 0,
+  //   servicosId: [] as number[],
+  // });
 
-  const {
-    setUserEmployeeContext,
-    setUserEmployeeUpdateContext
-  } = useContext(AppContext)!;
+  // const {
+  //   setUserEmployeeContext,
+  //   setUserEmployeeUpdateContext
+  // } = useContext(AppContext)!;
 
-  const [tipoServico, setTipoServico] = useState([]);
-  const [funcionario, setFuncionario] = useState<UserEmployee[]>([]);
-  const [usuario, setUsuario] = useState<User[]>([]);
-  const [combinedData, setCombinedData] = useState<CombinedData | null>(null);
+  // const [tipoServico, setTipoServico] = useState([]);
+  // const [funcionario, setFuncionario] = useState<UserEmployee[]>([]);
+  // const [usuario, setUsuario] = useState<User[]>([]);
+  // const [combinedData, setCombinedData] = useState<CombinedData | null>(null);
 
-  const sizeMap = {
-    pequeno: "650px",
-    medio: "850px",
-    grande: "1050px",
-  };
+  // const sizeMap = {
+  //   pequeno: "650px",
+  //   medio: "850px",
+  //   grande: "1050px",
+  // };
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    if (profissional) {
-      const fetchTiposServico = async () => {
-        try {
-          const response = await getTipoServico();
-          setTipoServico(response.data);
-        } catch (error) {
-          console.error("Erro ao buscar tipos de serviço", error);
-        }
-      };
-      fetchTiposServico();
-    }
-
-
-    if (edit) {
-      const fetchFuncionario = async () => {
-        try {
-          const resFuncionario = await getFuncionarioIdByUsuarioId(rowId!);
-
-          let funcionarioData = Array.isArray(resFuncionario)
-            ? resFuncionario
-            : [resFuncionario];
-
-          const mappedFuncionario = funcionarioData.map((funcionario: UserEmployee) => ({
-            id: funcionario.id,
-            usuarioId: funcionario.usuarioId,
-            nome: funcionario.nome,
-            sobrenome: funcionario.sobrenome,
-            email: funcionario.email,
-            telefone: funcionario.telefone,
-            senha: funcionario.senha,
-            ativo: funcionario.ativo,
-            tipoUsuarioId: funcionario.tipoUsuarioId,
-            servicosId: funcionario.servicosId || [],
-          }));
-
-          setFuncionario(mappedFuncionario);
-
-          if (mappedFuncionario.length > 0) {
-            const resUsuario = await getUsuarioById(mappedFuncionario[0].usuarioId);
-
-            let usuarioData = Array.isArray(resUsuario)
-              ? resUsuario
-              : [resUsuario];
-
-            const mappedUsuario = usuarioData.map((usuario: User) => ({
-              id: usuario.id,
-              nome: usuario.nome,
-              sobrenome: usuario.sobrenome,
-              email: usuario.email,
-              telefone: usuario.telefone,
-              senha: usuario.senha,
-              tipoUsuarioId: usuario.tipoUsuarioId,
-              lojaId: 1
-            }));
-            setUsuario(mappedUsuario);
-            const combined = {
-              ...mappedFuncionario[0],
-              ...mappedUsuario[0],
-            };
-            setCombinedData(combined);
-          }
-        } catch (error) {
-          console.error("Erro ao buscar tipos de serviço", error);
-        }
-      };
-      fetchFuncionario();
-    }
-
-    if (editServico) {
-
-      const fetchServico = async () => {
+  //   if (profissional) {
+  //     const fetchTiposServico = async () => {
+  //       try {
+  //         const response = await getTipoServico();
+  //         setTipoServico(response.data);
+  //       } catch (error) {
+  //         console.error("Erro ao buscar tipos de serviço", error);
+  //       }
+  //     };
+  //     fetchTiposServico();
+  //   }
 
 
-        const response = await getTipoServicoById(rowId!);
-        setTipoServico(response?.data );
-        console.log(response);
+  //   if (edit) {
+  //     const fetchFuncionario = async () => {
+  //       try {
+  //         const resFuncionario = await getFuncionarioIdByUsuarioId(rowId!);
 
-        fetchServico();
-      }
-    }
-  }, [profissional, edit, editServico]);
+  //         let funcionarioData = Array.isArray(resFuncionario)
+  //           ? resFuncionario
+  //           : [resFuncionario];
 
-  const handleSubmit = async () => {
-    if (profissional) {
-      const profissionalData = {
-        ...formValuesProfissional,
-        servicosId: formValuesProfissional.servicosId,
-      };
-      setUserEmployeeContext(profissionalData);
-      setPost(true);
-    }
+  //         const mappedFuncionario = funcionarioData.map((funcionario: UserEmployee) => ({
+  //           id: funcionario.id,
+  //           usuarioId: funcionario.usuarioId,
+  //           nome: funcionario.nome,
+  //           sobrenome: funcionario.sobrenome,
+  //           email: funcionario.email,
+  //           telefone: funcionario.telefone,
+  //           senha: funcionario.senha,
+  //           ativo: funcionario.ativo,
+  //           tipoUsuarioId: funcionario.tipoUsuarioId,
+  //           servicosId: funcionario.servicosId || [],
+  //         }));
 
-    if (edit) {
-      const updatedUserFunc = {
-        id: formValuesProfissional.id,
-        idFuncionario: 0,
-        usuarioId: 0,
-        tipoUsuarioId: 0,
-        nome: formValuesProfissional.nome,
-        sobrenome: formValuesProfissional.sobrenome,
-        email: formValuesProfissional.email,
-        telefone: formValuesProfissional.telefone,
-        senha: formValuesProfissional.senha,
-        ativo: formValuesProfissional.ativo,
-        servicosId: formValuesProfissional.servicosId,
-      };
+  //         setFuncionario(mappedFuncionario);
 
-      setUserEmployeeUpdateContext(updatedUserFunc);
+  //         if (mappedFuncionario.length > 0) {
+  //           const resUsuario = await getUsuarioById(mappedFuncionario[0].usuarioId);
 
-      setUpdate(true);
-    }
-    handleClose();
-  };
+  //           let usuarioData = Array.isArray(resUsuario)
+  //             ? resUsuario
+  //             : [resUsuario];
 
-  const handleServiceSelection = (servicosId: number[]) => {
-    setFormValuesProfissional((prev) => ({
-      ...prev,
-      servicosId,
-    }));
-  };
+  //           const mappedUsuario = usuarioData.map((usuario: User) => ({
+  //             id: usuario.id,
+  //             nome: usuario.nome,
+  //             sobrenome: usuario.sobrenome,
+  //             email: usuario.email,
+  //             telefone: usuario.telefone,
+  //             senha: usuario.senha,
+  //             tipoUsuarioId: usuario.tipoUsuarioId,
+  //             lojaId: 1
+  //           }));
+  //           setUsuario(mappedUsuario);
+  //           const combined = {
+  //             ...mappedFuncionario[0],
+  //             ...mappedUsuario[0],
+  //           };
+  //           setCombinedData(combined);
+  //         }
+  //       } catch (error) {
+  //         console.error("Erro ao buscar tipos de serviço", error);
+  //       }
+  //     };
+  //     fetchFuncionario();
+  //   }
 
-  const handleInputChangeServico = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, type, checked, value } = event.target;
-    setFormValuesServico((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? (checked ? "true" : "false") : value,
-    }));
-  };
+  //   if (editServico) {
 
-  const handleInputChangeProfissional = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, type, checked, value } = event.target;
-    setFormValuesProfissional((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? (checked ? "true" : "false") : value,
-    }));
-  };
+  //     const fetchServico = async () => {
+
+
+  //       const response = await getTipoServicoById(rowId!);
+  //       setTipoServico(response?.data );
+  //       console.log(response);
+
+  //       fetchServico();
+  //     }
+  //   }
+  // }, [profissional, edit, editServico]);
+
+  // const handleSubmit = async () => {
+  //   if (profissional) {
+  //     const profissionalData = {
+  //       ...formValuesProfissional,
+  //       servicosId: formValuesProfissional.servicosId,
+  //     };
+  //     setUserEmployeeContext(profissionalData);
+  //     setPost(true);
+  //   }
+
+  //   if (edit) {
+  //     const updatedUserFunc = {
+  //       id: formValuesProfissional.id,
+  //       idFuncionario: 0,
+  //       usuarioId: 0,
+  //       tipoUsuarioId: 0,
+  //       nome: formValuesProfissional.nome,
+  //       sobrenome: formValuesProfissional.sobrenome,
+  //       email: formValuesProfissional.email,
+  //       telefone: formValuesProfissional.telefone,
+  //       senha: formValuesProfissional.senha,
+  //       ativo: formValuesProfissional.ativo,
+  //       servicosId: formValuesProfissional.servicosId,
+  //     };
+
+  //     setUserEmployeeUpdateContext(updatedUserFunc);
+
+  //     setUpdate(true);
+  //   }
+  //   handleClose();
+  // };
+
+  // const handleServiceSelection = (servicosId: number[]) => {
+  //   setFormValuesProfissional((prev) => ({
+  //     ...prev,
+  //     servicosId,
+  //   }));
+  // };
+
+  // const handleInputChangeServico = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { name, type, checked, value } = event.target;
+  //   setFormValuesServico((prev) => ({
+  //     ...prev,
+  //     [name]: type === "checkbox" ? (checked ? "true" : "false") : value,
+  //   }));
+  // };
+
+  // const handleInputChangeProfissional = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { name, type, checked, value } = event.target;
+  //   setFormValuesProfissional((prev) => ({
+  //     ...prev,
+  //     [name]: type === "checkbox" ? (checked ? "true" : "false") : value,
+  //   }));
+  // };
 
   return (
     <h1>teste</h1>

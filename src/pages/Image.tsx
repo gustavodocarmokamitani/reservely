@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ContainerPage } from "./_Page.styles";
 import HeaderTitle from "../view/HeaderTitle";
 import * as S from "./Image.styles";
-import imagemDefault from "../assets/imagemDefault.svg";
+import imageDefault from "../assets/imageDefault.svg";
 import closeIcon from "../assets/remove.svg";
 import { Col, Row } from "react-bootstrap";
 import environment1 from '../assets/environment1.png';
@@ -42,7 +42,7 @@ function Image() {
           className="d-flex flex-row justify-content-end align-items-center"
         >
           <Button
-            $isAdicionar
+            $isAdd
             type="button"
             onClick={handleShow}
           />
@@ -60,8 +60,8 @@ function Image() {
           </S.CardHeader>
           <S.ImageContent>
             <img
-              src={imagemDefault}
-              alt={'imagemDefault'}
+              src={imageDefault}
+              alt={'imageDefault'}
               style={{
                 width: "50%",
                 height: "50%",
@@ -82,7 +82,7 @@ function Image() {
           </S.CardHeader>
           <S.ImageContent>
             <img
-              src={imagemDefault}
+              src={imageDefault}
               alt={'ImagemDefault'}
               style={{
                 width: "50%",
@@ -105,7 +105,7 @@ function Image() {
             </S.CardHeader>
             <S.ImageContent>
               <img
-                src={amb.image || imagemDefault}
+                src={amb.image || imageDefault}
                 alt={`Ambiente ${index + 1}`}
                 style={{
                   width: "100%",
@@ -121,9 +121,7 @@ function Image() {
           <AddImagemModal
             title="Adicionar imagem"
             handleClose={handleClose}
-            handleShow={handleShow}
-            imagem
-            size="pequeno"
+            size="small"
           />
         )}
     </ContainerPage>

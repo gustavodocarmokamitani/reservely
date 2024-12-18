@@ -27,11 +27,11 @@ const EmployeeSelect: React.FC<EmployeeSelectProps> = ({ setEmployee, value, han
       try {
         const responseEmployee = await getEmployees();
 
-        const employeesAtivos = responseEmployee.filter((employee: Employee) => employee.ativo === "true");
+        const employeesActive = responseEmployee.filter((employee: Employee) => employee.active === "true");
 
         const usersActive = await Promise.all(
-          employeesAtivos.map(async (employee: Employee) => {
-            const usuario = await getUserById(employee.usuarioId);
+          employeesActive.map(async (employee: Employee) => {
+            const usuario = await getUserById(employee.userId);
             return usuario;
           })
         );

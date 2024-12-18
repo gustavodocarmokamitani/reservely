@@ -19,7 +19,7 @@ const Login = () => {
                     </Col>
                     <Col md={12}>
                     <Button $isLogin type="button" onClick={() => {}} />
-                    <Button $isRegistrar type="button" onClick={() => {}} />
+                    <Button $isRegister type="button" onClick={() => {}} />
                     </Col>
                 </Row>
             </WrapperLogin>

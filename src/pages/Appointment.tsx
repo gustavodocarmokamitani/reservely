@@ -6,13 +6,13 @@ import HeaderTitle from '../view/HeaderTitle';
 import Button from '../components/Button';
 import * as S from './Appointment.styles';
 import FuncionarioSelect from '../components/Select/EmployeeSelect';
-import ClienteSelect from '../components/Select/ClientSelect';
+import ClientSelect from '../components/Select/ClientSelect';
 import ServicoSelect from '../components/Select/ServiceSelect';
 import HorarioSelect from '../components/Select/TimeSelect';
 import DataAgendamentoSelect from "../components/Select/AppointmentDataSelect";
-import { createAgendamento } from "../services/AppointmentServices";
+import { createAppointment } from "../services/AppointmentServices";
 import { SelectOption } from "../models/SelectOptions";
-import { getFuncionarioIdByUsuarioId } from "../services/EmployeeServices";
+import { getEmployeeIdByUserId } from "../services/EmployeeServices";
 import { useSnackbar } from 'notistack';
 
 
@@ -67,19 +67,19 @@ export function Appointment() {
             const agendamentoData = new Date(appointmentDate);
             agendamentoData.setHours(parseInt(horarioHoras), parseInt(horarioMinutos));
 
-            const funcionarioId = await getFuncionarioIdByUsuarioId(employee.value);
+            const funcionarioId = await getEmployeeIdByUserId(employee.value);
 
             const mapped = {
                 id: 0,
-                clienteId: client.value,
-                funcionarioId: funcionarioId.id,
+                clientId: client.value,
+                employeeId: funcionarioId.id,
                 appointmentDate: agendamentoData,
-                statusAgendamentoId: 1,
-                servicosId: service.map((item) => item.value),
-                lojaId: 1
+                appointmentStatusId: 1,
+                servicesId: service.map((item) => item.value),
+                storeId: 1
             };
 
-            await createAgendamento([mapped]);
+            await createAppointment([mapped]);
             setEmployee({ value: 0, label: "Nenhum" });
             setClient({ value: 0, label: "Nenhum" });
             setService([{ value: 0, label: "Nenhum" }]);
@@ -100,7 +100,7 @@ export function Appointment() {
                 </Col>
 
                 <Col md={5} className="d-flex flex-row justify-content-end align-items-center">
-                    <Button onClick={handleSubmit} $isConfirmar type="button" />
+                    <Button onClick={handleSubmit} $isConfirm type="button" />
                 </Col>
             </Row>
 
@@ -112,7 +112,7 @@ export function Appointment() {
 
                 <S.AgendamentoContent>
                     <p>Cliente</p>
-                    <ClienteSelect value={client?.value} setClient={setClient} />
+                    <ClientSelect value={client?.value} setClient={setClient} />
                 </S.AgendamentoContent>
 
                 <S.AgendamentoContent>

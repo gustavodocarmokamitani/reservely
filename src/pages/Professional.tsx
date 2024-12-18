@@ -174,7 +174,7 @@ function Professional() {
           </Col>
         </Row>
         <DataTable
-          profissional
+          professional
           rowsProfessional={rows}
           onRowSelect={handleRowSelect}
           setUpdate={setUpdate}

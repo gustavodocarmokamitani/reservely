@@ -51,7 +51,7 @@ function Service() {
   const handleCreateServiceType = async () => {
     try {
 
-      if (!serviceContext?.name || !serviceContext.description || !serviceContext.value || !serviceContext.durationMinute) {
+      if (!serviceContext?.name || !serviceContext.description || !serviceContext.value || !serviceContext.durationMinutes) {
         setPost(false);
         enqueueSnackbar("Por favor, preencha todos os dados obrigatórios antes de continuar.", { variant: "error" });
         return;
@@ -62,8 +62,8 @@ function Service() {
           name: serviceContext?.name || "string",
           description: serviceContext?.description || "string",
           value: serviceContext?.value || 0,
-          ativo: serviceContext?.ativo || true,
-          durationMinute: serviceContext?.durationMinute || 0,
+          active: serviceContext?.active || true,
+          durationMinutes: serviceContext?.durationMinutes || 0,
         },
       ];
 
@@ -142,7 +142,7 @@ function Service() {
           </Col>
         </Row>
         <DataTable
-          servico
+          service
           rowsService={rows}
           onRowSelect={handleRowSelect}
           setUpdate={setUpdate}

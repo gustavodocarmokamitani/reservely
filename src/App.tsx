@@ -14,7 +14,7 @@ import StoreConfigurar from "./pages/StoreConfigure";
 import Login from "./pages/Login";
 
 function App() {
-  const isAuthenticated = false;
+  const isAuthenticated = true;
 
   return (
     <div className="App" style={{ display: "flex" }}>

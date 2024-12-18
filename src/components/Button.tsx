@@ -1,8 +1,8 @@
 import React from "react";
 import addIcon from '../assets/add.svg'; 
 import removeIcon from '../assets/remove.svg'; 
-import confirmarIcon from '../assets/confirmar.svg'; 
-import fecharIcon from '../assets/fechar.svg'; 
+import confirmIcon from '../assets/confirm.svg'; 
+import closedIcon from '../assets/closed.svg'; 
 import * as S from "./Button.styles";
 
 interface ButtonProps {
@@ -29,13 +29,13 @@ const Button: React.FC<ButtonProps> = ({ $isAdd, $isRemove, $isClosed, $isConfir
     icon = <img src={removeIcon} alt="Remove Icon" style={{ marginRight: "8px" }} />;
     buttonText = "Remover";
   } else if ($isClosed) {
-    icon = <img src={fecharIcon} alt="Close Icon" style={{ marginRight: "8px" }} />;
+    icon = <img src={closedIcon} alt="Close Icon" style={{ marginRight: "8px" }} />;
     buttonText = "Fechar";
   } else if ($isConfirm) {
-    icon = <img src={confirmarIcon} alt="Confirm Icon" style={{ marginRight: "8px" }} />;
+    icon = <img src={confirmIcon} alt="Confirm Icon" style={{ marginRight: "8px" }} />;
     buttonText = "Confirmar";
   } else if ($isConfigure) {
-    icon = <img src={confirmarIcon} alt="Confirm Icon" style={{ marginRight: "8px" }} />;
+    icon = <img src={confirmIcon} alt="Confirm Icon" style={{ marginRight: "8px" }} />;
     buttonText = "Configuração";
   } else if ($isBack) {
     icon = <img src={removeIcon} alt="Confirm Icon" style={{ marginRight: "8px" }} />;

@@ -21,7 +21,7 @@ function StoreConfigure() {
     const navigate = useNavigate();
     const [formValuesStore, setFormValuesStore] = useState({ ativo: false });
     const [store, setStore] = useState<StoreModel | undefined>();
-    const [timeSelected, setTimeSelected] = useState<string[]>([]);
+    const [selectedTimes, setSelectedTimes] = useState<string[]>([]);
     const [openingWeekDay, setOpeningWeekDay] = useState<string[]>([]);
     const [closingDates, setClosingDates] = useState<Date[] | null>([]);
     const [statusStore, setStatusStore] = useState<boolean>();
@@ -56,11 +56,11 @@ function StoreConfigure() {
 
                 setStatusStore(response.status);
 
-                if (!timeSelected || timeSelected.length === 0) {
+                if (!selectedTimes || selectedTimes.length === 0) {
                     const timeArray = response.openingTime
                         ? response.openingTime.split(" - ")
                         : [];
-                    setTimeSelected(timeArray);
+                    setSelectedTimes(timeArray);
                 };
 
                 if (!openingWeekDay || openingWeekDay.length === 0) {
@@ -102,7 +102,7 @@ function StoreConfigure() {
             const storeMapped: Store = {
                 ...store,
                 status: formValuesStore.ativo,
-                openingTime: timeSelected.join(" - "),
+                openingTime: selectedTimes.join(" - "),
                 closingDays: closingDates
                     ? closingDates.map((data) => data.toISOString())
                     : [],
@@ -169,7 +169,7 @@ function StoreConfigure() {
                         </S.StoreContent>
                         <S.StoreContent>
                             <p>Horários de funcionamento</p>
-                            <OpeningHoursSelect setTime={setTimeSelected} />
+                            <OpeningHoursSelect setTime={setSelectedTimes} />
                         </S.StoreContent>
                         <S.StoreContent>
                             <p>Dias de funcionamento</p>
@@ -185,8 +185,8 @@ function StoreConfigure() {
                     <h3 style={{ margin: "50px 0 25px 0" }}>Dados da store</h3>
                     <S.CardStoreWrapper className="d-flex justify-content-start align-items-center">
                         <CardStatus statusStore={statusStore} data={store} title="Status" icon="confirm" />
-                        <TimeCard timeSelected={timeSelected} data={store} title="Hora de abertura" text="09:00" icon="confirm" />
-                        <TimeCard timeSelected={timeSelected} data={store} title="Hora de fechamento" text="18:00" icon="confirm" />
+                        <TimeCard selectedTimes={selectedTimes} title="Hora de abertura" icon="confirm" />
+                        <TimeCard selectedTimes={selectedTimes} title="Hora de fechamento" icon="confirm" />
                     </S.CardStoreWrapper>
 
                     <h3 style={{ margin: '50px 0 25px 0' }}>Dias de funcionamento</h3>

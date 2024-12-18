@@ -3,17 +3,17 @@ import Select from "react-select";
 import customStyles from "./styles/customStylesLoja";
 
 interface OpeningWeekDaysSelectProps {
-  setDiasSFuncionamento: (horarios: string[]) => void;
+  setOpeningWeekDay: (times: string[]) => void;
 }
 
 const OpeningWeekDaysSelect: React.FC<OpeningWeekDaysSelectProps> = ({
-  setDiasSFuncionamento,
+  setOpeningWeekDay,
 }) => {
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
 
-  const MAX_DIAS = 7;
+  const MAX_DAYS = 7;
 
-  const horarios = [
+  const times = [
     "Segunda",
     "Terça",
     "Quarta",
@@ -23,7 +23,7 @@ const OpeningWeekDaysSelect: React.FC<OpeningWeekDaysSelectProps> = ({
     "Domingo",
   ];
 
-  const options = horarios.map((horario) => ({
+  const options = times.map((horario) => ({
     value: horario,
     label: horario,
   }));
@@ -31,18 +31,14 @@ const OpeningWeekDaysSelect: React.FC<OpeningWeekDaysSelectProps> = ({
   const handleChange = (selectedOptions: any) => {
     const selectedValuesArr = selectedOptions?.map((option: any) => option.value) ?? [];
 
-    if (selectedValuesArr.length > MAX_DIAS) {
-      alert(`Limitação de dias: ${MAX_DIAS}`);
-    }
-
     setSelectedValues(selectedValuesArr);
-    setDiasSFuncionamento(selectedValuesArr);
+    setOpeningWeekDay(selectedValuesArr);
   };
 
   return (
     <Select
       isMulti
-      placeholder={`Selecione até ${MAX_DIAS} dias`}
+      placeholder={`Selecione até ${MAX_DAYS} dias`}
       options={options}
       onChange={handleChange}
       value={options.filter((opt) => selectedValues.includes(opt.value))}

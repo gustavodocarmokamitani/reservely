@@ -22,7 +22,7 @@ const ServiceSelect: React.FC<ServiceSelectProps> = ({ setService, value, select
         const response = await getServiceTypes();
   
         if (response && response.data) {
-          const serviceTypesAtivos = response.data.filter((serviceType: ServiceType) => serviceType.ativo === true);
+          const serviceTypesAtivos = response.data.filter((serviceType: ServiceType) => serviceType.active === true);
   
           if (selectedEmployee) {
             try {

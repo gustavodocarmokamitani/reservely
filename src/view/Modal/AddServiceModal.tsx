@@ -52,7 +52,7 @@ const AddServiceModal: React.FC<AddServiceModalProps> = ({
       const tipoService: ServiceType = {
         ...formValuesService,
         value: parseFloat(formValuesService.value as string),
-        durationMinute: parseFloat(formValuesService.durationMinute as string),
+        durationMinutes: parseFloat(formValuesService.durationMinutes as string),
         active: Boolean(formValuesService.active as string),
       };
 
@@ -103,10 +103,6 @@ const AddServiceModal: React.FC<AddServiceModalProps> = ({
           <hr />
         </Row>
         <InputGroudServico
-            title={title}
-            subTitle={subTitle!}
-            handleShow={handleShow}
-            handleClose={handleClose}
             formValuesService={formValuesService}
             handleInputChange={handleInputChangeService}
             setFormValuesService={setFormValuesService}

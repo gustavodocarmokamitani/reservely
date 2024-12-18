@@ -4,10 +4,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import * as S from "./styles/dataStyles";
 
 interface StoreDataSelectProps {
-    setClosedDates: (date: Date[] | null) => void;
+    setClosingDates: (date: Date[] | null) => void;
 }
 
-const StoreDataSelect: React.FC<StoreDataSelectProps> = ({ setClosedDates }) => {
+const StoreDataSelect: React.FC<StoreDataSelectProps> = ({ setClosingDates }) => {
     const [selectedDates, setSelectedDates] = useState<Date[]>([]);
 
     const handleDateChange = (date: Date | null) => {
@@ -17,7 +17,7 @@ const StoreDataSelect: React.FC<StoreDataSelectProps> = ({ setClosedDates }) => 
                 : [...selectedDates, date];
 
             setSelectedDates(updatedDates);
-            setClosedDates(updatedDates);
+            setClosingDates(updatedDates);
         }
     };
 

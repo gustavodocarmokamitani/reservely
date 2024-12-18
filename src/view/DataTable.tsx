@@ -12,8 +12,8 @@ import { updateAppointment } from "../services/AppointmentServices";
 import Paper from "@mui/material/Paper";
 import info from "../assets/info.svg";
 import edit from "../assets/edit.svg";
-import confirmar from "../assets/confirmarCardLoja.svg";
-import remover from "../assets/removerRed.svg";
+import confirm from "../assets/confirmCardStore.svg";
+import remove from "../assets/removeRed.svg";
 import EditUserEmployeeModal from "./Modal/EditUserEmployeeModal";
 import InfoEmployeeServiceModal from "./Modal/InfoEmployeeServiceModal";
 import EditServiceModal from "./Modal/EditServiceModal";
@@ -61,7 +61,6 @@ const DataTable: React.FC<DataTableProps> = ({
   const updateUser = async (id: number, data: UserEmployeeUpdate) => {
     try {
       console.log(data);
-      
       const response = await updateUserEmployee(id, data);
       setUpdate(false);
 
@@ -69,47 +68,41 @@ const DataTable: React.FC<DataTableProps> = ({
         enqueueSnackbar(`Profissional editado com sucesso!`, { variant: "success" });
       }
     } catch (error: any) {
-      console.error("Erro ao editar o Usuário e Funcionario", error);
-
-    } else {
-      console.error('Erro desconhecido:', error.message);
+      console.error("Erro ao editar o Usuário e Funcionario", error.message);
     }
-  }
-};
-console.log('inicio do function', update);
+  };
 
-if (appointmentUpdateContext !== null) {
-  const response = await updateAppointment(appointmentUpdateContext.id, appointmentUpdateContext);
+  const updateAppointmentStatus = async () => {
+    try {
+      if (appointmentUpdateContext) {
+
+        await updateAppointment(appointmentUpdateContext.id, appointmentUpdateContext);
+        enqueueSnackbar(`Status do appointment editado com sucesso!`, { variant: "success" });
+        setUpdate(false);
+        fetchData();
+      }
+    } catch (error: any) {
+      console.error("Erro ao editar o serviço", error.message);
+
       if (error.response) {
         console.error('Status HTTP:', error.response.status);
         console.error('Resposta:', error.response.data);
       } else if (error.request) {
         console.error('Erro na requisição:', error.request);
-
-  const updateAppointmentStatus = async () => {
-    try {
-        console.log(appointmentUpdateContext);
-        
-        enqueueSnackbar(`Status do appointment editado com sucesso!`, { variant: "success" });
       }
-      setUpdate(false);
-      fetchData();
-    } catch (error) {
-      console.error("Erro ao editar o serviço", error);
     }
-    console.log('final do function', update);
   };
 
   const updateService = async (id: number, data: ServiceType) => {
     try {
-      if (serviceUpdateContext !== null) {
+      if (serviceUpdateContext) {
         const updatedServico = {
           id: serviceUpdateContext.id,
           name: serviceUpdateContext.name,
           value: serviceUpdateContext.value,
           durationMinutes: serviceUpdateContext.durationMinutes,
-          ativo: serviceUpdateContext.ativo,
-          descricao: serviceUpdateContext.descricao,
+          active: serviceUpdateContext.active,
+          description: serviceUpdateContext.description,
         };
 
         const response = await updateServiceType(serviceUpdateContext.id, updatedServico);
@@ -120,26 +113,26 @@ if (appointmentUpdateContext !== null) {
         }
       }
     } catch (error: any) {
-      console.error("Erro ao editar o serviço", error);
+      console.error("Erro ao editar o serviço", error.message);
 
       if (error.response) {
         console.error('Status HTTP:', error.response.status);
         console.error('Resposta:', error.response.data);
       } else if (error.request) {
         console.error('Erro na requisição:', error.request);
-      } else {
-        console.error('Erro desconhecido:', error.message);
       }
     }
   };
 
   const request = async () => {
-    if (update) {
-      if (userEmployeeUpdateContext) updateUser(userEmployeeUpdateContext.id, userEmployeeUpdateContext)
-
-      if (serviceUpdateContext) updateService(serviceUpdateContext.id, serviceUpdateContext);
-
-      if (appointmentUpdateContext) updateAppointmentStatus();
+    try {
+      if (update) {
+        if (userEmployeeUpdateContext) await updateUser(userEmployeeUpdateContext.id, userEmployeeUpdateContext);
+        if (serviceUpdateContext) await updateService(serviceUpdateContext.id, serviceUpdateContext);
+        if (appointmentUpdateContext) await updateAppointmentStatus();
+      }
+    } catch (error: any) {
+      console.error("Erro ao processar requisições de atualização", error.message);
     }
   };
 
@@ -162,8 +155,8 @@ if (appointmentUpdateContext !== null) {
   }, []);
 
   const handleRowClick = (ids: number[]) => onRowSelect?.(ids);
-  
-  
+
+
   const columns: GridColDef[] = service
     ? [
       { field: "id", headerName: "ID", flex: 1, align: "center", headerAlign: "center" },
@@ -176,13 +169,13 @@ if (appointmentUpdateContext !== null) {
           params.value === true ? (
             <img
               style={{ cursor: "pointer" }}
-              src={confirmar}
+              src={confirm}
               alt="Ativo"
             />
           ) : (
             <img
               style={{ cursor: "pointer" }}
-              src={remover}
+              src={remove}
               alt="Inativo"
             />
           )
@@ -216,13 +209,13 @@ if (appointmentUpdateContext !== null) {
           params.value === "true" ? (
             <img
               style={{ cursor: "pointer" }}
-              src={confirmar}
+              src={confirm}
               alt="Ativo"
             />
           ) : (
             <img
               style={{ cursor: "pointer" }}
-              src={remover}
+              src={remove}
               alt="Inativo"
             />
           )
@@ -290,7 +283,7 @@ if (appointmentUpdateContext !== null) {
   else if (professional) rows = rowsProfessional || [];
   else if (appointment) {
     rows = (rowsAppointment || []).slice().sort((a, b) => new Date(b.appointmentDate).getTime() - new Date(a.appointmentDate).getTime());
-}
+  }
 
   return (
     <div ref={containerRef} style={{ marginTop: "3rem" }}>
@@ -316,7 +309,7 @@ if (appointmentUpdateContext !== null) {
           subTitle="Todos os serviços que contém esse professional."
           handleClose={handleClose}
           handleShow={() => setShowModal({ ...showModal, info: true })}
-          size="pequeno"
+          size="small"
           fetchData={() => { }}
           rowId={selectedEmployeeId}
         />
@@ -340,7 +333,7 @@ if (appointmentUpdateContext !== null) {
           edit
           handleClose={handleClose}
           handleShow={() => setShowModal({ ...showModal, edit: true })}
-          size="grande"
+          size="large"
           rowId={selectedEmployeeId}
           setUpdate={setUpdate}
         />
@@ -351,7 +344,7 @@ if (appointmentUpdateContext !== null) {
           subTitle="Preencha as informações abaixo para editar o serviço."
           handleClose={handleClose}
           handleShow={() => setShowModal({ ...showModal, editService: true })}
-          size="pequeno"
+          size="small"
           rowId={selectedEmployeeId}
           setUpdate={setUpdate}
           editService
@@ -363,7 +356,7 @@ if (appointmentUpdateContext !== null) {
           subTitle="Preencha as informações abaixo para editar o status."
           handleClose={handleClose}
           handleShow={() => setShowModal({ ...showModal, editService: true })}
-          size="pequeno"
+          size="small"
           rowId={selectedEmployeeId}
           setUpdate={setUpdate}
         />
