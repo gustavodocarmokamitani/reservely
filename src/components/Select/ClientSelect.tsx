@@ -20,7 +20,7 @@ const ClientSelect: React.FC<ClientSelectProps> = ({ setClient, value }) => {
         const response = await getUserTypeIdById(3);
         const formattedOptions = response.map((item: any) => ({
           value: item.id,
-          label: item.nome,
+          label: item.name,
         }));
         formattedOptions.unshift({ value: 0, label: "Selecione...", isDisabled: true });
         setOptions(formattedOptions);

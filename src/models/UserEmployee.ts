@@ -3,11 +3,11 @@ export interface UserEmployee {
   id: number;
   userId: number;
   name: string;
-  lastname: string;
+  lastName: string;
   email: string;
   phone: string;
   active: string;
-  servicesId: number[];
+  serviceIds: number[];
   password: string;
   userTypeId: number;
 }
@@ -18,10 +18,10 @@ export interface UserEmployeeUpdate {
   userTypeId: number;
   userId: number;
   name: string;
-  lastname: string;
+  lastName: string;
   email: string;
   phone: string;
   active: string;
-  servicesId: number[];
+  serviceIds: number[];
   password: string;
 }

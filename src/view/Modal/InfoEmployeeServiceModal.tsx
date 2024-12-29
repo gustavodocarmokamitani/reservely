@@ -29,13 +29,13 @@ const InfoEmployeeServicemodal: React.FC<InfoEmployeeServiceModalProps> = ({
     id: 0,
     userId: 0,
     name: "",
-    lastname: "",
+    lastName: "",
     email: "",
     phone: "",
     active: "false",
     password: "",
     userTypeId: 0,
-    servicesId: [] as number[],
+    serviceIds: [] as number[],
   });
 
   const sizeMap = {
@@ -48,13 +48,12 @@ const InfoEmployeeServicemodal: React.FC<InfoEmployeeServiceModalProps> = ({
     handleClose();
   };
 
-  const handleServiceSelection = (servicesId: number[]) => {
+  const handleServiceSelection = (serviceIds: number[]) => {
     setFormValuesProfessional((prev: any) => ({
       ...prev,
-      servicesId,
+      serviceIds,
     }));
   };
-  console.log(rowId);
   
   return (
     <S.Overlay>

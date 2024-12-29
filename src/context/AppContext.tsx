@@ -7,7 +7,7 @@ import { Appointment } from "../models/Appointment";
 export interface User {
   id: number;
   name: string;
-  lastname: string;
+  lastName: string;
   email: string;
   phone: string;
   password: string;
@@ -18,18 +18,18 @@ export interface Employee {
   id: number;
   userId: number;
   active: string;
-  servicesId: number[];
+  serviceIds: number[];
 }
 
 export interface UserEmployee {
   id: number;
   userId: number;
   name: string;
-  lastname: string;
+  lastName: string;
   email: string;
   phone: string;
   active: string;
-  servicesId: number[];
+  serviceIds: number[];
   password: string;
   userTypeId: number;
 }

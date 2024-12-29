@@ -50,22 +50,22 @@ const Modal: React.FC = ({
 }) => {
   // const [formValuesServico, setFormValuesServico] = useState<Service>({
   //   id: 0,
-  //   nome: "",
+  //   name: "",
   //   descricao: "",
   //   valor: "",
   //   duracaoMinutos: "",
-  //   ativo: "false",
+  //   active: "false",
   //   lojaId: 0
   // });
 
   // const [formValuesProfissional, setFormValuesProfissional] = useState<UserEmployee>({
   //   id: 0,
   //   usuarioId: 0,
-  //   nome: "",
-  //   sobrenome: "",
+  //   name: "",
+  //   sobrename: "",
   //   email: "",
   //   telefone: "",
-  //   ativo: "false",
+  //   active: "false",
   //   senha: "",
   //   tipoUsuarioId: 0,
   //   servicosId: [] as number[],
@@ -114,12 +114,12 @@ const Modal: React.FC = ({
   //         const mappedFuncionario = funcionarioData.map((funcionario: UserEmployee) => ({
   //           id: funcionario.id,
   //           usuarioId: funcionario.usuarioId,
-  //           nome: funcionario.nome,
-  //           sobrenome: funcionario.sobrenome,
+  //           name: funcionario.name,
+  //           sobrename: funcionario.sobrename,
   //           email: funcionario.email,
   //           telefone: funcionario.telefone,
   //           senha: funcionario.senha,
-  //           ativo: funcionario.ativo,
+  //           active: funcionario.active,
   //           tipoUsuarioId: funcionario.tipoUsuarioId,
   //           servicosId: funcionario.servicosId || [],
   //         }));
@@ -135,8 +135,8 @@ const Modal: React.FC = ({
 
   //           const mappedUsuario = usuarioData.map((usuario: User) => ({
   //             id: usuario.id,
-  //             nome: usuario.nome,
-  //             sobrenome: usuario.sobrenome,
+  //             name: usuario.name,
+  //             sobrename: usuario.sobrename,
   //             email: usuario.email,
   //             telefone: usuario.telefone,
   //             senha: usuario.senha,
@@ -187,12 +187,12 @@ const Modal: React.FC = ({
   //       idFuncionario: 0,
   //       usuarioId: 0,
   //       tipoUsuarioId: 0,
-  //       nome: formValuesProfissional.nome,
-  //       sobrenome: formValuesProfissional.sobrenome,
+  //       name: formValuesProfissional.name,
+  //       sobrename: formValuesProfissional.sobrename,
   //       email: formValuesProfissional.email,
   //       telefone: formValuesProfissional.telefone,
   //       senha: formValuesProfissional.senha,
-  //       ativo: formValuesProfissional.ativo,
+  //       active: formValuesProfissional.active,
   //       servicosId: formValuesProfissional.servicosId,
   //     };
 

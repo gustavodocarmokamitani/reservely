@@ -21,5 +21,21 @@ export const WrapperLogin = styled.div`
   width: 400px;
   height: 600px;
   background-color: f9f9f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const WrapperVerticalLogin = styled.div`
+  width: 1400px;
+  height: 800px;
+  background-color: f9f9f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: #ebebeb;
+  border-radius: 15px;
+  box-shadow: 4px 4px 15px 0px rgba(0, 0, 0, 0.50);
 `;
 

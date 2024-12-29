@@ -22,7 +22,7 @@ const ServiceSelect: React.FC<ServiceSelectProps> = ({ setService, value, select
         const response = await getServiceTypes();
   
         if (response && response.data) {
-          const serviceTypesAtivos = response.data.filter((serviceType: ServiceType) => serviceType.active === true);
+          const serviceTypesActives = response.data.filter((serviceType: ServiceType) => serviceType.active === true);
   
           if (selectedEmployee) {
             try {
@@ -43,14 +43,14 @@ const ServiceSelect: React.FC<ServiceSelectProps> = ({ setService, value, select
   
                 const formattedOptions2 = responseServiceNames.filter(Boolean).map((item: any) => ({
                   value: item.id,
-                  label: item.nome
+                  label: item.name
                 }));
   
                 setOptions(formattedOptions2);
               } else {
-                const formattedOptions = serviceTypesAtivos.map((item: any) => ({
+                const formattedOptions = serviceTypesActives.map((item: any) => ({
                   value: item.id,
-                  label: item.nome
+                  label: item.name
                 }));
   
                 formattedOptions.unshift({ value: 0, label: "Selecione..." });
@@ -59,18 +59,18 @@ const ServiceSelect: React.FC<ServiceSelectProps> = ({ setService, value, select
             } catch (error) {
               console.error("Erro ao buscar serviços do funcionário:", error);
   
-              const formattedOptions = serviceTypesAtivos.map((item: any) => ({
+              const formattedOptions = serviceTypesActives.map((item: any) => ({
                 value: item.id,
-                label: item.nome
+                label: item.name
               }));
   
               formattedOptions.unshift({ value: 0, label: "Selecione..." });
               setOptions(formattedOptions);
             }
           } else {
-            const formattedOptions = serviceTypesAtivos.map((item: any) => ({
+            const formattedOptions = serviceTypesActives.map((item: any) => ({
               value: item.id,
-              label: item.nome
+              label: item.name
             }));
   
             formattedOptions.unshift({ value: 0, label: "Selecione..." });

@@ -7,14 +7,14 @@ import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import { useSnackbar } from 'notistack';
 import HeaderTitle from "../view/HeaderTitle";
-import DataTable from "../view/DataTable";
 import Button from "../components/Button";
 import AddUserEmployeeModal from "../view/Modal/AddUserEmployeeModal";
+import ProfessionalDataTable from "../view/DataTable/ProfessionalDataTable";
 
 interface User {
   id: number;
   name: string;
-  lastname: string;
+  lastName: string;
   email: string;
   phone: string;
   password: string;
@@ -25,13 +25,13 @@ interface Employee {
   id: number;
   userId: number;
   active: string;
-  servicesId: number[];
+  serviceIds: number[];
 }
 
 interface Row {
   id: number;
   name: string;
-  lastname: string;
+  lastName: string;
   phone: string;
   email: string;
   services: number[];
@@ -67,11 +67,11 @@ function Professional() {
           return {
             id: user.id,
             name: user.name,
-            lastname: user.lastname,
+            lastName: user.lastName,
             phone: user.phone,
             email: user.email,
             active: employee.active,
-            services: employee.servicesId || [],
+            services: employee.serviceIds || [],
           };
         }
         return null;
@@ -88,13 +88,16 @@ function Professional() {
   const request = async () => {
     try {
       if (post) {
-        if (!userEmployeeContext?.name || !userEmployeeContext.lastname || !userEmployeeContext.phone) {
+        if (!userEmployeeContext?.name || !userEmployeeContext.lastName || !userEmployeeContext.phone) {
           setPost(false);
           enqueueSnackbar("Por favor, preencha todos os dados obrigatórios antes de continuar.", { variant: "error" });
           return;
         }
+        
         await createEmployeeUser(userEmployeeContext);
 
+        console.log(userEmployeeContext);
+        
         enqueueSnackbar("Professional criado com sucesso!", { variant: "success" });
         setUserEmployeeContext(null);
         setPost(false);
@@ -126,7 +129,6 @@ function Professional() {
                 await deleteEmployee(employeeId);
                 enqueueSnackbar(`Professional excluido com sucesso!`, { variant: "success" });
               } else {
-                console.log();
                 enqueueSnackbar(`Nenhum funcionário encontrado para o usuário com ID ${userId}`, { variant: "error" });
               }
               await deleteUser(userId);
@@ -146,7 +148,6 @@ function Professional() {
   };
 
   const handleRowSelect = (ids: number[]) => {
-    console.log("IDs selecionados na tabela: ", ids);
     setSelectedUserIds(ids);
   };
 
@@ -173,7 +174,7 @@ function Professional() {
             <Button $isAdd type="button" onClick={handleShow} />
           </Col>
         </Row>
-        <DataTable
+        <ProfessionalDataTable
           professional
           rowsProfessional={rows}
           onRowSelect={handleRowSelect}

@@ -34,13 +34,13 @@ const Navigation = () => {
         {[
           { path: "/appointment", icon: chamada, text: "Agendamento" },
           { path: "/appointment-history", icon: chamada, text: "Histórico Agendamento" },
-          { path: "/dashboard", icon: home, text: "Dashboard" },
+          // { path: "/dashboard", icon: home, text: "Dashboard" },
           { path: "/service", icon: service, text: "Serviços" },
           { path: "/professional", icon: professional, text: "Profissionais" },
-          { path: "/image", icon: image, text: "Imagens" },
+          // { path: "/image", icon: image, text: "Imagens" },
           { path: "/store", icon: store, text: "Loja" },
           { path: "/payment", icon: payment, text: "Formas de Pagamentos" },
-          { path: "/chamada", icon: chamada, text: "Chamadas e ajudas" },
+          // { path: "/chamada", icon: chamada, text: "Chamadas e ajudas" },
         ].map(({ path, icon, text }) => (
           <S.MenuContainer key={path}>
             <Link to={path} style={{ textDecoration: "none" }}>

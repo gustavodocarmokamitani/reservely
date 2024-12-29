@@ -75,11 +75,13 @@ export function Appointment() {
                 employeeId: funcionarioId.id,
                 appointmentDate: agendamentoData,
                 appointmentStatusId: 1,
-                servicesId: service.map((item) => item.value),
+                serviceIds: service.map((item) => item.value),
                 storeId: 1
             };
-
+                console.log(mapped);
+                
             await createAppointment([mapped]);
+            
             setEmployee({ value: 0, label: "Nenhum" });
             setClient({ value: 0, label: "Nenhum" });
             setService([{ value: 0, label: "Nenhum" }]);

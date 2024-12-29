@@ -19,7 +19,7 @@ import ClosingDateCard from "../components/Card/ClosingDateCard";
 
 function StoreConfigure() {
     const navigate = useNavigate();
-    const [formValuesStore, setFormValuesStore] = useState({ ativo: false });
+    const [formValuesStore, setFormValuesStore] = useState({ active: false });
     const [store, setStore] = useState<StoreModel | undefined>();
     const [selectedTimes, setSelectedTimes] = useState<string[]>([]);
     const [openingWeekDay, setOpeningWeekDay] = useState<string[]>([]);
@@ -38,7 +38,7 @@ function StoreConfigure() {
                 [name]: type === "checkbox" ? checked : value,
             };
 
-            setStatusStore(updatedValues.ativo);
+            setStatusStore(updatedValues.active);
             return updatedValues;
         });
     };
@@ -51,21 +51,21 @@ function StoreConfigure() {
 
                 setFormValuesStore((prev) => ({
                     ...prev,
-                    ativo: response.status,
+                    active: response.status,
                 }));
 
                 setStatusStore(response.status);
 
                 if (!selectedTimes || selectedTimes.length === 0) {
-                    const timeArray = response.openingTime
-                        ? response.openingTime.split(" - ")
+                    const timeArray = response.operatingHours
+                        ? response.operatingHours.split(" - ")
                         : [];
                     setSelectedTimes(timeArray);
                 };
 
                 if (!openingWeekDay || openingWeekDay.length === 0) {
-                    const OpeningWeekDayArray = response.openingDays
-                        ? response.openingDays
+                    const OpeningWeekDayArray = response.operatingDays
+                        ? response.operatingDays
                         : [];
                     setOpeningWeekDay(OpeningWeekDayArray);
                 };
@@ -87,26 +87,18 @@ function StoreConfigure() {
         fetchData();
     }, [])
 
-    const handleDateChange = (selectedDates: Date[] | null) => {
-        setClosingDates(selectedDates);
-
-        setFormValuesStore((prevValues) => ({
-            ...prevValues,
-            closingDates: selectedDates
-        }));
-
-    };
-
     const handleSubmit = async () => {
         if (store) {
             const storeMapped: Store = {
                 ...store,
-                status: formValuesStore.ativo,
-                openingTime: selectedTimes.join(" - "),
+                status: formValuesStore.active,
+                operatingHours: selectedTimes.join(" - "),
                 closingDays: closingDates
-                    ? closingDates.map((data) => data.toISOString())
+                    ? closingDates
+                        .filter((data) => data instanceof Date && !isNaN(data.getTime()))
+                        .map((data) => data.toISOString())
                     : [],
-                openingDays: openingWeekDay,
+                operatingDays: openingWeekDay,
             };
 
             try {
@@ -120,13 +112,26 @@ function StoreConfigure() {
         }
     };
 
-    const handleRemoveDataFechamento = (dateToRemove: Date) => {
-        setClosingDates((prevDatas) =>
-            prevDatas ? prevDatas.filter((data) => data.getTime() !== dateToRemove.getTime()) : []
-        );
+    const handleDateChange = (selectedDates: Date[] | null) => {
+        setClosingDates(selectedDates);
+
+        setFormValuesStore((prevValues) => ({
+            ...prevValues,
+            closingDates: selectedDates
+        }));
     };
 
-    const handleRemoveDiaFuncionamento = (dayToRemove: string) => {
+    const handleRemoveDataClosed = (dateToRemove: Date) => {
+        setClosingDates((closingDates) => {
+            if (closingDates) {
+                return closingDates.filter((data) => data.getTime() !== dateToRemove.getTime());
+            } else {
+                return []; 
+            }
+        });
+    };
+
+    const handleRemoveDateClosed = (dayToRemove: string) => {
         setOpeningWeekDay((prevDays) =>
             prevDays.filter((day) => day !== dayToRemove)
         );
@@ -161,8 +166,8 @@ function StoreConfigure() {
                             <p>Store</p>
                             <Input
                                 type="toggle"
-                                name="ativo"
-                                value={formValuesStore.ativo.toString()}
+                                name="active"
+                                value={formValuesStore.active.toString()}
                                 onChange={handleInputChangeStore}
                                 width="300"
                             />
@@ -196,7 +201,7 @@ function StoreConfigure() {
                                 <WeekDayCard
                                     text={item}
                                     icon="remove"
-                                    onRemove={() => handleRemoveDiaFuncionamento(item)}
+                                    onRemove={() => handleRemoveDateClosed(item)}
                                 />
                             ))
                         }
@@ -211,11 +216,10 @@ function StoreConfigure() {
                                         key={index}
                                         text={item.toLocaleDateString()}
                                         icon="remove"
-                                        onRemove={() => handleRemoveDataFechamento(item)}
+                                        onRemove={() => handleRemoveDataClosed(item)}
                                     />
                                 )) : ''
                         }
-
                     </S.CardStoreWrapper>
 
                 </Col>

@@ -4,7 +4,7 @@ export interface Appointment {
     employeeId: number;
     appointmentDate: Date;
     appointmentStatusId: number;
-    servicesId: number[];
+    serviceIds: number[];
     storeId: number;
   }
   

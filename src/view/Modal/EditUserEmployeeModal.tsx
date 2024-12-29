@@ -10,7 +10,7 @@ import { AppContext } from "../../context/AppContext";
 import * as S from "./Modal.styles";
 import Button from "../../components/Button";
 import closeIcon from "../../assets/remove.svg";
-import InputGroudProfissional from "../../components/InputGroupProfessional";
+import InputGroupProfissional from "../../components/InputGroupProfessional";
 
 interface EditUserEmployeeModal {
   title: string;
@@ -39,13 +39,13 @@ const EditUserEmployeeModal: React.FC<EditUserEmployeeModal> = ({
     id: 0,
     userId: 0,
     name: "",
-    lastname: "",
+    lastName: "",
     email: "",
     phone: "",
     active: "false",
     password: "",
     userTypeId: 0,
-    servicesId: [] as number[],
+    serviceIds: [] as number[],
   });
 
   const { setUserEmployeeUpdateContext } = useContext(AppContext)!;
@@ -73,13 +73,13 @@ const EditUserEmployeeModal: React.FC<EditUserEmployeeModal> = ({
             id: employee.id,
             userId: employee.userId,
             name: employee.name,
-            lastname: employee.lastname,
+            lastName: employee.lastName,
             email: employee.email,
             phone: employee.phone,
             password: employee.password,
             active: employee.active,
             userTypeId: employee.userTypeId,
-            servicesId: employee.servicesId || [],
+            serviceIds: employee.serviceIds || [],
           }));
 
           setEmployee(mappedEmployee);
@@ -94,7 +94,7 @@ const EditUserEmployeeModal: React.FC<EditUserEmployeeModal> = ({
             const mappedUser = userData.map((user: User) => ({
               id: user.id,
               name: user.name,
-              lastname: user.lastname,
+              lastName: user.lastName,
               email: user.email,
               phone: user.phone,
               password: user.password,
@@ -125,12 +125,12 @@ const EditUserEmployeeModal: React.FC<EditUserEmployeeModal> = ({
         userId: 0,
         userTypeId: 0,
         name: formValuesProfissional.name,
-        lastname: formValuesProfissional.lastname,
+        lastName: formValuesProfissional.lastName,
         email: formValuesProfissional.email,
         phone: formValuesProfissional.phone,
         password: formValuesProfissional.password,
         active: formValuesProfissional.active,
-        servicesId: formValuesProfissional.servicesId,
+        serviceIds: formValuesProfissional.serviceIds,
       };
 
       setUserEmployeeUpdateContext(updatedUserFunc);
@@ -140,10 +140,10 @@ const EditUserEmployeeModal: React.FC<EditUserEmployeeModal> = ({
     handleClose();
   };
 
-  const handleServiceSelection = (servicesId: number[]) => {
+  const handleServiceSelection = (serviceIds: number[]) => {
     setFormValuesProfissional((prev) => ({
       ...prev,
-      servicesId,
+      serviceIds,
     }));
   };
 
@@ -186,7 +186,7 @@ const EditUserEmployeeModal: React.FC<EditUserEmployeeModal> = ({
           <hr />
         </Row>
         {edit && (
-          <InputGroudProfissional
+          <InputGroupProfissional
             setFormValuesProfessional={setFormValuesProfissional}
             formValuesProfessional={formValuesProfissional}
             handleInputChange={handleInputChangeProfissional}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Col, Row } from "react-bootstrap";
 import { useContext } from "react";
@@ -6,8 +6,11 @@ import { AppContext } from "../../context/AppContext";
 import * as S from "./Modal.styles";
 import Button from "../../components/Button";
 import closeIcon from "../../assets/remove.svg";
-import InputGroudProfessional from "../../components/InputGroupProfessional";
+import InputGroupProfessional from "../../components/InputGroupProfessional";
 import { UserEmployee } from "../../models/UserEmployee";
+import api from "../../axiosInstance";
+import { getServices } from "../../services/ServiceServices";
+import { getServiceTypes } from "../../services/ServiceTypeServices";
 
 interface AddUserEmployeeModalProps {
   title: string;
@@ -33,16 +36,16 @@ const AddUserEmployeeModal: React.FC<AddUserEmployeeModalProps> = ({
     id: 0,
     userId: 0,
     name: "",
-    lastname: "",
+    lastName: "",
     email: "",
     phone: "",
     active: "false",
     password: "",
     userTypeId: 0,
-    servicesId: [] as number[],
+    serviceIds: [] as number[],
   });
 
-  const { setUserEmployeeContext } = useContext(AppContext)!;
+  const { setUserEmployeeContext, userEmployeeContext } = useContext(AppContext)!;
   const [serviceType, setServiceType] = useState([]);
 
   const sizeMap = {
@@ -51,23 +54,35 @@ const AddUserEmployeeModal: React.FC<AddUserEmployeeModalProps> = ({
     large: "1050px",
   };
 
+  useEffect(() => {
+    async function fetchServices() {
+      const services = await getServiceTypes();
+       
+      setServiceType(services.data);
+    }
+    fetchServices();
+  }, []);
+  
+
   const handleSubmit = async () => {
     if (professional) {
       const professionalData = {
         ...formValuesProfessional,
-        servicesId: formValuesProfessional.servicesId,
+        serviceIds: formValuesProfessional.serviceIds,
         storeId: 1
       };
+      console.log(professionalData);
+      
       setUserEmployeeContext(professionalData);
       setPost(true);
     }
     handleClose();
   };
 
-  const handleServiceSelection = (servicesId: number[]) => {
+  const handleServiceSelection = (serviceIds: number[]) => {
     setFormValuesProfessional((prev) => ({
       ...prev,
-      servicesId,
+      serviceIds,
     }));
   };
   const handleInputChangeProfessional = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,6 +92,11 @@ const AddUserEmployeeModal: React.FC<AddUserEmployeeModalProps> = ({
       [name]: type === "checkbox" ? (checked ? "true" : "false") : value,
     }));
   };
+  useEffect(() => {
+    console.log("Updated userEmployeeContext:", userEmployeeContext);
+  }, [userEmployeeContext]);
+  
+  
 
   return (
     <S.Overlay>
@@ -109,7 +129,8 @@ const AddUserEmployeeModal: React.FC<AddUserEmployeeModalProps> = ({
           <hr />
         </Row>
         {professional && (
-          <InputGroudProfessional
+          <InputGroupProfessional
+          setFormValuesProfessional={setFormValuesProfessional}
             formValuesProfessional={formValuesProfessional}
             handleInputChange={handleInputChangeProfessional}
             handleServiceSelection={handleServiceSelection}

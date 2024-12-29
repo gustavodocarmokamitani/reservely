@@ -2,7 +2,7 @@ export interface Employee {
     id: number;
     userId: number;
     active: string;
-    servicesId: number[];
+    serviceIds: number[];
     storeId: number;
   }
   

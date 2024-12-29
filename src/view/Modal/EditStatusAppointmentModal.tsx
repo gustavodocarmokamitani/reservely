@@ -54,7 +54,7 @@ const EditStatusAppointmentModal: React.FC<EditStatusAppointmentModalProps> = ({
                         employeeId: response.employeeId,
                         appointmentDate: response.appointmentData,
                         appointmentStatusId: statusAppointment?.value,
-                        servicesId: response.servicesId,
+                        serviceIds: response.serviceIds,
                         storeId: 1
                     }
 

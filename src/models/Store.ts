@@ -3,9 +3,9 @@ export interface Store {
     name: string;
     address: string;
     status: boolean;
-    openingTime: string;
+    operatingHours: string;
     closingDays: string[];
-    openingDays: string[];
+    operatingDays: string[];
     paymentMethod: number[];
   }
   

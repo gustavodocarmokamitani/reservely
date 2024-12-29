@@ -179,7 +179,7 @@ const ReactSelect: React.FC<ReactSelectProps> = ({
         employeeId: parseInt(selectedEmployee.value),
         appointmentDate: appointmentDate,
         appointmentStatusId: 1,
-        servicesId: [],
+        serviceIds: [],
         storeId: 1
       };
   

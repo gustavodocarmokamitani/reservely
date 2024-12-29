@@ -27,7 +27,7 @@ interface DataTableProps {
   loja?: boolean;
   rowsService?: ServiceType[];
   rowsAppointment?: Appointment[];
-  rowsProfessional?: Array<{ id: number; name: string; lastname: string; phone: string; services: number[] }>;
+  rowsProfessional?: Array<{ id: number; name: string; lastName: string; phone: string; services: number[] }>;
   onRowSelect?: (id: number[]) => void;
   setUpdate: React.Dispatch<React.SetStateAction<boolean>>;
   update: boolean;
@@ -164,7 +164,7 @@ const DataTable: React.FC<DataTableProps> = ({
       { field: "value", headerName: "Valor", flex: 1, align: "center", headerAlign: "center" },
       { field: "durationMinutes", headerName: "Duração", flex: 1, align: "center", headerAlign: "center" },
       {
-        field: "ativo", headerName: "Ativo", type: "boolean", flex: 1, align: "center", headerAlign: "center",
+        field: "active", headerName: "Ativo", type: "boolean", flex: 1, align: "center", headerAlign: "center",
         renderCell: (params) => (
           params.value === true ? (
             <img
@@ -176,7 +176,7 @@ const DataTable: React.FC<DataTableProps> = ({
             <img
               style={{ cursor: "pointer" }}
               src={remove}
-              alt="Inativo"
+              alt="Inactive"
             />
           )
         ),
@@ -201,10 +201,10 @@ const DataTable: React.FC<DataTableProps> = ({
     ]
     : professional ? [
       { field: "name", headerName: "Nome", width: columnWidth, align: "center", headerAlign: "center" },
-      { field: "lastname", headerName: "Sobrename", width: columnWidth, align: "center", headerAlign: "center" },
+      { field: "lastName", headerName: "Sobrename", width: columnWidth, align: "center", headerAlign: "center" },
       { field: "phone", headerName: "Telefone", width: columnWidth, align: "center", headerAlign: "center" },
       {
-        field: "ativo", headerName: "Ativo", type: "boolean", width: columnWidth, align: "center", headerAlign: "center",
+        field: "active", headerName: "Ativo", type: "boolean", width: columnWidth, align: "center", headerAlign: "center",
         renderCell: (params) => (
           params.value === "true" ? (
             <img
@@ -216,7 +216,7 @@ const DataTable: React.FC<DataTableProps> = ({
             <img
               style={{ cursor: "pointer" }}
               src={remove}
-              alt="Inativo"
+              alt="Inactive"
             />
           )
         ),
@@ -259,7 +259,7 @@ const DataTable: React.FC<DataTableProps> = ({
                 <img
                   style={{ cursor: "pointer" }}
                   src={info}
-                  onClick={() => handleShowModal("infoAppointmentService", params.row.servicesId)}
+                  onClick={() => handleShowModal("infoAppointmentService", params.row.serviceIds)}
                   alt="Informações"
                 />
                 <img

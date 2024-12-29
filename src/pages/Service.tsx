@@ -7,9 +7,9 @@ import { useSnackbar } from 'notistack';
 import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import HeaderTitle from "../view/HeaderTitle";
-import DataTable from "../view/DataTable";
 import Button from "../components/Button";
 import AddServiceModal from "../view/Modal/AddServiceModal";
+import ServiceDataTable from "../view/DataTable/ServiceDataTable";
 
 interface Row {
   id: number;
@@ -141,7 +141,7 @@ function Service() {
             />
           </Col>
         </Row>
-        <DataTable
+        <ServiceDataTable
           service
           rowsService={rows}
           onRowSelect={handleRowSelect}

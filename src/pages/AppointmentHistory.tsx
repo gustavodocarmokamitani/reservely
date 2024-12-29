@@ -12,6 +12,7 @@ import moment from 'moment';
 import { getAppointmentStatusById } from "../services/AppointmentStatusServices";
 
 import { useSnackbar } from 'notistack';
+import AppointmentDataTable from "../view/DataTable/AppointmentDataTable";
 
 function AppointmentHistory() {
     const [selectedAppointmentIds, setSelectedAppointmentIds] = useState<number[]>([]);
@@ -35,9 +36,9 @@ function AppointmentHistory() {
                 return {
                     id: appointment.id,
                     employeeId: userData.name,
-                    clientId: userClientData.namw,
+                    clientId: userClientData.name,
                     appointmentDate: formattedDate,
-                    servicesId: appointment.servicesId,
+                    serviceIds: appointment.serviceIds,
                     appointmentStatus: appointmentStatusData.name,
                 };
             }));
@@ -95,7 +96,7 @@ function AppointmentHistory() {
                         <Button onClick={handleDeleteAppointment} $isRemove type="button" />
                     </Col>
                 </Row>
-                <DataTable
+                <AppointmentDataTable
                     appointment
                     rowsAppointment={rows}
                     onRowSelect={handleRowSelect}

@@ -9,23 +9,23 @@ interface InputGroupProfessionalProps {
   addProf?: boolean;
   formValuesProfessional: {
     name: string;
-    lastname: string;
+    lastName: string;
     email: string;
     phone: string;
     active: string;
   };
   handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleServiceSelection: (selectedServices: number[]) => void;
-  setFormValuesProfessional?: React.Dispatch<React.SetStateAction<UserEmployee>>;
+  setFormValuesProfessional: React.Dispatch<React.SetStateAction<UserEmployee>>;
   data?: {
     id: number;
     userId: number;
     name: string;
-    lastname: string;
+    lastName: string;
     email: string;
     phone: string;
     active: string;
-    servicesId: number[];
+    serviceIds: number[];
     password: string;
     userTypeId: number;
   }[];
@@ -45,13 +45,13 @@ const InputGroupProfessional: React.FC<InputGroupProfessionalProps> = ({
         id: data[0].id,
         userId: data[0].userId,
         name: data[0].name,
-        lastname: data[0].lastname,
+        lastName: data[0].lastName,
         email: data[0].email,
         phone: data[0].phone,
         active: data[0].active,
         userTypeId: data[0].userTypeId,
         password: data[0].password,
-        servicesId: data[0].servicesId,
+        serviceIds: data[0].serviceIds,
       };
   
       setFormValuesProfessional?.(prevState => {
@@ -63,8 +63,8 @@ const InputGroupProfessional: React.FC<InputGroupProfessionalProps> = ({
     }
   }, [edit, data, setFormValuesProfessional]);  
 
-  const profissionalData = data?.[0] ?? null;
-
+  const professionalData = data?.[0] ?? null;
+  
   return (
     <Row>
       <Col md={4} className="mt-3 mb-3">
@@ -80,8 +80,8 @@ const InputGroupProfessional: React.FC<InputGroupProfessionalProps> = ({
           width="300"
           type="text"
           placeholder="Sobrename"
-          name="lastname"
-          value={formValuesProfessional.lastname}
+          name="lastName"
+          value={formValuesProfessional.lastName}
            onChange={(e) => handleInputChange(e as React.ChangeEvent<HTMLInputElement>)}
         />
         <Input
@@ -112,14 +112,14 @@ const InputGroupProfessional: React.FC<InputGroupProfessionalProps> = ({
       <Col md={8}>
       {edit &&
           <Selected
-            options={profissionalData ? [profissionalData] : undefined}
+            options={professionalData ? [professionalData] : undefined}
             onChange={handleServiceSelection}
             edit
           />
         }
         {addProf &&
           <Selected
-            options={profissionalData ? [profissionalData] : undefined}
+            options={professionalData ? [professionalData] : undefined}
             onChange={handleServiceSelection}
             addProf
           />

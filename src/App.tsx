@@ -12,6 +12,8 @@ import { Appointment } from "./pages/Appointment";
 import AppointmentHistory from "./pages/AppointmentHistory";
 import StoreConfigurar from "./pages/StoreConfigure";
 import Login from "./pages/Login";
+import Home from "./pages/Home";
+import Register from "./pages/Register";
 
 function App() {
   const isAuthenticated = true;
@@ -21,7 +23,9 @@ function App() {
       <Router>
         <Routes>
           {/* Tela de Login, isolada */}
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
 
           {/* Rotas protegidas para usuários autenticados */}
           {isAuthenticated && (
@@ -32,7 +36,6 @@ function App() {
                   <Navigation />
                   <div style={{ flex: 1, marginLeft: "18.75rem" }}>
                     <Routes>
-                      <Route path="/home" element={<h1>Home</h1>} />
                       <Route path="/appointment" element={<Appointment />} />
                       <Route
                         path="/appointment-history"
