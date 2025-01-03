@@ -4,7 +4,8 @@ import { ContainerRegister, ParagraphThin } from "./_Page.styles";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import cadastroPng from "../assets/cadastro.png";
-import { registerUser } from "../services/RegisterService";
+import { RegisterData } from "../models/RegisterData";
+import { registerUser } from "../services/AuthService"; // Mantendo a importação correta
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -29,22 +30,24 @@ const Register = () => {
       setErrorMessage("Passwords do not match.");
       return;
     }
-
+  
     setLoading(true);
     setErrorMessage("");
-
+  
     try {
+      // Passando o objeto diretamente, sem aspas escapadas
       const response = await registerUser({
         name: formData.name,
         lastName: formData.lastname,
         email: formData.email,
         phone: formData.phone,
         password: formData.password,
-        userTypeId: 1,
+        userName: formData.email, // Usando o email como userName
+        userTypeId: 1, // Enviar o userTypeId corretamente
       });
-
+  
       if (response) {
-        window.location.href = "/login";
+        window.location.href = "/login"; // Redirecionar após sucesso
       }
     } catch (error) {
       setErrorMessage("An error occurred. Please try again.");
@@ -52,6 +55,7 @@ const Register = () => {
       setLoading(false);
     }
   };
+  
 
   return (
     <ContainerRegister>
