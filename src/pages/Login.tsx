@@ -1,54 +1,45 @@
+import React from "react";
 import { Col, Row } from "react-bootstrap";
-import { ContainerLogin, WrapperVerticalLogin } from "./_Page.styles";
+import { ContainerRegister, ParagraphThin } from "./_Page.styles";
 import Button from "../components/Button";
 import Input from "../components/Input";
-import loginArt from "../assets/loginArt.png"
+import cadastroPng from "../assets/cadastro.png";
 
 const Login = () => {
-    return (
-        <ContainerLogin>
-            <WrapperVerticalLogin>
-                <Row>
-                    <Col md={6}>
-
-                        <Row className="text-center">
-                            <Col md={12} style={{ marginBottom: "50px" }}>
-                                <h1>agendaI</h1>
-                            </Col>
-                        </Row>
-
-                        <Row className="d-flex justify-content-center">
-                            <Col md={12} className="text-center">
-                                <div style={{ marginBottom: "50px" }}>
-                                    <Input placeholder="Email" width="350" name="email" type="text" />
-                                    <Input placeholder="Password" width="350" name="password" type="text" />
-
-                                    <Row className="d-flex justify-content-end">
-                                        <Col md={12} className="text-end">
-                                            <a href="#" className="text-muted" style={{ fontSize: ".8rem", marginRight: '3.4rem' }}>Register</a>
-                                        </Col>
-                                    </Row>
-
-                                    <Row className="d-flex justify-content-end">
-                                        <Col md={12} className="text-end">
-                                            <a href="#" className="text-muted" style={{ fontSize: ".8rem", marginRight: '3.4rem' }}>Forgot password</a>
-                                        </Col>
-                                    </Row>
-                                </div>
-                            </Col>
-                        </Row>
-
-                        <Row className="d-flex justify-content-center">
-                            <Button $isLogin type="button" onClick={() => { }} />
-                        </Row>
-                    </Col>
-                    <Col md={6}>
-                        <img src={loginArt} alt="" />
-                    </Col>
-                </Row>
-            </WrapperVerticalLogin>
-        </ContainerLogin>
-    );
+  return (
+    <ContainerRegister>
+      <Row style={{ justifyContent: "center", paddingTop: "180px" }}>
+        <Col md={6}>
+          <h2>Welcome Back 👋</h2>
+          <p>Today is a new day. It's your day. You shape it.</p>
+          <p>Sign in to start managing your projects.</p>
+          <Row className="align-items-center">
+            <Col md={6}>
+              <Input placeholder="Email" name="name" type="text" width="400" />
+            </Col>
+            <Col md={6}>
+              <Input
+                placeholder="Password"
+                name="password"
+                type="text"
+                width="400"
+              />
+            </Col>
+          </Row>
+          <Row className="text-center pt-4">
+            <Col>
+              <Button $isLogin type="button" />
+              <p className="mt-4 mb-4">
+                Don't have an account? <a href="/register">Sign up</a>
+              </p>
+              <ParagraphThin>Or login with</ParagraphThin>
+              <Button $isGoogle type="button" />
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+    </ContainerRegister>
+  );
 };
 
 export default Login;

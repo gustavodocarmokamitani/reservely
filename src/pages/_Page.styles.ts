@@ -17,6 +17,13 @@ export const ContainerLogin = styled.div`
     align-items: center;
 `;
 
+export const ContainerRegister = styled.div`
+    width: 100vw;
+    height: 100vh;
+    padding: 40px;
+    background: #fafafa;
+`;
+
 export const WrapperLogin = styled.div`
   width: 400px;
   height: 600px;
@@ -33,9 +40,13 @@ export const WrapperVerticalLogin = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+  flex-direction: row;
   background: #ebebeb;
   border-radius: 15px;
   box-shadow: 4px 4px 15px 0px rgba(0, 0, 0, 0.50);
 `;
 
+export const ParagraphThin = styled.p`
+  font-size: 12px !important; 
+  color:rgb(131, 131, 131) !important;
+`;

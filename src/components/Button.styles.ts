@@ -9,6 +9,8 @@ interface ButtonProps {
   $isBack?: boolean;
   $isLogin?: boolean;
   $isRegister?: boolean;
+  $isGoogle?: boolean;
+  disabled?: boolean;
 }
 
 export const Button = styled.button<ButtonProps>`
@@ -26,9 +28,13 @@ export const Button = styled.button<ButtonProps>`
     if (props.$isBack) return "#fff";
     if (props.$isLogin) return "#2A2A2A";
     if (props.$isRegister) return "#fff";
+    if (props.$isGoogle) return "#fff";
     return "#FF060B"; 
   }};
-  color: ${(props) => (props.$isRemove || props.$isBack || props.$isRegister ? "black" : "white")};
+  color: ${(props) => (props.$isRemove || props.$isBack || props.$isRegister || props.$isGoogle ? "black" : "white")};
   border: 1px solid ${(props) => (props.$isBack ? "black" : "none")};
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
+  opacity: ${(props) => (props.disabled ? 0.5 : 1)};
+  pointer-events: ${(props) => (props.disabled ? "none" : "auto")};
+ 
 `;
-

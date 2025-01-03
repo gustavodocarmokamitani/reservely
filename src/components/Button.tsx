@@ -3,6 +3,7 @@ import addIcon from '../assets/add.svg';
 import removeIcon from '../assets/remove.svg'; 
 import confirmIcon from '../assets/confirm.svg'; 
 import closedIcon from '../assets/closed.svg'; 
+import googleIcon from '../assets/googleIcon.svg';
 import * as S from "./Button.styles";
 
 interface ButtonProps {
@@ -14,11 +15,13 @@ interface ButtonProps {
   $isBack?: boolean;
   $isLogin?: boolean;
   $isRegister?: boolean;
+  $isGoogle?: boolean;
   type: "button" | "submit" | "reset";
   onClick?: () => void;
+  disabled?: boolean;
 }
 
-const Button: React.FC<ButtonProps> = ({ $isAdd, $isRemove, $isClosed, $isConfirm, $isConfigure, $isBack, $isLogin, $isRegister, type, onClick }) => {
+const Button: React.FC<ButtonProps> = ({ disabled, $isGoogle, $isAdd, $isRemove, $isClosed, $isConfirm, $isConfigure, $isBack, $isLogin, $isRegister, type, onClick }) => {
   let icon = null;
   let buttonText = "";
 
@@ -44,10 +47,13 @@ const Button: React.FC<ButtonProps> = ({ $isAdd, $isRemove, $isClosed, $isConfir
     buttonText = "Login";
   } else if ($isRegister) {
     buttonText = "Registrar";
+  } else if ($isGoogle) {
+    icon = <img src={googleIcon} alt="Google Icon" style={{ marginRight: "8px" }} />;
+    buttonText = "Google";
   }
 
   return (
-    <S.Button type={type} $isRegister={$isRegister} $isLogin={$isLogin} $isBack={$isBack} $isAdd={$isAdd} $isConfigure={$isConfigure}  $isRemove={$isRemove} $isClosed={$isClosed} $isConfirm={$isConfirm} style={{ margin: "0 1rem" }} onClick={onClick}>
+    <S.Button disabled={disabled} type={type} $isGoogle={$isGoogle} $isRegister={$isRegister} $isLogin={$isLogin} $isBack={$isBack} $isAdd={$isAdd} $isConfigure={$isConfigure}  $isRemove={$isRemove} $isClosed={$isClosed} $isConfirm={$isConfirm} style={{ margin: "0 1rem" }} onClick={onClick}>
       <div className="d-flex align-items-center justify-content-center">
         {icon}
         {buttonText}
