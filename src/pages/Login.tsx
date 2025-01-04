@@ -3,10 +3,11 @@ import { Col, Row } from "react-bootstrap";
 import { ContainerRegister, ParagraphThin } from "./_Page.styles";
 import Button from "../components/Button";
 import Input from "../components/Input";
-import { loginUser } from "../services/AuthService";
+import { decodeToken, loginUser } from "../services/AuthService";
 import { AppContext } from "../context/AppContext";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
+import { getUserByEmail } from "../services/UserServices";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -15,44 +16,54 @@ const Login = () => {
 
   const { enqueueSnackbar } = useSnackbar();
   const context = useContext(AppContext);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!context) {
-      return; 
-    }
-
-    const { authToken } = context;
-    if (authToken) {
-      console.log("Token no contexto:", authToken);
-    }
-  }, [context]); 
-
-  const { setUserContext, setEmployeeContext, setUserEmployeeContext, setAuthToken } = context || {};
+  const {
+    setUserContext,
+    setEmployeeContext,
+    setUserEmployeeContext,
+    setAuthToken,
+    setUserRoleContext,
+  } = context || {};
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-  
+
     try {
-      const response = await loginUser({ email, password });
-      console.log("Login bem-sucedido", response);
-  
-      const user = response.user;
-      const employee = response.employee;
-      const token = response.token;
-  
-      console.log("Token recebido:", token);
-  
-      if (setAuthToken) setAuthToken(token);
-  
-      localStorage.setItem('authToken', token);
-  
-      if (setUserContext) setUserContext(user);
-      if (setEmployeeContext) setEmployeeContext(employee);
-      if (setUserEmployeeContext) setUserEmployeeContext({ ...user, ...employee });
+      const responseEmailConfirmed = await getUserByEmail(email);
+      console.log(responseEmailConfirmed);
       
-      navigate("/appointment"); 
+      if (responseEmailConfirmed.emailConfirmed == true) {
+        const responseLogin = await loginUser({ email, password });
+
+        const user = responseLogin.user;
+        const employee = responseLogin.employee;
+        const token = responseLogin.token;
+
+        if (setAuthToken) setAuthToken(token);
+
+        localStorage.setItem("authToken", token);
+
+        if (setUserContext) setUserContext(user);
+        if (setEmployeeContext) setEmployeeContext(employee);
+        if (setUserEmployeeContext)
+          setUserEmployeeContext({ ...user, ...employee });
+
+        const decodedData = await decodeToken(token);
+        const { userId, userEmail, userRole } = decodedData;
+
+        if (setUserRoleContext) {
+          setUserRoleContext({ userId, userEmail, userRole });
+        } else {
+          console.error("setUserRoleContext não está definido");
+        }
+
+        navigate("/appointment");
+      } else {
+        enqueueSnackbar("E-mail não verificado.", { variant: "default" });
+      }
+      enqueueSnackbar(`Seja bem vindo ${responseEmailConfirmed.name} ${responseEmailConfirmed.lastName}! `, { variant: "success" });
     } catch (err) {
       console.error("Erro ao tentar fazer login:", err);
 
@@ -70,9 +81,11 @@ const Login = () => {
     <ContainerRegister>
       <Row style={{ justifyContent: "center", paddingTop: "180px" }}>
         <Col md={6}>
-          <h2>Welcome Back 👋</h2>
-          <p>Today is a new day. It's your day. You shape it.</p>
-          <p>Sign in to start managing your projects.</p>
+          <div className="text-center">
+            <h2>Bem vindo de volta 👋</h2>
+            <p className="pt-2">Hoje é um novo começo. A oportunidade de fazer a diferença está em suas mãos.</p>
+            <p>Faça o login para começar a gerenciar seus projetos.</p>
+          </div>
           <form onSubmit={handleLogin}>
             <Row className="align-items-center">
               <Col md={6}>
@@ -104,6 +117,10 @@ const Login = () => {
                 </p>
                 <ParagraphThin>Or login with</ParagraphThin>
                 <Button $isGoogle type="button" />
+                <ParagraphThin className="mt-4 mb-4">
+                  Having difficulty logging in?{" "}
+                  <a href="/help-login">Get help</a>
+                </ParagraphThin>
               </Col>
             </Row>
           </form>

@@ -15,7 +15,6 @@ import { SelectOption } from "../models/SelectOptions";
 import { getEmployeeIdByUserId } from "../services/EmployeeServices";
 import { useSnackbar } from 'notistack';
 
-
 export function Appointment() {
     const { enqueueSnackbar } = useSnackbar();
     const [employee, setEmployee] = useState<SelectOption | null>(null);

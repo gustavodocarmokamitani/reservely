@@ -18,6 +18,7 @@ import Home from "./pages/Home";
 import Register from "./pages/Register";
 import RegisterConfirmEmail from "./pages/RegisterConfirmEmail";
 import RegisterReSendEmail from "./pages/RegisterReSendEmail";
+import RegisterHelp from "./pages/RegisterHelp";
 
 function App() {
   const context = useContext(AppContext);
@@ -39,6 +40,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/confirm-email" element={<RegisterConfirmEmail />} />
           <Route path="/resend-email" element={<RegisterReSendEmail />} />
+          <Route path="/help-login" element={<RegisterHelp />} />
 
           {/* Rotas protegidas, somente acessíveis se estiver autenticado */}
           <Route

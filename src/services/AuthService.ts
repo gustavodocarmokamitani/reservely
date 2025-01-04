@@ -44,3 +44,13 @@ export const checkEmail = async (email: string) => {
         console.error("Error checking email:", error);
     }
 };
+
+export const decodeToken = async (token: string) => {
+    try {
+        const response = await api.post('/auth/decode-token', token);
+        return response.data;
+    } catch (error) {
+        console.error("Error decoding token:", error);
+        throw error;
+    }
+};

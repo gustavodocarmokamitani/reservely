@@ -32,6 +32,17 @@ export const getUserTypeIdById = async (id: number) => {
     }
 };
 
+export const getUserByEmail = async (email: string) => {
+    try {
+        const response = await api.get(`user/email/${email}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error getting user by email:", error);
+        throw error;
+    }
+};
+
+
 export const createUser = async (userData: User) => {
     try {
         const response = await api.post('user', userData);

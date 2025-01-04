@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ContainerPage } from "./_Page.styles";
 import { Col, Row } from "react-bootstrap";
 import { PaymentMethod } from "../models/PaymentMethod";
@@ -9,11 +9,14 @@ import * as S from "./Payment.styles";
 import HeaderTitle from "../view/HeaderTitle";
 import Button from "../components/Button";
 import MetodoPaymentSelect from "../components/Select/PaymentMethodSelect";
+import { AppContext } from "../context/AppContext";
 
 function Payment() {
   const { enqueueSnackbar } = useSnackbar();
   const [payment, setPayment] = useState<PaymentMethod[]>([]);
   const [store, setStore] = useState<Store | null>(null);
+
+  const { userRoleContext } = useContext(AppContext)!;
 
   useEffect(() => {
     const fetchStore = async () => {
@@ -70,11 +73,13 @@ function Payment() {
           md={5}
           className="d-flex flex-row justify-content-end align-items-center"
         >
+           {userRoleContext?.userRole === "Admin" && (
           <Button
             $isConfirm
             onClick={handleSubmit}
             type="button"
           />
+           )}
         </Col>
       </Row>
       <S.PaymentContainer>

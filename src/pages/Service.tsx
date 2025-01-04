@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { ContainerPage } from "./_Page.styles";
 import { Col, Row } from "react-bootstrap";
-import { createServiceTypeByStoreId, deleteServiceType, getServiceTypes } from "../services/ServiceTypeServices";
+import {
+  createServiceTypeByStoreId,
+  deleteServiceType,
+  getServiceTypes,
+} from "../services/ServiceTypeServices";
 import { ServiceType } from "../models/ServiceType";
-import { useSnackbar } from 'notistack';
+import { useSnackbar } from "notistack";
 import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import HeaderTitle from "../view/HeaderTitle";
@@ -30,10 +34,9 @@ function Service() {
   const [selectedServiceIds, setSelectedServiceIds] = useState<number[]>([]);
 
   const { enqueueSnackbar } = useSnackbar();
-  const {
-    serviceContext,
-    setServiceContext
-  } = useContext(AppContext)!;
+
+  const { serviceContext, setServiceContext, userRoleContext } =
+    useContext(AppContext)!;
 
   useEffect(() => {
     fetchData();
@@ -50,10 +53,17 @@ function Service() {
 
   const handleCreateServiceType = async () => {
     try {
-
-      if (!serviceContext?.name || !serviceContext.description || !serviceContext.value || !serviceContext.durationMinutes) {
+      if (
+        !serviceContext?.name ||
+        !serviceContext.description ||
+        !serviceContext.value ||
+        !serviceContext.durationMinutes
+      ) {
         setPost(false);
-        enqueueSnackbar("Por favor, preencha todos os dados obrigatórios antes de continuar.", { variant: "error" });
+        enqueueSnackbar(
+          "Por favor, preencha todos os dados obrigatórios antes de continuar.",
+          { variant: "error" }
+        );
         return;
       }
       const defaultService = [
@@ -71,10 +81,11 @@ function Service() {
       enqueueSnackbar("Serviço criado com sucesso!", { variant: "success" });
       setServiceContext(null);
       setPost(false);
-
     } catch (error) {
       console.error("Erro durante o request:", error);
-      enqueueSnackbar("Erro inesperado! Verifique os dados.", { variant: "error" });
+      enqueueSnackbar("Erro inesperado! Verifique os dados.", {
+        variant: "error",
+      });
     }
   };
 
@@ -88,13 +99,21 @@ function Service() {
 
               if (servico) {
                 await deleteServiceType(serviceId);
-                enqueueSnackbar(`Serviço ${servico.name} excluído com sucesso!`, { variant: "success" });
+                enqueueSnackbar(
+                  `Serviço ${servico.name} excluído com sucesso!`,
+                  { variant: "success" }
+                );
               } else {
-                enqueueSnackbar(`Nenhum serviço encontrado para o ID ${serviceId}`, { variant: "error" });
+                enqueueSnackbar(
+                  `Nenhum serviço encontrado para o ID ${serviceId}`,
+                  { variant: "error" }
+                );
               }
             } catch (error) {
               console.error(`Erro ao remover o serviço ${serviceId}:`, error);
-              enqueueSnackbar(`Erro ao remover o serviço ${serviceId}`, { variant: "error" });
+              enqueueSnackbar(`Erro ao remover o serviço ${serviceId}`, {
+                variant: "error",
+              });
             }
           })
         );
@@ -102,7 +121,9 @@ function Service() {
         setSelectedServiceIds([]);
       } catch (error) {
         console.error("Erro ao remover os serviços:", error);
-        enqueueSnackbar("Erro inesperado ao remover os serviços.", { variant: "error" });
+        enqueueSnackbar("Erro inesperado ao remover os serviços.", {
+          variant: "error",
+        });
       }
     } else {
       alert("Nenhum serviço selecionado!");
@@ -133,12 +154,16 @@ function Service() {
             md={5}
             className="d-flex flex-row justify-content-end align-items-center"
           >
-            <Button onClick={handleDeleteServices} $isRemove type="button" />
-            <Button
-              $isAdd
-              type="button"
-              onClick={handleShow}
-            />
+            {userRoleContext?.userRole === "Admin" && (
+              <>
+                <Button
+                  onClick={handleDeleteServices}
+                  $isRemove
+                  type="button"
+                />
+                <Button $isAdd type="button" onClick={handleShow} />
+              </>
+            )}
           </Col>
         </Row>
         <ServiceDataTable

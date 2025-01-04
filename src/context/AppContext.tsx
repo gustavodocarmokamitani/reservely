@@ -34,8 +34,18 @@ export interface UserEmployee {
   userTypeId: number;
 }
 
+export interface UserRole {
+  userId: string;
+  userEmail: string;
+  userRole: string;
+}
+
 // Contexto do aplicativo que contém os estados e as funções
 interface AppContextType {
+  userRoleContext: UserRole | null;
+  setUserRoleContext: React.Dispatch<React.SetStateAction<UserRole | null>>;
+  userActiveContext: User | null;
+  setUserActiveContext: React.Dispatch<React.SetStateAction<User | null>>;
   userContext: User | null;
   setUserContext: React.Dispatch<React.SetStateAction<User | null>>;
   employeeContext: Employee | null;
@@ -66,6 +76,8 @@ interface AppProviderProps {
 
 export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   // Estados locais
+  const [userRoleContext, setUserRoleContext] = useState<UserRole | null>(null);
+  const [userActiveContext, setUserActiveContext] = useState<User | null>(null);
   const [userContext, setUserContext] = useState<User | null>(null);
   const [employeeContext, setEmployeeContext] = useState<Employee | null>(null);
   const [userEmployeeContext, setUserEmployeeContext] = useState<UserEmployee | null>(null);
@@ -101,6 +113,10 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   return (
     <AppContext.Provider
       value={{
+        userRoleContext,
+        setUserRoleContext,
+        userActiveContext,
+        setUserActiveContext,
         userContext,
         setUserContext,
         employeeContext,

@@ -5,7 +5,7 @@ import Input from "../components/Input";
 import { useState } from "react";
 import { resendConfirmationEmail } from "../services/AuthService";
 
-const RegisterReSendEmail = () => {
+const RegisterHelp = () => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
@@ -22,14 +22,14 @@ const RegisterReSendEmail = () => {
     }
     setLoading(true);
     try {
-      const response = await resendConfirmationEmail(email); 
+      const response = await resendConfirmationEmail(email);
       setMessage("E-mail de confirmação reenviado com sucesso!");
       setError("");
     } catch (error) {
       setMessage("");
       setError("Erro ao reenviar o e-mail.");
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
   };
 
@@ -37,8 +37,11 @@ const RegisterReSendEmail = () => {
     <ContainerRegister>
       <Row style={{ justifyContent: "center", paddingTop: "280px" }}>
         <Col md={6} className="text-center">
-          <h2>Não recebeu o e-mail de confirmação? 📧</h2>
-          <p>Não se preocupe! Podemos reenviar o link para você.</p>
+          <h2>Não conseguiu realizar o login? 🤔</h2>
+          <p>
+            Acredito que falte realizar a confirmação do seu e-mail. Não se
+            preocupe, podemos reenviar o link de confirmação para você!
+          </p>
 
           <Row className="text-center pt-2">
             <Col>
@@ -74,4 +77,4 @@ const RegisterReSendEmail = () => {
   );
 };
 
-export default RegisterReSendEmail;
+export default RegisterHelp;
