@@ -5,35 +5,33 @@ import Button from "../components/Button";
 import Input from "../components/Input";
 import { loginUser } from "../services/AuthService";
 import { AppContext } from "../context/AppContext";
-import { useNavigate } from "react-router-dom"; // Importando useNavigate
+import { useNavigate } from "react-router-dom"; 
+import { useSnackbar } from "notistack";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const { enqueueSnackbar } = useSnackbar();
   const context = useContext(AppContext);
-  const navigate = useNavigate(); // Hook para navegação
+  const navigate = useNavigate(); 
 
-  // Verifique se o contexto está carregado
   useEffect(() => {
     if (!context) {
-      return; // Apenas retorna caso o contexto ainda não esteja disponível
+      return; 
     }
 
-    // Quando o contexto estiver disponível, use-o normalmente
     const { authToken } = context;
     if (authToken) {
       console.log("Token no contexto:", authToken);
     }
-  }, [context]); // Esse useEffect só será chamado quando o contexto mudar
+  }, [context]); 
 
   const { setUserContext, setEmployeeContext, setUserEmployeeContext, setAuthToken } = context || {};
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
     setLoading(true);
   
     try {
@@ -46,29 +44,24 @@ const Login = () => {
   
       console.log("Token recebido:", token);
   
-      // Salvar o token no contexto
       if (setAuthToken) setAuthToken(token);
   
-      // Salvar o token no localStorage para persistência
       localStorage.setItem('authToken', token);
   
-      // Salvar o usuário e o funcionário no contexto
       if (setUserContext) setUserContext(user);
       if (setEmployeeContext) setEmployeeContext(employee);
       if (setUserEmployeeContext) setUserEmployeeContext({ ...user, ...employee });
-  
-      // Redireciona para a página de appointment
-      navigate("/appointment"); // Redirecionamento após login bem-sucedido
-
+      
+      navigate("/appointment"); 
     } catch (err) {
       console.error("Erro ao tentar fazer login:", err);
-      setError("E-mail ou senha incorretos.");
+
+      enqueueSnackbar("E-mail ou senha incorretos.", { variant: "default" });
     } finally {
       setLoading(false);
     }
   };
 
-  // Carregamento condicional até que o contexto esteja disponível
   if (!context) {
     return <div>Loading...</div>;
   }
@@ -103,7 +96,6 @@ const Login = () => {
                 />
               </Col>
             </Row>
-            {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
             <Row className="text-center pt-4">
               <Col>
                 <Button $isLogin type="submit" disabled={loading} />

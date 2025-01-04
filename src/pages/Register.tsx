@@ -3,9 +3,7 @@ import { Col, Row } from "react-bootstrap";
 import { ContainerRegister, ParagraphThin } from "./_Page.styles";
 import Button from "../components/Button";
 import Input from "../components/Input";
-import cadastroPng from "../assets/cadastro.png";
-import { RegisterData } from "../models/RegisterData";
-import { registerUser } from "../services/AuthService";
+import { registerUser, checkEmail } from "../services/AuthService";
 import { useSnackbar } from 'notistack';
 
 const Register = () => {
@@ -18,9 +16,11 @@ const Register = () => {
     confirmPassword: "",
   });
 
-  const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
+
+  const [showPassword, setShowPassword] = useState(false); 
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); 
 
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
@@ -29,24 +29,30 @@ const Register = () => {
 
   const handleRegister = async () => {
     if (formData.password !== formData.confirmPassword) {
-      enqueueSnackbar("As senhas não coincidem.", { variant: "warning" });
+      enqueueSnackbar("As senhas não são iguais. Tente novamente.", { variant: "default" });
       return;
     }
 
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     if (!emailRegex.test(formData.email)) {
-      enqueueSnackbar("Por favor, insira um endereço de e-mail válido.", { variant: "warning" });
+      enqueueSnackbar("Por favor, insira um endereço de e-mail válido.", { variant: "default" });
       return;
     }
 
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
     if (!passwordRegex.test(formData.password)) {
-      enqueueSnackbar("A senha deve ter pelo menos 8 caracteres, incluir uma letra maiúscula, um número e um caractere especial.", { variant: "warning" });
+      enqueueSnackbar("A senha deve ter pelo menos 8 caracteres, incluir uma letra maiúscula, um número e um caractere especial.", { variant: "default" });
       return;
     }
 
     setLoading(true);
-    setErrorMessage("");
+
+    const emailExists = await checkEmail(formData.email); 
+    if (emailExists) {
+      enqueueSnackbar("Este e-mail já está cadastrado.", { variant: "default" });
+      setLoading(false);
+      return;
+    }
 
     try {
       const response = await registerUser({
@@ -75,7 +81,6 @@ const Register = () => {
         <Col md={6}>
           <h2>Join Us Today 🚀</h2>
           <p>Sign up to begin managing your projects.</p>
-          {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
           <Row className="align-items-center">
             <Col md={6}>
               <Input
@@ -125,7 +130,7 @@ const Register = () => {
               <Input
                 placeholder="Password"
                 name="password"
-                type="password"
+                type={showPassword ? "text" : "password"} 
                 width="400"
                 value={formData.password}
                 onChange={handleInputChange}
@@ -135,7 +140,7 @@ const Register = () => {
               <Input
                 placeholder="Confirm Password"
                 name="confirmPassword"
-                type="password"
+                type={showConfirmPassword ? "text" : "password"} 
                 width="400"
                 value={formData.confirmPassword}
                 onChange={handleInputChange}

@@ -4,6 +4,22 @@ interface InputProps {
   width: string;
 }
 
+export const InputWrapper = styled.div<InputProps>`
+  position: relative;
+  width: ${(props: { width: string }) => props.width}px;
+  height: 70px;
+`;
+
+export const PasswordIcon = styled.div`
+  position: relative;
+  top: -35px;
+  left: 360px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #0;
+`;
+
+
 export const Input = styled.input<InputProps>`
   width: ${(props) => props.width}px; 
   height: 50px;

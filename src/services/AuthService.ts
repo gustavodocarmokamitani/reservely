@@ -1,6 +1,6 @@
-import api from '../axiosInstance'; 
+import api from '../axiosInstance';
 import { RegisterData } from '../models/RegisterData';
-import { LoginData } from '../models/LoginData'; 
+import { LoginData } from '../models/LoginData';
 
 export const registerUser = async (registerData: RegisterData) => {
     try {
@@ -30,5 +30,17 @@ export const resendConfirmationEmail = async (email: string) => {
     } catch (error) {
         console.error("Error resending confirmation email:", error);
         throw error;
+    }
+};
+
+export const checkEmail = async (email: string) => {
+    try {
+        const response = await api.get('/auth/check-email', {
+            params: { email: email }
+        });
+
+        return response.data.exists;
+    } catch (error) {
+        console.error("Error checking email:", error);
     }
 };
