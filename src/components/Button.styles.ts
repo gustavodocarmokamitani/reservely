@@ -10,6 +10,7 @@ interface ButtonProps {
   $isLogin?: boolean;
   $isRegister?: boolean;
   $isGoogle?: boolean;
+  $isResend?: boolean;
   disabled?: boolean;
 }
 
@@ -24,7 +25,7 @@ export const Button = styled.button<ButtonProps>`
     if (props.$isRemove) return "#CDCDCD";
     if (props.$isClosed) return "#FF3535";
     if (props.$isConfirm) return "#1A8439";
-    if (props.$isConfigure) return "#346eba";
+    if (props.$isConfigure || props.$isResend) return "#346eba";
     if (props.$isBack) return "#fff";
     if (props.$isLogin) return "#2A2A2A";
     if (props.$isRegister) return "#fff";

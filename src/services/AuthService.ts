@@ -1,11 +1,10 @@
-import api from '../axiosInstance'; // Importa o axios configurado
-import { RegisterData } from '../models/RegisterData'; // Modelo para registro, se necessário
-import { LoginData } from '../models/LoginData'; // Modelo para login, se necessário
+import api from '../axiosInstance'; 
+import { RegisterData } from '../models/RegisterData';
+import { LoginData } from '../models/LoginData'; 
 
-// Serviço para registro de usuário
 export const registerUser = async (registerData: RegisterData) => {
     try {
-        const response = await api.post('/Auth/register', registerData);
+        const response = await api.post('/auth/register', registerData);
         return response.data;
     } catch (error) {
         console.error("Error registering user:", error);
@@ -13,14 +12,23 @@ export const registerUser = async (registerData: RegisterData) => {
     }
 };
 
-// Serviço para login de usuário
 export const loginUser = async (login: LoginData) => {
     try {
-        const response = await api.post('/Auth/login', login);
+        const response = await api.post('/auth/login', login);
         // Aqui retornamos o token JWT
         return response.data;
     } catch (error) {
         console.error("Error logging in user:", error);
+        throw error;
+    }
+};
+
+export const resendConfirmationEmail = async (email: string) => {
+    try {
+        const response = await api.post('/auth/resend-confirmation-email', { Email: email });
+        return response.data;
+    } catch (error) {
+        console.error("Error resending confirmation email:", error);
         throw error;
     }
 };

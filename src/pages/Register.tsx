@@ -5,7 +5,8 @@ import Button from "../components/Button";
 import Input from "../components/Input";
 import cadastroPng from "../assets/cadastro.png";
 import { RegisterData } from "../models/RegisterData";
-import { registerUser } from "../services/AuthService"; // Mantendo a importação correta
+import { registerUser } from "../services/AuthService";
+import { useSnackbar } from 'notistack';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -19,6 +20,7 @@ const Register = () => {
 
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
@@ -27,35 +29,45 @@ const Register = () => {
 
   const handleRegister = async () => {
     if (formData.password !== formData.confirmPassword) {
-      setErrorMessage("Passwords do not match.");
+      enqueueSnackbar("As senhas não coincidem.", { variant: "warning" });
       return;
     }
-  
+
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if (!emailRegex.test(formData.email)) {
+      enqueueSnackbar("Por favor, insira um endereço de e-mail válido.", { variant: "warning" });
+      return;
+    }
+
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+    if (!passwordRegex.test(formData.password)) {
+      enqueueSnackbar("A senha deve ter pelo menos 8 caracteres, incluir uma letra maiúscula, um número e um caractere especial.", { variant: "warning" });
+      return;
+    }
+
     setLoading(true);
     setErrorMessage("");
-  
+
     try {
-      // Passando o objeto diretamente, sem aspas escapadas
       const response = await registerUser({
         name: formData.name,
         lastName: formData.lastname,
         email: formData.email,
         phone: formData.phone,
         password: formData.password,
-        userName: formData.email, // Usando o email como userName
-        userTypeId: 1, // Enviar o userTypeId corretamente
+        userName: formData.email,
+        userTypeId: 1,
       });
-  
+
       if (response) {
-        window.location.href = "/login"; // Redirecionar após sucesso
+        window.location.href = "/confirm-email";
       }
     } catch (error) {
-      setErrorMessage("An error occurred. Please try again.");
+      enqueueSnackbar("Ocorreu um erro. Por favor, tente novamente.", { variant: "error" });
     } finally {
       setLoading(false);
     }
   };
-  
 
   return (
     <ContainerRegister>
