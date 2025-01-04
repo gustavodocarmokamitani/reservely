@@ -1,3 +1,31 @@
+## Como Rodar o Projeto
+
+### Frontend
+
+Clone o repositório do front-end:
+```bash
+git clone https://github.com/gustavodocarmokamitani/agendai.git
+
+```
+Entre na pasta do repositório:
+```bash
+cd <diretório do repositório>
+```
+
+Instale as dependências:
+```bash
+npm install
+```
+
+Inicie o servidor de desenvolvimento:
+```bash
+npm run start
+```
+### 
+O front-end estará disponível em http://localhost:3000
+
+---
+
 # Projeto de Agendamento de Serviço
 ## Visão Geral
 
