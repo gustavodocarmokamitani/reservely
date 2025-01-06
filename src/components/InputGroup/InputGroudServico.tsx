@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
-import Input from "./Input";
-import { Service } from "../models/Service";
+import Input from "../Input";
+import { Service } from "../../models/Service";
 
 interface InputGroupServiceProps {
   editService?: boolean;

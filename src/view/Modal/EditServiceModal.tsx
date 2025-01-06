@@ -1,12 +1,16 @@
 import { useContext, useEffect, useState } from "react";
-import { Service } from "../../models/Service";
+import { Service, ServiceServiceType } from "../../models/Service";
 import { Col, Row } from "react-bootstrap";
 import Button from "../../components/Button";
 import * as S from "./Modal.styles";
-import InputGroupService from "../../components/InputGroudServico";
+import InputGroupService from "../../components/InputGroup/InputGroudServico";
 import closeIcon from "../../assets/remove.svg";
-import { getServiceTypeById } from "../../services/ServiceTypeServices";
+import {
+  getServiceTypeById,
+  updateServiceType,
+} from "../../services/ServiceTypeServices";
 import { AppContext } from "../../context/AppContext";
+import { enqueueSnackbar } from "notistack";
 
 interface EditServiceModalProps {
   title: string;
@@ -17,6 +21,7 @@ interface EditServiceModalProps {
   size: "small" | "medium" | "large";
   rowId?: number;
   setUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+  fetchData: () => void;
 }
 
 const EditServiceModal: React.FC<EditServiceModalProps> = ({
@@ -27,12 +32,11 @@ const EditServiceModal: React.FC<EditServiceModalProps> = ({
   size,
   rowId,
   editService = false,
-  setUpdate
+  setUpdate,
+  fetchData,
 }) => {
   const [serviceType, setServiceType] = useState<Service>();
-  const {
-    setServiceUpdateContext
-  } = useContext(AppContext)!;
+  const { setServiceUpdateContext } = useContext(AppContext)!;
 
   const [formValuesService, setFormValuesService] = useState<Service>({
     id: 0,
@@ -41,7 +45,7 @@ const EditServiceModal: React.FC<EditServiceModalProps> = ({
     value: "",
     durationMinutes: "",
     active: "false",
-    storeId: 0
+    storeId: 0,
   });
 
   const sizeMap = {
@@ -55,6 +59,8 @@ const EditServiceModal: React.FC<EditServiceModalProps> = ({
       const fetchService = async () => {
         try {
           const response = await getServiceTypeById(rowId);
+          console.log(response);
+
           if (response) setServiceType(response.data);
         } catch (error) {
           console.error("Error when fetching service:", error);
@@ -66,30 +72,62 @@ const EditServiceModal: React.FC<EditServiceModalProps> = ({
   }, [editService, rowId]);
 
   const handleSubmit = async () => {
+    try {
+      const responseServiceType = await getServiceTypeById(
+        formValuesService.id
+      );
 
-    const updatedService = {
-      id: formValuesService.id,
-      name:formValuesService.name,
-      value: parseFloat(formValuesService.value),
-      durationMinutes: parseFloat(formValuesService.durationMinutes),
-      active:formValuesService.active == "true" ? true : false,
-      description:formValuesService.description,
-    };
-    
-    setServiceUpdateContext(updatedService);
-    setUpdate(true);
+      if (responseServiceType && responseServiceType.data) {
+        const serviceType = responseServiceType.data;
+
+        const tipoService: ServiceServiceType = {
+          id: formValuesService.id,
+          name: formValuesService.name,
+          description: formValuesService.description,
+          value: parseFloat(formValuesService.value as string),
+          active: formValuesService.active === "true",
+          durationMinutes: parseFloat(
+            formValuesService.durationMinutes as string
+          ),
+          services: serviceType.services ? serviceType.services : null,
+        };
+
+        console.log("RESULTADO DO UPDATE", tipoService);
+
+        const responseUpdate = await updateServiceType(
+          formValuesService.id,
+          tipoService
+        );
+        if (responseUpdate) {
+          enqueueSnackbar("Serviço criado com sucesso!", {
+            variant: "success",
+          });
+          fetchData();
+        }
+      } else {
+        enqueueSnackbar("Erro ao buscar tipo de serviço.", {
+          variant: "error",
+        });
+      }
+    } catch (error) {
+      console.error("Erro durante o request:", error);
+      enqueueSnackbar("Erro inesperado! Verifique os dados.", {
+        variant: "error",
+      });
+    }
+
     handleClose();
   };
 
-
-  const handleInputChangeService = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChangeService = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const { name, type, checked, value } = event.target;
     setFormValuesService((prev) => ({
       ...prev,
       [name]: type === "checkbox" ? (checked ? "true" : "false") : value,
     }));
   };
-
 
   return (
     <S.Overlay>

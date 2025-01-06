@@ -19,6 +19,7 @@ import Register from "./pages/Register";
 import RegisterConfirmEmail from "./pages/RegisterConfirmEmail";
 import RegisterReSendEmail from "./pages/RegisterReSendEmail";
 import RegisterHelp from "./pages/RegisterHelp";
+import ProfessionalRegister from "./pages/ProfessionalRegister";
 
 function App() {
   const context = useContext(AppContext);
@@ -56,6 +57,7 @@ function App() {
                       <Route path="/appointment-history" element={<AppointmentHistory />} />
                       <Route path="/dashboard" element={<Dashboard />} />
                       <Route path="/service" element={<Service />} />
+                      <Route path="/professional-register" element={<ProfessionalRegister />} />
                       <Route path="/professional" element={<Professional />} />
                       <Route path="/image" element={<Image />} />
                       <Route path="/store" element={<Store />} />

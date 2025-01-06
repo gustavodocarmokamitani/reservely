@@ -37,44 +37,10 @@ const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
         setSelectedEmployeeId(id);
         setShowModal({ ...showModal, [type]: true });
     };
-    const { appointmentUpdateContext } = useContext(AppContext)!;
-    const { enqueueSnackbar } = useSnackbar();
-
-
-    const updateAppointmentStatus = async () => {
-        try {
-            if (appointmentUpdateContext) {
-
-                await updateAppointment(appointmentUpdateContext.id, appointmentUpdateContext);
-                enqueueSnackbar(`Status do appointment editado com sucesso!`, { variant: "success" });
-                setUpdate(false);
-                fetchData();
-            }
-        } catch (error: any) {
-            console.error("Erro ao editar o serviço", error.message);
-
-            if (error.response) {
-                console.error('Status HTTP:', error.response.status);
-                console.error('Resposta:', error.response.data);
-            } else if (error.request) {
-                console.error('Erro na requisição:', error.request);
-            }
-        }
-    };
-
-    const request = async () => {
-        try {
-            if (update) {
-                if (appointmentUpdateContext) await updateAppointmentStatus();
-            }
-        } catch (error: any) {
-            console.error("Erro ao processar requisições de atualização", error.message);
-        }
-    };
-
+    
     useEffect(() => {
-        request();
         fetchData();
+        setUpdate(false);
     }, [update]);
 
     useEffect(() => {

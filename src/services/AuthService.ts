@@ -1,6 +1,18 @@
 import api from '../axiosInstance';
 import { RegisterData } from '../models/RegisterData';
 import { LoginData } from '../models/LoginData';
+import { RegisterEmployee } from '../models/RegisterEmployee';
+
+export const registerProfessional = async (registerData: RegisterEmployee) => {
+    try {
+        const response = await api.post('/auth/register-professional', registerData);
+        return response.data;
+    } catch (error) {
+        console.error("Error registering user:", error);
+        throw new Error("Ocorreu um erro ao registrar o profissional.");
+    }
+};
+
 
 export const registerUser = async (registerData: RegisterData) => {
     try {

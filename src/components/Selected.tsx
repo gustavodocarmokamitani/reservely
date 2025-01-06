@@ -103,7 +103,8 @@ const Selected: React.FC<SelectedProps> = ({
           const serviceData = await getServices();
 
           if (serviceData) {
-            //TODO: Change ( === 1 ) for the logged store ID    
+            //TODO: Change ( === 1 ) trocar store
+            
             const filteredData = serviceData.filter((servico: any) => servico.storeId === 1);
             
             const serviceTypePromises = filteredData.map(async (servico: any) => {

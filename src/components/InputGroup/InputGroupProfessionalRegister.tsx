@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
-import Input from "./Input";
-import Selected from "./Selected";
-import { UserEmployee } from "../models/UserEmployee";
+import Input from "../Input";
+import Selected from "../Selected";
+import { UserEmployee } from "../../models/UserEmployee";
 
-interface InputGroupProfessionalProps {
+interface InputGroupProfessionalRegisterProps {
   edit?: boolean;
   addProf?: boolean;
-  formValuesProfessional: {
+  formValuesProfessionalRegister: {
     name: string;
     lastName: string;
     email: string;
@@ -15,7 +15,6 @@ interface InputGroupProfessionalProps {
     active: string;
   };
   handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  handleServiceSelection: (selectedServices: number[]) => void;
   setFormValuesProfessional: React.Dispatch<React.SetStateAction<UserEmployee>>;
   data?: {
     id: number;
@@ -30,10 +29,9 @@ interface InputGroupProfessionalProps {
     userTypeId: number;
   }[];
 }
-const InputGroupProfessional: React.FC<InputGroupProfessionalProps> = ({
-  formValuesProfessional,
+const InputGroupProfessionalRegister: React.FC<InputGroupProfessionalRegisterProps> = ({
+  formValuesProfessionalRegister,
   handleInputChange,
-  handleServiceSelection,
   setFormValuesProfessional,
   data,
   edit = false,
@@ -67,69 +65,51 @@ const InputGroupProfessional: React.FC<InputGroupProfessionalProps> = ({
   
   return (
     <Row>
-      <Col md={4} className="mt-3 mb-3">
+      <Col md={6} className="mt-3 mb-3">
         <Input
           width="300"
           type="text"
           placeholder="Nome"
           name="name"
-          value={formValuesProfessional.name}
+          value={formValuesProfessionalRegister.name}
            onChange={(e) => handleInputChange(e as React.ChangeEvent<HTMLInputElement>)}
         />
-        <Input
-          width="300"
-          type="text"
-          placeholder="Sobrename"
-          name="lastName"
-          value={formValuesProfessional.lastName}
-           onChange={(e) => handleInputChange(e as React.ChangeEvent<HTMLInputElement>)}
-        />
-        <Input
+       <Input
           width="300"
           type="text"
           placeholder="Email"
           name="email"
-          value={formValuesProfessional.email}
+          value={formValuesProfessionalRegister.email}
            onChange={(e) => handleInputChange(e as React.ChangeEvent<HTMLInputElement>)}
         />
+       
+         </Col>
+         <Col md={6} className="mt-3 mb-3">
+         <Input
+          width="300"
+          type="text"
+          placeholder="Sobrename"
+          name="lastName"
+          value={formValuesProfessionalRegister.lastName}
+           onChange={(e) => handleInputChange(e as React.ChangeEvent<HTMLInputElement>)}
+        />
+       
         <Input
           width="300"
           type="text"
           placeholder="Telefone"
           name="phone"
-          value={formValuesProfessional.phone}
+          value={formValuesProfessionalRegister.phone}
            onChange={(e) => handleInputChange(e as React.ChangeEvent<HTMLInputElement>)}
         />
-        <Input
-          width="300"
-          type="toggle"
-          placeholder="Ativo"
-          name="active"
-          value={formValuesProfessional.active}
-           onChange={(e) => handleInputChange(e as React.ChangeEvent<HTMLInputElement>)}
-        />
+
       </Col>
-      <Col md={8}>
-      {edit &&
-          <Selected
-            options={professionalData ? [professionalData] : undefined}
-            onChange={handleServiceSelection}
-            edit
-          />
-        }
-        {addProf &&
-          <Selected
-            options={professionalData ? [professionalData] : undefined}
-            onChange={handleServiceSelection}
-            addProf
-          />
-        }
-      </Col>
+    
     </Row>
   );
 };
 
-export default InputGroupProfessional;
+export default InputGroupProfessionalRegister;
 
 
 

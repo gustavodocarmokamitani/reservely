@@ -1,11 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  DataGrid,
-  GridCellParams,
-  GridColDef,
-  GridRenderCellParams,
-  GridRowSelectionModel,
-} from "@mui/x-data-grid";
+import { DataGrid, GridCellParams, GridColDef, GridRenderCellParams, GridRowSelectionModel } from "@mui/x-data-grid";
 import { useContext } from "react";
 import { AppContext } from "../../context/AppContext";
 import { updateUserEmployee } from "../../services/EmployeeServices";
@@ -20,8 +14,9 @@ import confirm from "../../assets/confirmCardStore.svg";
 import remove from "../../assets/removeRed.svg";
 import EditUserEmployeeModal from "../Modal/EditUserEmployeeModal";
 import InfoEmployeeServiceModal from "../Modal/InfoEmployeeServiceModal";
+import EditEmployeeRegisterModal from "../Modal/EditEmployeeRegisterModal";
 
-interface ProfessionalDataTableProps {
+interface ProfessionalRegisterDataTableProps {
   service?: boolean;
   professional?: boolean;
   appointment?: boolean;
@@ -41,7 +36,7 @@ interface ProfessionalDataTableProps {
   fetchData: () => void;
 }
 
-const ProfessionalDataTable: React.FC<ProfessionalDataTableProps> = ({
+const ProfessionalRegisterDataTable: React.FC<ProfessionalRegisterDataTableProps> = ({
   rowsAppointment,
   rowsService,
   rowsProfessional,
@@ -79,19 +74,18 @@ const ProfessionalDataTable: React.FC<ProfessionalDataTableProps> = ({
     } catch (error: any) {
       console.error("Erro ao editar o Usuário e Funcionario", error.message);
     }
-  }; 
+  };
 
-  useEffect(() => { 
+  useEffect(() => {
     fetchData();
-    setUpdate(false); 
-    
+    setUpdate(false);
   }, [update]);
 
   useEffect(() => {
     const updateColumnWidth = () => {
       if (containerRef.current) {
         const totalWidth = containerRef.current.offsetWidth;
-        const columnsCount = userRoleContext?.userRole === "Admin" ? 5 : 4;
+        const columnsCount = userRoleContext?.userRole === "Admin" ? 5 : 4; 
         setColumnWidth(Math.floor(totalWidth / columnsCount));
       }
     };
@@ -104,74 +98,58 @@ const ProfessionalDataTable: React.FC<ProfessionalDataTableProps> = ({
   const handleRowClick = (ids: number[]) => onRowSelect?.(ids);
 
   const columns: GridColDef[] = professional
-    ? [
-        {
-          field: "fullName",
-          headerName: "Nome Completo",
-          width: columnWidth,
-          align: "center" as const,
-          headerAlign: "center" as const,
-          renderCell: (params) => `${params.row.name} ${params.row.lastName}`,
-        },
-        {
-          field: "email",
-          headerName: "Email",
-          width: columnWidth,
-          align: "center" as const,
-          headerAlign: "center" as const,
-        },
-        {
-          field: "phone",
-          headerName: "Telefone",
-          width: columnWidth,
-          align: "center" as const,
-          headerAlign: "center" as const,
-        },
-        {
-          field: "active",
-          headerName: "Ativo",
-          type: "boolean",
-          width: columnWidth,
-          align: "center" as const,
-          headerAlign: "center" as const,
-          renderCell: (params: GridRenderCellParams) =>
-            params.value === "true" ? (
-              <img style={{ cursor: "pointer" }} src={confirm} alt="Ativo" />
-            ) : (
-              <img style={{ cursor: "pointer" }} src={remove} alt="Inativo" />
-            ),
-        },
+  ? [
+    {
+        field: "fullName",  
+        headerName: "Nome Completo",
+        width: columnWidth,
+        align: "center" as const,
+        headerAlign: "center" as const,
+        renderCell: (params) => `${params.row.name} ${params.row.lastName}`,  
+      }, 
+      { field: "email", headerName: "Email", width: columnWidth, align: "center" as const, headerAlign: "center" as const },
+      { field: "phone", headerName: "Telefone", width: columnWidth, align: "center" as const, headerAlign: "center" as const },
+      {
+        field: "emailConfirmed",
+        headerName: "Email Confirmado",
+        type: "boolean",
+        width: columnWidth,
+        align: "center" as const,
+        headerAlign: "center" as const,
+        renderCell: (params: GridRenderCellParams) => (
+          params.value === true ? (
+            <img style={{ cursor: "pointer" }} src={confirm} alt="Ativo" />
+          ) : (
+            <img style={{ cursor: "pointer" }} src={remove} alt="Inativo" />
+          )
+        ),
+      },
 
-        ...(userRoleContext?.userRole === "Admin"
-          ? [
-              {
-                field: "acoes",
-                headerName: "Ações",
-                renderCell: (params: GridCellParams) => (
-                  <div
-                    style={{
-                      display: "flex",
-                      gap: "50px",
-                      justifyContent: "center",
-                      margin: "12.5px 0px 0px 5px",
-                    }}
-                  >
-                    <img
-                      style={{ cursor: "pointer" }}
-                      src={edit}
-                      onClick={() => handleShowModal("edit", params.row.id)}
-                      alt="Editar"
-                    />
-                  </div>
-                ),
-                width: columnWidth,
-                align: "center" as const,
-                headerAlign: "center" as const,
-              },
-            ]
-          : []),
-      ]
-    : [];
+      ...(userRoleContext?.userRole === "Admin"
+        ? [
+            {
+              field: "acoes",
+              headerName: "Ações",
+              renderCell: (params: GridCellParams) => (
+                <div
+                  style={{ display: "flex", gap: "50px", justifyContent: "center", margin: "12.5px 0px 0px 5px" }}
+                >
+                  <img
+                    style={{ cursor: "pointer" }}
+                    src={edit}
+                    onClick={() => handleShowModal("edit", params.row.id)}
+                    alt="Editar"
+                  />
+                </div>
+              ),
+              width: columnWidth,
+              align: "center" as const,
+              headerAlign: "center" as const,
+            },
+          ]
+        : []),
+    ]
+  : [];
 
   let rows: any[] = [];
 
@@ -202,20 +180,8 @@ const ProfessionalDataTable: React.FC<ProfessionalDataTableProps> = ({
           sx={{ border: 0 }}
         />
       </Paper>
-      {showModal.info && (
-        <InfoEmployeeServiceModal
-          title="Informações do professional"
-          info
-          subTitle="Todos os serviços que contém esse professional."
-          handleClose={handleClose}
-          handleShow={() => setShowModal({ ...showModal, info: true })}
-          size="small"
-          fetchData={() => {}}
-          rowId={selectedEmployeeId}
-        />
-      )}
       {showModal.edit && (
-        <EditUserEmployeeModal
+        <EditEmployeeRegisterModal
           title="Editar professional"
           subTitle="Preencha as informações abaixo para editar o professional."
           edit
@@ -230,4 +196,4 @@ const ProfessionalDataTable: React.FC<ProfessionalDataTableProps> = ({
   );
 };
 
-export default ProfessionalDataTable;
+export default ProfessionalRegisterDataTable;

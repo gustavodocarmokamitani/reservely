@@ -66,6 +66,8 @@ interface AppContextType {
   setAuthToken: React.Dispatch<React.SetStateAction<string | null>>;
   login: (token: string) => void;
   logout: () => void;
+  postEmployeeRegister: boolean;
+  setPostEmployeeRegister: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -86,7 +88,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [serviceUpdateContext, setServiceUpdateContext] = useState<ServiceType | null>(null);
   const [appointmentUpdateContext, setAppointmentUpdateContext] = useState<Appointment | null>(null);
   const [ServiceTypeContext, setServiceTypeContext] = useState<ServiceType | null>(null);
-  
+  const [postEmployeeRegister, setPostEmployeeRegister] = useState<boolean>(false);
+
   // Estado do token de autenticação com persistência via localStorage
   const [authToken, setAuthToken] = useState<string | null>(localStorage.getItem('authToken'));
 
@@ -137,6 +140,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
         setAuthToken,
         login,
         logout,
+        postEmployeeRegister,
+        setPostEmployeeRegister
       }}
     >
       {children}

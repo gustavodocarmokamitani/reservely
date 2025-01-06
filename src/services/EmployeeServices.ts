@@ -23,9 +23,9 @@ export const getEmployeeById = async (id: number) => {
     }
 };
 
-export const getEmployeeIdByUserId = async (id: number) => {
+export const getCorrigirIdByUserId = async (id: number) => {
     try {
-        const response = await api.get(`employee/user/${id}`);
+        const response = await api.get(`employee/employee/${id}`);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -37,7 +37,48 @@ export const getEmployeeIdByUserId = async (id: number) => {
     }
 };
 
-export const createEmployee = async (employeeData: Employee) => {
+export const getEmployeeIdByUserId = async (id: number) => {
+    try {
+        const response = await api.get(`user/${id}`);
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            console.error("Request error:", error.response?.data || error.message);
+        } else {
+            console.error("Unknown error:", error);
+        }
+        throw error;
+    }
+};
+
+export const getEmployeesByStoreId = async (storeId: number) => {
+    try {
+        const response = await api.get(`employee/store/${storeId}`);
+        // Verifique se o retorno está vazio
+        if (response.status === 404 || !response.data || response.data.length === 0) {
+            return [];
+        }
+        return response.data;
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            // Agora você pode acessar as propriedades do erro como message
+            console.error("Erro ao buscar funcionários:", error.message);
+            if ((error as any).response?.status === 404) {
+                return [];
+            }
+        } else {
+            // Lida com erros de tipos desconhecidos
+            console.error("Erro inesperado:", error);
+        }
+        throw error; // Lança o erro se não for o tipo esperado
+    }
+};
+
+
+
+
+
+export const createEmployee = async (employeeData: Employee[]) => {
     try {
         const response = await api.post('employee', employeeData);
         return response.data;

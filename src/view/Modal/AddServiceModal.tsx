@@ -3,11 +3,13 @@ import { Col, Row } from "react-bootstrap";
 import { useContext } from "react";
 import { AppContext } from "../../context/AppContext";
 import { ServiceType } from "../../models/ServiceType";
-import { Service } from "../../models/Service";
+import { Service, ServiceServiceType } from "../../models/Service";
 import * as S from "./Modal.styles";
 import Button from "../../components/Button";
 import closeIcon from "../../assets/remove.svg";
-import InputGroudServico from "../../components/InputGroudServico";
+import InputGroudServico from "../../components/InputGroup/InputGroudServico";
+import { enqueueSnackbar } from "notistack";
+import { createServiceTypeByStoreId } from "../../services/ServiceTypeServices";
 
 interface AddServiceModalProps {
   title: string;
@@ -26,6 +28,7 @@ const AddServiceModal: React.FC<AddServiceModalProps> = ({
   subTitle,
   size,
   setPost,
+  fetchData,
 }) => {
   const [formValuesService, setFormValuesService] = useState<Service>({
     id: 0,
@@ -34,12 +37,10 @@ const AddServiceModal: React.FC<AddServiceModalProps> = ({
     value: "",
     durationMinutes: "",
     active: "false",
-    storeId: 0
+    storeId: 0,
   });
 
-  const {
-    setServiceContext
-  } = useContext(AppContext)!;
+  const { setServiceContext } = useContext(AppContext)!;
 
   const sizeMap = {
     small: "650px",
@@ -48,23 +49,57 @@ const AddServiceModal: React.FC<AddServiceModalProps> = ({
   };
 
   const handleSubmit = async () => {
-    if (formValuesService) {
-      const tipoService: ServiceType = {
-        ...formValuesService,
-        value: parseFloat(formValuesService.value as string),
-        durationMinutes: parseFloat(formValuesService.durationMinutes as string),
-        active: Boolean(formValuesService.active as string),
-      };
+    try {
+      if (
+        !formValuesService.name ||
+        !formValuesService.description ||
+        !formValuesService.value ||
+        !formValuesService.durationMinutes
+      ) {
+        setPost(false);
+        enqueueSnackbar("Por favor, preencha todos os dados obrigatórios.", {
+          variant: "error",
+        });
+        return;
+      }
 
-      setServiceContext(tipoService);
+      const tipoService: ServiceServiceType[] = [
+        {
+          id: formValuesService.id,
+          name: formValuesService.name,
+          description: formValuesService.description,
+          value: parseFloat(formValuesService.value as string),
+          active: formValuesService.active === "true",
+          durationMinutes: parseFloat(
+            formValuesService.durationMinutes as string
+          ),
+          services: [
+            {
+              id: formValuesService.id,
+              serviceTypeId: formValuesService.id,
+              storeId: 1, //TODO alterar store
+            },
+          ],
+        },
+      ];
+      const responsePost = await createServiceTypeByStoreId(1, tipoService);
+
+      if (responsePost) {
+        enqueueSnackbar("Serviço criado com sucesso!", { variant: "success" });
+        fetchData();
+      }
+      handleClose();
+    } catch (error) {
+      console.error("Erro durante o request:", error);
+      enqueueSnackbar("Erro inesperado! Verifique os dados.", {
+        variant: "error",
+      });
     }
-  
-    setPost(true);
-    handleClose();
   };
-  
 
-  const handleInputChangeService = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChangeService = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const { name, type, checked, value } = event.target;
     setFormValuesService((prev) => ({
       ...prev,
@@ -103,10 +138,10 @@ const AddServiceModal: React.FC<AddServiceModalProps> = ({
           <hr />
         </Row>
         <InputGroudServico
-            formValuesService={formValuesService}
-            handleInputChange={handleInputChangeService}
-            setFormValuesService={setFormValuesService}
-          />
+          formValuesService={formValuesService}
+          handleInputChange={handleInputChangeService}
+          setFormValuesService={setFormValuesService}
+        />
         <hr />
         <Row>
           <Col

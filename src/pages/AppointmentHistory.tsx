@@ -33,7 +33,7 @@ function AppointmentHistory() {
   const fetchData = async () => {
     try {
       const appointmentData = await getAppointments();
-
+      
       const mappedAppointment = await Promise.all(
         appointmentData.map(async (appointment: Appointment) => {
           const employeeData = await getEmployeeById(appointment.employeeId);

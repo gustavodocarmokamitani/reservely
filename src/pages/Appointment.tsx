@@ -5,15 +5,16 @@ import { Col, Row } from 'react-bootstrap';
 import HeaderTitle from '../view/HeaderTitle';
 import Button from '../components/Button';
 import * as S from './Appointment.styles';
-import FuncionarioSelect from '../components/Select/EmployeeSelect';
+import EmployeeSelect from '../components/Select/EmployeeSelect';
 import ClientSelect from '../components/Select/ClientSelect';
-import ServicoSelect from '../components/Select/ServiceSelect';
-import HorarioSelect from '../components/Select/TimeSelect';
-import DataAgendamentoSelect from "../components/Select/AppointmentDataSelect";
+import ServiceSelect from '../components/Select/ServiceSelect';
+import TimeSelect from '../components/Select/TimeSelect';
+import AppointmentDateSelect from "../components/Select/AppointmentDataSelect";
 import { createAppointment } from "../services/AppointmentServices";
 import { SelectOption } from "../models/SelectOptions";
-import { getEmployeeIdByUserId } from "../services/EmployeeServices";
+import { getCorrigirIdByUserId, getEmployeeIdByUserId } from "../services/EmployeeServices";
 import { useSnackbar } from 'notistack';
+import EmployeeAppointmentSelect from "../components/Select/EmployeeAppointmentSelect";
 
 export function Appointment() {
     const { enqueueSnackbar } = useSnackbar();
@@ -66,7 +67,7 @@ export function Appointment() {
             const agendamentoData = new Date(appointmentDate);
             agendamentoData.setHours(parseInt(horarioHoras), parseInt(horarioMinutos));
 
-            const funcionarioId = await getEmployeeIdByUserId(employee.value);
+            const funcionarioId = await getCorrigirIdByUserId(employee.value);
 
             const mapped = {
                 id: 0,
@@ -77,7 +78,9 @@ export function Appointment() {
                 serviceIds: service.map((item) => item.value),
                 storeId: 1
             };
-                console.log(mapped);
+                console.log(funcionarioId);
+                
+                // console.log(mapped);
                 
             await createAppointment([mapped]);
             
@@ -105,40 +108,40 @@ export function Appointment() {
                 </Col>
             </Row>
 
-            <S.AgendamentoContainer>
-                <S.AgendamentoContent>
+            <S.AppointmentContainer>
+                <S.AppointmentContent>
                     <p>Funcionário</p>
-                    <FuncionarioSelect value={employee?.value} setEmployee={setEmployee} handleEmployeeChange={handleEmployeeChange} />
-                </S.AgendamentoContent>
+                    <EmployeeAppointmentSelect value={employee?.value} setEmployee={setEmployee} handleEmployeeChange={handleEmployeeChange} />
+                </S.AppointmentContent>
 
-                <S.AgendamentoContent>
+                <S.AppointmentContent>
                     <p>Cliente</p>
                     <ClientSelect value={client?.value} setClient={setClient} />
-                </S.AgendamentoContent>
+                </S.AppointmentContent>
 
-                <S.AgendamentoContent>
+                <S.AppointmentContent>
                     <p>Serviço</p>
-                    <ServicoSelect
+                    <ServiceSelect
                         value={service?.map((s) => s.value) || undefined}
                         setService={setService}
                         selectedEmployee={selectedEmployee}
                     />  
-                </S.AgendamentoContent>
+                </S.AppointmentContent>
 
-                <S.AgendamentoContent>
+                <S.AppointmentContent>
                     <p>Horário</p>
-                    <HorarioSelect value={time?.value} setTime={setTime} />
-                </S.AgendamentoContent>
+                    <TimeSelect value={time?.value} setTime={setTime} />
+                </S.AppointmentContent>
 
-            </S.AgendamentoContainer>
+            </S.AppointmentContainer>
 
-            <S.AgendamentoContainer>
+            <S.AppointmentContainer>
 
-                <S.AgendamentoContent>
-                    <DataAgendamentoSelect setAppointmentDate={setAppointmentDate} />
-                </S.AgendamentoContent>
+                <S.AppointmentContent>
+                    <AppointmentDateSelect setAppointmentDate={setAppointmentDate} />
+                </S.AppointmentContent>
 
-            </S.AgendamentoContainer>
+            </S.AppointmentContainer>
         </ContainerPage>
     );
 }

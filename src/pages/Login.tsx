@@ -59,11 +59,11 @@ const Login = () => {
           console.error("setUserRoleContext não está definido");
         }
 
+        enqueueSnackbar(`Seja bem vindo ${responseEmailConfirmed.name} ${responseEmailConfirmed.lastName}! `, { variant: "success" });
         navigate("/appointment");
       } else {
         enqueueSnackbar("E-mail não verificado.", { variant: "default" });
       }
-      enqueueSnackbar(`Seja bem vindo ${responseEmailConfirmed.name} ${responseEmailConfirmed.lastName}! `, { variant: "success" });
     } catch (err) {
       console.error("Erro ao tentar fazer login:", err);
 

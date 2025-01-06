@@ -25,10 +25,13 @@ export const getUserById = async (id: number) => {
 export const getUserTypeIdById = async (id: number) => {
     try {
         const response = await api.get(`user/type/${id}`);
+        if (response.data && response.data.length === 0) {
+            return [];
+        }
         return response.data;
     } catch (error) {
         console.error("Error getting user type:", error);
-        throw error;
+        return [];
     }
 };
 

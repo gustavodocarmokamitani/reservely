@@ -1,11 +1,12 @@
 
 import React, { useEffect, useState } from "react";
-import { getUserById } from "../../services/UserServices";
+import { getUserById, getUserTypeIdById } from "../../services/UserServices";
 import { SelectOption } from "../../models/SelectOptions";
-import { getEmployees } from "../../services/EmployeeServices";
+import { getEmployees, getEmployeesByStoreId } from "../../services/EmployeeServices";
 import { Employee } from "../../models/Employee";
 import customStyles from "./styles/customStyles";
 import Select from "react-select";
+import { User } from "../../context/AppContext";
 
 interface EmployeeSelectProps {
   setEmployee: (option: SelectOption | null) => void;
@@ -22,38 +23,38 @@ interface Option {
 const EmployeeSelect: React.FC<EmployeeSelectProps> = ({ setEmployee, value, handleEmployeeChange }) => {
   const [options, setOptions] = useState<SelectOption[]>([]);
 
+  let registeredEmployee: Employee;
+
+  const fetchData = async () => {
+    registeredEmployee = await getEmployeesByStoreId(1);
+  };
+  
+
+
   useEffect(() => {
     const fetchEmployees = async () => {
-      try {
-        const responseEmployee = await getEmployees();
-
-        const employeesActive = responseEmployee.filter((employee: Employee) => employee.active === "true");
-
-        const usersActive = await Promise.all(
-          employeesActive.map(async (employee: Employee) => {
-            const usuario = await getUserById(employee.userId);
-            return usuario;
-          })
-        );
-
-        const formattedOptions: Option[] = usersActive.map((item: any) => ({
-          value: item.id,
-          label: item.name,
-          isDisabled: false,
+      try { 
+        const responseEmployee = await getUserTypeIdById(2);
+           console.log(registeredEmployee);
+           
+        const formattedOptions: Option[] = responseEmployee.map((employee: User) => ({
+          value: employee.id,  
+          label: employee.name,     
+          isDisabled: false,       
         }));
-
+         
         formattedOptions.unshift({ value: 0, label: "Selecione...", isDisabled: true });
-
+       
         setOptions(formattedOptions);
       } catch (error) {
         console.error("Erro ao buscar funcionários:", error);
       }
     };
-
+    fetchData();
     fetchEmployees();
   }, []);
-
-
+  
+  
   const handleChange = (option: any) => {
     setEmployee(option);
     handleEmployeeChange(option)

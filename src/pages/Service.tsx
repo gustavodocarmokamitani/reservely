@@ -51,44 +51,6 @@ function Service() {
     }
   };
 
-  const handleCreateServiceType = async () => {
-    try {
-      if (
-        !serviceContext?.name ||
-        !serviceContext.description ||
-        !serviceContext.value ||
-        !serviceContext.durationMinutes
-      ) {
-        setPost(false);
-        enqueueSnackbar(
-          "Por favor, preencha todos os dados obrigatórios antes de continuar.",
-          { variant: "error" }
-        );
-        return;
-      }
-      const defaultService = [
-        {
-          id: serviceContext?.id || 0,
-          name: serviceContext?.name || "string",
-          description: serviceContext?.description || "string",
-          value: serviceContext?.value || 0,
-          active: serviceContext?.active || true,
-          durationMinutes: serviceContext?.durationMinutes || 0,
-        },
-      ];
-
-      await createServiceTypeByStoreId(1, defaultService);
-      enqueueSnackbar("Serviço criado com sucesso!", { variant: "success" });
-      setServiceContext(null);
-      setPost(false);
-    } catch (error) {
-      console.error("Erro durante o request:", error);
-      enqueueSnackbar("Erro inesperado! Verifique os dados.", {
-        variant: "error",
-      });
-    }
-  };
-
   const handleDeleteServices = async () => {
     if (selectedServiceIds.length > 0) {
       try {
@@ -133,11 +95,6 @@ function Service() {
   const handleRowSelect = (ids: number[]) => {
     setSelectedServiceIds(ids);
   };
-
-  useEffect(() => {
-    if (post) handleCreateServiceType();
-    fetchData();
-  }, [post]);
 
   return (
     <>

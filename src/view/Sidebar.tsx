@@ -51,6 +51,7 @@ const Navigation = () => {
         {[{ path: "/appointment", icon: chamada, text: "Agendamento" },
           { path: "/appointment-history", icon: chamada, text: "Histórico Agendamento" },
           { path: "/service", icon: service, text: "Serviços" },
+          { path: "/professional-register", icon: professional, text: "Registrar Profissionais" },
           { path: "/professional", icon: professional, text: "Profissionais" },
           { path: "/store", icon: store, text: "Loja" },
           { path: "/payment", icon: payment, text: "Formas de Pagamentos" },

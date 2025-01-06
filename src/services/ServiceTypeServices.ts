@@ -1,5 +1,6 @@
 // src/services/serviceTypeService.js
 import api from '../axiosInstance';
+import { ServiceServiceType } from '../models/Service';
 import { ServiceType } from '../models/ServiceType';
 
 // Function to get all service types
@@ -71,7 +72,7 @@ export const deleteServiceType = async (id: number) => {
 };
 
 // Function to create service types by storeId
-export const createServiceTypeByStoreId = async (storeId: number, serviceTypeData: ServiceType[]) => {
+export const createServiceTypeByStoreId = async (storeId: number, serviceTypeData: ServiceServiceType[]) => {
     if (!storeId || !serviceTypeData) {
         console.error("Store ID and service data are required");
         return;

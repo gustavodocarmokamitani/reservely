@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ContainerPage } from "./_Page.styles";
 import { Col, Row } from "react-bootstrap";
-import { getUsers, deleteUser } from "../services/UserServices";
+import { getUsers, deleteUser, getUserTypeIdById } from "../services/UserServices";
 import {
   getEmployees,
   deleteEmployee,
@@ -20,6 +20,7 @@ import {
   registerProfessional,
   registerUser,
 } from "../services/AuthService";
+import ProfessionalRegisterDataTable from "../view/DataTable/ProfessionalRegisterDataTable";
 
 interface User {
   id: number;
@@ -30,13 +31,7 @@ interface User {
   password: string;
   userTypeId: number;
 }
-
-interface Employee {
-  id: number;
-  userId: number;
-  active: string;
-  serviceIds: number[];
-}
+ 
 
 interface Row {
   id: number;
@@ -47,9 +42,8 @@ interface Row {
   services: number[];
 }
 
-function Professional() {
-  const [users, setUsers] = useState<User[]>([]);
-  const [employees, setEmployees] = useState<Employee[]>([]);
+function ProfessionalRegister() {
+  const [users, setUsers] = useState<User[]>([]); 
   const [rows, setRows] = useState<Row[]>([]);
   const [selectedUserIds, setSelectedUserIds] = useState<number[]>([]);
   const [show, setShow] = useState(false);
@@ -59,81 +53,33 @@ function Professional() {
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const { setUserEmployeeContext, userEmployeeContext, userRoleContext } =
-    useContext(AppContext)!;
+  const {
+    setUserEmployeeContext,
+    postEmployeeRegister,
+    setPostEmployeeRegister,
+    userRoleContext,
+    userEmployeeContext,
+  } = useContext(AppContext)!;
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const fetchData = async () => {
     try {
-      const usersData = await getUsers();
-      const employeesData = await getEmployees();
+      const usersData = await getUserTypeIdById(2);
 
-      const mappedRows: Row[] = employeesData
-        .map((employee: Employee) => {
-          const user = usersData.find((u: any) => u.id === employee.userId);
+      if(usersData === 404) {
+        return
+      }
 
-          if (user) {
-            return {
-              id: user.id,
-              name: user.name,
-              lastName: user.lastName,
-              phone: user.phone,
-              email: user.email,
-              active: employee.active,
-              services: employee.serviceIds || [],
-            };
-          }
-          return null;
-        })
-        .filter(Boolean) as Row[];
-
+      const mappedRows: Row[] = usersData
+        
       setUsers(usersData);
-      setEmployees(employeesData);
       setRows(mappedRows);
     } catch (error) {
       console.error("Erro ao buscar dados:", error);
     }
   };
-
-  const handleCreateEmployeeUser = async () => {
-    try {
-      if (post) {
-        if (
-          !userEmployeeContext?.name ||
-          !userEmployeeContext.lastName ||
-          !userEmployeeContext.phone
-        ) {
-          setPost(false);
-          enqueueSnackbar(
-            "Por favor, preencha todos os dados obrigatórios antes de continuar.",
-            { variant: "error" }
-          );
-          return;
-        }
-
-        await createEmployeeUser(userEmployeeContext);
-
-        enqueueSnackbar("Professional criado com sucesso!", {
-          variant: "success",
-        });
-        setUserEmployeeContext(null);
-        setPost(false);
-      }
-    } catch (error) {
-      console.error("Erro durante o request:", error);
-      enqueueSnackbar("Erro inesperado! Verifique os dados.", {
-        variant: "error",
-      });
-    }
-  };
-
-  useEffect(() => {
-    handleCreateEmployeeUser();
-    fetchData();
-    setPost(false);
-  }, [post]);
 
   const handleDeleteUsers = async () => {
     if (selectedUserIds.length > 0) {
@@ -141,16 +87,17 @@ function Professional() {
         await Promise.all(
           selectedUserIds.map(async (userId) => {
             try {
-              const employeeResponse = await getEmployees();
-              const employee = employeeResponse.find(
-                (f: Employee) => f.userId === userId
-              );
-
-              if (employee) {
-                const employeeId = employee.id;
-
-                await deleteEmployee(employeeId);
-                enqueueSnackbar(`Professional excluido com sucesso!`, {
+              const usersResponse = await getUsers();
+              const users = usersResponse.find((u: User) => u.id === userId);
+  
+              console.log(users);
+  
+              if (users !== null) {
+                const usersId = users.id;
+                console.log(users);
+  
+                await deleteUser(usersId); // Exclusão do usuário
+                enqueueSnackbar(`Professional excluído com sucesso!`, {
                   variant: "success",
                 });
               } else {
@@ -159,25 +106,32 @@ function Professional() {
                   { variant: "error" }
                 );
               }
-              await deleteEmployee(userId);
             } catch (error) {
               console.error(`Erro ao remover o usuário ${userId}:`, error);
+              enqueueSnackbar(`Erro ao excluir o usuário ${userId}.`, {
+                variant: "error",
+              });
             }
           })
         );
-        fetchData();
-        setSelectedUserIds([]);
+        
+        await fetchData(); 
+        setSelectedUserIds([]); 
       } catch (error) {
         console.error("Erro ao remover os usuários:", error);
       }
     } else {
       alert("Nenhum usuário selecionado!");
     }
-  };
+  };  
 
   const handleRowSelect = (ids: number[]) => {
     setSelectedUserIds(ids);
-  }; 
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -185,8 +139,8 @@ function Professional() {
         <Row>
           <Col md={7} style={{ padding: "0px" }}>
             <HeaderTitle
-              title="Professional"
-              subTitle="Área destinada para gerenciamento de profissionais registrados."
+              title="Registrar Professional"
+              subTitle="Área destinada para registrar profissionais."
             />
           </Col>
 
@@ -197,17 +151,12 @@ function Professional() {
             {userRoleContext?.userRole === "Admin" && (
               <>
                 <Button $isRemove type="button" onClick={handleDeleteUsers} />
-                <Button
-                  $isAdd
-                  type="button"
-                  onClick={handleShow}
-                  disabled={loading}
-                />
+                <Button $isAdd type="button" onClick={handleShow} />
               </>
             )}
           </Col>
         </Row>
-        <ProfessionalDataTable
+        <ProfessionalRegisterDataTable
           professional
           rowsProfessional={rows}
           onRowSelect={handleRowSelect}
@@ -219,12 +168,13 @@ function Professional() {
           <AddUserEmployeeModal
             title="Adicionar profissional"
             subTitle="Preencha as informações abaixo para criar um novo profissional."
-            professional
+            professionalRegister
             handleClose={handleClose}
             handleShow={handleShow}
             size="large"
             fetchData={fetchData}
             setPost={setPost}
+            post={post}
           />
         )}
       </ContainerPage>
@@ -232,4 +182,4 @@ function Professional() {
   );
 }
 
-export default Professional;
+export default ProfessionalRegister;

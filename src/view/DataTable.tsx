@@ -340,6 +340,7 @@ const DataTable: React.FC<DataTableProps> = ({
       )}
       {showModal.editService && (
         <EditServiceModal
+        fetchData={fetchData}
           title="Editar serviço"
           subTitle="Preencha as informações abaixo para editar o serviço."
           handleClose={handleClose}
