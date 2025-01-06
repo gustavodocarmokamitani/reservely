@@ -23,23 +23,29 @@ function Payment() {
       try {
         const response = await getStoreById(1);
         setStore(response);
-
-        if (response.paymentMethod) {
-          const paymentMethodInitial: PaymentMethod[] = response.paymentMethod.map((id: number) => ({
+  
+        if (response.paymentMethods && Array.isArray(response.paymentMethods)) {
+          const paymentMethodInitial: PaymentMethod[] = response.paymentMethods.map((id: number) => ({
             id,
             name: `Metodo ${id}`,
           }));
+  
+          console.log(paymentMethodInitial);
           setPayment(paymentMethodInitial);
+        } else {
+          console.log("No payment methods found or invalid format.");
         }
       } catch (error) {
-        console.error("Erro when load store:", error);
-      } 
+        console.error("Error when loading store:", error);
+      }
     };
-
+  
     fetchStore();
   }, []);
+  
 
   const handleSubmit = async () => {
+    
     try {
       if (!store) {
 
@@ -51,7 +57,7 @@ function Payment() {
 
       const mapped: Store = {
         ...store,
-        paymentMethod: paymentMethodIds,
+        paymentMethods: paymentMethodIds,
       };
 
       await updateStore(store.id, mapped);

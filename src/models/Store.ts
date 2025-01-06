@@ -6,6 +6,6 @@ export interface Store {
     operatingHours: string;
     closingDays: string[];
     operatingDays: string[];
-    paymentMethod: number[];
+    paymentMethods: number[];
   }
   
