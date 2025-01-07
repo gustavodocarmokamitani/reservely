@@ -112,7 +112,7 @@ const ProfessionalDataTable: React.FC<ProfessionalDataTableProps> = ({
     const updateColumnWidth = () => {
       if (containerRef.current) {
         const totalWidth = containerRef.current.offsetWidth;
-        const columnsCount = userRoleContext?.userRole === "Admin" ? 5 : 4;
+        const columnsCount = decodedData?.userRole === "Admin" ? 5 : 4;
         setColumnWidth(Math.floor(totalWidth / columnsCount));
       }
     };
@@ -131,6 +131,7 @@ const ProfessionalDataTable: React.FC<ProfessionalDataTableProps> = ({
           field: "fullName",
           headerName: "Nome Completo",
           width: columnWidth,
+          flex: 3,
           align: "center" as const,
           headerAlign: "center" as const,
           renderCell: (params) => `${params.row.name} ${params.row.lastName}`,
@@ -139,6 +140,7 @@ const ProfessionalDataTable: React.FC<ProfessionalDataTableProps> = ({
           field: "email",
           headerName: "Email",
           width: columnWidth,
+          flex: 3,
           align: "center" as const,
           headerAlign: "center" as const,
         },
@@ -146,6 +148,7 @@ const ProfessionalDataTable: React.FC<ProfessionalDataTableProps> = ({
           field: "phone",
           headerName: "Telefone",
           width: columnWidth,
+          flex: 2,
           align: "center" as const,
           headerAlign: "center" as const,
         },
@@ -154,6 +157,7 @@ const ProfessionalDataTable: React.FC<ProfessionalDataTableProps> = ({
           headerName: "Ativo",
           type: "boolean",
           width: columnWidth,
+          flex: 1,
           align: "center" as const,
           headerAlign: "center" as const,
           renderCell: (params: GridRenderCellParams) =>
@@ -168,6 +172,7 @@ const ProfessionalDataTable: React.FC<ProfessionalDataTableProps> = ({
           ? [
               {
                 field: "acoes",
+                flex: 1,
                 headerName: "Ações",
                 renderCell: (params: GridCellParams) => (
                   <div

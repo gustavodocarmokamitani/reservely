@@ -67,6 +67,7 @@ const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
             {
                 field: "acoes",
                 headerName: "Ações",
+                flex: 1,
                 renderCell: (params) => (
                     <div style={{ display: "flex", gap: "50px", justifyContent: "center", margin: '12.5px 0px 0px 5px' }}>
                         <img

@@ -7,6 +7,13 @@ import { SelectOption } from "../../models/SelectOptions";
 import { Employee } from "../../models/Employee";
 import { AppContext } from "../../context/AppContext";
 import EmployeeSelect from "../Select/EmployeeSelect";
+import { decodeToken } from "../../services/AuthService";
+
+interface DecodedToken {
+  userId: string;
+  userEmail: string;
+  userRole: string;
+}
 
 interface InputGroupProfessionalAddProps {
   edit?: boolean;
@@ -54,7 +61,24 @@ const InputGroupProfessionalAdd: React.FC<InputGroupProfessionalAddProps> = ({
     null
   );
 
+  const storedToken = localStorage.getItem("authToken");
+  const [decodedData, setDecodedData] = useState<DecodedToken>();
   const { userRoleContext } = useContext(AppContext)!;
+
+const fetchToken = async () => {
+    if (storedToken) {
+      try {
+        const data = await decodeToken(storedToken);
+        setDecodedData(data);
+      } catch (error) {
+        console.error("Error decoding token:", error);
+      }
+    }
+  };
+
+    useEffect(() => {
+    fetchToken();
+    }, []);
 
   useEffect(() => {
     if (edit && data?.[0]) {
@@ -95,7 +119,7 @@ const InputGroupProfessionalAdd: React.FC<InputGroupProfessionalAddProps> = ({
 
   return (
     <Row>
-      {userRoleContext?.userRole === "Admin" && (
+      {decodedData?.userRole === "Admin" && (
         <>
           <Col md={4} className="mt-3 mb-3">
             <EmployeeSelect

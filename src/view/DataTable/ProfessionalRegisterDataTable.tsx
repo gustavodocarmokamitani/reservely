@@ -102,8 +102,8 @@ const ProfessionalRegisterDataTable: React.FC<
   useEffect(() => {
     const updateColumnWidth = () => {
       if (containerRef.current) {
-        const totalWidth = containerRef.current.offsetWidth;
-        const columnsCount = userRoleContext?.userRole === "Admin" ? 5 : 4;
+        const totalWidth = containerRef.current.offsetWidth;  
+        const columnsCount = decodedData?.userRole === "Admin" ? 5 : 4;
         setColumnWidth(Math.floor(totalWidth / columnsCount));
       }
     };
@@ -124,6 +124,7 @@ const ProfessionalRegisterDataTable: React.FC<
           headerName: "Nome Completo",
           width: columnWidth,
           align: "center" as const,
+          flex: 3,
           headerAlign: "center" as const,
           renderCell: (params) => `${params.row.name} ${params.row.lastName}`,
         },
@@ -131,6 +132,7 @@ const ProfessionalRegisterDataTable: React.FC<
           field: "email",
           headerName: "Email",
           width: columnWidth,
+          flex: 3,
           align: "center" as const,
           headerAlign: "center" as const,
         },
@@ -138,6 +140,7 @@ const ProfessionalRegisterDataTable: React.FC<
           field: "phone",
           headerName: "Telefone",
           width: columnWidth,
+          flex: 2,
           align: "center" as const,
           headerAlign: "center" as const,
         },
@@ -145,6 +148,7 @@ const ProfessionalRegisterDataTable: React.FC<
           field: "emailConfirmed",
           headerName: "Email Confirmado",
           type: "boolean",
+          flex: 1,
           width: columnWidth,
           align: "center" as const,
           headerAlign: "center" as const,
@@ -160,6 +164,7 @@ const ProfessionalRegisterDataTable: React.FC<
               {
                 field: "acoes",
                 headerName: "Ações",
+                flex: 1,
                 renderCell: (params: GridCellParams) => (
                   <div
                     style={{

@@ -106,7 +106,8 @@ const ServiceDataTable: React.FC<ServiceDataTableProps> = ({
     const updateColumnWidth = () => {
       if (containerRef.current) {
         const totalWidth = containerRef.current.offsetWidth;
-        setColumnWidth(Math.floor(totalWidth / 5));
+        const columnsCount = decodedData?.userRole === "Admin" ? 6 : 5;
+        setColumnWidth(Math.floor(totalWidth / columnsCount));
       }
     };
     updateColumnWidth();
@@ -125,36 +126,36 @@ const ServiceDataTable: React.FC<ServiceDataTableProps> = ({
         field: "id",
         headerName: "ID",
         flex: 1,
-        align: "center" as const,  // Usando as const para garantir o tipo literal
-        headerAlign: "center" as const,  // Usando as const para garantir o tipo literal
+        align: "center" as const,  
+        headerAlign: "center" as const,  
       },
       {
         field: "name",
         headerName: "Nome",
-        flex: 3,
-        align: "center" as const,  // Usando as const para garantir o tipo literal
-        headerAlign: "center" as const,  // Usando as const para garantir o tipo literal
+        flex: 2,
+        align: "center" as const,  
+        headerAlign: "center" as const,  
       },
       {
         field: "value",
         headerName: "Valor",
         flex: 1,
-        align: "center" as const,  // Usando as const para garantir o tipo literal
-        headerAlign: "center" as const,  // Usando as const para garantir o tipo literal
+        align: "center" as const,  
+        headerAlign: "center" as const,  
       },
       {
         field: "durationMinutes",
         headerName: "Duração",
         flex: 1,
-        align: "center" as const,  // Usando as const para garantir o tipo literal
-        headerAlign: "center" as const,  // Usando as const para garantir o tipo literal
+        align: "center" as const,  
+        headerAlign: "center" as const,  
       },
       {
         field: "active",
         headerName: "Ativo",
         type: "boolean",
         flex: 1,
-        headerAlign: "center" as const,  // Usando as const para garantir o tipo literal
+        headerAlign: "center" as const,  
         renderCell: (params) =>
           params.value === true ? (
             <img style={{ cursor: "pointer" }} src={confirm} alt="Ativo" />
@@ -167,6 +168,7 @@ const ServiceDataTable: React.FC<ServiceDataTableProps> = ({
             {
               field: "acoes",
               headerName: "Ações",
+              flex: 1,
               renderCell: (params: GridRenderCellParams) => (
                 <div
                   style={{
@@ -187,8 +189,8 @@ const ServiceDataTable: React.FC<ServiceDataTableProps> = ({
                 </div>
               ),
               width: columnWidth,
-              align: "center" as const,  // Usando as const para garantir o tipo literal
-              headerAlign: "center" as const,  // Usando as const para garantir o tipo literal
+              align: "center" as const,  
+              headerAlign: "center" as const,  
             },
           ]
         : []),
