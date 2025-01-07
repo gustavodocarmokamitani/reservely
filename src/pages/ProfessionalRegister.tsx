@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { ContainerPage } from "./_Page.styles";
 import { Col, Row } from "react-bootstrap";
-import { getUsers, deleteUser, getUserTypeIdById } from "../services/UserServices";
+import {
+  getUsers,
+  deleteUser,
+  getUserTypeIdById,
+} from "../services/UserServices";
 import {
   getEmployees,
   deleteEmployee,
@@ -17,6 +21,7 @@ import AddUserEmployeeModal from "../view/Modal/AddUserEmployeeModal";
 import ProfessionalDataTable from "../view/DataTable/ProfessionalDataTable";
 import {
   checkEmail,
+  decodeToken,
   registerProfessional,
   registerUser,
 } from "../services/AuthService";
@@ -31,7 +36,6 @@ interface User {
   password: string;
   userTypeId: number;
 }
- 
 
 interface Row {
   id: number;
@@ -42,14 +46,23 @@ interface Row {
   services: number[];
 }
 
+interface DecodedToken {
+  userId: string;
+  userEmail: string;
+  userRole: string;
+}
+
 function ProfessionalRegister() {
-  const [users, setUsers] = useState<User[]>([]); 
+  const [users, setUsers] = useState<User[]>([]);
   const [rows, setRows] = useState<Row[]>([]);
   const [selectedUserIds, setSelectedUserIds] = useState<number[]>([]);
   const [show, setShow] = useState(false);
   const [post, setPost] = useState(false);
   const [update, setUpdate] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const storedToken = localStorage.getItem("authToken");
+  const [decodedData, setDecodedData] = useState<DecodedToken>();
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -65,15 +78,19 @@ function ProfessionalRegister() {
   const handleShow = () => setShow(true);
 
   const fetchData = async () => {
+    if (storedToken) {
+      const data = await decodeToken(storedToken);
+      setDecodedData(data);
+    }
     try {
       const usersData = await getUserTypeIdById(2);
 
-      if(usersData === 404) {
-        return
+      if (usersData === 404) {
+        return;
       }
 
-      const mappedRows: Row[] = usersData
-        
+      const mappedRows: Row[] = usersData;
+
       setUsers(usersData);
       setRows(mappedRows);
     } catch (error) {
@@ -89,14 +106,11 @@ function ProfessionalRegister() {
             try {
               const usersResponse = await getUsers();
               const users = usersResponse.find((u: User) => u.id === userId);
-  
-              console.log(users);
-  
+
               if (users !== null) {
                 const usersId = users.id;
-                console.log(users);
-  
-                await deleteUser(usersId); // Exclusão do usuário
+
+                await deleteUser(usersId);  
                 enqueueSnackbar(`Professional excluído com sucesso!`, {
                   variant: "success",
                 });
@@ -114,16 +128,16 @@ function ProfessionalRegister() {
             }
           })
         );
-        
-        await fetchData(); 
-        setSelectedUserIds([]); 
+
+        await fetchData();
+        setSelectedUserIds([]);
       } catch (error) {
         console.error("Erro ao remover os usuários:", error);
       }
     } else {
       alert("Nenhum usuário selecionado!");
     }
-  };  
+  };
 
   const handleRowSelect = (ids: number[]) => {
     setSelectedUserIds(ids);
@@ -148,7 +162,7 @@ function ProfessionalRegister() {
             md={5}
             className="d-flex flex-row justify-content-end align-items-center"
           >
-            {userRoleContext?.userRole === "Admin" && (
+            {decodedData?.userRole === "Admin" && (
               <>
                 <Button $isRemove type="button" onClick={handleDeleteUsers} />
                 <Button $isAdd type="button" onClick={handleShow} />

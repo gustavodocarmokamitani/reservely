@@ -10,6 +10,13 @@ import edit from "../../assets/edit.svg";
 import confirm from "../../assets/confirmCardStore.svg";
 import remove from "../../assets/removeRed.svg";
 import EditServiceModal from "../Modal/EditServiceModal";
+import { decodeToken } from "../../services/AuthService";
+
+interface DecodedToken {
+  userId: string;
+  userEmail: string;
+  userRole: string;
+}
 
 interface ServiceDataTableProps {
   service?: boolean;
@@ -38,44 +45,58 @@ const ServiceDataTable: React.FC<ServiceDataTableProps> = ({
     setShowModal({ ...showModal, [type]: true });
   };
 
+  const storedToken = localStorage.getItem("authToken");
+    const [decodedData, setDecodedData] = useState<DecodedToken>();
+
   const { serviceUpdateContext, userRoleContext } = useContext(AppContext)!;
   const { enqueueSnackbar } = useSnackbar();
 
-  const updateService = async (id: number, data: ServiceType) => {
-    try {
-      if (serviceUpdateContext) {
-        const updatedServico = {
-          id: serviceUpdateContext.id,
-          name: serviceUpdateContext.name,
-          value: serviceUpdateContext.value,
-          durationMinutes: serviceUpdateContext.durationMinutes,
-          active: serviceUpdateContext.active,
-          description: serviceUpdateContext.description,
-        };
+  // const updateService = async (id: number, data: ServiceType) => {
+  //   try {
+  //     if (serviceUpdateContext) {
+  //       const updatedServico = {
+  //         id: serviceUpdateContext.id,
+  //         name: serviceUpdateContext.name,
+  //         value: serviceUpdateContext.value,
+  //         durationMinutes: serviceUpdateContext.durationMinutes,
+  //         active: serviceUpdateContext.active,
+  //         description: serviceUpdateContext.description,
+  //       };
 
-        const response = await updateServiceType(
-          serviceUpdateContext.id,
-          updatedServico
-        );
-        setUpdate(false);
+  //       const response = await updateServiceType(
+  //         serviceUpdateContext.id,
+  //         updatedServico
+  //       );
+  //       setUpdate(false);
 
-        if (response.status === 200 || response.status === 204) {
-          enqueueSnackbar(`Serviço editado com sucesso!`, {
-            variant: "success",
-          });
+  //       if (response.status === 200 || response.status === 204) {
+  //         enqueueSnackbar(`Serviço editado com sucesso!`, {
+  //           variant: "success",
+  //         });
+  //       }
+  //     }
+  //   } catch (error: any) {
+  //     console.error("Erro ao editar o serviço", error.message);
+
+  //     if (error.response) {
+  //       console.error("Status HTTP:", error.response.status);
+  //       console.error("Resposta:", error.response.data);
+  //     } else if (error.request) {
+  //       console.error("Erro na requisição:", error.request);
+  //     }
+  //   }
+  // };
+
+  const fetchToken = async () => {
+      if (storedToken) {
+        try {
+          const data = await decodeToken(storedToken);
+          setDecodedData(data);
+        } catch (error) {
+          console.error("Error decoding token:", error);
         }
       }
-    } catch (error: any) {
-      console.error("Erro ao editar o serviço", error.message);
-
-      if (error.response) {
-        console.error("Status HTTP:", error.response.status);
-        console.error("Resposta:", error.response.data);
-      } else if (error.request) {
-        console.error("Erro na requisição:", error.request);
-      }
-    }
-  };
+    };
 
   useEffect(() => {
     fetchData();
@@ -89,6 +110,7 @@ const ServiceDataTable: React.FC<ServiceDataTableProps> = ({
       }
     };
     updateColumnWidth();
+    fetchToken();
     window.addEventListener("resize", updateColumnWidth);
 
     return () => window.removeEventListener("resize", updateColumnWidth);
@@ -140,7 +162,7 @@ const ServiceDataTable: React.FC<ServiceDataTableProps> = ({
             <img style={{ cursor: "pointer" }} src={remove} alt="Inactive" />
           ),
       },
-      ...(userRoleContext?.userRole === "Admin"
+      ...(decodedData?.userRole === "Admin"
         ? [
             {
               field: "acoes",

@@ -14,6 +14,7 @@ import HeaderTitle from "../view/HeaderTitle";
 import Button from "../components/Button";
 import AddServiceModal from "../view/Modal/AddServiceModal";
 import ServiceDataTable from "../view/DataTable/ServiceDataTable";
+import { decodeToken } from "../services/AuthService";
 
 interface Row {
   id: number;
@@ -22,6 +23,12 @@ interface Row {
   phone: string;
   email: string;
   services: number[];
+}
+
+interface DecodedToken {
+  userId: string;
+  userEmail: string;
+  userRole: string;
 }
 
 function Service() {
@@ -33,6 +40,9 @@ function Service() {
   const [rows, setRows] = useState<ServiceType[]>([]);
   const [selectedServiceIds, setSelectedServiceIds] = useState<number[]>([]);
 
+  const storedToken = localStorage.getItem("authToken");
+  const [decodedData, setDecodedData] = useState<DecodedToken>();
+
   const { enqueueSnackbar } = useSnackbar();
 
   const { serviceContext, setServiceContext, userRoleContext } =
@@ -43,6 +53,10 @@ function Service() {
   }, []);
 
   const fetchData = async () => {
+    if (storedToken) {
+      const data = await decodeToken(storedToken);
+      setDecodedData(data);
+    }
     try {
       const serviceData = await getServiceTypes();
       setRows(serviceData?.data);
@@ -111,7 +125,7 @@ function Service() {
             md={5}
             className="d-flex flex-row justify-content-end align-items-center"
           >
-            {userRoleContext?.userRole === "Admin" && (
+            {decodedData?.userRole === "Admin" && (
               <>
                 <Button
                   onClick={handleDeleteServices}

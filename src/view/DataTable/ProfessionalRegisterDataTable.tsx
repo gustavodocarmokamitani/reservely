@@ -1,5 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import { DataGrid, GridCellParams, GridColDef, GridRenderCellParams, GridRowSelectionModel } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridCellParams,
+  GridColDef,
+  GridRenderCellParams,
+  GridRowSelectionModel,
+} from "@mui/x-data-grid";
 import { useContext } from "react";
 import { AppContext } from "../../context/AppContext";
 import { updateUserEmployee } from "../../services/EmployeeServices";
@@ -15,6 +21,13 @@ import remove from "../../assets/removeRed.svg";
 import EditUserEmployeeModal from "../Modal/EditUserEmployeeModal";
 import InfoEmployeeServiceModal from "../Modal/InfoEmployeeServiceModal";
 import EditEmployeeRegisterModal from "../Modal/EditEmployeeRegisterModal";
+import { decodeToken } from "../../services/AuthService";
+
+interface DecodedToken {
+  userId: string;
+  userEmail: string;
+  userRole: string;
+}
 
 interface ProfessionalRegisterDataTableProps {
   service?: boolean;
@@ -36,7 +49,9 @@ interface ProfessionalRegisterDataTableProps {
   fetchData: () => void;
 }
 
-const ProfessionalRegisterDataTable: React.FC<ProfessionalRegisterDataTableProps> = ({
+const ProfessionalRegisterDataTable: React.FC<
+  ProfessionalRegisterDataTableProps
+> = ({
   rowsAppointment,
   rowsService,
   rowsProfessional,
@@ -52,104 +67,124 @@ const ProfessionalRegisterDataTable: React.FC<ProfessionalRegisterDataTableProps
   const [selectedEmployeeId, setSelectedEmployeeId] = useState<number>();
   const [columnWidth, setColumnWidth] = useState(250);
   const containerRef = useRef<HTMLDivElement>(null);
+
   const handleClose = () => setShowModal({ edit: false, info: false });
+
   const handleShowModal = (type: "edit" | "info", id: number) => {
     setSelectedEmployeeId(id);
     setShowModal({ ...showModal, [type]: true });
   };
+
   const { userEmployeeUpdateContext, userRoleContext } =
     useContext(AppContext)!;
+
+  const storedToken = localStorage.getItem("authToken");
+  const [decodedData, setDecodedData] = useState<DecodedToken>();
+
   const { enqueueSnackbar } = useSnackbar();
-
-  const updateUser = async (id: number, data: UserEmployeeUpdate) => {
-    try {
-      const response = await updateUserEmployee(id, data);
-      setUpdate(false);
-
-      if (response.status === 200 || response.status === 204) {
-        enqueueSnackbar(`Profissional editado com sucesso!`, {
-          variant: "success",
-        });
-      }
-    } catch (error: any) {
-      console.error("Erro ao editar o Usuário e Funcionario", error.message);
-    }
-  };
 
   useEffect(() => {
     fetchData();
     setUpdate(false);
   }, [update]);
 
+  const fetchToken = async () => {
+    if (storedToken) {
+      try {
+        const data = await decodeToken(storedToken);
+        setDecodedData(data);
+      } catch (error) {
+        console.error("Error decoding token:", error);
+      }
+    }
+  };
+
   useEffect(() => {
     const updateColumnWidth = () => {
       if (containerRef.current) {
         const totalWidth = containerRef.current.offsetWidth;
-        const columnsCount = userRoleContext?.userRole === "Admin" ? 5 : 4; 
+        const columnsCount = userRoleContext?.userRole === "Admin" ? 5 : 4;
         setColumnWidth(Math.floor(totalWidth / columnsCount));
       }
     };
+    fetchToken();
+
     updateColumnWidth();
     window.addEventListener("resize", updateColumnWidth);
-
     return () => window.removeEventListener("resize", updateColumnWidth);
   }, []);
 
   const handleRowClick = (ids: number[]) => onRowSelect?.(ids);
+  console.log(decodedData);
 
   const columns: GridColDef[] = professional
-  ? [
-    {
-        field: "fullName",  
-        headerName: "Nome Completo",
-        width: columnWidth,
-        align: "center" as const,
-        headerAlign: "center" as const,
-        renderCell: (params) => `${params.row.name} ${params.row.lastName}`,  
-      }, 
-      { field: "email", headerName: "Email", width: columnWidth, align: "center" as const, headerAlign: "center" as const },
-      { field: "phone", headerName: "Telefone", width: columnWidth, align: "center" as const, headerAlign: "center" as const },
-      {
-        field: "emailConfirmed",
-        headerName: "Email Confirmado",
-        type: "boolean",
-        width: columnWidth,
-        align: "center" as const,
-        headerAlign: "center" as const,
-        renderCell: (params: GridRenderCellParams) => (
-          params.value === true ? (
-            <img style={{ cursor: "pointer" }} src={confirm} alt="Ativo" />
-          ) : (
-            <img style={{ cursor: "pointer" }} src={remove} alt="Inativo" />
-          )
-        ),
-      },
-
-      ...(userRoleContext?.userRole === "Admin"
-        ? [
-            {
-              field: "acoes",
-              headerName: "Ações",
-              renderCell: (params: GridCellParams) => (
-                <div
-                  style={{ display: "flex", gap: "50px", justifyContent: "center", margin: "12.5px 0px 0px 5px" }}
-                >
-                  <img
-                    style={{ cursor: "pointer" }}
-                    src={edit}
-                    onClick={() => handleShowModal("edit", params.row.id)}
-                    alt="Editar"
-                  />
-                </div>
-              ),
-              width: columnWidth,
-              align: "center" as const,
-              headerAlign: "center" as const,
-            },
-          ]
-        : []),
-    ]
-  : [];
+    ? [
+        {
+          field: "fullName",
+          headerName: "Nome Completo",
+          width: columnWidth,
+          align: "center" as const,
+          headerAlign: "center" as const,
+          renderCell: (params) => `${params.row.name} ${params.row.lastName}`,
+        },
+        {
+          field: "email",
+          headerName: "Email",
+          width: columnWidth,
+          align: "center" as const,
+          headerAlign: "center" as const,
+        },
+        {
+          field: "phone",
+          headerName: "Telefone",
+          width: columnWidth,
+          align: "center" as const,
+          headerAlign: "center" as const,
+        },
+        {
+          field: "emailConfirmed",
+          headerName: "Email Confirmado",
+          type: "boolean",
+          width: columnWidth,
+          align: "center" as const,
+          headerAlign: "center" as const,
+          renderCell: (params: GridRenderCellParams) =>
+            params.value === true ? (
+              <img style={{ cursor: "pointer" }} src={confirm} alt="Ativo" />
+            ) : (
+              <img style={{ cursor: "pointer" }} src={remove} alt="Inativo" />
+            ),
+        },
+        ...(decodedData?.userRole === "Admin"
+          ? [
+              {
+                field: "acoes",
+                headerName: "Ações",
+                renderCell: (params: GridCellParams) => (
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "50px",
+                      justifyContent: "center",
+                      margin: "12.5px 0px 0px 5px",
+                    }}
+                  >
+                    <img
+                      style={{ cursor: "pointer" }}
+                      src={edit}
+                      onClick={() => handleShowModal("edit", params.row.id)}
+                      alt="Editar"
+                    />
+                  </div>
+                ),
+                width: columnWidth,
+                align: "center" as const,
+                headerAlign: "center" as const,
+              },
+            ]
+          : []),
+      ]
+    : [];
 
   let rows: any[] = [];
 

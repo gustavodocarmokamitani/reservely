@@ -17,6 +17,7 @@ import AddUserEmployeeModal from "../view/Modal/AddUserEmployeeModal";
 import ProfessionalDataTable from "../view/DataTable/ProfessionalDataTable";
 import {
   checkEmail,
+  decodeToken,
   registerProfessional,
   registerUser,
 } from "../services/AuthService";
@@ -47,6 +48,12 @@ interface Row {
   services: number[];
 }
 
+interface DecodedToken {
+  userId: string;
+  userEmail: string;
+  userRole: string;  
+}
+
 function Professional() {
   const [users, setUsers] = useState<User[]>([]);
   const [employees, setEmployees] = useState<Employee[]>([]);
@@ -57,6 +64,9 @@ function Professional() {
   const [update, setUpdate] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const storedToken = localStorage.getItem("authToken");
+  const [decodedData, setDecodedData] = useState<DecodedToken>();
+
   const { enqueueSnackbar } = useSnackbar();
 
   const { setUserEmployeeContext, userEmployeeContext, userRoleContext } =
@@ -66,6 +76,11 @@ function Professional() {
   const handleShow = () => setShow(true);
 
   const fetchData = async () => {
+    if (storedToken) {
+      const data = await decodeToken(storedToken);
+      setDecodedData(data);
+    }
+    
     try {
       const usersData = await getUsers();
       const employeesData = await getEmployees();
@@ -134,7 +149,7 @@ function Professional() {
     fetchData();
     setPost(false);
   }, [post]);
-
+  
   const handleDeleteUsers = async () => {
     if (selectedUserIds.length > 0) {
       try {
@@ -177,7 +192,7 @@ function Professional() {
 
   const handleRowSelect = (ids: number[]) => {
     setSelectedUserIds(ids);
-  }; 
+  };
 
   return (
     <>
@@ -194,7 +209,7 @@ function Professional() {
             md={5}
             className="d-flex flex-row justify-content-end align-items-center"
           >
-            {userRoleContext?.userRole === "Admin" && (
+            {decodedData?.userRole === "Admin" && (
               <>
                 <Button $isRemove type="button" onClick={handleDeleteUsers} />
                 <Button

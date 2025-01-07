@@ -20,6 +20,13 @@ import confirm from "../../assets/confirmCardStore.svg";
 import remove from "../../assets/removeRed.svg";
 import EditUserEmployeeModal from "../Modal/EditUserEmployeeModal";
 import InfoEmployeeServiceModal from "../Modal/InfoEmployeeServiceModal";
+import { decodeToken } from "../../services/AuthService";
+
+interface DecodedToken {
+  userId: string;
+  userEmail: string;
+  userRole: string;
+}
 
 interface ProfessionalDataTableProps {
   service?: boolean;
@@ -64,27 +71,41 @@ const ProfessionalDataTable: React.FC<ProfessionalDataTableProps> = ({
   };
   const { userEmployeeUpdateContext, userRoleContext } =
     useContext(AppContext)!;
+
+  const storedToken = localStorage.getItem("authToken");
+  const [decodedData, setDecodedData] = useState<DecodedToken>();
+
   const { enqueueSnackbar } = useSnackbar();
 
-  const updateUser = async (id: number, data: UserEmployeeUpdate) => {
-    try {
-      const response = await updateUserEmployee(id, data);
-      setUpdate(false);
+  // const updateUser = async (id: number, data: UserEmployeeUpdate) => {
+  //   try {
+  //     const response = await updateUserEmployee(id, data);
+  //     setUpdate(false);
 
-      if (response.status === 200 || response.status === 204) {
-        enqueueSnackbar(`Profissional editado com sucesso!`, {
-          variant: "success",
-        });
+  //     if (response.status === 200 || response.status === 204) {
+  //       enqueueSnackbar(`Profissional editado com sucesso!`, {
+  //         variant: "success",
+  //       });
+  //     }
+  //   } catch (error: any) {
+  //     console.error("Erro ao editar o Usuário e Funcionario", error.message);
+  //   }
+  // };
+
+  const fetchToken = async () => {
+    if (storedToken) {
+      try {
+        const data = await decodeToken(storedToken);
+        setDecodedData(data);
+      } catch (error) {
+        console.error("Error decoding token:", error);
       }
-    } catch (error: any) {
-      console.error("Erro ao editar o Usuário e Funcionario", error.message);
     }
-  }; 
+  };
 
-  useEffect(() => { 
+  useEffect(() => {
     fetchData();
-    setUpdate(false); 
-    
+    setUpdate(false);
   }, [update]);
 
   useEffect(() => {
@@ -96,6 +117,7 @@ const ProfessionalDataTable: React.FC<ProfessionalDataTableProps> = ({
       }
     };
     updateColumnWidth();
+    fetchToken();
     window.addEventListener("resize", updateColumnWidth);
 
     return () => window.removeEventListener("resize", updateColumnWidth);
@@ -142,7 +164,7 @@ const ProfessionalDataTable: React.FC<ProfessionalDataTableProps> = ({
             ),
         },
 
-        ...(userRoleContext?.userRole === "Admin"
+        ...(decodedData?.userRole === "Admin"
           ? [
               {
                 field: "acoes",

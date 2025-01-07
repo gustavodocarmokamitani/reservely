@@ -12,6 +12,13 @@ import CardHorario from "../components/Card/TimeCard";
 import CardDiaSemana from "../components/Card/WeekDayCard";
 import CardDiaFechamento from "../components/Card/ClosingDateCard";
 import { AppContext } from "../context/AppContext";
+import { decodeToken } from "../services/AuthService";
+
+interface DecodedToken {
+  userId: string;
+  userEmail: string;
+  userRole: string;
+}
 
 function Store() {
   const navigate = useNavigate();
@@ -20,8 +27,16 @@ function Store() {
 
   const { userRoleContext } = useContext(AppContext)!;
 
+  const storedToken = localStorage.getItem("authToken");
+  const [decodedData, setDecodedData] = useState<DecodedToken>();
+
   const fetchData = async () => {
     try {
+      if (storedToken) {
+        const data = await decodeToken(storedToken);
+        setDecodedData(data);
+      }
+      
       const response = await getStoreById(1);
       if (response) {
         setStore(response);
@@ -58,7 +73,7 @@ function Store() {
           md={5}
           className="d-flex flex-row justify-content-end align-items-center"
         >
-          {userRoleContext?.userRole === "Admin" && (
+          {decodedData?.userRole === "Admin" && (
             <Button $isConfigure onClick={handleButtonClick} type="button" />
           )}
         </Col>

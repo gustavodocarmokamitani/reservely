@@ -17,6 +17,13 @@ import { getAppointmentStatusById } from "../services/AppointmentStatusServices"
 import { useSnackbar } from "notistack";
 import AppointmentDataTable from "../view/DataTable/AppointmentDataTable";
 import { AppContext } from "../context/AppContext";
+import { decodeToken } from "../services/AuthService";
+
+interface DecodedToken {
+  userId: string;
+  userEmail: string;
+  userRole: string;
+}
 
 function AppointmentHistory() {
   const [selectedAppointmentIds, setSelectedAppointmentIds] = useState<
@@ -25,6 +32,9 @@ function AppointmentHistory() {
   const [update, setUpdate] = useState(false);
   const [rows, setRows] = useState<Appointment[]>([]);
 
+  const storedToken = localStorage.getItem("authToken");
+  const [decodedData, setDecodedData] = useState<DecodedToken>();
+
   const { enqueueSnackbar } = useSnackbar();
 
   const context = useContext(AppContext);
@@ -32,8 +42,12 @@ function AppointmentHistory() {
 
   const fetchData = async () => {
     try {
+      if (storedToken) {
+        const data = await decodeToken(storedToken);
+        setDecodedData(data);
+      }
       const appointmentData = await getAppointments();
-      
+
       const mappedAppointment = await Promise.all(
         appointmentData.map(async (appointment: Appointment) => {
           const employeeData = await getEmployeeById(appointment.employeeId);
@@ -116,8 +130,12 @@ function AppointmentHistory() {
             md={5}
             className="d-flex flex-row justify-content-end align-items-center"
           >
-            {userRoleContext?.userRole === "Admin" && (
-            <Button onClick={handleDeleteAppointment} $isRemove type="button" />
+            {decodedData?.userRole === "Admin" && (
+              <Button
+                onClick={handleDeleteAppointment}
+                $isRemove
+                type="button"
+              />
             )}
           </Col>
         </Row>
