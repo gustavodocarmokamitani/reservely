@@ -27,6 +27,7 @@ interface InputGroupProfessionalEditProps {
     serviceIds: number[];
     password: string;
     userTypeId: number;
+    storeId: number;
   }[];
 }
 const InputGroupProfessionalEdit: React.FC<InputGroupProfessionalEditProps> = ({
@@ -50,6 +51,7 @@ const InputGroupProfessionalEdit: React.FC<InputGroupProfessionalEditProps> = ({
         userTypeId: data[0].userTypeId,
         password: data[0].password,
         serviceIds: data[0].serviceIds,
+        storeId: data[0].storeId,
       };
   
       setFormValuesProfessional?.(prevState => {

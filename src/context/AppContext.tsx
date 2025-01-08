@@ -12,6 +12,7 @@ export interface User {
   phone: string;
   password: string;
   userTypeId: number;
+  storeId: number;
 }
 
 export interface Employee {
@@ -32,6 +33,7 @@ export interface UserEmployee {
   serviceIds: number[];
   password: string;
   userTypeId: number;
+  storeId: number;
 }
 
 export interface UserRole {

@@ -43,6 +43,7 @@ interface InputGroupProfessionalAddProps {
     serviceIds: number[];
     password: string;
     userTypeId: number;
+    storeId: number;
   }[];
 }
 const InputGroupProfessionalAdd: React.FC<InputGroupProfessionalAddProps> = ({
@@ -93,6 +94,7 @@ const fetchToken = async () => {
         userTypeId: data[0].userTypeId,
         password: data[0].password,
         serviceIds: data[0].serviceIds,
+        storeId: data[0].storeId
       };
 
       setFormValuesProfessional?.((prevState) => {

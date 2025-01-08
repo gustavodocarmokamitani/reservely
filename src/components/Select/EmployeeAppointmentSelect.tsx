@@ -28,7 +28,7 @@ const EmployeeAppointmentSelect: React.FC<EmployeeAppointmentSelectProps> = ({
   handleEmployeeChange,
 }) => {
   const [options, setOptions] = useState<SelectOption[]>([]);
-
+  const storeUser = localStorage.getItem("storeUser");
   let registeredEmployee: Employee;
 
   const fetchData = async () => {
@@ -41,7 +41,7 @@ const EmployeeAppointmentSelect: React.FC<EmployeeAppointmentSelectProps> = ({
         const responseEmployee = await getEmployees(); 
    
         const filteredEmployees = responseEmployee.filter(
-          (employee: Employee) => employee.storeId === 1 // TODO alterar store
+          (employee: Employee) => employee.storeId === Number(storeUser)
         );
    
         const filteredWithUserData = await Promise.all(

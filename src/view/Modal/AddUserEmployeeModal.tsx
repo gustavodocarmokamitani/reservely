@@ -58,6 +58,7 @@ const AddUserEmployeeModal: React.FC<AddUserEmployeeModalProps> = ({
       password: "",
       userTypeId: 0,
       serviceIds: [] as number[],
+      storeId: 0,
     });
 
   const [formValuesProfessionalRegister, setFormValuesProfessionalRegister] =
@@ -72,10 +73,11 @@ const AddUserEmployeeModal: React.FC<AddUserEmployeeModalProps> = ({
       password: "",
       userTypeId: 0,
       serviceIds: [] as number[],
+      storeId: 0,
     });
 
-  const { setUserEmployeeContext, setPostEmployeeRegister } =
-    useContext(AppContext)!;
+  const { setUserEmployeeContext, setPostEmployeeRegister, userActiveContext } =
+    useContext(AppContext)!; 
     
   const [serviceType, setServiceType] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -83,6 +85,8 @@ const AddUserEmployeeModal: React.FC<AddUserEmployeeModalProps> = ({
   const [valueProfessional, setValueProfessional] = useState<
     Employee | undefined
   >(undefined);
+
+  const storeUser = localStorage.getItem("storeUser");
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -109,6 +113,7 @@ const AddUserEmployeeModal: React.FC<AddUserEmployeeModalProps> = ({
         email: formValuesProfessionalRegister.email.toLowerCase(),
         phone: formValuesProfessionalRegister.phone,
         userTypeId: 2,
+        storeId: storeUser
       };
 
       await handleRegister(professionalData);
@@ -122,7 +127,7 @@ const AddUserEmployeeModal: React.FC<AddUserEmployeeModalProps> = ({
           id: 0,
           userId: responseEmployee.id,
           active: 'true',
-          storeId: 1, //TODO alterar store
+          storeId: Number(storeUser),
           serviceIds: formValuesProfessional.serviceIds
         }
         
@@ -135,9 +140,7 @@ const AddUserEmployeeModal: React.FC<AddUserEmployeeModalProps> = ({
 
   const handleEmployeeAdd = async (employeeData: Employee[]) => {
     setLoading(true);
-    try {
-      console.log(employee);
-      
+    try {  
       const updatedEmployeeData = employeeData.map((employee) => ({
         ...employee,
         serviceIds: formValuesProfessional.serviceIds,
@@ -170,9 +173,7 @@ const AddUserEmployeeModal: React.FC<AddUserEmployeeModalProps> = ({
       return;
     }
 
-    try {
-      console.log(professionalData);
-
+    try { 
       const response = await registerProfessional(professionalData);
 
       if (response) {

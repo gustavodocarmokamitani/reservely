@@ -98,6 +98,7 @@ function Professional() {
               email: user.email,
               active: employee.active,
               services: employee.serviceIds || [],
+              storeId: user.storeId
             };
           }
           return null;

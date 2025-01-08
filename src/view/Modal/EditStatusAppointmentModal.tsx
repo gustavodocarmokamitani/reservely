@@ -38,7 +38,8 @@ const EditStatusAppointmentModal: React.FC<EditStatusAppointmentModalProps> = ({
     useState<SelectOption | null>(null);
   const { enqueueSnackbar } = useSnackbar();
   const { setAppointmentUpdateContext } = useContext(AppContext)!;
-
+  const storeUser = localStorage.getItem("storeUser")
+  
   const sizeMap = {
     small: "650px",
     medium: "850px",
@@ -58,7 +59,7 @@ const EditStatusAppointmentModal: React.FC<EditStatusAppointmentModalProps> = ({
             appointmentDate: response.appointmentDate,
             appointmentStatusId: statusAppointment?.value,
             serviceIds: response.serviceIds,
-            storeId: 1,
+            storeId: Number(storeUser),
           };
 
           setAppointmentUpdateContext(mappedAppointment);

@@ -85,7 +85,8 @@ const ReactSelect: React.FC<ReactSelectProps> = ({
   const [selectedClient, setSelectedClient] = useState<{ value: string; label: string } | null>(null);
   const [selectedServices, setSelectedServices] = useState<{ value: string; label: string }[]>([]);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
-
+  const storeUser = localStorage.getItem("storeUser")
+  
   const { setAppointmentUpdateContext } = useContext(AppContext)!;
 
   const times = [
@@ -180,7 +181,7 @@ const ReactSelect: React.FC<ReactSelectProps> = ({
         appointmentDate: appointmentDate,
         appointmentStatusId: 1,
         serviceIds: [],
-        storeId: 1
+        storeId: Number(storeUser)
       };
   
       setAppointmentUpdateContext(appointment);

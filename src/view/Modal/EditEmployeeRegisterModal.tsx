@@ -41,7 +41,8 @@ const EditEmployeeRegisterModal: React.FC<EditEmployeeRegisterModal> = ({
   const [employee, setEmployee] = useState<UserEmployee[]>([]);
   const [user, setUser] = useState<User[]>([]);
   const [combinedData, setCombinedData] = useState<CombinedData | null>(null);
-
+  const storeUser = localStorage.getItem("storeUser")
+  
   const [formValuesProfessionalRegister, setFormValuesProfessionalRegister] =
     useState<UserEmployee>({
       id: 0,
@@ -54,6 +55,7 @@ const EditEmployeeRegisterModal: React.FC<EditEmployeeRegisterModal> = ({
       password: "",
       userTypeId: 0,
       serviceIds: [] as number[],
+      storeId: 0
     });
 
   const sizeMap = {
@@ -83,6 +85,7 @@ const EditEmployeeRegisterModal: React.FC<EditEmployeeRegisterModal> = ({
             active: employee.active,
             userTypeId: employee.userTypeId,
             serviceIds: employee.serviceIds || [],
+            storeId: employee.storeId
           }));
 
           setEmployee(mappedEmployee);
@@ -100,7 +103,7 @@ const EditEmployeeRegisterModal: React.FC<EditEmployeeRegisterModal> = ({
               phone: user.phone,
               password: user.password,
               userTypeId: user.userTypeId,
-              storeId: 1,
+              storeId: Number(storeUser),
             }));
             setUser(mappedUser);
             const combined = {
@@ -134,6 +137,7 @@ const EditEmployeeRegisterModal: React.FC<EditEmployeeRegisterModal> = ({
           phoneNumber,
           emailConfirmed,
           passwordHash,
+          storeId
         } = response;
 
         const updatedUser = {
@@ -148,6 +152,7 @@ const EditEmployeeRegisterModal: React.FC<EditEmployeeRegisterModal> = ({
           phoneNumber,
           emailConfirmed,
           passwordHash,
+          storeId
         };
 
         await updateUser(updatedUser.id, updatedUser);

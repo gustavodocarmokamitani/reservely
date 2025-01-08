@@ -24,6 +24,7 @@ export function Appointment() {
     const [time, setTime] = useState<SelectOption | null>(null);
     const [appointmentDate, setAppointmentDate] = useState<Date | null>(null);
     const [selectedEmployee, setSelectedEmployee] = useState<SelectOption | null>(null);
+    const storeUser = localStorage.getItem("storeUser")
 
     const handleEmployeeChange = async (employee: SelectOption | null) => {
         setSelectedEmployee(employee);
@@ -76,11 +77,8 @@ export function Appointment() {
                 appointmentDate: agendamentoData,
                 appointmentStatusId: 1,
                 serviceIds: service.map((item) => item.value),
-                storeId: 1
-            };
-                console.log(funcionarioId);
-                
-                // console.log(mapped);
+                storeId: Number(storeUser)
+            }; 
                 
             await createAppointment([mapped]);
             

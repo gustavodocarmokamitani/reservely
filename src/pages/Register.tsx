@@ -4,7 +4,8 @@ import { ContainerRegister, ParagraphThin } from "./_Page.styles";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import { registerUser, checkEmail } from "../services/AuthService";
-import { useSnackbar } from 'notistack';
+import { useSnackbar } from "notistack";
+import { createStore } from "../services/StoreServices";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -14,13 +15,14 @@ const Register = () => {
     phone: "",
     password: "",
     confirmPassword: "",
+    storeName: "",
   });
 
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
-  const [showPassword, setShowPassword] = useState(false); 
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false); 
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
@@ -29,32 +31,53 @@ const Register = () => {
 
   const handleRegister = async () => {
     if (formData.password !== formData.confirmPassword) {
-      enqueueSnackbar("As senhas não são iguais. Tente novamente.", { variant: "default" });
+      enqueueSnackbar("As senhas não são iguais. Tente novamente.", {
+        variant: "default",
+      });
       return;
     }
 
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     if (!emailRegex.test(formData.email)) {
-      enqueueSnackbar("Por favor, insira um endereço de e-mail válido.", { variant: "default" });
+      enqueueSnackbar("Por favor, insira um endereço de e-mail válido.", {
+        variant: "default",
+      });
       return;
     }
 
-    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+    const passwordRegex =
+      /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
     if (!passwordRegex.test(formData.password)) {
-      enqueueSnackbar("A senha deve ter pelo menos 8 caracteres, incluir uma letra maiúscula, um número e um caractere especial.", { variant: "default" });
+      enqueueSnackbar(
+        "A senha deve ter pelo menos 8 caracteres, incluir uma letra maiúscula, um número e um caractere especial.",
+        { variant: "default" }
+      );
       return;
     }
 
     setLoading(true);
 
-    const emailExists = await checkEmail(formData.email); 
+    const emailExists = await checkEmail(formData.email);
     if (emailExists) {
-      enqueueSnackbar("Este e-mail já está cadastrado.", { variant: "default" });
+      enqueueSnackbar("Este e-mail já está cadastrado.", {
+        variant: "default",
+      });
       setLoading(false);
       return;
     }
 
     try {
+      const responseStore = await createStore({
+        id: 0,
+        name: formData.storeName,
+        address: "",
+        status: false,
+        operatingHours: "",
+        closingDays: [""],
+        operatingDays: [""],
+        paymentMethods: [0],   
+      });
+  
       const response = await registerUser({
         name: formData.name,
         lastName: formData.lastname,
@@ -63,13 +86,16 @@ const Register = () => {
         password: formData.password,
         userName: formData.email,
         userTypeId: 1,
+        storeId: responseStore?.id,
       });
 
-      if (response) {
+      if ( responseStore && response) {
         window.location.href = "/confirm-email";
       }
     } catch (error) {
-      enqueueSnackbar("Ocorreu um erro. Por favor, tente novamente.", { variant: "error" });
+      enqueueSnackbar("Ocorreu um erro. Por favor, tente novamente.", {
+        variant: "error",
+      });
     } finally {
       setLoading(false);
     }
@@ -130,7 +156,7 @@ const Register = () => {
               <Input
                 placeholder="Password"
                 name="password"
-                type={showPassword ? "text" : "password"} 
+                type={showPassword ? "text" : "password"}
                 width="400"
                 value={formData.password}
                 onChange={handleInputChange}
@@ -140,14 +166,25 @@ const Register = () => {
               <Input
                 placeholder="Confirm Password"
                 name="confirmPassword"
-                type={showConfirmPassword ? "text" : "password"} 
+                type={showConfirmPassword ? "text" : "password"}
                 width="400"
                 value={formData.confirmPassword}
                 onChange={handleInputChange}
               />
             </Col>
           </Row>
-
+          <Row className="align-items-center justify-content-center">
+            <Col md={6}>
+              <Input
+                placeholder="Store Name"
+                name="storeName"
+                type="text"
+                width="400"
+                value={formData.storeName}
+                onChange={handleInputChange}
+              />
+            </Col>
+          </Row>
           <Row className="text-center pt-4">
             <Col>
               <Button

@@ -29,6 +29,7 @@ interface InputGroupProfessionalRegisterEditProps {
     serviceIds: number[];
     password: string;
     userTypeId: number;
+    storeId: number;
   }[];
 }
 const InputGroupProfessionalRegisterEdit: React.FC<
@@ -54,6 +55,7 @@ const InputGroupProfessionalRegisterEdit: React.FC<
         userTypeId: data[0].userTypeId,
         password: data[0].password,
         serviceIds: data[0].serviceIds,
+        storeId: data[0].storeId
       };
 
       setFormValuesProfessionalRegister((prevState) => {

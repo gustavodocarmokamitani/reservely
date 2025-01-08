@@ -6,5 +6,6 @@ export interface User {
     phone: string;
     password: string;
     userTypeId: number;
+    storeId: number;
   }
   

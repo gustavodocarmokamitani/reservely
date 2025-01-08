@@ -9,6 +9,10 @@ import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { getUserByEmail } from "../services/UserServices";
 
+interface UserResponse {
+  storeId: string;
+}
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,35 +35,25 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const responseEmailConfirmed = await getUserByEmail(email);
-      console.log(responseEmailConfirmed);
-      
-      if (responseEmailConfirmed.emailConfirmed == true) {
-        const responseLogin = await loginUser({ email, password });
+      const loggedUser = await getUserByEmail(email);
 
-        const user = responseLogin.user;
-        const employee = responseLogin.employee;
+      if (loggedUser.emailConfirmed == true) {
+        const responseLogin = await loginUser({ email, password });
         const token = responseLogin.token;
 
         if (setAuthToken) setAuthToken(token);
 
-        localStorage.setItem("authToken", token);
-
-        if (setUserContext) setUserContext(user);
-        if (setEmployeeContext) setEmployeeContext(employee);
-        if (setUserEmployeeContext)
-          setUserEmployeeContext({ ...user, ...employee });
-
         const decodedData = await decodeToken(token);
         const { userId, userEmail, userRole } = decodedData;
+        
+        localStorage.setItem("storeUser", loggedUser.storeId);
 
-        if (setUserRoleContext) {
-          setUserRoleContext({ userId, userEmail, userRole });
-        } else {
-          console.error("setUserRoleContext não está definido");
-        }
+        localStorage.setItem("authToken", token);
 
-        enqueueSnackbar(`Seja bem vindo ${responseEmailConfirmed.name} ${responseEmailConfirmed.lastName}! `, { variant: "success" });
+        enqueueSnackbar(
+          `Seja bem vindo ${loggedUser.name} ${loggedUser.lastName}! `,
+          { variant: "success" }
+        );
         navigate("/appointment");
       } else {
         enqueueSnackbar("E-mail não verificado.", { variant: "default" });
@@ -83,7 +77,10 @@ const Login = () => {
         <Col md={6}>
           <div className="text-center">
             <h2>Bem vindo de volta 👋</h2>
-            <p className="pt-2">Hoje é um novo começo. A oportunidade de fazer a diferença está em suas mãos.</p>
+            <p className="pt-2">
+              Hoje é um novo começo. A oportunidade de fazer a diferença está em
+              suas mãos.
+            </p>
             <p>Faça o login para começar a gerenciar seus projetos.</p>
           </div>
           <form onSubmit={handleLogin}>

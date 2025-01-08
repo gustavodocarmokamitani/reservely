@@ -114,8 +114,7 @@ const ProfessionalRegisterDataTable: React.FC<
     return () => window.removeEventListener("resize", updateColumnWidth);
   }, []);
 
-  const handleRowClick = (ids: number[]) => onRowSelect?.(ids);
-  console.log(decodedData);
+  const handleRowClick = (ids: number[]) => onRowSelect?.(ids); 
 
   const columns: GridColDef[] = professional
     ? [

@@ -6,5 +6,6 @@ export interface RegisterData {
     password: string;
     userName: string;
     userTypeId: number; 
+    storeId: number;
   }
   

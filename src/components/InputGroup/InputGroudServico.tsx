@@ -34,7 +34,8 @@ const InputGroupService: React.FC<InputGroupServiceProps> = ({
   setFormValuesService,
 }) => {
   const [isInitialized, setIsInitialized] = React.useState(false);
-
+  const storeUser = localStorage.getItem("storeUser")
+  
   useEffect(() => {
     if (!isInitialized && editService && Array.isArray(data) && data.length > 0) {
       const item = data[0];
@@ -45,7 +46,7 @@ const InputGroupService: React.FC<InputGroupServiceProps> = ({
         value: String(item.value),
         active: item.active ? "true" : "false",
         durationMinutes: String(item.durationMinutes),
-        storeId: 1
+        storeId: Number(storeUser)
       };
       setFormValuesService(newState);
       setIsInitialized(true); 

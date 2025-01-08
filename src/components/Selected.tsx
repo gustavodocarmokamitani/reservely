@@ -45,6 +45,8 @@ const Selected: React.FC<SelectedProps> = ({
   const [selectedServices, setSelectedServices] = useState<number[]>(professionalServices);
   const [services, setServices] = useState<ServiceProps[]>([]);
   const [dataOptions, setDataOptions] = useState<number[]>([]);
+  
+  const storeUser = localStorage.getItem("storeUser")
 
   useEffect(() => {
     if (edit && options) {
@@ -103,9 +105,8 @@ const Selected: React.FC<SelectedProps> = ({
           const serviceData = await getServices();
 
           if (serviceData) {
-            //TODO: Change ( === 1 ) trocar store
             
-            const filteredData = serviceData.filter((servico: any) => servico.storeId === 1);
+            const filteredData = serviceData.filter((servico: any) => servico.storeId === Number(storeUser));
             
             const serviceTypePromises = filteredData.map(async (servico: any) => {
               try {

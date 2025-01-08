@@ -39,7 +39,8 @@ const EditUserEmployeeModal: React.FC<EditUserEmployeeModal> = ({
   const [employee, setEmployee] = useState<UserEmployee[]>([]);
   const [user, setUser] = useState<User[]>([]);
   const [combinedData, setCombinedData] = useState<CombinedData | null>(null);
-
+  const storeUser = localStorage.getItem("storeUser");
+  
   const [formValuesProfessional, setFormValuesProfessional] =
   useState<UserEmployee>({
     id: 0,
@@ -52,6 +53,7 @@ const EditUserEmployeeModal: React.FC<EditUserEmployeeModal> = ({
     password: "",
     userTypeId: 0,
     serviceIds: [] as number[],
+    storeId: 0,
   });
    
   const sizeMap = {
@@ -59,8 +61,7 @@ const EditUserEmployeeModal: React.FC<EditUserEmployeeModal> = ({
     medium: "850px",
     large: "1050px",
   };
-
-  
+ 
   useEffect(() => {
     if (edit) {
       const fetchEmployee = async () => {
@@ -83,6 +84,7 @@ const EditUserEmployeeModal: React.FC<EditUserEmployeeModal> = ({
             active: employee.active,
             userTypeId: employee.userTypeId,
             serviceIds: employee.serviceIds || [],
+            storeId: employee.storeId
           }));
 
           setEmployee(mappedEmployee);
@@ -102,7 +104,7 @@ const EditUserEmployeeModal: React.FC<EditUserEmployeeModal> = ({
               phone: user.phone,
               password: user.password,
               userTypeId: user.userTypeId,
-              storeId: 1
+              storeId: Number(storeUser)
             }));
             setUser(mappedUser);
             const combined = {
@@ -139,7 +141,7 @@ const EditUserEmployeeModal: React.FC<EditUserEmployeeModal> = ({
           userId,
           active: formValuesProfessional.active || active,
           serviceIds: formValuesProfessional.serviceIds || serviceIds,
-          storeId: 1, //TODO alterar store
+          storeId: Number(storeUser),
         };
         console.log(updatedEmployee);
         

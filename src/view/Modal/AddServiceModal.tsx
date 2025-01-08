@@ -42,6 +42,8 @@ const AddServiceModal: React.FC<AddServiceModalProps> = ({
 
   const { setServiceContext } = useContext(AppContext)!;
 
+  const storeUser = localStorage.getItem("storeUser");
+
   const sizeMap = {
     small: "650px",
     medium: "850px",
@@ -77,7 +79,7 @@ const AddServiceModal: React.FC<AddServiceModalProps> = ({
             {
               id: formValuesService.id,
               serviceTypeId: formValuesService.id,
-              storeId: 1, //TODO alterar store
+              storeId: Number(storeUser), 
             },
           ],
         },

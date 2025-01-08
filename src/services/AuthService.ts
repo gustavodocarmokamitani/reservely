@@ -27,7 +27,6 @@ export const registerUser = async (registerData: RegisterData) => {
 export const loginUser = async (login: LoginData) => {
     try {
         const response = await api.post('/auth/login', login);
-        // Aqui retornamos o token JWT
         return response.data;
     } catch (error) {
         console.error("Error logging in user:", error);

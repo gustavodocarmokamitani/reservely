@@ -36,6 +36,7 @@ const InfoEmployeeServicemodal: React.FC<InfoEmployeeServiceModalProps> = ({
     password: "",
     userTypeId: 0,
     serviceIds: [] as number[],
+    storeId: 0,
   });
 
   const sizeMap = {
