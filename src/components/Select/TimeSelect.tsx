@@ -4,11 +4,11 @@ import Select from "react-select";
 import customStyles from "./styles/customStyles";
 
 interface HorarioSelectProps {
-  setTime: (option: any) => void;
+  setAppointmentTime: (option: any) => void;
   value?: number;
 }
 
-const TimeSelect: React.FC<HorarioSelectProps> = ({ setTime, value }) => {
+const TimeSelect: React.FC<HorarioSelectProps> = ({ setAppointmentTime, value }) => {
   const times = [
     "09:00",
     "09:30",
@@ -40,7 +40,7 @@ const TimeSelect: React.FC<HorarioSelectProps> = ({ setTime, value }) => {
   ];
 
   const handleChange = (option: any) => {
-    setTime(option);
+    setAppointmentTime(option);
   };
 
   return (

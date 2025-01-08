@@ -17,8 +17,7 @@ interface AddServiceModalProps {
   handleShow: () => void;
   handleClose: () => void;
   fetchData: () => void;
-  size: "small" | "medium" | "large";
-  setPost: React.Dispatch<React.SetStateAction<boolean>>;
+  size: "small" | "medium" | "large"; 
 }
 
 const AddServiceModal: React.FC<AddServiceModalProps> = ({
@@ -26,8 +25,7 @@ const AddServiceModal: React.FC<AddServiceModalProps> = ({
   handleClose,
   title,
   subTitle,
-  size,
-  setPost,
+  size, 
   fetchData,
 }) => {
   const [formValuesService, setFormValuesService] = useState<Service>({
@@ -57,8 +55,7 @@ const AddServiceModal: React.FC<AddServiceModalProps> = ({
         !formValuesService.description ||
         !formValuesService.value ||
         !formValuesService.durationMinutes
-      ) {
-        setPost(false);
+      ) { 
         enqueueSnackbar("Por favor, preencha todos os dados obrigatórios.", {
           variant: "error",
         });

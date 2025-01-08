@@ -1,17 +1,25 @@
+// React & Hooks
 import React, { useEffect, useRef, useState } from "react";
+
+// MUI Components
 import { DataGrid, GridColDef, GridRenderCellParams, GridRowSelectionModel } from "@mui/x-data-grid";
-import { useContext } from "react";
-import { AppContext } from "../../context/AppContext";
-import { useSnackbar } from "notistack";
-import { ServiceType } from "../../models/ServiceType";
-import { updateServiceType } from "../../services/ServiceTypeServices";
 import Paper from "@mui/material/Paper";
+
+// Modelos
+import { ServiceType } from "../../models/ServiceType";
+
+// Assets
 import edit from "../../assets/edit.svg";
 import confirm from "../../assets/confirmCardStore.svg";
 import remove from "../../assets/removeRed.svg";
+
+// Componentes
 import EditServiceModal from "../Modal/EditServiceModal";
+
+// Serviços
 import { decodeToken } from "../../services/AuthService";
 
+// Interfaces
 interface DecodedToken {
   userId: string;
   userEmail: string;
@@ -22,8 +30,6 @@ interface ServiceDataTableProps {
   service?: boolean;
   rowsService?: ServiceType[];
   onRowSelect?: (id: number[]) => void;
-  setUpdate: React.Dispatch<React.SetStateAction<boolean>>;
-  update: boolean;
   fetchData: () => void;
 }
 
@@ -31,73 +37,38 @@ const ServiceDataTable: React.FC<ServiceDataTableProps> = ({
   rowsService,
   service,
   onRowSelect,
-  fetchData,
-  update,
-  setUpdate,
+  fetchData, 
 }) => {
+  // Estado para controle de modal e dados do serviço
   const [showModal, setShowModal] = useState({ editService: false });
   const [selectedEmployeeId, setSelectedEmployeeId] = useState<number>();
   const [columnWidth, setColumnWidth] = useState(250);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [update, setUpdate] = useState(false);
+
+  // Funções para abrir e fechar o modal de edição
   const handleClose = () => setShowModal({ editService: false });
   const handleShowModal = (type: "editService", id: number) => {
     setSelectedEmployeeId(id);
     setShowModal({ ...showModal, [type]: true });
   };
 
+  // Decodificando o token armazenado
   const storedToken = localStorage.getItem("authToken");
-    const [decodedData, setDecodedData] = useState<DecodedToken>();
+  const [decodedData, setDecodedData] = useState<DecodedToken>();
 
-  const { serviceUpdateContext, userRoleContext } = useContext(AppContext)!;
-  const { enqueueSnackbar } = useSnackbar();
-
-  // const updateService = async (id: number, data: ServiceType) => {
-  //   try {
-  //     if (serviceUpdateContext) {
-  //       const updatedServico = {
-  //         id: serviceUpdateContext.id,
-  //         name: serviceUpdateContext.name,
-  //         value: serviceUpdateContext.value,
-  //         durationMinutes: serviceUpdateContext.durationMinutes,
-  //         active: serviceUpdateContext.active,
-  //         description: serviceUpdateContext.description,
-  //       };
-
-  //       const response = await updateServiceType(
-  //         serviceUpdateContext.id,
-  //         updatedServico
-  //       );
-  //       setUpdate(false);
-
-  //       if (response.status === 200 || response.status === 204) {
-  //         enqueueSnackbar(`Serviço editado com sucesso!`, {
-  //           variant: "success",
-  //         });
-  //       }
-  //     }
-  //   } catch (error: any) {
-  //     console.error("Erro ao editar o serviço", error.message);
-
-  //     if (error.response) {
-  //       console.error("Status HTTP:", error.response.status);
-  //       console.error("Resposta:", error.response.data);
-  //     } else if (error.request) {
-  //       console.error("Erro na requisição:", error.request);
-  //     }
-  //   }
-  // };
-
+  // Função para obter os dados do token
   const fetchToken = async () => {
-      if (storedToken) {
-        try {
-          const data = await decodeToken(storedToken);
-          setDecodedData(data);
-        } catch (error) {
-          console.error("Error decoding token:", error);
-        }
+    if (storedToken) {
+      try {
+        const data = await decodeToken(storedToken);
+        setDecodedData(data);
+      } catch (error) {
+        console.error("Error decoding token:", error);
       }
-    };
-
+    }
+  };
+ 
   useEffect(() => {
     fetchData();
   }, [update]);
@@ -117,89 +88,63 @@ const ServiceDataTable: React.FC<ServiceDataTableProps> = ({
     return () => window.removeEventListener("resize", updateColumnWidth);
   }, []);
 
+  // Função para gerenciar a seleção das linhas
   const handleRowClick = (ids: number[]) => onRowSelect?.(ids);
 
-
+  // Definição das colunas da tabela
   const columns: GridColDef[] = service
-  ? [
-      {
-        field: "id",
-        headerName: "ID",
-        flex: 1,
-        align: "center" as const,  
-        headerAlign: "center" as const,  
-      },
-      {
-        field: "name",
-        headerName: "Nome",
-        flex: 2,
-        align: "center" as const,  
-        headerAlign: "center" as const,  
-      },
-      {
-        field: "value",
-        headerName: "Valor",
-        flex: 1,
-        align: "center" as const,  
-        headerAlign: "center" as const,  
-      },
-      {
-        field: "durationMinutes",
-        headerName: "Duração",
-        flex: 1,
-        align: "center" as const,  
-        headerAlign: "center" as const,  
-      },
-      {
-        field: "active",
-        headerName: "Ativo",
-        type: "boolean",
-        flex: 1,
-        headerAlign: "center" as const,  
-        renderCell: (params) =>
-          params.value === true ? (
-            <img style={{ cursor: "pointer" }} src={confirm} alt="Ativo" />
-          ) : (
-            <img style={{ cursor: "pointer" }} src={remove} alt="Inactive" />
-          ),
-      },
-      ...(decodedData?.userRole === "Admin"
-        ? [
-            {
-              field: "acoes",
-              headerName: "Ações",
-              flex: 1,
-              renderCell: (params: GridRenderCellParams) => (
-                <div
-                  style={{
-                    display: "flex",
-                    gap: "50px",
-                    justifyContent: "center",
-                    margin: "12.5px 0px 0px 5px",
-                  }}
-                >
-                  <img
-                    style={{ cursor: "pointer" }}
-                    src={edit}
-                    onClick={() =>
-                      handleShowModal("editService", params.row.id)
-                    }
-                    alt="Editar"
-                  />
-                </div>
-              ),
-              width: columnWidth,
-              align: "center" as const,  
-              headerAlign: "center" as const,  
-            },
-          ]
-        : []),
-    ]
-  : [];
+    ? [
+        { field: "id", headerName: "ID", flex: 1, align: "center" as const, headerAlign: "center" as const },
+        { field: "name", headerName: "Nome", flex: 2, align: "center" as const, headerAlign: "center" as const },
+        { field: "value", headerName: "Valor", flex: 1, align: "center" as const, headerAlign: "center" as const },
+        { field: "durationMinutes", headerName: "Duração", flex: 1, align: "center" as const, headerAlign: "center" as const },
+        {
+          field: "active",
+          headerName: "Ativo",
+          type: "boolean",
+          flex: 1,
+          headerAlign: "center" as const,
+          renderCell: (params) =>
+            params.value === true ? (
+              <img style={{ cursor: "pointer" }} src={confirm} alt="Ativo" />
+            ) : (
+              <img style={{ cursor: "pointer" }} src={remove} alt="Inactive" />
+            ),
+        },
+        ...(decodedData?.userRole === "Admin"
+          ? [
+              {
+                field: "acoes",
+                headerName: "Ações",
+                flex: 1,
+                renderCell: (params: GridRenderCellParams) => (
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "50px",
+                      justifyContent: "center",
+                      margin: "12.5px 0px 0px 5px",
+                    }}
+                  >
+                    <img
+                      style={{ cursor: "pointer" }}
+                      src={edit}
+                      onClick={() => handleShowModal("editService", params.row.id)}
+                      alt="Editar"
+                    />
+                  </div>
+                ),
+                width: columnWidth,
+                align: "center" as const,
+                headerAlign: "center" as const,
+              },
+            ]
+          : []),
+      ]
+    : [];
 
-
+  // Definir as linhas a serem exibidas na tabela
   let rows: any[] = [];
-
   if (service) rows = rowsService || [];
 
   return (
@@ -221,8 +166,7 @@ const ServiceDataTable: React.FC<ServiceDataTableProps> = ({
           disableRowSelectionOnClick
           onRowSelectionModelChange={(newSelection: GridRowSelectionModel) => {
             const selectedRowIds = newSelection.map((id) => Number(id));
-            if (selectedRowIds.every((id) => !isNaN(id)))
-              handleRowClick(selectedRowIds);
+            if (selectedRowIds.every((id) => !isNaN(id))) handleRowClick(selectedRowIds);
           }}
           sx={{ border: 0 }}
         />

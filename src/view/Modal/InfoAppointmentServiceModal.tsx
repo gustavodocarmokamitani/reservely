@@ -1,14 +1,21 @@
+// Importações de Bibliotecas Externas
+import React from "react";
 import { Col, Row } from "react-bootstrap";
+
+// Importações de Componentes Internos
 import Button from "../../components/Button";
-import * as S from "./Modal.styles";
-import closeIcon from "../../assets/remove.svg";
 import Selected from "../../components/Selected";
 
+// Importações de Estilos
+import * as S from "./Modal.styles";
+
+// Importações de Imagens
+import closeIcon from "../../assets/remove.svg";
+
+// Tipos de Props
 interface InfoAppointmentServiceModalProps {
   title: string;
-  subTitle?: string;
-  info?: boolean;
-  infoAppointmentService?: boolean;
+  subTitle?: string;  
   handleShow: () => void;
   handleClose: () => void;
   fetchData: () => void;
@@ -16,22 +23,23 @@ interface InfoAppointmentServiceModalProps {
   rowId?: number;
 }
 
-const InfoAppointmentServiceModal: React.FC<InfoAppointmentServiceModalProps> = ({
+const InfoAppointmentServiceModal: React.FC<
+  InfoAppointmentServiceModalProps
+> = ({
   handleClose,
   title,
   subTitle,
-  info = false,
-  infoAppointmentService = true,
   size,
   rowId,
 }) => {
-
+  // Mapeamento de Tamanhos
   const sizeMap = {
     pequeno: "650px",
     medio: "850px",
     grande: "1050px",
   };
 
+  // Função de Envio (submit)
   const handleSubmit = async () => {
     handleClose();
   };
@@ -66,8 +74,11 @@ const InfoAppointmentServiceModal: React.FC<InfoAppointmentServiceModalProps> = 
           </Col>
           <hr />
         </Row>
-        {infoAppointmentService && <Selected onChange={() => {}} userId={rowId} infoAppointmentService />}
+
+        <Selected onChange={() => {}} userId={rowId} infoAppointmentService />
+
         <hr />
+
         <Row>
           <Col
             md={12}

@@ -35,7 +35,7 @@ export const createAppointment = async (AppointmentData: Appointment[]) => {
 export const updateAppointment = async (id: number, AppointmentData: Appointment) => {
     try {
         const response = await api.put(`Appointment/${id}`, AppointmentData);
-        return response.data;
+        return response;
     } catch (error) {
         console.error("Error updating Appointment:", error);
         throw error;

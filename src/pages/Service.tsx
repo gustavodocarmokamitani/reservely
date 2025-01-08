@@ -1,21 +1,33 @@
-import React, { useEffect, useState } from "react";
+// React e hooks
+import { useEffect, useState, useContext } from "react";
+
+// Estilos
 import { ContainerPage } from "./_Page.styles";
 import { Col, Row } from "react-bootstrap";
-import {
-  createServiceTypeByStoreId,
+
+// Serviços
+import { 
   deleteServiceType,
   getServiceTypes,
 } from "../services/ServiceTypeServices";
+import { decodeToken } from "../services/AuthService";
+
+// Modelos
 import { ServiceType } from "../models/ServiceType";
-import { useSnackbar } from "notistack";
-import { useContext } from "react";
+
+// Contexto
 import { AppContext } from "../context/AppContext";
+
+// Notificações
+import { useSnackbar } from "notistack";
+
+// Componentes
 import HeaderTitle from "../view/HeaderTitle";
 import Button from "../components/Button";
 import AddServiceModal from "../view/Modal/AddServiceModal";
 import ServiceDataTable from "../view/DataTable/ServiceDataTable";
-import { decodeToken } from "../services/AuthService";
 
+// Interfaces
 interface Row {
   id: number;
   name: string;
@@ -32,26 +44,27 @@ interface DecodedToken {
 }
 
 function Service() {
+  // Estado
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  const [post, setPost] = useState(false);
-  const [update, setUpdate] = useState(false);
+  const handleShow = () => setShow(true);  
   const [rows, setRows] = useState<ServiceType[]>([]);
   const [selectedServiceIds, setSelectedServiceIds] = useState<number[]>([]);
 
+  // Decodificar token
   const storedToken = localStorage.getItem("authToken");
   const [decodedData, setDecodedData] = useState<DecodedToken>();
 
+  // Contexto
   const { enqueueSnackbar } = useSnackbar();
+  const { serviceContext, setServiceContext, userRoleContext } = useContext(AppContext)!;
 
-  const { serviceContext, setServiceContext, userRoleContext } =
-    useContext(AppContext)!;
-
+  // Carregar dados ao montar o componente
   useEffect(() => {
     fetchData();
   }, []);
 
+  // Função para buscar os dados
   const fetchData = async () => {
     if (storedToken) {
       const data = await decodeToken(storedToken);
@@ -65,6 +78,7 @@ function Service() {
     }
   };
 
+  // Função para excluir os serviços selecionados
   const handleDeleteServices = async () => {
     if (selectedServiceIds.length > 0) {
       try {
@@ -75,21 +89,13 @@ function Service() {
 
               if (servico) {
                 await deleteServiceType(serviceId);
-                enqueueSnackbar(
-                  `Serviço ${servico.name} excluído com sucesso!`,
-                  { variant: "success" }
-                );
+                enqueueSnackbar(`Serviço ${servico.name} excluído com sucesso!`, { variant: "success" });
               } else {
-                enqueueSnackbar(
-                  `Nenhum serviço encontrado para o ID ${serviceId}`,
-                  { variant: "error" }
-                );
+                enqueueSnackbar(`Nenhum serviço encontrado para o ID ${serviceId}`, { variant: "error" });
               }
             } catch (error) {
               console.error(`Erro ao remover o serviço ${serviceId}:`, error);
-              enqueueSnackbar(`Erro ao remover o serviço ${serviceId}`, {
-                variant: "error",
-              });
+              enqueueSnackbar(`Erro ao remover o serviço ${serviceId}`, { variant: "error" });
             }
           })
         );
@@ -97,15 +103,14 @@ function Service() {
         setSelectedServiceIds([]);
       } catch (error) {
         console.error("Erro ao remover os serviços:", error);
-        enqueueSnackbar("Erro inesperado ao remover os serviços.", {
-          variant: "error",
-        });
+        enqueueSnackbar("Erro inesperado ao remover os serviços.", { variant: "error" });
       }
     } else {
-      alert("Nenhum serviço selecionado!");
+      enqueueSnackbar(`Nenhum serviço selecionado`, { variant: "error" });
     }
   };
 
+  // Função para gerenciar a seleção das linhas
   const handleRowSelect = (ids: number[]) => {
     setSelectedServiceIds(ids);
   };
@@ -127,11 +132,7 @@ function Service() {
           >
             {decodedData?.userRole === "Admin" && (
               <>
-                <Button
-                  onClick={handleDeleteServices}
-                  $isRemove
-                  type="button"
-                />
+                <Button onClick={handleDeleteServices} $isRemove type="button" />
                 <Button $isAdd type="button" onClick={handleShow} />
               </>
             )}
@@ -140,9 +141,7 @@ function Service() {
         <ServiceDataTable
           service
           rowsService={rows}
-          onRowSelect={handleRowSelect}
-          setUpdate={setUpdate}
-          update={update}
+          onRowSelect={handleRowSelect} 
           fetchData={fetchData}
         />
         {show && (
@@ -152,8 +151,7 @@ function Service() {
             handleClose={handleClose}
             handleShow={handleShow}
             size="small"
-            fetchData={fetchData}
-            setPost={setPost}
+            fetchData={fetchData} 
           />
         )}
       </ContainerPage>
