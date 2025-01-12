@@ -1,19 +1,13 @@
-// Importações de Bibliotecas Externas
 import React, { useEffect, useState, useRef } from "react";
 import { DataGrid, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
 import moment from "moment";
-
-// Importações de Componentes
 import Paper from "@mui/material/Paper";
 import info from "../../assets/info.svg";
 import edit from "../../assets/edit.svg";
 import EditStatusAppointmentModal from "../Modal/EditStatusAppointmentModal";
 import InfoAppointmentServiceModal from "../Modal/InfoAppointmentServiceModal";
+import { Appointment } from "../../models/Appointment";
 
-// Importações de Utilitários e Serviços
-import { Appointment } from "../../models/Appointment"; 
-
-// Tipos de Props
 interface AppointmentDataTableProps {
   appointment?: boolean;
   rowsAppointment?: Appointment[];
@@ -22,7 +16,7 @@ interface AppointmentDataTableProps {
   update: boolean;
   fetchData: () => void;
 }
- 
+
 const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
   rowsAppointment = [],
   appointment = false,
@@ -30,7 +24,7 @@ const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
   fetchData,
   update,
   setUpdate
-}) => { 
+}) => {
   const [showModal, setShowModal] = useState({
     editAppointmentStatus: false,
     infoAppointmentService: false,
@@ -40,12 +34,12 @@ const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
   const [selectedEmployeeId, setSelectedEmployeeId] = useState<number>();
   const [columnWidth, setColumnWidth] = useState(250);
   const containerRef = useRef<HTMLDivElement>(null);
- 
+
   useEffect(() => {
     fetchData();
     setUpdate(false);
   }, [update]);
- 
+
   useEffect(() => {
     const updateColumnWidth = () => {
       if (containerRef.current) {
@@ -58,17 +52,14 @@ const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
     return () => window.removeEventListener("resize", updateColumnWidth);
   }, []);
 
-  // Função para Abrir/Fechar Modais
   const handleClose = () => setShowModal({ editAppointmentStatus: false, infoAppointmentService: false, editAppointment: false, editService: false });
   const handleShowModal = (type: "infoAppointmentService" | "editAppointment" | "editAppointmentStatus" | "editService", id: number) => {
     setSelectedEmployeeId(id);
     setShowModal({ ...showModal, [type]: true });
   };
 
-  // Função para Seleção de Linha
   const handleRowClick = (ids: number[]) => onRowSelect?.(ids);
 
-  // Definindo Colunas para o DataGrid
   const columns: GridColDef[] = appointment
     ? [
       { field: "clientId", headerName: "Cliente", flex: 2, align: "center", headerAlign: "center" },
@@ -113,7 +104,6 @@ const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
     ]
     : [];
 
-  // Organize as linhas
   let rows: Appointment[] = [];
   if (appointment) {
     rows = rowsAppointment.slice().sort((a, b) => new Date(b.appointmentDate).getTime() - new Date(a.appointmentDate).getTime());
@@ -138,7 +128,7 @@ const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
       </Paper>
       {showModal.infoAppointmentService && (
         <InfoAppointmentServiceModal
-          title="Informações do appointment" 
+          title="Informações do appointment"
           subTitle="Todos os serviços que contém esse appointment."
           handleClose={handleClose}
           handleShow={() => setShowModal({ ...showModal, infoAppointmentService: true })}

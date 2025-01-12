@@ -35,7 +35,6 @@ const EmployeeSelect: React.FC<EmployeeSelectProps> = ({ setEmployee, value, han
     const fetchEmployees = async () => {
       try { 
         const responseEmployee = await getUserTypeIdById(2);
-           console.log(registeredEmployee);
            
         const formattedOptions: Option[] = responseEmployee.map((employee: User) => ({
           value: employee.id,  

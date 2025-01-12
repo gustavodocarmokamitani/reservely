@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
+
 import { Col, Row } from "react-bootstrap";
+
 import Input from "../Input";
-import Selected from "../Selected";
+
 import { UserEmployee } from "../../models/UserEmployee";
 
 interface InputGroupProfessionalRegisterEditProps {
-  edit?: boolean;
-  addProf?: boolean;
   formValuesProfessionalRegister: {
     name: string;
     lastName: string;
@@ -32,6 +32,7 @@ interface InputGroupProfessionalRegisterEditProps {
     storeId: number;
   }[];
 }
+
 const InputGroupProfessionalRegisterEdit: React.FC<
   InputGroupProfessionalRegisterEditProps
 > = ({
@@ -39,35 +40,44 @@ const InputGroupProfessionalRegisterEdit: React.FC<
   handleInputChange,
   setFormValuesProfessionalRegister,
   data,
-  edit = false,
-  addProf = false,
 }) => {
+  
   useEffect(() => {
-    if (edit && data?.[0]) {
-      const newState = {
-        id: data[0].id,
-        userId: data[0].userId,
-        name: data[0].name,
-        lastName: data[0].lastName,
-        email: data[0].email,
-        phone: data[0].phone,
-        active: data[0].active,
-        userTypeId: data[0].userTypeId,
-        password: data[0].password,
-        serviceIds: data[0].serviceIds,
-        storeId: data[0].storeId
-      };
+    if (data?.[0]) {
+      const {
+        id,
+        userId,
+        name,
+        lastName,
+        email,
+        phone,
+        active,
+        userTypeId,
+        password,
+        serviceIds,
+        storeId,
+      } = data[0];
 
       setFormValuesProfessionalRegister((prevState) => {
-        if (newState.id !== prevState.id) {
-          return newState;
+        if (id !== prevState.id) {
+          return {
+            id,
+            userId,
+            name,
+            lastName,
+            email,
+            phone,
+            active,
+            userTypeId,
+            password,
+            serviceIds,
+            storeId,
+          };
         }
         return prevState;
       });
     }
-  }, [edit, data, setFormValuesProfessionalRegister]);
-
-  const professionalData = data?.[0] ?? null;
+  }, [data, setFormValuesProfessionalRegister]);
 
   return (
     <Row>

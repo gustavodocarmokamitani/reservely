@@ -1,27 +1,15 @@
-// Imports
 import React, { useState, useContext } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useSnackbar } from "notistack";
-
-// Components
 import Button from "../../components/Button";
 import StatusAppointmentSelect from "../../components/Select/AppointmentStatusSelect";
-
-// Services & Models
 import { getAppointmentById, updateAppointment } from "../../services/AppointmentServices";
 import { Appointment } from "../../models/Appointment";
 import { SelectOption } from "../../models/SelectOptions";
-
-// Context
 import { AppContext } from "../../context/AppContext";
-
-// Styles
 import * as S from "./Modal.styles";
-
-// Assets
 import closeIcon from "../../assets/remove.svg";
 
-// Tipos de Props
 interface EditStatusAppointmentModalProps {
   title: string;
   subTitle?: string;
@@ -33,7 +21,6 @@ interface EditStatusAppointmentModalProps {
   setUpdate: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-// Componente principal
 const EditStatusAppointmentModal: React.FC<EditStatusAppointmentModalProps> = ({
   handleClose,
   title,
@@ -42,24 +29,16 @@ const EditStatusAppointmentModal: React.FC<EditStatusAppointmentModalProps> = ({
   rowId,
   setUpdate,
 }) => {
-  // Estado local
   const [statusAppointment, setAppointmentStatus] = useState<SelectOption | null>(null);
-
-  // Contexto e Snackbar
   const { enqueueSnackbar } = useSnackbar();
   const { setAppointmentUpdateContext } = useContext(AppContext)!;
-
-  // Acesso ao localStorage
   const storeUser = React.useMemo(() => localStorage.getItem("storeUser"), []);
-
-  // Mapeamento de tamanhos
   const sizeMap = {
     small: "650px",
     medium: "850px",
     large: "1050px",
   };
 
-  // Função de submit
   const handleSubmit = async () => {
     if (!rowId) return;  
 
@@ -77,7 +56,6 @@ const EditStatusAppointmentModal: React.FC<EditStatusAppointmentModalProps> = ({
           storeId: Number(storeUser),
         };
 
-        // Atualizando o contexto com o novo appointment
         setAppointmentUpdateContext(mappedAppointment);
 
         const responseAppointment = await updateAppointment(
@@ -108,7 +86,6 @@ const EditStatusAppointmentModal: React.FC<EditStatusAppointmentModalProps> = ({
           width: "100%",
         }}
       >
-        {/* Header */}
         <Row>
           <Col md={10}>
             <h3>{title}</h3>
@@ -129,7 +106,6 @@ const EditStatusAppointmentModal: React.FC<EditStatusAppointmentModalProps> = ({
           <hr />
         </Row>
 
-        {/* Select de Status do Appointment */}
         <Col md={6} style={{ margin: "15px 0px 35px 15px" }}>
           <StatusAppointmentSelect
             setAppointmentStatus={setAppointmentStatus}
@@ -139,7 +115,6 @@ const EditStatusAppointmentModal: React.FC<EditStatusAppointmentModalProps> = ({
 
         <hr />
 
-        {/* Botões de Ação */}
         <Row>
           <Col md={12} className="d-flex flex-row justify-content-center align-items-center">
             <Button $isClosed type="button" onClick={handleClose} />

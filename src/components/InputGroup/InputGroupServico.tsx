@@ -14,15 +14,17 @@ interface InputGroupServiceProps {
     durationMinutes: string;
   };
   data?: Service | Service[];
-  setFormValuesService: React.Dispatch<React.SetStateAction<{
-    id: number;
-    name: string;
-    description: string;
-    value: string;
-    active: string;
-    durationMinutes: string;
-    storeId: number;
-}>>;
+  setFormValuesService: React.Dispatch<
+    React.SetStateAction<{
+      id: number;
+      name: string;
+      description: string;
+      value: string;
+      active: string;
+      durationMinutes: string;
+      storeId: number;
+    }>
+  >;
   handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -34,8 +36,9 @@ const InputGroupService: React.FC<InputGroupServiceProps> = ({
   setFormValuesService,
 }) => {
   const [isInitialized, setIsInitialized] = React.useState(false);
-  const storeUser = localStorage.getItem("storeUser")
-  
+
+  const storeUser = localStorage.getItem("storeUser");
+
   useEffect(() => {
     if (!isInitialized && editService && Array.isArray(data) && data.length > 0) {
       const item = data[0];
@@ -46,12 +49,12 @@ const InputGroupService: React.FC<InputGroupServiceProps> = ({
         value: String(item.value),
         active: item.active ? "true" : "false",
         durationMinutes: String(item.durationMinutes),
-        storeId: Number(storeUser)
+        storeId: Number(storeUser),
       };
       setFormValuesService(newState);
-      setIsInitialized(true); 
+      setIsInitialized(true);
     }
-  }, [data, editService, isInitialized, setFormValuesService]);
+  }, [data, editService, isInitialized, setFormValuesService, storeUser]);
 
   return (
     <>
@@ -66,7 +69,9 @@ const InputGroupService: React.FC<InputGroupServiceProps> = ({
             placeholder="Nome"
             name="name"
             value={formValuesService.name}
-            onChange={(e) => handleInputChange(e as React.ChangeEvent<HTMLInputElement>)}
+            onChange={(e) =>
+              handleInputChange(e as React.ChangeEvent<HTMLInputElement>)
+            }
           />
         </Col>
         <Col
@@ -79,7 +84,9 @@ const InputGroupService: React.FC<InputGroupServiceProps> = ({
             placeholder="Valor"
             name="value"
             value={formValuesService.value}
-            onChange={(e) => handleInputChange(e as React.ChangeEvent<HTMLInputElement>)}
+            onChange={(e) =>
+              handleInputChange(e as React.ChangeEvent<HTMLInputElement>)
+            }
           />
         </Col>
       </Row>
@@ -94,7 +101,9 @@ const InputGroupService: React.FC<InputGroupServiceProps> = ({
             placeholder="Duração"
             name="durationMinutes"
             value={formValuesService.durationMinutes}
-            onChange={(e) => handleInputChange(e as React.ChangeEvent<HTMLInputElement>)}
+            onChange={(e) =>
+              handleInputChange(e as React.ChangeEvent<HTMLInputElement>)
+            }
           />
         </Col>
         <Col
@@ -106,7 +115,9 @@ const InputGroupService: React.FC<InputGroupServiceProps> = ({
             type="toggle"
             name="active"
             value={formValuesService.active}
-            onChange={(e) => handleInputChange(e as React.ChangeEvent<HTMLInputElement>)}
+            onChange={(e) =>
+              handleInputChange(e as React.ChangeEvent<HTMLInputElement>)
+            }
           />
         </Col>
       </Row>
@@ -121,7 +132,9 @@ const InputGroupService: React.FC<InputGroupServiceProps> = ({
             placeholder="Descrição"
             name="description"
             value={formValuesService.description}
-            onChange={(e) => handleInputChange(e as React.ChangeEvent<HTMLInputElement>)}
+            onChange={(e) =>
+              handleInputChange(e as React.ChangeEvent<HTMLInputElement>)
+            }
           />
         </Col>
       </Row>

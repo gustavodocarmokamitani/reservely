@@ -1,48 +1,47 @@
 import { useEffect, useState } from "react";
+import { Row, Col } from "react-bootstrap";
+
 import { User } from "../../models/User";
 import { UserEmployee } from "../../models/UserEmployee";
 import { Employee } from "../../models/Employee";
-import { Col, Row } from "react-bootstrap";
-import { getEmployeeIdByUserId } from "../../services/EmployeeServices";
 import { getUserById, updateUser } from "../../services/UserServices";
-import { useContext } from "react";
-import { AppContext } from "../../context/AppContext";
-import * as S from "./Modal.styles";
+
 import Button from "../../components/Button";
+
 import closeIcon from "../../assets/remove.svg";
-import InputGroupProfissional from "../../components/InputGroup/InputGroupProfessionalEdit";
-import InputGroupProfessionalRegister from "../../components/InputGroup/InputGroupProfessionalRegister";
+
 import InputGroupProfessionalRegisterEdit from "../../components/InputGroup/InputGroupProfessionalRegisterEdit";
+
+import * as S from "./Modal.styles";
+import { useSnackbar } from "notistack";
 
 interface EditEmployeeRegisterModal {
   title: string;
   subTitle?: string;
-  edit?: boolean;
-  handleShow: () => void;
   handleClose: () => void;
   size: "small" | "medium" | "large";
   rowId?: number;
-  setUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+  fetchData: () => void;
 }
 
 interface CombinedData extends Employee, User {}
 
 const EditEmployeeRegisterModal: React.FC<EditEmployeeRegisterModal> = ({
-  handleShow,
   handleClose,
   title,
   subTitle,
   size,
   rowId,
-  edit = false,
-  setUpdate,
+  fetchData,
 }) => {
-  const { setUserEmployeeUpdateContext } = useContext(AppContext)!;
   const [employee, setEmployee] = useState<UserEmployee[]>([]);
   const [user, setUser] = useState<User[]>([]);
   const [combinedData, setCombinedData] = useState<CombinedData | null>(null);
-  const storeUser = localStorage.getItem("storeUser")
-  
+
+  const storeUser = localStorage.getItem("storeUser");
+
+  const { enqueueSnackbar } = useSnackbar();
+
   const [formValuesProfessionalRegister, setFormValuesProfessionalRegister] =
     useState<UserEmployee>({
       id: 0,
@@ -55,7 +54,7 @@ const EditEmployeeRegisterModal: React.FC<EditEmployeeRegisterModal> = ({
       password: "",
       userTypeId: 0,
       serviceIds: [] as number[],
-      storeId: 0
+      storeId: 0,
     });
 
   const sizeMap = {
@@ -65,101 +64,54 @@ const EditEmployeeRegisterModal: React.FC<EditEmployeeRegisterModal> = ({
   };
 
   useEffect(() => {
-    if (edit) {
-      const fetchEmployee = async () => {
-        try {
-          const resEmployee = await getEmployeeIdByUserId(rowId!);
+    if (rowId) {
+      fetchEmployeeData(rowId, setEmployee, setUser, setCombinedData);
+    }
+  }, [rowId, storeUser]);
 
-          let employeeData = Array.isArray(resEmployee)
-            ? resEmployee
-            : [resEmployee];
-
-          const mappedEmployee = employeeData.map((employee: UserEmployee) => ({
-            id: employee.id,
-            userId: employee.userId,
-            name: employee.name,
-            lastName: employee.lastName,
-            email: employee.email,
-            phone: employee.phone,
-            password: employee.password,
-            active: employee.active,
-            userTypeId: employee.userTypeId,
-            serviceIds: employee.serviceIds || [],
-            storeId: employee.storeId
-          }));
-
-          setEmployee(mappedEmployee);
-
-          if (mappedEmployee.length > 0) {
-            const resUser = await getUserById(mappedEmployee[0].userId);
-
-            let userData = Array.isArray(resUser) ? resUser : [resUser];
-
-            const mappedUser = userData.map((user: User) => ({
-              id: user.id,
-              name: user.name,
-              lastName: user.lastName,
-              email: user.email,
-              phone: user.phone,
-              password: user.password,
-              userTypeId: user.userTypeId,
-              storeId: Number(storeUser),
-            }));
-            setUser(mappedUser);
-            const combined = {
-              ...mappedEmployee[0],
-              ...mappedUser[0],
-            };
-            setCombinedData(combined);
-          }
-        } catch (error) {
-          console.error("Error when fetching service type", error);
-        }
+  const fetchEmployeeData = async (
+    rowId: number,
+    setEmployee: Function,
+    setUser: Function,
+    setCombinedData: Function
+  ) => {
+    try {
+      const resEmployee = await getUserById(rowId);
+      const mappedEmployee = {
+        id: resEmployee.id,
+        userId: resEmployee.userId,
+        name: resEmployee.name,
+        lastName: resEmployee.lastName,
+        email: resEmployee.email,
+        phone: resEmployee.phone,
+        password: resEmployee.password,
+        active: resEmployee.active,
+        userTypeId: resEmployee.userTypeId,
+        serviceIds: resEmployee.serviceIds || [],
+        storeId: resEmployee.storeId,
       };
-      fetchEmployee();
+
+      setEmployee([mappedEmployee]);
+
+      const resUser = await getUserById(mappedEmployee.id);
+      const mappedUser = {
+        id: resUser.id,
+        name: resUser.name,
+        lastName: resUser.lastName,
+        email: resUser.email,
+        phone: resUser.phone,
+        password: resUser.password,
+        userTypeId: resUser.userTypeId,
+        storeId: Number(storeUser),
+      };
+      
+      setUser([mappedUser]);
+
+      const combined = { ...mappedEmployee, ...mappedUser };
+      setCombinedData(combined);
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
-  }, [edit]);
-
-  const handleSubmit = async () => {
-    if (edit) {
-      const response = await getUserById(formValuesProfessionalRegister.id);
-
-      if (response) {
-        const {
-          id,
-          name,
-          lastName,
-          email,
-          phone,
-          userTypeId,
-          password,
-          userName,
-          phoneNumber,
-          emailConfirmed,
-          passwordHash,
-          storeId
-        } = response;
-
-        const updatedUser = {
-          id,
-          name: formValuesProfessionalRegister.name,
-          lastName: formValuesProfessionalRegister.lastName,
-          email,
-          phone: formValuesProfessionalRegister.phone,
-          userTypeId,
-          password,
-          userName,
-          phoneNumber,
-          emailConfirmed,
-          passwordHash,
-          storeId
-        };
-
-        await updateUser(updatedUser.id, updatedUser);
-        setUpdate(true);
-      }
-    }
-    handleClose();
   };
 
   const handleInputChangeProfessional = (
@@ -170,6 +122,37 @@ const EditEmployeeRegisterModal: React.FC<EditEmployeeRegisterModal> = ({
       ...prevState,
       [name]: type === "checkbox" ? (checked ? "true" : "false") : value,
     }));
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const response = await getUserById(formValuesProfessionalRegister.id);
+
+      if (response) {
+        const updatedUser = {
+          ...response,
+          name: formValuesProfessionalRegister.name,
+          lastName: formValuesProfessionalRegister.lastName,
+          phone: formValuesProfessionalRegister.phone,
+        };
+
+        const createUserResponse = await updateUser(
+          updatedUser.id,
+          updatedUser
+        );
+
+        if (createUserResponse) {
+          enqueueSnackbar("Professional editado com sucesso!", {
+            variant: "success",
+          });
+        }
+        fetchData();
+      }
+    } catch (error) {
+      console.error("Error updating user:", error);
+    } finally {
+      handleClose();
+    }
   };
 
   return (
@@ -202,17 +185,13 @@ const EditEmployeeRegisterModal: React.FC<EditEmployeeRegisterModal> = ({
           </Col>
           <hr />
         </Row>
-        {edit && (
-          <InputGroupProfessionalRegisterEdit
-            formValuesProfessionalRegister={formValuesProfessionalRegister}
-            setFormValuesProfessionalRegister={
-              setFormValuesProfessionalRegister
-            }
-            handleInputChange={handleInputChangeProfessional}
-            data={combinedData ? [combinedData] : undefined}
-            edit
-          />
-        )}
+
+        <InputGroupProfessionalRegisterEdit
+          formValuesProfessionalRegister={formValuesProfessionalRegister}
+          handleInputChange={handleInputChangeProfessional}
+          data={combinedData ? [combinedData] : undefined}
+          setFormValuesProfessionalRegister={setFormValuesProfessionalRegister}
+        />
         <hr />
         <Row>
           <Col

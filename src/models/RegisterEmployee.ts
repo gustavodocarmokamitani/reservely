@@ -4,5 +4,6 @@ export interface RegisterEmployee {
     email: string;
     phone: string;
     userTypeId: number; 
+    storeId: number;
   }
   

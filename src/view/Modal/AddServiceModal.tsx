@@ -1,13 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState, useContext } from "react";
 import { Col, Row } from "react-bootstrap";
-import { useContext } from "react";
 import { AppContext } from "../../context/AppContext";
-import { ServiceType } from "../../models/ServiceType";
 import { Service, ServiceServiceType } from "../../models/Service";
 import * as S from "./Modal.styles";
 import Button from "../../components/Button";
+import InputGroupServico from "../../components/InputGroup/InputGroupServico";
 import closeIcon from "../../assets/remove.svg";
-import InputGroudServico from "../../components/InputGroup/InputGroudServico";
 import { enqueueSnackbar } from "notistack";
 import { createServiceTypeByStoreId } from "../../services/ServiceTypeServices";
 
@@ -39,7 +37,6 @@ const AddServiceModal: React.FC<AddServiceModalProps> = ({
   });
 
   const { setServiceContext } = useContext(AppContext)!;
-
   const storeUser = localStorage.getItem("storeUser");
 
   const sizeMap = {
@@ -48,17 +45,27 @@ const AddServiceModal: React.FC<AddServiceModalProps> = ({
     large: "1050px",
   };
 
+  const validateFormValues = (formValues: Service): boolean => {
+    const fieldValidations = [
+      { field: "name", message: "O campo 'Nome' é obrigatório." },
+      { field: "value", message: "O campo 'Valor' é obrigatório." },
+      { field: "durationMinutes", message: "O campo 'Duração (minutos)' é obrigatório." },
+      { field: "description", message: "O campo 'Descrição' é obrigatório." },
+    ];
+  
+    for (const { field, message } of fieldValidations) {
+      if (!formValues[field as keyof Service]) {
+        enqueueSnackbar(message, { variant: "error" });
+        return false;
+      }
+    }
+  
+    return true;
+  };  
+
   const handleSubmit = async () => {
     try {
-      if (
-        !formValuesService.name ||
-        !formValuesService.description ||
-        !formValuesService.value ||
-        !formValuesService.durationMinutes
-      ) { 
-        enqueueSnackbar("Por favor, preencha todos os dados obrigatórios.", {
-          variant: "error",
-        });
+      if (!validateFormValues(formValuesService)) {
         return;
       }
 
@@ -76,11 +83,12 @@ const AddServiceModal: React.FC<AddServiceModalProps> = ({
             {
               id: formValuesService.id,
               serviceTypeId: formValuesService.id,
-              storeId: Number(storeUser), 
+              storeId: Number(storeUser),
             },
           ],
         },
       ];
+
       const responsePost = await createServiceTypeByStoreId(1, tipoService);
 
       if (responsePost) {
@@ -136,12 +144,14 @@ const AddServiceModal: React.FC<AddServiceModalProps> = ({
           </Col>
           <hr />
         </Row>
-        <InputGroudServico
+
+        <InputGroupServico
           formValuesService={formValuesService}
           handleInputChange={handleInputChangeService}
           setFormValuesService={setFormValuesService}
         />
         <hr />
+
         <Row>
           <Col
             md={12}

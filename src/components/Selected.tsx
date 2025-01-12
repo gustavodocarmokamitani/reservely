@@ -53,7 +53,6 @@ const Selected: React.FC<SelectedProps> = ({
       setDataOptions(options[0]?.serviceIds || []);
     }
   }, [edit, options]);
-
   useEffect(() => {
     const fetchEmployee = async () => {
       try {

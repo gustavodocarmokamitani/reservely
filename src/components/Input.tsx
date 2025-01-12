@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import * as S from "./Input.styles";
-import { FaEye, FaEyeSlash } from "react-icons/fa"; // Importe os ícones
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 interface InputProps {
   placeholder?: string; 
@@ -19,13 +19,12 @@ const Input: React.FC<InputProps> = ({
   type,
   onChange
 }) => {
-  const [showPassword, setShowPassword] = useState(false); // Controle de visibilidade da senha
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleTogglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev); // Alterna entre mostrar e esconder a senha
+    setShowPassword((prev) => !prev);
   };
 
-  // Função genérica que decide se deve mostrar o ícone de olho ou não
   const renderPasswordField = (inputType: string) => {
     if (inputType === "password") {
       return (
@@ -39,7 +38,7 @@ const Input: React.FC<InputProps> = ({
             onChange={onChange}
           />
           <S.PasswordIcon onClick={handleTogglePasswordVisibility}>
-            {showPassword ? <FaEyeSlash size={18}/> : <FaEye />} {/* Ícone de olho */}
+            {showPassword ? <FaEyeSlash size={18}/> : <FaEye />}
           </S.PasswordIcon>
         </S.InputWrapper>
       );
@@ -71,7 +70,7 @@ const Input: React.FC<InputProps> = ({
     );
   }
 
-  return renderPasswordField(type); // Usa a função genérica para lidar com password e outros tipos
+  return renderPasswordField(type);
 };
 
 export default Input;

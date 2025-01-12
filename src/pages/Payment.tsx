@@ -1,16 +1,18 @@
+
 import React, { useContext, useEffect, useState } from "react";
 import { ContainerPage } from "./_Page.styles";
 import { Col, Row } from "react-bootstrap";
-import { PaymentMethod } from "../models/PaymentMethod";
-import { getStoreById, updateStore } from "../services/StoreServices";
-import { Store } from "../models/Store";
 import { useSnackbar } from "notistack";
 import * as S from "./Payment.styles";
+
+import { PaymentMethod } from "../models/PaymentMethod";
+import { Store } from "../models/Store";
+import { getStoreById, updateStore } from "../services/StoreServices";
+import { decodeToken } from "../services/AuthService";
+
 import HeaderTitle from "../view/HeaderTitle";
 import Button from "../components/Button";
 import MetodoPaymentSelect from "../components/Select/PaymentMethodSelect";
-import { AppContext } from "../context/AppContext";
-import { decodeToken } from "../services/AuthService";
 
 interface DecodedToken {
   userId: string;
@@ -22,8 +24,6 @@ function Payment() {
   const { enqueueSnackbar } = useSnackbar();
   const [payment, setPayment] = useState<PaymentMethod[]>([]);
   const [store, setStore] = useState<Store | null>(null);
-
-  const { userRoleContext } = useContext(AppContext)!;
 
   const storedToken = localStorage.getItem("authToken");
   const [decodedData, setDecodedData] = useState<DecodedToken>();

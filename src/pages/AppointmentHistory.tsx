@@ -1,29 +1,19 @@
-// React & Context
 import { useContext, useState, useEffect } from "react";
 import { AppContext } from "../context/AppContext";
-
-// Components & Styles
 import { ContainerPage } from "./_Page.styles";
 import HeaderTitle from "../view/HeaderTitle";
 import AppointmentDataTable from "../view/DataTable/AppointmentDataTable";
 import Button from "../components/Button";
 import { Col, Row } from "react-bootstrap";
-
-// Services
 import { deleteAppointment, getAppointments } from "../services/AppointmentServices";
 import { getEmployeeById } from "../services/EmployeeServices";
 import { getUserById } from "../services/UserServices";
 import { getAppointmentStatusById } from "../services/AppointmentStatusServices";
 import { decodeToken } from "../services/AuthService";
-
-// Libraries
 import { useSnackbar } from "notistack";
 import moment from "moment";
-
-// Models
 import { Appointment } from "../models/Appointment";
 
-// Interfaces
 interface DecodedToken {
   userId: string;
   userEmail: string;
@@ -41,7 +31,6 @@ function AppointmentHistory() {
   const context = useContext(AppContext);
   const { userRoleContext } = context || {};
 
-  // Função para mapear os dados de agendamentos
   const mapAppointments = async (appointments: Appointment[]) => {
     return Promise.all(
       appointments.map(async (appointment) => {
@@ -63,7 +52,6 @@ function AppointmentHistory() {
     );
   };
 
-  // Função para buscar os dados
   const fetchData = async () => {
     try {
       if (storedToken) {
@@ -81,12 +69,10 @@ function AppointmentHistory() {
     }
   };
 
-  // Função para lidar com a seleção de linhas
   const handleRowSelect = (ids: number[]) => {
     setSelectedAppointmentIds(ids);
   };
 
-  // Função para deletar agendamentos
   const handleDeleteAppointment = async () => {
     try {
       await Promise.all(
@@ -115,7 +101,6 @@ function AppointmentHistory() {
     }
   };
 
-  // UseEffect para buscar os dados ao montar o componente
   useEffect(() => {
     fetchData();
   }, []);

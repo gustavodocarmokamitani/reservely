@@ -6,7 +6,7 @@ import { RegisterEmployee } from '../models/RegisterEmployee';
 export const registerProfessional = async (registerData: RegisterEmployee) => {
     try {
         const response = await api.post('/auth/register-professional', registerData);
-        return response.data;
+        return response;
     } catch (error) {
         console.error("Error registering user:", error);
         throw new Error("Ocorreu um erro ao registrar o profissional.");

@@ -1,42 +1,35 @@
 import { useContext, useEffect, useState } from "react";
-import { Service, ServiceServiceType } from "../../models/Service";
 import { Col, Row } from "react-bootstrap";
-import Button from "../../components/Button";
-import * as S from "./Modal.styles";
-import InputGroupService from "../../components/InputGroup/InputGroudServico";
-import closeIcon from "../../assets/remove.svg";
-import {
-  getServiceTypeById,
-  updateServiceType,
-} from "../../services/ServiceTypeServices";
-import { AppContext } from "../../context/AppContext";
 import { enqueueSnackbar } from "notistack";
+
+import Button from "../../components/Button";
+import InputGroupService from "../../components/InputGroup/InputGroupServico";
+import closeIcon from "../../assets/remove.svg";
+import * as S from "./Modal.styles";
+
+import { Service, ServiceServiceType } from "../../models/Service";
+import { getServiceTypeById, updateServiceType } from "../../services/ServiceTypeServices";
 
 interface EditServiceModalProps {
   title: string;
   subTitle?: string;
   editService?: boolean;
-  handleShow: () => void;
   handleClose: () => void;
   size: "small" | "medium" | "large";
   rowId?: number;
-  setUpdate: React.Dispatch<React.SetStateAction<boolean>>;
   fetchData: () => void;
 }
 
 const EditServiceModal: React.FC<EditServiceModalProps> = ({
-  handleShow,
   handleClose,
   title,
   subTitle,
   size,
   rowId,
   editService = false,
-  setUpdate,
   fetchData,
 }) => {
   const [serviceType, setServiceType] = useState<Service>();
-  const { setServiceUpdateContext } = useContext(AppContext)!;
 
   const [formValuesService, setFormValuesService] = useState<Service>({
     id: 0,
@@ -73,9 +66,7 @@ const EditServiceModal: React.FC<EditServiceModalProps> = ({
 
   const handleSubmit = async () => {
     try {
-      const responseServiceType = await getServiceTypeById(
-        formValuesService.id
-      );
+      const responseServiceType = await getServiceTypeById(formValuesService.id);
 
       if (responseServiceType && responseServiceType.data) {
         const serviceType = responseServiceType.data;
@@ -86,42 +77,29 @@ const EditServiceModal: React.FC<EditServiceModalProps> = ({
           description: formValuesService.description,
           value: parseFloat(formValuesService.value as string),
           active: formValuesService.active === "true",
-          durationMinutes: parseFloat(
-            formValuesService.durationMinutes as string
-          ),
+          durationMinutes: parseFloat(formValuesService.durationMinutes as string),
           services: serviceType.services ? serviceType.services : null,
         };
 
         console.log("RESULTADO DO UPDATE", tipoService);
 
-        const responseUpdate = await updateServiceType(
-          formValuesService.id,
-          tipoService
-        );
+        const responseUpdate = await updateServiceType(formValuesService.id, tipoService);
         if (responseUpdate) {
-          enqueueSnackbar("Serviço criado com sucesso!", {
-            variant: "success",
-          });
+          enqueueSnackbar("Serviço criado com sucesso!", { variant: "success" });
           fetchData();
         }
       } else {
-        enqueueSnackbar("Erro ao buscar tipo de serviço.", {
-          variant: "error",
-        });
+        enqueueSnackbar("Erro ao buscar tipo de serviço.", { variant: "error" });
       }
     } catch (error) {
       console.error("Erro durante o request:", error);
-      enqueueSnackbar("Erro inesperado! Verifique os dados.", {
-        variant: "error",
-      });
+      enqueueSnackbar("Erro inesperado! Verifique os dados.", { variant: "error" });
     }
 
     handleClose();
   };
 
-  const handleInputChangeService = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleInputChangeService = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, type, checked, value } = event.target;
     setFormValuesService((prev) => ({
       ...prev,
@@ -145,17 +123,8 @@ const EditServiceModal: React.FC<EditServiceModalProps> = ({
             <h3>{title}</h3>
             <p>{subTitle}</p>
           </Col>
-          <Col
-            md={2}
-            style={{ textAlign: "right", cursor: "pointer" }}
-            onClick={handleClose}
-          >
-            <img
-              src={closeIcon}
-              alt="Close Icon"
-              style={{ marginRight: "8px", verticalAlign: "middle" }}
-              width={25}
-            />
+          <Col md={2} style={{ textAlign: "right", cursor: "pointer" }} onClick={handleClose}>
+            <img src={closeIcon} alt="Close Icon" style={{ marginRight: "8px", verticalAlign: "middle" }} width={25} />
           </Col>
           <hr />
         </Row>
@@ -170,10 +139,7 @@ const EditServiceModal: React.FC<EditServiceModalProps> = ({
         )}
         <hr />
         <Row>
-          <Col
-            md={12}
-            className="d-flex flex-row justify-content-center align-items-center"
-          >
+          <Col md={12} className="d-flex flex-row justify-content-center align-items-center">
             <Button $isClosed type="button" onClick={handleClose} />
             <Button $isConfirm type="button" onClick={handleSubmit} />
           </Col>

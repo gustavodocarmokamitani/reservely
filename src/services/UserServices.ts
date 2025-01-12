@@ -59,7 +59,7 @@ export const createUser = async (userData: User) => {
 export const updateUser = async (id: number, userData: User) => {
     try {
         const response = await api.put(`user/${id}`, userData);
-        return response.data;
+        return response;
     } catch (error) {
         console.error("Error updating user:", error);
         throw error;
@@ -69,7 +69,7 @@ export const updateUser = async (id: number, userData: User) => {
 export const deleteUser = async (id: number) => {
     try {
         const response = await api.delete(`user/${id}`);
-        return response.data;
+        return response;
     } catch (error) {
         console.error("Error deleting user:", error);
         throw error;

@@ -39,7 +39,7 @@ export const getCorrigirIdByUserId = async (id: number) => {
 
 export const getEmployeeIdByUserId = async (id: number) => {
     try {
-        const response = await api.get(`user/${id}`);
+        const response = await api.get(`employee/employerData/${id}`);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -47,7 +47,7 @@ export const getEmployeeIdByUserId = async (id: number) => {
         } else {
             console.error("Unknown error:", error);
         }
-        throw error;
+        return [];
     }
 };
 
@@ -101,7 +101,7 @@ export const createEmployeeUser = async (employeeUserData: UserEmployee) => {
 export const updateEmployee = async (id: number, employeeData: Employee) => {
     try {
         const response = await api.put(`employee/${id}`, employeeData);
-        return response.data;
+        return response;
     } catch (error) {
         console.error("Error updating employee:", error);
         throw error;

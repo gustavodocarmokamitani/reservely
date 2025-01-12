@@ -1,18 +1,10 @@
-// Importações de Bibliotecas Externas
 import React from "react";
 import { Col, Row } from "react-bootstrap";
-
-// Importações de Componentes Internos
 import Button from "../../components/Button";
 import Selected from "../../components/Selected";
-
-// Importações de Estilos
 import * as S from "./Modal.styles";
-
-// Importações de Imagens
 import closeIcon from "../../assets/remove.svg";
 
-// Tipos de Props
 interface InfoAppointmentServiceModalProps {
   title: string;
   subTitle?: string;  
@@ -23,23 +15,19 @@ interface InfoAppointmentServiceModalProps {
   rowId?: number;
 }
 
-const InfoAppointmentServiceModal: React.FC<
-  InfoAppointmentServiceModalProps
-> = ({
+const InfoAppointmentServiceModal: React.FC<InfoAppointmentServiceModalProps> = ({
   handleClose,
   title,
   subTitle,
   size,
   rowId,
 }) => {
-  // Mapeamento de Tamanhos
   const sizeMap = {
     pequeno: "650px",
     medio: "850px",
     grande: "1050px",
   };
 
-  // Função de Envio (submit)
   const handleSubmit = async () => {
     handleClose();
   };

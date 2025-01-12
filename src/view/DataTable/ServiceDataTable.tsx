@@ -1,25 +1,18 @@
-// React & Hooks
 import React, { useEffect, useRef, useState } from "react";
 
-// MUI Components
 import { DataGrid, GridColDef, GridRenderCellParams, GridRowSelectionModel } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 
-// Modelos
 import { ServiceType } from "../../models/ServiceType";
 
-// Assets
 import edit from "../../assets/edit.svg";
 import confirm from "../../assets/confirmCardStore.svg";
 import remove from "../../assets/removeRed.svg";
 
-// Componentes
 import EditServiceModal from "../Modal/EditServiceModal";
 
-// Serviços
 import { decodeToken } from "../../services/AuthService";
 
-// Interfaces
 interface DecodedToken {
   userId: string;
   userEmail: string;
@@ -38,26 +31,22 @@ const ServiceDataTable: React.FC<ServiceDataTableProps> = ({
   service,
   onRowSelect,
   fetchData, 
-}) => {
-  // Estado para controle de modal e dados do serviço
+}) => { 
   const [showModal, setShowModal] = useState({ editService: false });
   const [selectedEmployeeId, setSelectedEmployeeId] = useState<number>();
   const [columnWidth, setColumnWidth] = useState(250);
   const containerRef = useRef<HTMLDivElement>(null);
   const [update, setUpdate] = useState(false);
-
-  // Funções para abrir e fechar o modal de edição
+ 
   const handleClose = () => setShowModal({ editService: false });
   const handleShowModal = (type: "editService", id: number) => {
     setSelectedEmployeeId(id);
     setShowModal({ ...showModal, [type]: true });
   };
-
-  // Decodificando o token armazenado
+ 
   const storedToken = localStorage.getItem("authToken");
   const [decodedData, setDecodedData] = useState<DecodedToken>();
-
-  // Função para obter os dados do token
+ 
   const fetchToken = async () => {
     if (storedToken) {
       try {
@@ -87,11 +76,9 @@ const ServiceDataTable: React.FC<ServiceDataTableProps> = ({
 
     return () => window.removeEventListener("resize", updateColumnWidth);
   }, []);
-
-  // Função para gerenciar a seleção das linhas
+ 
   const handleRowClick = (ids: number[]) => onRowSelect?.(ids);
-
-  // Definição das colunas da tabela
+ 
   const columns: GridColDef[] = service
     ? [
         { field: "id", headerName: "ID", flex: 1, align: "center" as const, headerAlign: "center" as const },
@@ -142,8 +129,7 @@ const ServiceDataTable: React.FC<ServiceDataTableProps> = ({
           : []),
       ]
     : [];
-
-  // Definir as linhas a serem exibidas na tabela
+ 
   let rows: any[] = [];
   if (service) rows = rowsService || [];
 
@@ -177,10 +163,8 @@ const ServiceDataTable: React.FC<ServiceDataTableProps> = ({
           title="Editar serviço"
           subTitle="Preencha as informações abaixo para editar o serviço."
           handleClose={handleClose}
-          handleShow={() => setShowModal({ ...showModal, editService: true })}
           size="small"
           rowId={selectedEmployeeId}
-          setUpdate={setUpdate}
           editService
         />
       )}

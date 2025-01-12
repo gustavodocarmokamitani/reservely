@@ -1,14 +1,13 @@
-// ReactSelect.tsx
 import React, { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import * as S from "../ReactSelect.styles";
 import DatePicker from "react-datepicker";
 
-interface ReactSelectProps {
+interface AppointmentDataSelectProps {
   setAppointmentDate: (date: Date | null) => void;
 }
 
-const ReactSelect: React.FC<ReactSelectProps> = ({ setAppointmentDate }) => {
+const AppointmentDataSelect: React.FC<AppointmentDataSelectProps> = ({ setAppointmentDate }) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   const handleSelectChangeAppointmentDate = (date: Date | null) => {
@@ -31,4 +30,4 @@ const ReactSelect: React.FC<ReactSelectProps> = ({ setAppointmentDate }) => {
   );
 };
 
-export default ReactSelect;
+export default AppointmentDataSelect;

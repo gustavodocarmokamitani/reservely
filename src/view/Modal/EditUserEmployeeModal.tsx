@@ -3,72 +3,72 @@ import { User } from "../../models/User";
 import { UserEmployee } from "../../models/UserEmployee";
 import { Employee } from "../../models/Employee";
 import { Col, Row } from "react-bootstrap";
-import { getEmployeeIdByUserId, updateEmployee } from "../../services/EmployeeServices";
+import {
+  getEmployeeIdByUserId,
+  updateEmployee,
+} from "../../services/EmployeeServices";
 import { getUserById } from "../../services/UserServices";
-import { useContext } from "react";
-import { AppContext } from "../../context/AppContext";
 import * as S from "./Modal.styles";
 import Button from "../../components/Button";
 import closeIcon from "../../assets/remove.svg";
 import InputGroupProfissional from "../../components/InputGroup/InputGroupProfessionalEdit";
+import { useSnackbar } from "notistack";
 
 interface EditUserEmployeeModal {
   title: string;
   subTitle?: string;
   edit?: boolean;
-  handleShow: () => void;
   handleClose: () => void;
   size: "small" | "medium" | "large";
   rowId?: number;
-  setUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+  fetchData: () => void;
 }
 
 interface CombinedData extends Employee, User {}
 
 const EditUserEmployeeModal: React.FC<EditUserEmployeeModal> = ({
-  handleShow,
   handleClose,
   title,
   subTitle,
   size,
   rowId,
   edit = false,
-  setUpdate,
+  fetchData
 }) => {
-  const { setUserEmployeeUpdateContext } = useContext(AppContext)!;
   const [employee, setEmployee] = useState<UserEmployee[]>([]);
   const [user, setUser] = useState<User[]>([]);
   const [combinedData, setCombinedData] = useState<CombinedData | null>(null);
   const storeUser = localStorage.getItem("storeUser");
-  
+
+  const { enqueueSnackbar } = useSnackbar();
+
   const [formValuesProfessional, setFormValuesProfessional] =
-  useState<UserEmployee>({
-    id: 0,
-    userId: 0,
-    name: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    active: "false",
-    password: "",
-    userTypeId: 0,
-    serviceIds: [] as number[],
-    storeId: 0,
-  });
-   
+    useState<UserEmployee>({
+      id: 0,
+      userId: 0,
+      name: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      active: "false",
+      password: "",
+      userTypeId: 0,
+      serviceIds: [] as number[],
+      storeId: 0,
+    });
+
   const sizeMap = {
     small: "650px",
     medium: "850px",
     large: "1050px",
   };
- 
+
   useEffect(() => {
     if (edit) {
       const fetchEmployee = async () => {
         try {
           const resEmployee = await getEmployeeIdByUserId(rowId!);
-       
-          
+
           let employeeData = Array.isArray(resEmployee)
             ? resEmployee
             : [resEmployee];
@@ -84,17 +84,14 @@ const EditUserEmployeeModal: React.FC<EditUserEmployeeModal> = ({
             active: employee.active,
             userTypeId: employee.userTypeId,
             serviceIds: employee.serviceIds || [],
-            storeId: employee.storeId
+            storeId: employee.storeId,
           }));
 
           setEmployee(mappedEmployee);
-
           if (mappedEmployee.length > 0) {
             const resUser = await getUserById(mappedEmployee[0].userId);
 
-            let userData = Array.isArray(resUser)
-              ? resUser
-              : [resUser];
+            let userData = Array.isArray(resUser) ? resUser : [resUser];
 
             const mappedUser = userData.map((user: User) => ({
               id: user.id,
@@ -104,15 +101,15 @@ const EditUserEmployeeModal: React.FC<EditUserEmployeeModal> = ({
               phone: user.phone,
               password: user.password,
               userTypeId: user.userTypeId,
-              storeId: Number(storeUser)
+              storeId: Number(storeUser),
             }));
+
             setUser(mappedUser);
             const combined = {
               ...mappedEmployee[0],
               ...mappedUser[0],
             };
-            setCombinedData(combined); 
-            
+            setCombinedData(combined);
           }
         } catch (error) {
           console.error("Error when fetching service type", error);
@@ -120,22 +117,17 @@ const EditUserEmployeeModal: React.FC<EditUserEmployeeModal> = ({
       };
       fetchEmployee();
     }
-
   }, [edit]);
 
   const handleSubmit = async () => {
     if (edit) {
+      console.log(123, user);
+
       const response = await getEmployeeIdByUserId(formValuesProfessional.id);
-  
+
       if (response) {
-        const {
-          id,
-          userId,
-          active,
-          serviceIds,
-          storeId
-        } = response;
-  
+        const { id, userId, active, serviceIds, storeId } = response;
+
         const updatedEmployee = {
           id,
           userId,
@@ -144,15 +136,22 @@ const EditUserEmployeeModal: React.FC<EditUserEmployeeModal> = ({
           storeId: Number(storeUser),
         };
         console.log(updatedEmployee);
-        
-        await updateEmployee(updatedEmployee.id, updatedEmployee);
-        setUpdate(true);
+
+        const updateEmployeeResponse = await updateEmployee(
+          updatedEmployee.id,
+          updatedEmployee
+        );
+        if (updateEmployeeResponse) {
+          fetchData();
+          enqueueSnackbar("Professional criado com sucesso!", {
+            variant: "success",
+          });
+        }
       }
     }
     handleClose();
   };
-  
- 
+
   const handleInputChangeProfissional = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -194,10 +193,10 @@ const EditUserEmployeeModal: React.FC<EditUserEmployeeModal> = ({
           <hr />
         </Row>
         {edit && (
-          <InputGroupProfissional 
+          <InputGroupProfissional
             setFormValuesProfessional={setFormValuesProfessional}
             formValuesProfessional={formValuesProfessional}
-            handleInputChange={handleInputChangeProfissional} 
+            handleInputChange={handleInputChangeProfissional}
             data={combinedData ? [combinedData] : undefined}
             edit
           />

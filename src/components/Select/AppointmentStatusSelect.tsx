@@ -1,4 +1,3 @@
-// AppointmentStatusSelect.tsx
 import React, { useEffect, useState } from "react";
 import { SelectOption } from "../../models/SelectOptions";
 import { getAppointmentStatus } from "../../services/AppointmentStatusServices";

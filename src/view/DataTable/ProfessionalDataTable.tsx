@@ -6,20 +6,16 @@ import {
   GridRenderCellParams,
   GridRowSelectionModel,
 } from "@mui/x-data-grid";
-import { useContext } from "react";
-import { AppContext } from "../../context/AppContext";
-import { updateUserEmployee } from "../../services/EmployeeServices";
-import { useSnackbar } from "notistack";
-import { ServiceType } from "../../models/ServiceType";
-import { UserEmployeeUpdate } from "../../models/UserEmployee";
-import { Appointment } from "../../models/Appointment";
+
 import Paper from "@mui/material/Paper";
-import info from "../../assets/info.svg";
+
 import edit from "../../assets/edit.svg";
 import confirm from "../../assets/confirmCardStore.svg";
 import remove from "../../assets/removeRed.svg";
+
 import EditUserEmployeeModal from "../Modal/EditUserEmployeeModal";
 import InfoEmployeeServiceModal from "../Modal/InfoEmployeeServiceModal";
+
 import { decodeToken } from "../../services/AuthService";
 
 interface DecodedToken {
@@ -29,12 +25,7 @@ interface DecodedToken {
 }
 
 interface ProfessionalDataTableProps {
-  service?: boolean;
   professional?: boolean;
-  appointment?: boolean;
-  loja?: boolean;
-  rowsService?: ServiceType[];
-  rowsAppointment?: Appointment[];
   rowsProfessional?: Array<{
     id: number;
     name: string;
@@ -42,23 +33,15 @@ interface ProfessionalDataTableProps {
     phone: string;
     services: number[];
   }>;
-  onRowSelect?: (id: number[]) => void;
-  setUpdate: React.Dispatch<React.SetStateAction<boolean>>;
-  update: boolean;
+  onRowSelect: (id: number[]) => void;
   fetchData: () => void;
 }
 
 const ProfessionalDataTable: React.FC<ProfessionalDataTableProps> = ({
-  rowsAppointment,
-  rowsService,
   rowsProfessional,
-  service,
-  appointment,
   professional,
   onRowSelect,
-  fetchData,
-  update,
-  setUpdate,
+  fetchData
 }) => {
   const [showModal, setShowModal] = useState({ edit: false, info: false });
   const [selectedEmployeeId, setSelectedEmployeeId] = useState<number>();
@@ -69,28 +52,9 @@ const ProfessionalDataTable: React.FC<ProfessionalDataTableProps> = ({
     setSelectedEmployeeId(id);
     setShowModal({ ...showModal, [type]: true });
   };
-  const { userEmployeeUpdateContext, userRoleContext } =
-    useContext(AppContext)!;
 
   const storedToken = localStorage.getItem("authToken");
   const [decodedData, setDecodedData] = useState<DecodedToken>();
-
-  const { enqueueSnackbar } = useSnackbar();
-
-  // const updateUser = async (id: number, data: UserEmployeeUpdate) => {
-  //   try {
-  //     const response = await updateUserEmployee(id, data);
-  //     setUpdate(false);
-
-  //     if (response.status === 200 || response.status === 204) {
-  //       enqueueSnackbar(`Profissional editado com sucesso!`, {
-  //         variant: "success",
-  //       });
-  //     }
-  //   } catch (error: any) {
-  //     console.error("Erro ao editar o Usuário e Funcionario", error.message);
-  //   }
-  // };
 
   const fetchToken = async () => {
     if (storedToken) {
@@ -102,11 +66,6 @@ const ProfessionalDataTable: React.FC<ProfessionalDataTableProps> = ({
       }
     }
   };
-
-  useEffect(() => {
-    fetchData();
-    setUpdate(false);
-  }, [update]);
 
   useEffect(() => {
     const updateColumnWidth = () => {
@@ -247,10 +206,9 @@ const ProfessionalDataTable: React.FC<ProfessionalDataTableProps> = ({
           subTitle="Preencha as informações abaixo para editar o professional."
           edit
           handleClose={handleClose}
-          handleShow={() => setShowModal({ ...showModal, edit: true })}
           size="large"
           rowId={selectedEmployeeId}
-          setUpdate={setUpdate}
+          fetchData={fetchData}
         />
       )}
     </div>

@@ -1,26 +1,25 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+
 import { ContainerPage } from "./_Page.styles";
 import { Col, Row } from "react-bootstrap";
-import { getUsers, deleteUser } from "../services/UserServices";
+import { getUsers } from "../services/UserServices";
 import {
   getEmployees,
   deleteEmployee,
   createEmployeeUser,
-  updateUserEmployee,
 } from "../services/EmployeeServices";
-import { useContext } from "react";
+
 import { AppContext } from "../context/AppContext";
+
 import { useSnackbar } from "notistack";
+
 import HeaderTitle from "../view/HeaderTitle";
 import Button from "../components/Button";
+
 import AddUserEmployeeModal from "../view/Modal/AddUserEmployeeModal";
 import ProfessionalDataTable from "../view/DataTable/ProfessionalDataTable";
-import {
-  checkEmail,
-  decodeToken,
-  registerProfessional,
-  registerUser,
-} from "../services/AuthService";
+
+import { decodeToken } from "../services/AuthService";
 
 interface User {
   id: number;
@@ -51,7 +50,7 @@ interface Row {
 interface DecodedToken {
   userId: string;
   userEmail: string;
-  userRole: string;  
+  userRole: string;
 }
 
 function Professional() {
@@ -61,15 +60,13 @@ function Professional() {
   const [selectedUserIds, setSelectedUserIds] = useState<number[]>([]);
   const [show, setShow] = useState(false);
   const [post, setPost] = useState(false);
-  const [update, setUpdate] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const storedToken = localStorage.getItem("authToken");
   const [decodedData, setDecodedData] = useState<DecodedToken>();
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const { setUserEmployeeContext, userEmployeeContext, userRoleContext } =
+  const { setUserEmployeeContext, userEmployeeContext } =
     useContext(AppContext)!;
 
   const handleClose = () => setShow(false);
@@ -80,7 +77,7 @@ function Professional() {
       const data = await decodeToken(storedToken);
       setDecodedData(data);
     }
-    
+
     try {
       const usersData = await getUsers();
       const employeesData = await getEmployees();
@@ -98,7 +95,7 @@ function Professional() {
               email: user.email,
               active: employee.active,
               services: employee.serviceIds || [],
-              storeId: user.storeId
+              storeId: user.storeId,
             };
           }
           return null;
@@ -150,7 +147,7 @@ function Professional() {
     fetchData();
     setPost(false);
   }, [post]);
-  
+
   const handleDeleteUsers = async () => {
     if (selectedUserIds.length > 0) {
       try {
@@ -217,7 +214,6 @@ function Professional() {
                   $isAdd
                   type="button"
                   onClick={handleShow}
-                  disabled={loading}
                 />
               </>
             )}
@@ -227,8 +223,6 @@ function Professional() {
           professional
           rowsProfessional={rows}
           onRowSelect={handleRowSelect}
-          setUpdate={setUpdate}
-          update={update}
           fetchData={fetchData}
         />
         {show && (
