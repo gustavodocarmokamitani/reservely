@@ -19,19 +19,9 @@ interface InputGroupProfessionalAddProps {
   edit?: boolean;
   register?: boolean;
   addProf?: boolean;
-  handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  setValueProfessional: (value: Employee | undefined) => void;
   setFormValuesProfessional: React.Dispatch<React.SetStateAction<UserEmployee>>;
   setEmployee: React.Dispatch<React.SetStateAction<SelectOption | null>>;
   employee: { value: number; label: string } | null;
-  formValuesProfessional: {
-    name: string;
-    lastName: string;
-    email: string;
-    phone: string;
-    active: string;
-    serviceIds: number[];
-  };
   data?: {
     id: number;
     userId: number;
@@ -47,10 +37,7 @@ interface InputGroupProfessionalAddProps {
   }[];
 }
 const InputGroupProfessionalAdd: React.FC<InputGroupProfessionalAddProps> = ({
-  handleInputChange,
-  setValueProfessional,
   setFormValuesProfessional,
-  formValuesProfessional,
   setEmployee,
   employee,
   data,

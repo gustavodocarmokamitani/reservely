@@ -132,6 +132,8 @@ function Professional() {
           variant: "success",
         });
         setUserEmployeeContext(null);
+
+        fetchData();
         setPost(false);
       }
     } catch (error) {
@@ -210,11 +212,7 @@ function Professional() {
             {decodedData?.userRole === "Admin" && (
               <>
                 <Button $isRemove type="button" onClick={handleDeleteUsers} />
-                <Button
-                  $isAdd
-                  type="button"
-                  onClick={handleShow}
-                />
+                <Button $isAdd type="button" onClick={handleShow} />
               </>
             )}
           </Col>

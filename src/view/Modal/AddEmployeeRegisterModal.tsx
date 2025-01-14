@@ -79,9 +79,11 @@ const AddUserEmployeeRegisterModal: React.FC<AddUserEmployeeModalProps> = ({
 
   const handleSubmit = async () => {
     try {
-      const professionalData = formatProfessionalData(formValuesProfessionalRegister);
+      const professionalData = formatProfessionalData(
+        formValuesProfessionalRegister
+      );
       console.log(professionalData);
-      
+
       await handleRegister(professionalData);
 
       fetchData();
@@ -94,6 +96,20 @@ const AddUserEmployeeRegisterModal: React.FC<AddUserEmployeeModalProps> = ({
   const formatString = (str: string): string => str.toLowerCase();
 
   const formatProfessionalData = (data: UserEmployee): RegisterEmployee => {
+    const isValidEmail =
+      data.email.includes("@") && data.email.endsWith(".com");
+
+    if (!isValidEmail) {
+      enqueueSnackbar(
+        "Email inválido. Certifique-se de que o email está correto.",
+        {
+          variant: "warning",
+        }
+      );
+      throw new Error(
+        "Email inválido. Certifique-se de que o email está correto."
+      );
+    }
 
     return {
       name: formatString(data.name),
@@ -172,9 +188,9 @@ const AddUserEmployeeRegisterModal: React.FC<AddUserEmployeeModalProps> = ({
           </Col>
           <hr />
         </Row>
-        <InputGroupProfessionalRegister 
+        <InputGroupProfessionalRegister
           formValuesProfessionalRegister={formValuesProfessionalRegister}
-          handleInputChange={handleInputChangeProfessional} 
+          handleInputChange={handleInputChangeProfessional}
         />
         <hr />
         <Row>

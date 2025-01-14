@@ -23,6 +23,8 @@ interface Option {
 const EmployeeSelect: React.FC<EmployeeSelectProps> = ({ setEmployee, value, handleEmployeeChange }) => {
   const [options, setOptions] = useState<SelectOption[]>([]);
 
+  const storeUser = Number(localStorage.getItem("storeUser"));
+
   let registeredEmployee: Employee;
 
   const fetchData = async () => {
@@ -33,17 +35,37 @@ const EmployeeSelect: React.FC<EmployeeSelectProps> = ({ setEmployee, value, han
 
   useEffect(() => {
     const fetchEmployees = async () => {
-      try { 
-        const responseEmployee = await getUserTypeIdById(2);
-           
-        const formattedOptions: Option[] = responseEmployee.map((employee: User) => ({
-          value: employee.id,  
-          label: employee.name,     
-          isDisabled: false,       
-        }));
-         
-        formattedOptions.unshift({ value: 0, label: "Selecione...", isDisabled: true });
-       
+      try {
+        const responseUser = await getUserTypeIdById(2);
+        console.log(responseUser);
+  
+        const responseEmployee = await getEmployeesByStoreId(storeUser);
+        console.log(1, responseEmployee);
+  
+        const formattedOptions: Option[] = responseUser.map((employee: User) => {
+          
+          const isUserInEmployeeList = responseEmployee.some(
+            (emp: Employee) => emp.userId === employee.id
+          );
+  
+          
+          if (!isUserInEmployeeList) {
+            return {
+              value: employee.id,
+              label: employee.name,
+              isDisabled: false,
+            };
+          }
+          
+          return null;
+        }).filter((option: any) => option !== null); 
+  
+        formattedOptions.unshift({
+          value: 0,
+          label: "Selecione...",
+          isDisabled: true,
+        });
+  
         setOptions(formattedOptions);
       } catch (error) {
         console.error("Erro ao buscar funcionários:", error);
@@ -52,6 +74,7 @@ const EmployeeSelect: React.FC<EmployeeSelectProps> = ({ setEmployee, value, han
     fetchData();
     fetchEmployees();
   }, []);
+  
   
   
   const handleChange = (option: any) => {

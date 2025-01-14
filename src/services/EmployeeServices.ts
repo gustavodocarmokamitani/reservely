@@ -54,29 +54,26 @@ export const getEmployeeIdByUserId = async (id: number) => {
 export const getEmployeesByStoreId = async (storeId: number) => {
     try {
         const response = await api.get(`employee/store/${storeId}`);
-        // Verifique se o retorno está vazio
+       
         if (response.status === 404 || !response.data || response.data.length === 0) {
             return [];
         }
         return response.data;
+        
     } catch (error: unknown) {
         if (error instanceof Error) {
-            // Agora você pode acessar as propriedades do erro como message
+           
             console.error("Erro ao buscar funcionários:", error.message);
             if ((error as any).response?.status === 404) {
                 return [];
             }
         } else {
-            // Lida com erros de tipos desconhecidos
+           
             console.error("Erro inesperado:", error);
         }
-        throw error; // Lança o erro se não for o tipo esperado
+        throw error;
     }
 };
-
-
-
-
 
 export const createEmployee = async (employeeData: Employee[]) => {
     try {

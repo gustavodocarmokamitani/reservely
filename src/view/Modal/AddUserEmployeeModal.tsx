@@ -9,7 +9,11 @@ import InputGroupProfessionalRegister from "../../components/InputGroup/InputGro
 
 import { getServiceTypes } from "../../services/ServiceTypeServices";
 import { checkEmail, registerProfessional } from "../../services/AuthService";
-import { createEmployee, getEmployeeIdByUserId } from "../../services/EmployeeServices";
+import {
+  createEmployee,
+  getEmployeeIdByUserId,
+  getEmployees,
+} from "../../services/EmployeeServices";
 
 import closeIcon from "../../assets/remove.svg";
 
@@ -46,39 +50,44 @@ const AddUserEmployeeModal: React.FC<AddUserEmployeeModalProps> = ({
   post,
   fetchData,
 }) => {
-  const [formValuesProfessional, setFormValuesProfessional] = useState<UserEmployee>({
-    id: 0,
-    userId: 0,
-    name: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    active: "false",
-    password: "",
-    userTypeId: 0,
-    serviceIds: [] as number[],
-    storeId: 0,
-  });
+  const [formValuesProfessional, setFormValuesProfessional] =
+    useState<UserEmployee>({
+      id: 0,
+      userId: 0,
+      name: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      active: "false",
+      password: "",
+      userTypeId: 0,
+      serviceIds: [] as number[],
+      storeId: 0,
+    });
 
-  const [formValuesProfessionalRegister, setFormValuesProfessionalRegister] = useState<UserEmployee>({
-    id: 0,
-    userId: 0,
-    name: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    active: "false",
-    password: "",
-    userTypeId: 0,
-    serviceIds: [] as number[],
-    storeId: 0,
-  });
+  const [formValuesProfessionalRegister, setFormValuesProfessionalRegister] =
+    useState<UserEmployee>({
+      id: 0,
+      userId: 0,
+      name: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      active: "false",
+      password: "",
+      userTypeId: 0,
+      serviceIds: [] as number[],
+      storeId: 0,
+    });
 
-  const { setUserEmployeeContext, setPostEmployeeRegister, userActiveContext } = useContext(AppContext)!;
+  const { setUserEmployeeContext, setPostEmployeeRegister, userActiveContext } =
+    useContext(AppContext)!;
   const [serviceType, setServiceType] = useState([]);
   const [loading, setLoading] = useState(false);
   const [employee, setEmployee] = useState<SelectOption | null>(null);
-  const [valueProfessional, setValueProfessional] = useState<Employee | undefined>(undefined);
+  const [valueProfessional, setValueProfessional] = useState<
+    Employee | undefined
+  >(undefined);
 
   const storeUser = Number(localStorage.getItem("storeUser"));
 
@@ -99,34 +108,20 @@ const AddUserEmployeeModal: React.FC<AddUserEmployeeModalProps> = ({
   }, []);
 
   const handleSubmit = async () => {
-    if (professionalRegister) {
-      const professionalData = {
-        name: formValuesProfessionalRegister.name.toLowerCase(),
-        lastName: formValuesProfessionalRegister.lastName.toLowerCase(),
-        email: formValuesProfessionalRegister.email.toLowerCase(),
-        phone: formValuesProfessionalRegister.phone,
-        userTypeId: 2,
-        storeId: storeUser,
+    if (employee) {
+      const responseEmployee = await getUserById(employee.value);
+
+      const employeeData = {
+        id: 0,
+        userId: responseEmployee.id,
+        active: "true",
+        storeId: Number(storeUser),
+        serviceIds: formValuesProfessional.serviceIds,
       };
 
-      await handleRegister(professionalData);
+      handleEmployeeAdd([employeeData]);
     }
 
-    if (professional) {
-      if (employee) {
-        const responseEmployee = await getUserById(employee.value);
-        
-        const employeeData = {
-          id: 0,
-          userId: responseEmployee.id,
-          active: "true",
-          storeId: Number(storeUser),
-          serviceIds: formValuesProfessional.serviceIds,
-        };
-
-        handleEmployeeAdd([employeeData]);
-      }
-    }
     fetchData();
     handleClose();
   };
@@ -155,33 +150,9 @@ const AddUserEmployeeModal: React.FC<AddUserEmployeeModalProps> = ({
     }
   };
 
-  const handleRegister = async (professionalData: RegisterEmployee) => {
-    setLoading(true);
-    const emailExists = await checkEmail(professionalData.email);
-
-    if (emailExists) {
-      enqueueSnackbar("Este e-mail já está cadastrado.", {
-        variant: "default",
-      });
-      return;
-    }
-
-    try {
-      const response = await registerProfessional(professionalData);
-
-      if (response) {
-        enqueueSnackbar("Profissional registrado com sucesso.", {
-          variant: "success",
-        });
-      }
-    } catch (error) {
-    } finally {
-      setPostEmployeeRegister(false);
-      setLoading(false);
-    }
-  };
-
-  const handleInputChangeProfessional = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChangeProfessional = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const { name, type, checked, value } = event.target;
     setFormValuesProfessionalRegister((prev) => ({
       ...prev,
@@ -219,18 +190,14 @@ const AddUserEmployeeModal: React.FC<AddUserEmployeeModalProps> = ({
           </Col>
           <hr />
         </Row>
-        {professional && (
+      
           <InputGroupProfessionalAdd
-            formValuesProfessional={formValuesProfessional}
             setFormValuesProfessional={setFormValuesProfessional}
-            setValueProfessional={setValueProfessional}
-            handleInputChange={handleInputChangeProfessional}
             data={serviceType}
             setEmployee={setEmployee}
             employee={employee}
             addProf
           />
-        )}
 
         <hr />
         <Row>
