@@ -1,10 +1,23 @@
 import styled from "styled-components";
 
 export const StyledDatePicker = styled.div`
-    display: flex;
-    flex-direction: row;
-    max-height: 500px;
-    
+  display: flex;
+  flex-direction: row;
+  max-height: 500px;
+
+  & .react-datepicker__day--today {
+    background-color: transparent !important;
+    color: black !important;
+    font-weight: normal;
+}
+
+& .react-datepicker__day--today.react-datepicker__day--selected {
+    background-color: #007bff !important;
+    color: white !important;
+    font-weight: bold;
+}
+
+
   & .react-datepicker {
     font-family: Arial, sans-serif;
     border: 1px solid #ccc;
@@ -31,6 +44,8 @@ export const StyledDatePicker = styled.div`
   & .react-datepicker__day--keyboard-selected {
     background-color: #007bff;
     color: white;
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
   }
 
@@ -54,10 +69,9 @@ export const StyledDatePicker = styled.div`
   & .react-datepicker__current-month {
     font-weight: bold;
     font-size: 1.1em;
-    width:
+    width: ;
   }
 `;
-
 
 export const TextList = styled.div`
   display: flex;
@@ -69,4 +83,4 @@ export const TextList = styled.div`
   border-radius: 15px;
   border: 1px solid #ccc;
   margin: 5px 0;
-`
+`;

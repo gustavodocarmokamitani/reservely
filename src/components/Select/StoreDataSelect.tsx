@@ -4,31 +4,40 @@ import "react-datepicker/dist/react-datepicker.css";
 import * as S from "./styles/dataStyles";
 
 interface StoreDataSelectProps {
-    setClosingDates: React.Dispatch<React.SetStateAction<Date[] | null>>;
+  setClosingDates: React.Dispatch<React.SetStateAction<Date[] | null>>;
 }
 
-const StoreDataSelect: React.FC<StoreDataSelectProps> = ({ setClosingDates }) => {
+const StoreDataSelect: React.FC<StoreDataSelectProps> = ({
+  setClosingDates,
+}) => {
+  const handleDateChange = (date: Date | null) => {
+    if (date) {
+      setClosingDates((prevDates) => {
+    
+        const isDuplicate = prevDates?.some(
+          (existingDate) => existingDate.toDateString() === date.toDateString()
+        );
 
-    const handleDateChange = (date: Date | null) => {
-        if (date) {
-            setClosingDates(prevDates => prevDates ? [...prevDates, date] : [date]);
-        }
-    };
- 
-    return (
-        <>
-            <S.StyledDatePicker>
-                <DatePicker
-                    selected={null}
-                    onChange={handleDateChange}
-                    dateFormat="dd/MM/yyyy" 
-                    placeholderText="Selecione a data"
-                    isClearable
-                    inline
-                />
-            </S.StyledDatePicker>
-        </>
-    );
+        return isDuplicate ? prevDates : [...(prevDates || []), date];
+      });
+    }
+  };
+
+  return (
+    <>
+      <S.StyledDatePicker>
+        <DatePicker
+          selected={null}
+          onChange={handleDateChange}
+          dateFormat="dd/MM/yyyy"
+          minDate={new Date()}
+          placeholderText="Selecione a data"
+          isClearable
+          inline
+        />
+      </S.StyledDatePicker>
+    </>
+  );
 };
 
 export default StoreDataSelect;

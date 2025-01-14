@@ -40,12 +40,13 @@ function AppointmentHistory() {
         const appointmentStatusData = await getAppointmentStatusById(
           appointment.appointmentStatusId
         );
-
+        console.log(appointment.appointmentDate);
+        
         return {
           ...appointment,  
           employeeId: userData.name,  
           clientId: userClientData.name,  
-          appointmentDate: new Date(moment(appointment.appointmentDate).format("DD/MM/YYYY")),  
+          appointmentDate: new Date(appointment.appointmentDate),  
           appointmentStatus: appointmentStatusData.name,  
         };
       })
@@ -63,7 +64,9 @@ function AppointmentHistory() {
       const mappedAppointments = await mapAppointments(appointmentData);
 
       setRows(mappedAppointments);
+      
       setUpdate(false);
+      
     } catch (error) {
       console.error("Error fetching data:", error);
     }

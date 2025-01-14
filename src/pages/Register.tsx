@@ -143,6 +143,7 @@ const Register = () => {
             <Col md={6}>
               <Input
                 placeholder="Phone"
+                phone
                 name="phone"
                 type="text"
                 width="400"
@@ -193,11 +194,11 @@ const Register = () => {
                 onClick={handleRegister}
                 disabled={loading}
               />
-              <p className="mt-4 mb-4">
+              {/* <p className="mt-4 mb-4">
                 Already have an account? <a href="/login">Login</a>
               </p>
               <ParagraphThin>Or sign up with</ParagraphThin>
-              <Button $isGoogle type="button" />
+              <Button $isGoogle type="button" /> */}
             </Col>
           </Row>
         </Col>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import * as S from "../ReactSelect.styles";
+import * as S from "./styles/DataPicker.styles"
 import DatePicker from "react-datepicker";
 
 interface AppointmentDataSelectProps {
@@ -14,6 +14,7 @@ const AppointmentDataSelect: React.FC<AppointmentDataSelectProps> = ({ setAppoin
     setSelectedDate(date);
     setAppointmentDate(date); 
   };
+console.log(selectedDate);
 
   return (
     <S.StyledDatePicker style={{ width: "25rem" }}>

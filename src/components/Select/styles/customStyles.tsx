@@ -14,6 +14,14 @@ const customStyles = {
       borderColor: "#888",
     },
   }),
+  menu: (provided: any) => ({
+    ...provided,
+    zIndex: 5,
+  }),
+  menuPortal: (provided: any) => ({
+    ...provided,
+    zIndex: 5,
+  }),
   option: (provided: any, state: any) => ({
     ...provided,
     backgroundColor: state.isSelected ? "#007bff" : "#fff",

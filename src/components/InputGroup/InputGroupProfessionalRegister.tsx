@@ -30,19 +30,7 @@ const InputGroupProfessionalRegister: React.FC<
             handleInputChange(e as React.ChangeEvent<HTMLInputElement>)
           }
         />
-        <Input
-          width="300"
-          type="text"
-          placeholder="Email"
-          name="email"
-          value={formValuesProfessionalRegister.email}
-          onChange={(e) =>
-            handleInputChange(e as React.ChangeEvent<HTMLInputElement>)
-          }
-        />
-      </Col>
-      <Col md={6} className="mt-3 mb-3">
-        <Input
+         <Input
           width="300"
           type="text"
           placeholder="Sobrenome"
@@ -52,10 +40,24 @@ const InputGroupProfessionalRegister: React.FC<
             handleInputChange(e as React.ChangeEvent<HTMLInputElement>)
           }
         />
+      
+      </Col>
+      <Col md={6} className="mt-3 mb-3">
+         <Input
+          width="300"
+          type="text"
+          placeholder="Email"
+          name="email"
+          value={formValuesProfessionalRegister.email}
+          onChange={(e) =>
+            handleInputChange(e as React.ChangeEvent<HTMLInputElement>)
+          }
+        />
         <Input
           width="300"
           type="text"
           placeholder="Telefone"
+          phone
           name="phone"
           value={formValuesProfessionalRegister.phone}
           onChange={(e) =>

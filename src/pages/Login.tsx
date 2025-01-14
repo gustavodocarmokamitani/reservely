@@ -112,12 +112,12 @@ const Login = () => {
                 <p className="mt-4 mb-4">
                   Don't have an account? <a href="/register">Sign up</a>
                 </p>
-                <ParagraphThin>Or login with</ParagraphThin>
+                {/* <ParagraphThin>Or login with</ParagraphThin>
                 <Button $isGoogle type="button" />
                 <ParagraphThin className="mt-4 mb-4">
                   Having difficulty logging in?{" "}
                   <a href="/help-login">Get help</a>
-                </ParagraphThin>
+                </ParagraphThin> */}
               </Col>
             </Row>
           </form>

@@ -38,7 +38,7 @@ const EditEmployeeRegisterModal: React.FC<EditEmployeeRegisterModal> = ({
   const [user, setUser] = useState<User[]>([]);
   const [combinedData, setCombinedData] = useState<CombinedData | null>(null);
 
-  const storeUser = localStorage.getItem("storeUser");
+  const storeUser = Number(localStorage.getItem("storeUser"));
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -102,7 +102,7 @@ const EditEmployeeRegisterModal: React.FC<EditEmployeeRegisterModal> = ({
         phone: resUser.phone,
         password: resUser.password,
         userTypeId: resUser.userTypeId,
-        storeId: Number(storeUser),
+        storeId: storeUser,
       };
       
       setUser([mappedUser]);

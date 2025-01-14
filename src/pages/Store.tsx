@@ -32,13 +32,15 @@ function Store() {
   const storedToken = localStorage.getItem("authToken");
   const [decodedData, setDecodedData] = useState<DecodedToken>();
 
+  const storeUser = Number(localStorage.getItem("storeUser"));
+
   const fetchData = async () => {
     try {
       if (storedToken) {
         const data = await decodeToken(storedToken);
         setDecodedData(data);
       }
-      const response = await getStoreById(1);
+      const response = await getStoreById(storeUser);
       if (response) {
         setStore(response);
         const horariosArray = response.operatingHours
@@ -83,50 +85,68 @@ function Store() {
           <h3 style={{ margin: "20px 0 25px 0" }}>Dados da store</h3>
           <S.CardStoreWrapper className="d-flex justify-content-start align-items-center">
             <CardStatus data={store} title="Status" icon="confirm" />
-            <CardHorario
-              selectedTimes={selectedTimes}
-              title="Hora de abertura"
-              icon="calendar"
-            />
-            <CardHorario
-              selectedTimes={selectedTimes}
-              title="Hora de fechamento"
-              icon="calendar"
-            />
+            {store?.operatingHours && store.operatingHours.length > 0 ? (
+              <>
+                <CardHorario
+                  selectedTimes={selectedTimes}
+                  title="Hora de abertura"
+                  icon="calendar"
+                />
+                <CardHorario
+                  selectedTimes={selectedTimes}
+                  title="Hora de fechamento"
+                  icon="calendar"
+                />
+              </>
+            ) : (
+              <p>Não há dias de funcionamento cadastrados.</p>
+            )}
           </S.CardStoreWrapper>
 
-          <h3 style={{ margin: "20px 0 25px 0" }}>Dias de funcionamento</h3>
-          <S.CardStoreWrapper className="d-flex justify-content-start align-items-center flex-wrap">
-            {store?.operatingDays?.map((day, index) => (
-              <CardDiaSemana key={index} text={day} icon="confirm" />
-            ))}
-          </S.CardStoreWrapper>
+          {store?.operatingDays && store.operatingDays.length > 0 ? (
+            <>
+              <h3 style={{ margin: "20px 0 25px 0" }}>Dias de funcionamento</h3>
+              <S.CardStoreWrapper className="d-flex justify-content-start align-items-center flex-wrap">
+                {store.operatingDays.map((day, index) => (
+                  <CardDiaSemana key={index} text={day} icon="confirm" />
+                ))}
+              </S.CardStoreWrapper>
+            </>
+          ) : (
+            <p>Não há dias de funcionamento cadastrados.</p>
+          )}
 
-          <h3 style={{ margin: "20px 0 25px 0" }}>Dias de fechamento</h3>
-          <S.CardStoreWrapper className="d-flex justify-content-start align-items-center flex-wrap">
-            {store?.closingDays
-              ?.sort(
-                (a: string, b: string) =>
-                  new Date(a).getTime() - new Date(b).getTime()
-              ) // Ordena as datas
-              .map((day, index) => {
-                const formattedData = new Date(day).toLocaleDateString(
-                  "pt-BR",
-                  {
-                    day: "2-digit",
-                    month: "2-digit",
-                    year: "numeric",
-                  }
-                );
-                return (
-                  <CardDiaFechamento
-                    key={index}
-                    text={formattedData}
-                    icon="confirm"
-                  />
-                );
-              })}
-          </S.CardStoreWrapper>
+          {store?.closingDays && store.closingDays.length > 0 ? (
+            <>
+              <h3 style={{ margin: "20px 0 25px 0" }}>Dias de fechamento</h3>
+              <S.CardStoreWrapper className="d-flex justify-content-start align-items-center flex-wrap">
+                {store.closingDays
+                  .sort(
+                    (a: string, b: string) =>
+                      new Date(a).getTime() - new Date(b).getTime()
+                  ) // Ordena as datas
+                  .map((day, index) => {
+                    const formattedData = new Date(day).toLocaleDateString(
+                      "pt-BR",
+                      {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                      }
+                    );
+                    return (
+                      <CardDiaFechamento
+                        key={index}
+                        text={formattedData}
+                        icon="confirm"
+                      />
+                    );
+                  })}
+              </S.CardStoreWrapper>
+            </>
+          ) : (
+            <p>Não há dias de fechamento cadastrados.</p>
+          )}
         </Col>
       </Row>
     </ContainerPage>

@@ -25,6 +25,8 @@ function Payment() {
   const [payment, setPayment] = useState<PaymentMethod[]>([]);
   const [store, setStore] = useState<Store | null>(null);
 
+  const storeUser = Number(localStorage.getItem("storeUser"));
+
   const storedToken = localStorage.getItem("authToken");
   const [decodedData, setDecodedData] = useState<DecodedToken>();
 
@@ -34,7 +36,7 @@ function Payment() {
         const data = await decodeToken(storedToken);
         setDecodedData(data);
       }
-      const response = await getStoreById(1);
+      const response = await getStoreById(storeUser);
       setStore(response);
 
       if (response.paymentMethods && Array.isArray(response.paymentMethods)) {

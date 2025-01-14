@@ -71,7 +71,7 @@ const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
         align: "center",
         headerAlign: "center",
         renderCell: (params) => {
-          const formattedDate = moment(params.value).format("MM/DD/YYYY");
+          const formattedDate = moment(params.value).format("DD/MM/YYYY");
           return <span>{formattedDate}</span>;
         }
       },

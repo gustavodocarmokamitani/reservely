@@ -32,6 +32,8 @@ function StoreConfigure() {
   const [statusStore, setStatusStore] = useState<boolean>();
   const { enqueueSnackbar } = useSnackbar();
 
+  const storeUser = Number(localStorage.getItem("storeUser"));
+
   const handleInputChangeStore = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -50,7 +52,7 @@ function StoreConfigure() {
 
   const fetchData = async () => {
     try {
-      const response = await getStoreById(1);
+      const response = await getStoreById(storeUser);
       if (response) {
         setStore(response);
 
@@ -146,7 +148,7 @@ function StoreConfigure() {
   };
 
   return (
-    <ContainerPage style={{ height: "100vh" }}>
+    <ContainerPage style={{ height: "100%" }}>
       <Row>
         <Col md={7} style={{ padding: "0px" }}>
           <HeaderTitle
@@ -199,46 +201,60 @@ function StoreConfigure() {
               title="Status"
               icon="confirm"
             />
-            <TimeCard
-              selectedTimes={selectedTimes}
-              title="Hora de abertura"
-              icon="confirm"
-            />
-            <TimeCard
-              selectedTimes={selectedTimes}
-              title="Hora de fechamento"
-              icon="confirm"
-            />
+            {store?.operatingHours && store?.operatingHours.length > 0 ? (
+              <>
+                <TimeCard
+                  selectedTimes={selectedTimes}
+                  title="Hora de abertura"
+                  icon="confirm"
+                />
+                <TimeCard
+                  selectedTimes={selectedTimes}
+                  title="Hora de fechamento"
+                  icon="confirm"
+                />
+              </>
+            ) : (
+              <p>Nenhuma hora de funcionamento cadastrada.</p>
+            )}
           </S.CardStoreWrapper>
 
           <h3 style={{ margin: "50px 0 25px 0" }}>Dias de funcionamento</h3>
-          <S.CardStoreWrapper className="d-flex justify-content-start align-items-center flex-wrap">
-            {openingWeekDay.map((item: any) => (
-              <WeekDayCard
-                key={item}
-                text={item}
-                icon="remove"
-                onRemove={() => handleRemoveDateClosed(item)}
-              />
-            ))}
-          </S.CardStoreWrapper>
+          {store?.operatingDays && store?.operatingDays.length > 0 ? (
+            <>
+              <S.CardStoreWrapper className="d-flex justify-content-start align-items-center flex-wrap">
+                {openingWeekDay.map((item: any) => (
+                  <WeekDayCard
+                    key={item}
+                    text={item}
+                    icon="remove"
+                    onRemove={() => handleRemoveDateClosed(item)}
+                  />
+                ))}
+              </S.CardStoreWrapper>
+            </>
+          ) : (
+            <p>Nenhuma data de funcionamento cadastrada.</p>
+          )}
 
           <h3 style={{ margin: "50px 0 25px 0" }}>Dias de fechamento</h3>
           <S.CardStoreWrapper className="d-flex justify-content-start align-items-center flex-wrap">
-            {closingDates
-              ? closingDates.map((item: Date, index: number) => (
-                  <ClosingDateCard
-                    key={index}
-                    text={item.toLocaleDateString("pt-BR", {
-                      day: "2-digit",
-                      month: "2-digit",
-                      year: "numeric",
-                    })}
-                    icon="remove"
-                    onRemove={() => handleRemoveDataClosed(item)}
-                  />
-                ))
-              : ""}
+            {closingDates && closingDates.length > 0 ? (
+              closingDates.map((item: Date, index: number) => (
+                <ClosingDateCard
+                  key={item.toISOString()}
+                  text={item.toLocaleDateString("pt-BR", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                  })}
+                  icon="remove"
+                  onRemove={() => handleRemoveDataClosed(item)}
+                />
+              ))
+            ) : (
+              <p>Nenhuma data de fechamento cadastrada.</p>
+            )}
           </S.CardStoreWrapper>
         </Col>
       </Row>

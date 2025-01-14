@@ -1,6 +1,5 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { Col, Row } from "react-bootstrap";
-import { AppContext } from "../../context/AppContext";
 import { Service, ServiceServiceType } from "../../models/Service";
 import * as S from "./Modal.styles";
 import Button from "../../components/Button";
@@ -35,9 +34,8 @@ const AddServiceModal: React.FC<AddServiceModalProps> = ({
     active: "false",
     storeId: 0,
   });
-
-  const { setServiceContext } = useContext(AppContext)!;
-  const storeUser = localStorage.getItem("storeUser");
+ 
+  const storeUser = Number(localStorage.getItem("storeUser"));
 
   const sizeMap = {
     small: "650px",
@@ -83,7 +81,7 @@ const AddServiceModal: React.FC<AddServiceModalProps> = ({
             {
               id: formValuesService.id,
               serviceTypeId: formValuesService.id,
-              storeId: Number(storeUser),
+              storeId: storeUser,
             },
           ],
         },

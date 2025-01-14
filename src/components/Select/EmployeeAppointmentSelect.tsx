@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getUserById, getUserTypeIdById } from "../../services/UserServices";
+import { getUserById } from "../../services/UserServices";
 import { SelectOption } from "../../models/SelectOptions";
 import {
   getEmployees,
@@ -8,7 +8,6 @@ import {
 import { Employee } from "../../models/Employee";
 import customStyles from "./styles/customStyles";
 import Select from "react-select";
-import { User } from "../../context/AppContext";
 
 interface EmployeeAppointmentSelectProps {
   setEmployee: (option: SelectOption | null) => void;
@@ -28,7 +27,9 @@ const EmployeeAppointmentSelect: React.FC<EmployeeAppointmentSelectProps> = ({
   handleEmployeeChange,
 }) => {
   const [options, setOptions] = useState<SelectOption[]>([]);
-  const storeUser = localStorage.getItem("storeUser");
+  
+  const storeUser = Number(localStorage.getItem("storeUser"));
+
   let registeredEmployee: Employee;
 
   const fetchData = async () => {
@@ -41,7 +42,7 @@ const EmployeeAppointmentSelect: React.FC<EmployeeAppointmentSelectProps> = ({
         const responseEmployee = await getEmployees(); 
    
         const filteredEmployees = responseEmployee.filter(
-          (employee: Employee) => employee.storeId === Number(storeUser)
+          (employee: Employee) => employee.storeId === storeUser
         );
    
         const filteredWithUserData = await Promise.all(
@@ -63,9 +64,6 @@ const EmployeeAppointmentSelect: React.FC<EmployeeAppointmentSelectProps> = ({
           })
         );
   
-        console.log(formattedOptions);
-  
-        // Adiciona a opção "Selecione..."
         formattedOptions.unshift({
           value: 0,
           label: "Selecione...",
