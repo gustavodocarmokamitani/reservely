@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Col, Row } from "react-bootstrap";
@@ -34,7 +34,7 @@ function Store() {
 
   const storeUser = Number(localStorage.getItem("storeUser"));
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       if (storedToken) {
         const data = await decodeToken(storedToken);
@@ -51,11 +51,11 @@ function Store() {
     } catch (error) {
       console.error("Erro ao buscar dados da loja:", error);
     }
-  };
+  }, [storedToken, storeUser]);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   const handleButtonClick = () => {
     navigate("/store-configure");
@@ -103,7 +103,9 @@ function Store() {
             )}
           </S.CardStoreWrapper>
 
-          {store?.operatingDays && store.operatingDays.length > 0  && store.operatingDays[0] !== '' ? (
+          {store?.operatingDays &&
+          store.operatingDays.length > 0 &&
+          store.operatingDays[0] !== "" ? (
             <>
               <h3 style={{ margin: "20px 0 25px 0" }}>Dias de funcionamento</h3>
               <S.CardStoreWrapper className="d-flex justify-content-start align-items-center flex-wrap">
@@ -116,7 +118,9 @@ function Store() {
             <p></p>
           )}
 
-          {store?.closingDays && store.closingDays.length > 0  && store.closingDays[0] !== '' ? (
+          {store?.closingDays &&
+          store.closingDays.length > 0 &&
+          store.closingDays[0] !== "" ? (
             <>
               <h3 style={{ margin: "20px 0 25px 0" }}>Dias de fechamento</h3>
               <S.CardStoreWrapper className="d-flex justify-content-start align-items-center flex-wrap">

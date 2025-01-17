@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
@@ -50,7 +50,7 @@ function StoreConfigure() {
     });
   };
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const response = await getStoreById(storeUser);
       if (response) {
@@ -97,11 +97,11 @@ function StoreConfigure() {
     } catch (error) {
       console.log("Erro na requisição da store", error);
     }
-  };
+  }, [storeUser, selectedTimes, openingWeekDay, closingDates]);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   const handleSubmit = async () => {
     if (store) {

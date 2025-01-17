@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Col, Row } from "react-bootstrap";
-import { ContainerRegister, ParagraphThin } from "./_Page.styles";
+import { ContainerRegister } from "./_Page.styles";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import { registerUser, checkEmail } from "../services/AuthService";
@@ -20,9 +20,6 @@ const Register = () => {
 
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
-
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
@@ -157,7 +154,7 @@ const Register = () => {
               <Input
                 placeholder="Password"
                 name="password"
-                type={showPassword ? "text" : "password"}
+                type={"password"}
                 width="400"
                 value={formData.password}
                 onChange={handleInputChange}
@@ -167,7 +164,7 @@ const Register = () => {
               <Input
                 placeholder="Confirm Password"
                 name="confirmPassword"
-                type={showConfirmPassword ? "text" : "password"}
+                type={"password"}
                 width="400"
                 value={formData.confirmPassword}
                 onChange={handleInputChange}

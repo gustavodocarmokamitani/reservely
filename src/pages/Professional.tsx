@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useCallback } from "react";
 
 import { ContainerPage } from "./_Page.styles";
 import { Col, Row } from "react-bootstrap";
@@ -21,16 +21,6 @@ import ProfessionalDataTable from "../view/DataTable/ProfessionalDataTable";
 
 import { decodeToken } from "../services/AuthService";
 
-interface User {
-  id: number;
-  name: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  password: string;
-  userTypeId: number;
-}
-
 interface Employee {
   id: number;
   userId: number;
@@ -38,7 +28,7 @@ interface Employee {
   serviceIds: number[];
 }
 
-interface Row {
+interface Rows {
   id: number;
   name: string;
   lastName: string;
@@ -54,9 +44,7 @@ interface DecodedToken {
 }
 
 function Professional() {
-  const [users, setUsers] = useState<User[]>([]);
-  const [employees, setEmployees] = useState<Employee[]>([]);
-  const [rows, setRows] = useState<Row[]>([]);
+  const [rows, setRows] = useState<Rows[]>([]);
   const [selectedUserIds, setSelectedUserIds] = useState<number[]>([]);
   const [show, setShow] = useState(false);
   const [post, setPost] = useState(false);
@@ -72,7 +60,7 @@ function Professional() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     if (storedToken) {
       const data = await decodeToken(storedToken);
       setDecodedData(data);
@@ -82,7 +70,7 @@ function Professional() {
       const usersData = await getUsers();
       const employeesData = await getEmployees();
 
-      const mappedRows: Row[] = employeesData
+      const mappedRows: Rows[] = employeesData
         .map((employee: Employee) => {
           const user = usersData.find((u: any) => u.id === employee.userId);
 
@@ -100,55 +88,41 @@ function Professional() {
           }
           return null;
         })
-        .filter(Boolean) as Row[];
+        .filter(Boolean) as Rows[];
 
-      setUsers(usersData);
-      setEmployees(employeesData);
       setRows(mappedRows);
     } catch (error) {
       console.error("Erro ao buscar dados:", error);
     }
-  };
+  }, [storedToken]);
 
-  const handleCreateEmployeeUser = async () => {
+  const handleCreateEmployeeUser = useCallback(async () => {
     try {
       if (post) {
-        if (
-          !userEmployeeContext?.name ||
-          !userEmployeeContext.lastName ||
-          !userEmployeeContext.phone
-        ) {
+        if (!userEmployeeContext?.name || !userEmployeeContext.lastName || !userEmployeeContext.phone) {
           setPost(false);
-          enqueueSnackbar(
-            "Por favor, preencha todos os dados obrigatórios antes de continuar.",
-            { variant: "error" }
-          );
+          enqueueSnackbar("Por favor, preencha todos os dados obrigatórios antes de continuar.", { variant: "error" });
           return;
         }
 
         await createEmployeeUser(userEmployeeContext);
 
-        enqueueSnackbar("Professional criado com sucesso!", {
-          variant: "success",
-        });
+        enqueueSnackbar("Professional criado com sucesso!", { variant: "success" });
         setUserEmployeeContext(null);
-
         fetchData();
         setPost(false);
       }
     } catch (error) {
       console.error("Erro durante o request:", error);
-      enqueueSnackbar("Erro inesperado! Verifique os dados.", {
-        variant: "error",
-      });
+      enqueueSnackbar("Erro inesperado! Verifique os dados.", { variant: "error" });
     }
-  };
+  }, [post, userEmployeeContext, enqueueSnackbar, fetchData, setUserEmployeeContext]);
 
   useEffect(() => {
     handleCreateEmployeeUser();
     fetchData();
     setPost(false);
-  }, [post]);
+  }, [fetchData, handleCreateEmployeeUser, post]);
 
   const handleDeleteUsers = async () => {
     if (selectedUserIds.length > 0) {
