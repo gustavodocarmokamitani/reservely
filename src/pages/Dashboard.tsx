@@ -1,29 +1,6 @@
-import React, { useState } from 'react';
-import { ContainerPage } from './_Page.styles';
-import Input from '../components/Input';
-import Button from '../components/Button';
-import HeaderTitle from '../view/HeaderTitle';
+import { ContainerPage } from "./_Page.styles";
 
 const Dashboard = () => {
-
-  const [formValues, setFormValues] = useState({
-    name: '',
-    value: '',
-    duration: ''
-  });
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setFormValues({
-      ...formValues,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault()
-  };
-
   return (
     <ContainerPage>
       {/* <HeaderTitle title="Dashboard"></HeaderTitle>

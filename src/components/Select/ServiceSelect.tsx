@@ -1,4 +1,3 @@
-// ServiceSelect.tsx
 import React, { useEffect, useState } from "react";
 import { SelectOption } from "../../models/SelectOptions";
 import { ServiceType } from "../../models/ServiceType";
@@ -17,7 +16,7 @@ const ServiceSelect: React.FC<ServiceSelectProps> = ({ setService, value, select
   const [options, setOptions] = useState<SelectOption[]>([]);
   
   useEffect(() => {
-    const fetchServicos = async () => {
+    const fetchServices = async () => {
       try {
         const response = await getServiceTypes();
   
@@ -84,7 +83,7 @@ const ServiceSelect: React.FC<ServiceSelectProps> = ({ setService, value, select
       }
     };
   
-    fetchServicos();
+    fetchServices();
   }, [selectedEmployee]);
   
   

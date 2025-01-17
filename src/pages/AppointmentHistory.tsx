@@ -1,5 +1,4 @@
-import { useContext, useState, useEffect } from "react";
-import { AppContext } from "../context/AppContext";
+import { useState, useEffect, useCallback } from "react";
 import { ContainerPage } from "./_Page.styles";
 import HeaderTitle from "../view/HeaderTitle";
 import AppointmentDataTable from "../view/DataTable/AppointmentDataTable";
@@ -11,7 +10,6 @@ import { getUserById } from "../services/UserServices";
 import { getAppointmentStatusById } from "../services/AppointmentStatusServices";
 import { decodeToken } from "../services/AuthService";
 import { useSnackbar } from "notistack";
-import moment from "moment";
 import { Appointment } from "../models/Appointment";
 
 interface DecodedToken {
@@ -28,8 +26,6 @@ function AppointmentHistory() {
 
   const storedToken = localStorage.getItem("authToken");
   const { enqueueSnackbar } = useSnackbar();
-  const context = useContext(AppContext);
-  const { userRoleContext } = context || {};
 
   const mapAppointments = async (appointments: Appointment[]) => {
     return Promise.all(
@@ -40,7 +36,6 @@ function AppointmentHistory() {
         const appointmentStatusData = await getAppointmentStatusById(
           appointment.appointmentStatusId
         );
-        console.log(appointment.appointmentDate);
         
         return {
           ...appointment,  
@@ -53,7 +48,7 @@ function AppointmentHistory() {
     );
   };
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       if (storedToken) {
         const data = await decodeToken(storedToken);
@@ -70,7 +65,7 @@ function AppointmentHistory() {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  };
+  }, [storedToken]);
 
   const handleRowSelect = (ids: number[]) => {
     setSelectedAppointmentIds(ids);
@@ -106,7 +101,7 @@ function AppointmentHistory() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   return (
     <ContainerPage style={{ height: "100vh" }}>

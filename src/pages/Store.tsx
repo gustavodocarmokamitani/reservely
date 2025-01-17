@@ -128,7 +128,7 @@ function Store() {
                   .sort(
                     (a: string, b: string) =>
                       new Date(a).getTime() - new Date(b).getTime()
-                  ) // Ordena as datas
+                  )
                   .map((day, index) => {
                     const formattedData = new Date(day).toLocaleDateString(
                       "pt-BR",

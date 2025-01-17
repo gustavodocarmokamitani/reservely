@@ -1,9 +1,7 @@
-// src/services/serviceTypeService.js
 import api from '../axiosInstance';
 import { ServiceServiceType } from '../models/Service';
 import { ServiceType } from '../models/ServiceType';
 
-// Function to get all service types
 export const getServiceTypes = async () => {
     try {
         const response = await api.get('serviceType');
@@ -14,7 +12,6 @@ export const getServiceTypes = async () => {
     }
 };
 
-// Function to get a specific service type by ID
 export const getServiceTypeById = async (id: number) => {
     if (!id) return;
     try {
@@ -26,7 +23,6 @@ export const getServiceTypeById = async (id: number) => {
     }
 };
 
-// Function to get service type data by ID
 export const getServiceTypeByIdData = async (id: number) => {
     if (!id) return;
     try {
@@ -38,7 +34,6 @@ export const getServiceTypeByIdData = async (id: number) => {
     }
 };
 
-// Function to create a new service type
 export const createServiceType = async (serviceTypeData: ServiceType[]) => {
     try {
         const response = await api.post('serviceType', serviceTypeData);
@@ -49,7 +44,6 @@ export const createServiceType = async (serviceTypeData: ServiceType[]) => {
     }
 };
 
-// Function to update an existing service type
 export const updateServiceType = async (id: number, serviceTypeData: ServiceType) => {
     try {
         const response = await api.put(`serviceType/${id}`, serviceTypeData);
@@ -60,7 +54,6 @@ export const updateServiceType = async (id: number, serviceTypeData: ServiceType
     }
 };
 
-// Function to delete a service type
 export const deleteServiceType = async (id: number) => {
     try {
         const response = await api.delete(`serviceType/${id}`);
@@ -71,7 +64,6 @@ export const deleteServiceType = async (id: number) => {
     }
 };
 
-// Function to create service types by storeId
 export const createServiceTypeByStoreId = async (storeId: number, serviceTypeData: ServiceServiceType[]) => {
     if (!storeId || !serviceTypeData) {
         console.error("Store ID and service data are required");

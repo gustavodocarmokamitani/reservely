@@ -1,13 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
-import Input from "../Input";
 import Selected from "../Selected";
 import { UserEmployee } from "../../models/UserEmployee";
 import { SelectOption } from "../../models/SelectOptions";
-import { Employee } from "../../models/Employee";
-import { AppContext } from "../../context/AppContext";
-import EmployeeSelect from "../Select/EmployeeSelect";
 import { decodeToken } from "../../services/AuthService";
+import EmployeeSelect from "../Select/EmployeeSelect";
 
 interface DecodedToken {
   userId: string;
@@ -45,15 +42,10 @@ const InputGroupProfessionalAdd: React.FC<InputGroupProfessionalAddProps> = ({
   addProf = false,
   register = false,
 }) => {
-  const [selectedEmployee, setSelectedEmployee] = useState<SelectOption | null>(
-    null
-  );
-
   const storedToken = localStorage.getItem("authToken");
   const [decodedData, setDecodedData] = useState<DecodedToken>();
-  const { userRoleContext } = useContext(AppContext)!;
 
-const fetchToken = async () => {
+  const fetchToken = useCallback(async () => {
     if (storedToken) {
       try {
         const data = await decodeToken(storedToken);
@@ -62,11 +54,11 @@ const fetchToken = async () => {
         console.error("Error decoding token:", error);
       }
     }
-  };
+  }, [storedToken]);
 
-    useEffect(() => {
+  useEffect(() => {
     fetchToken();
-    }, []);
+  }, [fetchToken]);
 
   useEffect(() => {
     if (edit && data?.[0]) {
@@ -81,7 +73,7 @@ const fetchToken = async () => {
         userTypeId: data[0].userTypeId,
         password: data[0].password,
         serviceIds: data[0].serviceIds,
-        storeId: data[0].storeId
+        storeId: data[0].storeId,
       };
 
       setFormValuesProfessional?.((prevState) => {
@@ -95,17 +87,13 @@ const fetchToken = async () => {
 
   const professionalData = data?.[0] ?? null;
 
-  const handleEmployeeChange = async (employee: SelectOption | null) => {
-    setSelectedEmployee(employee);
-  };
-
   const handleServiceSelection = (serviceIds: number[]) => {
     setFormValuesProfessional((prev) => ({
       ...prev,
       serviceIds,
     }));
   };
-  
+
   return (
     <Row>
       {decodedData?.userRole === "Admin" && (
@@ -114,7 +102,7 @@ const fetchToken = async () => {
             <EmployeeSelect
               value={employee?.value}
               setEmployee={setEmployee}
-              handleEmployeeChange={handleEmployeeChange}
+              handleEmployeeChange={() => {}}
             />
           </Col>
         </>

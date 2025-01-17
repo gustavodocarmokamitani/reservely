@@ -65,8 +65,7 @@ const AddUserEmployeeRegisterModal: React.FC<AddUserEmployeeModalProps> = ({
       const professionalData = formatProfessionalData(
         formValuesProfessionalRegister
       );
-      console.log(professionalData);
-
+      
       await handleRegister(professionalData);
 
       fetchData();

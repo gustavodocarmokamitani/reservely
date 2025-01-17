@@ -2,11 +2,6 @@ import React, { useState } from 'react'
 import imageUpload from "../assets/imageUpload.svg";
 import * as S from "./ImageUpload.styles";
 
-interface ImageFile {
-  src: string | ArrayBuffer | null;
-  name: string;
-};
-
 const ImageUpload = () => {
   const [isDragging, setIsDragging] = useState(false);
 

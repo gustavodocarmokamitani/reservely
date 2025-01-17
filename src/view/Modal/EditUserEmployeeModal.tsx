@@ -35,7 +35,6 @@ const EditUserEmployeeModal: React.FC<EditUserEmployeeModalProps> = ({
   edit = false,
   fetchData
 }) => {
-  const [user, setUser] = useState<User[]>([]);
   const [combinedData, setCombinedData] = useState<CombinedData | null>(null);
  
   const storeUser = Number(localStorage.getItem("storeUser"));
@@ -103,7 +102,6 @@ const EditUserEmployeeModal: React.FC<EditUserEmployeeModalProps> = ({
               storeId: storeUser,
             }));
 
-            setUser(mappedUser);
             const combined = {
               ...mappedEmployee[0],
               ...mappedUser[0],
@@ -120,7 +118,6 @@ const EditUserEmployeeModal: React.FC<EditUserEmployeeModalProps> = ({
 
   const handleSubmit = async () => {
     if (edit) {
-      console.log(123, user);
 
       const response = await getEmployeeIdByUserId(formValuesProfessional.id);
 
@@ -134,7 +131,6 @@ const EditUserEmployeeModal: React.FC<EditUserEmployeeModalProps> = ({
           serviceIds: formValuesProfessional.serviceIds || serviceIds,
           storeId: storeUser,
         };
-        console.log(updatedEmployee);
 
         const updateEmployeeResponse = await updateEmployee(
           updatedEmployee.id,

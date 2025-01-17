@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getUserById } from "../../services/UserServices";
 import { SelectOption } from "../../models/SelectOptions";
-import {
-  getEmployees,
-  getEmployeesByStoreId,
-} from "../../services/EmployeeServices";
+import { getEmployees } from "../../services/EmployeeServices";
 import { Employee } from "../../models/Employee";
 import customStyles from "./styles/customStyles";
 import Select from "react-select";
@@ -27,58 +24,50 @@ const EmployeeAppointmentSelect: React.FC<EmployeeAppointmentSelectProps> = ({
   handleEmployeeChange,
 }) => {
   const [options, setOptions] = useState<SelectOption[]>([]);
-  
+
   const storeUser = Number(localStorage.getItem("storeUser"));
-
-  let registeredEmployee: Employee;
-
-  const fetchData = async () => {
-    registeredEmployee = await getEmployeesByStoreId(1);
-  };
 
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const responseEmployee = await getEmployees(); 
-   
+        const responseEmployee = await getEmployees();
+
         const filteredEmployees = responseEmployee.filter(
           (employee: Employee) => employee.storeId === storeUser
         );
-   
+
         const filteredWithUserData = await Promise.all(
           filteredEmployees.map(async (employee: Employee) => {
-            const responseUser = await getUserById(employee.userId); 
+            const responseUser = await getUserById(employee.userId);
             return {
-              ...employee,  
-              user: responseUser, 
+              ...employee,
+              user: responseUser,
             };
           })
         );
-  
-        // Formatação dos dados para o formato Option
+
         const formattedOptions: Option[] = filteredWithUserData.map(
           (employeeWithUserData) => ({
-            value: employeeWithUserData.user.id,  
-            label: employeeWithUserData.user.name,  
+            value: employeeWithUserData.user.id,
+            label: employeeWithUserData.user.name,
             isDisabled: false,
           })
         );
-  
+
         formattedOptions.unshift({
           value: 0,
           label: "Selecione...",
           isDisabled: true,
         });
-  
+
         setOptions(formattedOptions);
       } catch (error) {
         console.error("Erro ao buscar funcionários:", error);
       }
     };
-  
+
     fetchEmployees();
-  }, []);
-  
+  }, [storeUser]);
 
   const handleChange = (option: any) => {
     setEmployee(option);

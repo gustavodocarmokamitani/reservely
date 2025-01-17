@@ -3,7 +3,6 @@ import { ContainerPage } from "./_Page.styles";
 import { Col, Row } from "react-bootstrap";
 import HeaderTitle from "../view/HeaderTitle";
 import Button from "../components/Button";
-import EmployeeSelect from "../components/Select/EmployeeSelect";
 import ClientSelect from "../components/Select/ClientSelect";
 import ServiceSelect from "../components/Select/ServiceSelect";
 import TimeSelect from "../components/Select/TimeSelect";

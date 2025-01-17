@@ -22,14 +22,14 @@ const RegisterReSendEmail = () => {
     }
     setLoading(true);
     try {
-      const response = await resendConfirmationEmail(email); 
+      await resendConfirmationEmail(email);
       setMessage("E-mail de confirmação reenviado com sucesso!");
       setError("");
     } catch (error) {
       setMessage("");
       setError("Erro ao reenviar o e-mail.");
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
   };
 

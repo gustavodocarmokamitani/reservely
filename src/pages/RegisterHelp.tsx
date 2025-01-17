@@ -22,7 +22,7 @@ const RegisterHelp = () => {
     }
     setLoading(true);
     try {
-      const response = await resendConfirmationEmail(email);
+      await resendConfirmationEmail(email);
       setMessage("E-mail de confirmação reenviado com sucesso!");
       setError("");
     } catch (error) {

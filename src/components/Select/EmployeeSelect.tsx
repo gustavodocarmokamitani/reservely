@@ -1,8 +1,8 @@
 
 import React, { useEffect, useState } from "react";
-import { getUserById, getUserTypeIdById } from "../../services/UserServices";
+import { getUserTypeIdById } from "../../services/UserServices";
 import { SelectOption } from "../../models/SelectOptions";
-import { getEmployees, getEmployeesByStoreId } from "../../services/EmployeeServices";
+import { getEmployeesByStoreId } from "../../services/EmployeeServices";
 import { Employee } from "../../models/Employee";
 import customStyles from "./styles/customStyles";
 import Select from "react-select";
@@ -25,22 +25,13 @@ const EmployeeSelect: React.FC<EmployeeSelectProps> = ({ setEmployee, value, han
 
   const storeUser = Number(localStorage.getItem("storeUser"));
 
-  let registeredEmployee: Employee;
-
-  const fetchData = async () => {
-    registeredEmployee = await getEmployeesByStoreId(1);
-  };
-  
-
 
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
         const responseUser = await getUserTypeIdById(2);
-        console.log(responseUser);
   
         const responseEmployee = await getEmployeesByStoreId(storeUser);
-        console.log(1, responseEmployee);
   
         const formattedOptions: Option[] = responseUser.map((employee: User) => {
           
@@ -71,9 +62,8 @@ const EmployeeSelect: React.FC<EmployeeSelectProps> = ({ setEmployee, value, han
         console.error("Erro ao buscar funcionários:", error);
       }
     };
-    fetchData();
     fetchEmployees();
-  }, []);
+  }, [storeUser]);
   
   
   

@@ -1,4 +1,3 @@
-// src/models/Profissional.ts
 export interface UserEmployee {
   id: number;
   userId: number;

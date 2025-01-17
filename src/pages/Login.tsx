@@ -1,6 +1,6 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { Col, Row } from "react-bootstrap";
-import { ContainerRegister, ParagraphThin } from "./_Page.styles";
+import { ContainerRegister } from "./_Page.styles";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import { decodeToken, loginUser } from "../services/AuthService";
@@ -8,10 +8,6 @@ import { AppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { getUserByEmail } from "../services/UserServices";
-
-interface UserResponse {
-  storeId: string;
-}
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -22,13 +18,7 @@ const Login = () => {
   const context = useContext(AppContext);
   const navigate = useNavigate();
 
-  const {
-    setUserContext,
-    setEmployeeContext,
-    setUserEmployeeContext,
-    setAuthToken,
-    setUserRoleContext,
-  } = context || {};
+  const { setAuthToken } = context || {};
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,15 +27,14 @@ const Login = () => {
     try {
       const loggedUser = await getUserByEmail(email);
 
-      if (loggedUser.emailConfirmed == true) {
+      if (loggedUser.emailConfirmed === true) {
         const responseLogin = await loginUser({ email, password });
         const token = responseLogin.token;
 
         if (setAuthToken) setAuthToken(token);
 
-        const decodedData = await decodeToken(token);
-        const { userId, userEmail, userRole } = decodedData;
-        
+        await decodeToken(token);
+
         localStorage.setItem("storeUser", loggedUser.storeId);
 
         localStorage.setItem("authToken", token);

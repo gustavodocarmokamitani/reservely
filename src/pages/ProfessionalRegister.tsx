@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useSnackbar } from "notistack";
 
@@ -27,7 +27,7 @@ interface User {
   userTypeId: number;
 }
 
-interface Row {
+interface Rows {
   id: number;
   name: string;
   lastName: string;
@@ -43,18 +43,16 @@ interface DecodedToken {
 }
 
 function ProfessionalRegister() {
-  const [users, setUsers] = useState<User[]>([]);
-  const [rows, setRows] = useState<Row[]>([]);
+  const [rows, setRows] = useState<Rows[]>([]);
   const [selectedUserIds, setSelectedUserIds] = useState<number[]>([]);
   const [show, setShow] = useState(false);
-  const [update, setUpdate] = useState(false);
 
   const storedToken = localStorage.getItem("authToken");
   const [decodedData, setDecodedData] = useState<DecodedToken>();
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const fetchData = async () => {
+  const fetchData =  useCallback(async () => {
     if (storedToken) {
       const data = await decodeToken(storedToken);
       setDecodedData(data);
@@ -66,14 +64,13 @@ function ProfessionalRegister() {
         return;
       }
 
-      const mappedRows: Row[] = usersData;
+      const mappedRows: Rows[] = usersData;
 
-      setUsers(usersData);
       setRows(mappedRows);
     } catch (error) {
       console.error("Erro ao buscar dados:", error);
     }
-  };
+  }, [storedToken]);
 
   const handleDeleteUsers = async () => {
     if (selectedUserIds.length === 0) {
@@ -95,7 +92,6 @@ function ProfessionalRegister() {
           }
 
           const getEmployeeResponse = await getEmployeeIdByUserId(user.id);
-          console.log(getEmployeeResponse);
           
           if (getEmployeeResponse.length !== 0) {
             enqueueSnackbar(
@@ -140,7 +136,7 @@ function ProfessionalRegister() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   return (
     <S.ContainerPage style={{ height: "100vh" }}>

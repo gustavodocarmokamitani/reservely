@@ -1,4 +1,3 @@
-// src/services/AppointmentService.js
 import api from '../axiosInstance';
 import { Appointment } from '../models/Appointment';
 

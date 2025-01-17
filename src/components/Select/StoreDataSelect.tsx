@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import * as S from "./styles/dataStyles";
@@ -13,7 +13,6 @@ const StoreDataSelect: React.FC<StoreDataSelectProps> = ({
   const handleDateChange = (date: Date | null) => {
     if (date) {
       setClosingDates((prevDates) => {
-    
         const isDuplicate = prevDates?.some(
           (existingDate) => existingDate.toDateString() === date.toDateString()
         );

@@ -52,7 +52,6 @@ const EditServiceModal: React.FC<EditServiceModalProps> = ({
       const fetchService = async () => {
         try {
           const response = await getServiceTypeById(rowId);
-          console.log(response);
 
           if (response) setServiceType(response.data);
         } catch (error) {
@@ -80,8 +79,6 @@ const EditServiceModal: React.FC<EditServiceModalProps> = ({
           durationMinutes: parseFloat(formValuesService.durationMinutes as string),
           services: serviceType.services ? serviceType.services : null,
         };
-
-        console.log("RESULTADO DO UPDATE", tipoService);
 
         const responseUpdate = await updateServiceType(formValuesService.id, tipoService);
         if (responseUpdate) {

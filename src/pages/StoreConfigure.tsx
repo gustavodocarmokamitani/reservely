@@ -95,7 +95,7 @@ function StoreConfigure() {
         }
       }
     } catch (error) {
-      console.log("Erro na requisição da store", error);
+      console.error("Erro na requisição da store", error);
     }
   }, [storeUser, selectedTimes, openingWeekDay, closingDates]);
 

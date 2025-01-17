@@ -13,7 +13,7 @@ const OpeningWeekDaysSelect: React.FC<OpeningWeekDaysSelectProps> = ({
 
   const MAX_DAYS = 7;
 
-  const times = [
+  const TIMES = [
     "Segunda",
     "Terça",
     "Quarta",
@@ -23,13 +23,14 @@ const OpeningWeekDaysSelect: React.FC<OpeningWeekDaysSelectProps> = ({
     "Domingo",
   ];
 
-  const options = times.map((horario) => ({
+  const OPTIONS = TIMES.map((horario) => ({
     value: horario,
     label: horario,
   }));
 
   const handleChange = (selectedOptions: any) => {
-    const selectedValuesArr = selectedOptions?.map((option: any) => option.value) ?? [];
+    const selectedValuesArr =
+      selectedOptions?.map((option: any) => option.value) ?? [];
 
     setSelectedValues(selectedValuesArr);
     setOpeningWeekDay(selectedValuesArr);
@@ -39,9 +40,9 @@ const OpeningWeekDaysSelect: React.FC<OpeningWeekDaysSelectProps> = ({
     <Select
       isMulti
       placeholder={`Selecione até ${MAX_DAYS} dias`}
-      options={options}
+      options={OPTIONS}
       onChange={handleChange}
-      value={options.filter((opt) => selectedValues.includes(opt.value))}
+      value={OPTIONS.filter((opt) => selectedValues.includes(opt.value))}
       styles={customStyles}
     />
   );

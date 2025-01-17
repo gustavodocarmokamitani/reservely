@@ -1,6 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import * as S from "./Selected.styles";
-import { getServiceTypeById, getServiceTypes } from '../services/ServiceTypeServices';
+import {
+  getServiceTypeById,
+  getServiceTypes,
+} from "../services/ServiceTypeServices";
 import { getEmployeeIdByUserId } from "../services/EmployeeServices";
 import { getServices } from "../services/ServiceServices";
 
@@ -40,19 +43,21 @@ const Selected: React.FC<SelectedProps> = ({
   infoProf = false,
   addProf = false,
   edit = false,
-  infoAppointmentService = false
+  infoAppointmentService = false,
 }) => {
-  const [selectedServices, setSelectedServices] = useState<number[]>(professionalServices);
+  const [selectedServices, setSelectedServices] =
+    useState<number[]>(professionalServices);
   const [services, setServices] = useState<ServiceProps[]>([]);
   const [dataOptions, setDataOptions] = useState<number[]>([]);
-  
-  const storeUser = localStorage.getItem("storeUser")
+
+  const storeUser = localStorage.getItem("storeUser");
 
   useEffect(() => {
     if (edit && options) {
       setDataOptions(options[0]?.serviceIds || []);
     }
   }, [edit, options]);
+
   useEffect(() => {
     const fetchEmployee = async () => {
       try {
@@ -71,15 +76,14 @@ const Selected: React.FC<SelectedProps> = ({
 
           if (userIdAlt) {
             const data = await getEmployeeIdByUserId(userIdAlt);
-            
+
             if (data?.serviceIds?.length) {
               const serviceRequests = data.serviceIds.map((serviceId: number) =>
                 getServiceTypeById(serviceId)
               );
-              
+
               const serviceResponses = await Promise.all(serviceRequests);
               fetchedServices = serviceResponses.map((response) => {
-
                 return response.data;
               });
             }
@@ -88,12 +92,15 @@ const Selected: React.FC<SelectedProps> = ({
           const userIdArray = userId;
           if (userIdArray && Array.isArray(userIdArray)) {
             try {
-              const serviceRequests = userIdArray.map((id) => getServiceTypeById(id));
+              const serviceRequests = userIdArray.map((id) =>
+                getServiceTypeById(id)
+              );
 
               const serviceResponses = await Promise.all(serviceRequests);
 
-              fetchedServices = serviceResponses.map((response) => response?.data);
-
+              fetchedServices = serviceResponses.map(
+                (response) => response?.data
+              );
             } catch (error) {
               console.error("Error fetching services:", error);
             }
@@ -104,19 +111,27 @@ const Selected: React.FC<SelectedProps> = ({
           const serviceData = await getServices();
 
           if (serviceData) {
-            
-            const filteredData = serviceData.filter((servico: any) => servico.storeId === Number(storeUser));
-            
-            const serviceTypePromises = filteredData.map(async (servico: any) => {
-              try {
-                const serviceTypeData = await getServiceTypeById(servico.serviceTypeId);
-                
-                return serviceTypeData?.data || [];
-              } catch (error) {
-                console.error(`Error when searching for the type of service for the id ${servico.serviceTypeId}:`, error);
-                return [];
+            const filteredData = serviceData.filter(
+              (servico: any) => servico.storeId === Number(storeUser)
+            );
+
+            const serviceTypePromises = filteredData.map(
+              async (servico: any) => {
+                try {
+                  const serviceTypeData = await getServiceTypeById(
+                    servico.serviceTypeId
+                  );
+
+                  return serviceTypeData?.data || [];
+                } catch (error) {
+                  console.error(
+                    `Error when searching for the type of service for the id ${servico.serviceTypeId}:`,
+                    error
+                  );
+                  return [];
+                }
               }
-            });
+            );
 
             const serviceTypeData = await Promise.all(serviceTypePromises);
             fetchedServices = [...fetchedServices, ...serviceTypeData.flat()];
@@ -124,7 +139,9 @@ const Selected: React.FC<SelectedProps> = ({
         }
 
         const uniqueServices = Array.from(
-          new Map(fetchedServices.map((service) => [service.id, service])).values()
+          new Map(
+            fetchedServices.map((service) => [service.id, service])
+          ).values()
         );
         setServices(uniqueServices);
 
@@ -132,14 +149,25 @@ const Selected: React.FC<SelectedProps> = ({
           setSelectedServices(initialSelected);
         }
       } catch (error) {
-        console.error("Error when searching for employee and service information:", error);
+        console.error(
+          "Error when searching for employee and service information:",
+          error
+        );
       }
     };
 
     if (infoProf || addProf || edit || infoAppointmentService) {
       fetchEmployee();
     }
-  }, [infoProf, addProf, edit, userId, infoAppointmentService, dataOptions]);
+  }, [
+    infoProf,
+    addProf,
+    edit,
+    userId,
+    infoAppointmentService,
+    dataOptions,
+    storeUser,
+  ]);
 
   const toggleService = (id: number) => {
     setSelectedServices((prev) => {
@@ -162,14 +190,16 @@ const Selected: React.FC<SelectedProps> = ({
             key={service.id}
             onClick={() => toggleService(service.id)}
             style={{
-              background: selectedServices.includes(service.id) ? "#B6B6B6" : "white",
+              background: selectedServices.includes(service.id)
+                ? "#B6B6B6"
+                : "white",
             }}
           >
             <p>{service.name}</p>
           </S.SelectedContent>
         ))
       ) : (
-        <p style={{ marginLeft: '15px' }}>
+        <p style={{ marginLeft: "15px" }}>
           Funcionário não possui serviços disponíveis.
         </p>
       )}

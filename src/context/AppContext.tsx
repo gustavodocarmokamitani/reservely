@@ -2,8 +2,6 @@ import React, { createContext, useState, ReactNode, useEffect } from "react";
 import { UserEmployeeUpdate } from "../models/UserEmployee";
 import { ServiceType } from "../models/ServiceType";
 import { Appointment } from "../models/Appointment";
-
-// Interfaces para os dados que serão gerenciados no contexto
 export interface User {
   id: number;
   name: string;
@@ -41,8 +39,6 @@ export interface UserRole {
   userEmail: string;
   userRole: string;
 }
-
-// Contexto do aplicativo que contém os estados e as funções
 interface AppContextType {
   userRoleContext: UserRole | null;
   setUserRoleContext: React.Dispatch<React.SetStateAction<UserRole | null>>;
@@ -79,7 +75,6 @@ interface AppProviderProps {
 }
 
 export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
-  // Estados locais
   const [userRoleContext, setUserRoleContext] = useState<UserRole | null>(null);
   const [userActiveContext, setUserActiveContext] = useState<User | null>(null);
   const [userContext, setUserContext] = useState<User | null>(null);
@@ -92,28 +87,24 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [ServiceTypeContext, setServiceTypeContext] = useState<ServiceType | null>(null);
   const [postEmployeeRegister, setPostEmployeeRegister] = useState<boolean>(false);
 
-  // Estado do token de autenticação com persistência via localStorage
   const [authToken, setAuthToken] = useState<string | null>(localStorage.getItem('authToken'));
 
-  // Função de login, salva o token no contexto e localStorage
   const login = (token: string) => {
     setAuthToken(token);
     localStorage.setItem('authToken', token);
   };
 
-  // Função de logout, remove o token do contexto e localStorage
   const logout = () => {
     setAuthToken(null);
     localStorage.removeItem('authToken');
   };
 
-  // Efeito para carregar o token do localStorage quando o componente é montado
   useEffect(() => {
     const tokenFromStorage = localStorage.getItem('authToken');
     if (tokenFromStorage) {
       setAuthToken(tokenFromStorage);
     }
-  }, []);  // Este efeito é executado apenas uma vez, quando o componente é montado
+  }, []);
 
   return (
     <AppContext.Provider

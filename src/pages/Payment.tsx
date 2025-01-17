@@ -1,5 +1,5 @@
 
-import React, { useContext, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ContainerPage } from "./_Page.styles";
 import { Col, Row } from "react-bootstrap";
 import { useSnackbar } from "notistack";
@@ -30,7 +30,7 @@ function Payment() {
   const storedToken = localStorage.getItem("authToken");
   const [decodedData, setDecodedData] = useState<DecodedToken>();
 
-  const fetchStore = async () => {
+  const fetchStore = useCallback(async () => {
     try {
       if (storedToken) {
         const data = await decodeToken(storedToken);
@@ -46,19 +46,18 @@ function Payment() {
             name: `Metodo ${id}`,
           }));
 
-        console.log(paymentMethodInitial);
         setPayment(paymentMethodInitial);
       } else {
-        console.log("No payment methods found or invalid format.");
+        console.error("No payment methods found or invalid format.");
       }
     } catch (error) {
       console.error("Error when loading store:", error);
     }
-  };
+  }, [storedToken, storeUser]);
 
   useEffect(() => {
     fetchStore();
-  }, []);
+  }, [fetchStore]);
 
   const handleSubmit = async () => {
     try {

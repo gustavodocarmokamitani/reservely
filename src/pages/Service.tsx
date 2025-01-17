@@ -1,24 +1,17 @@
-import { useEffect, useState, useContext } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ContainerPage } from "./_Page.styles";
 import { Col, Row } from "react-bootstrap";
-import { deleteServiceType, getServiceTypes } from "../services/ServiceTypeServices";
+import {
+  deleteServiceType,
+  getServiceTypes,
+} from "../services/ServiceTypeServices";
 import { decodeToken } from "../services/AuthService";
 import { ServiceType } from "../models/ServiceType";
-import { AppContext } from "../context/AppContext";
 import { useSnackbar } from "notistack";
 import HeaderTitle from "../view/HeaderTitle";
 import Button from "../components/Button";
 import AddServiceModal from "../view/Modal/AddServiceModal";
 import ServiceDataTable from "../view/DataTable/ServiceDataTable";
-
-interface Row {
-  id: number;
-  name: string;
-  latname: string;
-  phone: string;
-  email: string;
-  services: number[];
-}
 
 interface DecodedToken {
   userId: string;
@@ -37,13 +30,8 @@ function Service() {
   const [decodedData, setDecodedData] = useState<DecodedToken>();
 
   const { enqueueSnackbar } = useSnackbar();
-  const { serviceContext, setServiceContext, userRoleContext } = useContext(AppContext)!;
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     if (storedToken) {
       const data = await decodeToken(storedToken);
       setDecodedData(data);
@@ -54,7 +42,11 @@ function Service() {
     } catch (error) {
       console.error("Erro ao buscar dados:", error);
     }
-  };
+  }, [storedToken]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const handleDeleteServices = async () => {
     if (selectedServiceIds.length > 0) {
@@ -66,13 +58,21 @@ function Service() {
 
               if (servico) {
                 await deleteServiceType(serviceId);
-                enqueueSnackbar(`Serviço ${servico.name} excluído com sucesso!`, { variant: "success" });
+                enqueueSnackbar(
+                  `Serviço ${servico.name} excluído com sucesso!`,
+                  { variant: "success" }
+                );
               } else {
-                enqueueSnackbar(`Nenhum serviço encontrado para o ID ${serviceId}`, { variant: "error" });
+                enqueueSnackbar(
+                  `Nenhum serviço encontrado para o ID ${serviceId}`,
+                  { variant: "error" }
+                );
               }
             } catch (error) {
               console.error(`Erro ao remover o serviço ${serviceId}:`, error);
-              enqueueSnackbar(`Erro ao remover o serviço ${serviceId}`, { variant: "error" });
+              enqueueSnackbar(`Erro ao remover o serviço ${serviceId}`, {
+                variant: "error",
+              });
             }
           })
         );
@@ -80,7 +80,9 @@ function Service() {
         setSelectedServiceIds([]);
       } catch (error) {
         console.error("Erro ao remover os serviços:", error);
-        enqueueSnackbar("Erro inesperado ao remover os serviços.", { variant: "error" });
+        enqueueSnackbar("Erro inesperado ao remover os serviços.", {
+          variant: "error",
+        });
       }
     } else {
       enqueueSnackbar(`Nenhum serviço selecionado`, { variant: "error" });
@@ -108,7 +110,11 @@ function Service() {
           >
             {decodedData?.userRole === "Admin" && (
               <>
-                <Button onClick={handleDeleteServices} $isRemove type="button" />
+                <Button
+                  onClick={handleDeleteServices}
+                  $isRemove
+                  type="button"
+                />
                 <Button $isAdd type="button" onClick={handleShow} />
               </>
             )}
@@ -117,7 +123,7 @@ function Service() {
         <ServiceDataTable
           service
           rowsService={rows}
-          onRowSelect={handleRowSelect} 
+          onRowSelect={handleRowSelect}
           fetchData={fetchData}
         />
         {show && (
@@ -127,7 +133,7 @@ function Service() {
             handleClose={handleClose}
             handleShow={handleShow}
             size="small"
-            fetchData={fetchData} 
+            fetchData={fetchData}
           />
         )}
       </ContainerPage>

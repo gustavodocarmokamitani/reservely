@@ -1,4 +1,3 @@
-// ClientSelect.tsx
 import React, { useEffect, useState } from "react";
 import { getUserTypeIdById } from "../../services/UserServices";
 import { SelectOption } from "../../models/SelectOptions";
@@ -12,7 +11,6 @@ interface ClientSelectProps {
 
 const ClientSelect: React.FC<ClientSelectProps> = ({ setClient, value }) => {
   const [options, setOptions] = useState<SelectOption[]>([]);
-  const [selectedOption, setSelectedOption] = useState(null);
 
   useEffect(() => {
     const fetchClientes = async () => {
@@ -33,7 +31,6 @@ const ClientSelect: React.FC<ClientSelectProps> = ({ setClient, value }) => {
   }, []);
 
   const handleChange = (option: any) => {
-    setSelectedOption(option);
     setClient(option);
   };
 

@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Col, Row } from "react-bootstrap";
 import Input from "../Input";
-import { UserEmployee } from "../../models/UserEmployee";
 
 interface InputGroupProfessionalRegisterProps {
   formValuesProfessionalRegister: {
@@ -12,7 +11,7 @@ interface InputGroupProfessionalRegisterProps {
     active: string;
   };
   handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-};
+}
 
 const InputGroupProfessionalRegister: React.FC<
   InputGroupProfessionalRegisterProps
@@ -30,7 +29,7 @@ const InputGroupProfessionalRegister: React.FC<
             handleInputChange(e as React.ChangeEvent<HTMLInputElement>)
           }
         />
-         <Input
+        <Input
           width="300"
           type="text"
           placeholder="Sobrenome"
@@ -40,10 +39,9 @@ const InputGroupProfessionalRegister: React.FC<
             handleInputChange(e as React.ChangeEvent<HTMLInputElement>)
           }
         />
-      
       </Col>
       <Col md={6} className="mt-3 mb-3">
-         <Input
+        <Input
           width="300"
           type="text"
           placeholder="Email"
