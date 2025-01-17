@@ -1,25 +1,17 @@
-import { useEffect, useState, useContext } from "react";
+import {  useState, useContext } from "react";
 import { useSnackbar } from "notistack";
 import { Col, Row } from "react-bootstrap";
 
 import { AppContext } from "../../context/AppContext";
 import Button from "../../components/Button";
-import InputGroupProfessionalAdd from "../../components/InputGroup/InputGroupProfessionalAdd";
 import InputGroupProfessionalRegister from "../../components/InputGroup/InputGroupProfessionalRegister";
 
-import { getServiceTypes } from "../../services/ServiceTypeServices";
 import { checkEmail, registerProfessional } from "../../services/AuthService";
-import {
-  createEmployee,
-  getEmployeeIdByUserId,
-} from "../../services/EmployeeServices";
 
 import closeIcon from "../../assets/remove.svg";
 
 import { UserEmployee } from "../../models/UserEmployee";
-import { Employee } from "../../models/Employee";
 import { RegisterEmployee } from "../../models/RegisterEmployee";
-import { SelectOption } from "../../models/SelectOptions";
 
 import * as S from "./Modal.styles";
 
@@ -56,7 +48,6 @@ const AddUserEmployeeRegisterModal: React.FC<AddUserEmployeeModalProps> = ({
     });
 
   const { setPostEmployeeRegister } = useContext(AppContext)!;
-  const [serviceType, setServiceType] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const storeUser = Number(localStorage.getItem("storeUser"));
@@ -68,14 +59,6 @@ const AddUserEmployeeRegisterModal: React.FC<AddUserEmployeeModalProps> = ({
     medium: "850px",
     large: "1050px",
   };
-
-  useEffect(() => {
-    async function fetchServices() {
-      const services = await getServiceTypes();
-      setServiceType(services.data);
-    }
-    fetchServices();
-  }, []);
 
   const handleSubmit = async () => {
     try {

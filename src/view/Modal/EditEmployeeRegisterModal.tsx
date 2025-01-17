@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Row, Col } from "react-bootstrap";
 
 import { User } from "../../models/User";
@@ -15,7 +15,7 @@ import InputGroupProfessionalRegisterEdit from "../../components/InputGroup/Inpu
 import * as S from "./Modal.styles";
 import { useSnackbar } from "notistack";
 
-interface EditEmployeeRegisterModal {
+interface EditEmployeeRegisterModalProps {
   title: string;
   subTitle?: string;
   handleClose: () => void;
@@ -24,9 +24,9 @@ interface EditEmployeeRegisterModal {
   fetchData: () => void;
 }
 
-interface CombinedData extends Employee, User {}
+interface CombinedData extends Employee, User { }
 
-const EditEmployeeRegisterModal: React.FC<EditEmployeeRegisterModal> = ({
+const EditEmployeeRegisterModal: React.FC<EditEmployeeRegisterModalProps> = ({
   handleClose,
   title,
   subTitle,
@@ -34,8 +34,6 @@ const EditEmployeeRegisterModal: React.FC<EditEmployeeRegisterModal> = ({
   rowId,
   fetchData,
 }) => {
-  const [employee, setEmployee] = useState<UserEmployee[]>([]);
-  const [user, setUser] = useState<User[]>([]);
   const [combinedData, setCombinedData] = useState<CombinedData | null>(null);
 
   const storeUser = Number(localStorage.getItem("storeUser"));
@@ -63,56 +61,50 @@ const EditEmployeeRegisterModal: React.FC<EditEmployeeRegisterModal> = ({
     large: "1050px",
   };
 
+  const fetchEmployeeData = useCallback(
+    async (rowId: number, setCombinedData: Function) => {
+      try {
+        const resEmployee = await getUserById(rowId);
+        const mappedEmployee = {
+          id: resEmployee.id,
+          userId: resEmployee.userId,
+          name: resEmployee.name,
+          lastName: resEmployee.lastName,
+          email: resEmployee.email,
+          phone: resEmployee.phone,
+          password: resEmployee.password,
+          active: resEmployee.active,
+          userTypeId: resEmployee.userTypeId,
+          serviceIds: resEmployee.serviceIds || [],
+          storeId: resEmployee.storeId,
+        };
+
+        const resUser = await getUserById(mappedEmployee.id);
+        const mappedUser = {
+          id: resUser.id,
+          name: resUser.name,
+          lastName: resUser.lastName,
+          email: resUser.email,
+          phone: resUser.phone,
+          password: resUser.password,
+          userTypeId: resUser.userTypeId,
+          storeId: storeUser,
+        };
+
+        const combined = { ...mappedEmployee, ...mappedUser };
+        setCombinedData(combined);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    },
+    [storeUser]
+  );
+
   useEffect(() => {
     if (rowId) {
-      fetchEmployeeData(rowId, setEmployee, setUser, setCombinedData);
+      fetchEmployeeData(rowId, setCombinedData);
     }
-  }, [rowId, storeUser]);
-
-  const fetchEmployeeData = async (
-    rowId: number,
-    setEmployee: Function,
-    setUser: Function,
-    setCombinedData: Function
-  ) => {
-    try {
-      const resEmployee = await getUserById(rowId);
-      const mappedEmployee = {
-        id: resEmployee.id,
-        userId: resEmployee.userId,
-        name: resEmployee.name,
-        lastName: resEmployee.lastName,
-        email: resEmployee.email,
-        phone: resEmployee.phone,
-        password: resEmployee.password,
-        active: resEmployee.active,
-        userTypeId: resEmployee.userTypeId,
-        serviceIds: resEmployee.serviceIds || [],
-        storeId: resEmployee.storeId,
-      };
-
-      setEmployee([mappedEmployee]);
-
-      const resUser = await getUserById(mappedEmployee.id);
-      const mappedUser = {
-        id: resUser.id,
-        name: resUser.name,
-        lastName: resUser.lastName,
-        email: resUser.email,
-        phone: resUser.phone,
-        password: resUser.password,
-        userTypeId: resUser.userTypeId,
-        storeId: storeUser,
-      };
-      
-      setUser([mappedUser]);
-
-      const combined = { ...mappedEmployee, ...mappedUser };
-      setCombinedData(combined);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+  }, [rowId, storeUser, fetchEmployeeData]);
 
   const handleInputChangeProfessional = (
     event: React.ChangeEvent<HTMLInputElement>

@@ -227,12 +227,10 @@ function Professional() {
           <AddUserEmployeeModal
             title="Adicionar profissional"
             subTitle="Preencha as informações abaixo para criar um novo profissional."
-            professional
             handleClose={handleClose}
             handleShow={handleShow}
             size="large"
             fetchData={fetchData}
-            setPost={setPost}
           />
         )}
       </ContainerPage>

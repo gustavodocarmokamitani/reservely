@@ -79,7 +79,12 @@ function StoreConfigure() {
 
         if (!closingDates || closingDates.length === 0) {
           const ClosingDatesArray = response.closingDays
-            ? response.closingDays.map((data: string) => new Date(data))
+            ? response.closingDays
+              .map((data: string) => {
+                const date = new Date(data);
+                return isNaN(date.getTime()) ? null : date;
+              })
+              .filter((date: any) => date !== null)
             : [];
 
           setClosingDates(
@@ -106,8 +111,8 @@ function StoreConfigure() {
         operatingHours: selectedTimes.join(" - "),
         closingDays: closingDates
           ? closingDates
-              .filter((data) => data instanceof Date && !isNaN(data.getTime()))
-              .map((data) => data.toISOString())
+            .filter((data) => data instanceof Date && !isNaN(data.getTime()))
+            .map((data) => data.toISOString())
           : [],
         operatingDays: openingWeekDay,
       };
@@ -215,12 +220,13 @@ function StoreConfigure() {
                 />
               </>
             ) : (
-              <p>Nenhuma hora de funcionamento cadastrada.</p>
+              <p></p>
             )}
           </S.CardStoreWrapper>
 
           <h3 style={{ margin: "50px 0 25px 0" }}>Dias de funcionamento</h3>
-          {store?.operatingDays && store?.operatingDays.length > 0 ? (
+          {(store?.operatingDays?.some(day => day.trim() !== '') ||
+            openingWeekDay?.some(day => day && day.trim().length > 0)) ? (
             <>
               <S.CardStoreWrapper className="d-flex justify-content-start align-items-center flex-wrap">
                 {openingWeekDay.map((item: any) => (
@@ -234,7 +240,7 @@ function StoreConfigure() {
               </S.CardStoreWrapper>
             </>
           ) : (
-            <p>Nenhuma data de funcionamento cadastrada.</p>
+            <p></p>
           )}
 
           <h3 style={{ margin: "50px 0 25px 0" }}>Dias de fechamento</h3>
@@ -253,7 +259,7 @@ function StoreConfigure() {
                 />
               ))
             ) : (
-              <p>Nenhuma data de fechamento cadastrada.</p>
+              <p></p>
             )}
           </S.CardStoreWrapper>
         </Col>

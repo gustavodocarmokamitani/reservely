@@ -99,11 +99,11 @@ function Store() {
                 />
               </>
             ) : (
-              <p>Não há dias de funcionamento cadastrados.</p>
+              <p></p>
             )}
           </S.CardStoreWrapper>
 
-          {store?.operatingDays && store.operatingDays.length > 0 ? (
+          {store?.operatingDays && store.operatingDays.length > 0  && store.operatingDays[0] !== '' ? (
             <>
               <h3 style={{ margin: "20px 0 25px 0" }}>Dias de funcionamento</h3>
               <S.CardStoreWrapper className="d-flex justify-content-start align-items-center flex-wrap">
@@ -113,10 +113,10 @@ function Store() {
               </S.CardStoreWrapper>
             </>
           ) : (
-            <p>Não há dias de funcionamento cadastrados.</p>
+            <p></p>
           )}
 
-          {store?.closingDays && store.closingDays.length > 0 ? (
+          {store?.closingDays && store.closingDays.length > 0  && store.closingDays[0] !== '' ? (
             <>
               <h3 style={{ margin: "20px 0 25px 0" }}>Dias de fechamento</h3>
               <S.CardStoreWrapper className="d-flex justify-content-start align-items-center flex-wrap">
@@ -145,7 +145,7 @@ function Store() {
               </S.CardStoreWrapper>
             </>
           ) : (
-            <p>Não há dias de fechamento cadastrados.</p>
+            <p></p>
           )}
         </Col>
       </Row>

@@ -86,7 +86,7 @@ const Register = () => {
         password: formData.password,
         userName: formData.email,
         userTypeId: 1,
-        storeId: responseStore?.id,
+        storeId: 1,
       });
 
       if ( responseStore && response) {

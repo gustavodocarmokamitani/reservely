@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import { DataGrid, GridColDef, GridRenderCellParams, GridRowSelectionModel } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
@@ -36,7 +36,6 @@ const ServiceDataTable: React.FC<ServiceDataTableProps> = ({
   const [selectedEmployeeId, setSelectedEmployeeId] = useState<number>();
   const [columnWidth, setColumnWidth] = useState(250);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [update, setUpdate] = useState(false);
  
   const handleClose = () => setShowModal({ editService: false });
   const handleShowModal = (type: "editService", id: number) => {
@@ -47,7 +46,11 @@ const ServiceDataTable: React.FC<ServiceDataTableProps> = ({
   const storedToken = localStorage.getItem("authToken");
   const [decodedData, setDecodedData] = useState<DecodedToken>();
  
-  const fetchToken = async () => {
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  const fetchToken = useCallback(async () => {
     if (storedToken) {
       try {
         const data = await decodeToken(storedToken);
@@ -56,13 +59,11 @@ const ServiceDataTable: React.FC<ServiceDataTableProps> = ({
         console.error("Error decoding token:", error);
       }
     }
-  };
- 
+  }, [storedToken]);
+  
   useEffect(() => {
-    fetchData();
-  }, [update]);
-
-  useEffect(() => {
+    fetchToken();
+  
     const updateColumnWidth = () => {
       if (containerRef.current) {
         const totalWidth = containerRef.current.offsetWidth;
@@ -71,11 +72,10 @@ const ServiceDataTable: React.FC<ServiceDataTableProps> = ({
       }
     };
     updateColumnWidth();
-    fetchToken();
     window.addEventListener("resize", updateColumnWidth);
-
+  
     return () => window.removeEventListener("resize", updateColumnWidth);
-  }, []);
+  }, [fetchToken, decodedData?.userRole]);
  
   const handleRowClick = (ids: number[]) => onRowSelect?.(ids);
  

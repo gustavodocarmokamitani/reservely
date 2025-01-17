@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   DataGrid,
   GridCellParams,
@@ -14,7 +14,6 @@ import confirm from "../../assets/confirmCardStore.svg";
 import remove from "../../assets/removeRed.svg";
 
 import EditUserEmployeeModal from "../Modal/EditUserEmployeeModal";
-import InfoEmployeeServiceModal from "../Modal/InfoEmployeeServiceModal";
 
 import { decodeToken } from "../../services/AuthService";
 
@@ -52,11 +51,11 @@ const ProfessionalDataTable: React.FC<ProfessionalDataTableProps> = ({
     setSelectedEmployeeId(id);
     setShowModal({ ...showModal, [type]: true });
   };
-
-  const storedToken = localStorage.getItem("authToken");
+  
   const [decodedData, setDecodedData] = useState<DecodedToken>();
 
-  const fetchToken = async () => {
+  const fetchToken = useCallback(async () => {
+    const storedToken = localStorage.getItem("authToken");
     if (storedToken) {
       try {
         const data = await decodeToken(storedToken);
@@ -65,7 +64,7 @@ const ProfessionalDataTable: React.FC<ProfessionalDataTableProps> = ({
         console.error("Error decoding token:", error);
       }
     }
-  };
+  }, []);
 
   useEffect(() => {
     const updateColumnWidth = () => {
@@ -75,88 +74,90 @@ const ProfessionalDataTable: React.FC<ProfessionalDataTableProps> = ({
         setColumnWidth(Math.floor(totalWidth / columnsCount));
       }
     };
-    updateColumnWidth();
+
     fetchToken();
+    updateColumnWidth();
     window.addEventListener("resize", updateColumnWidth);
 
     return () => window.removeEventListener("resize", updateColumnWidth);
-  }, []);
+  }, [fetchToken, decodedData?.userRole]);
+
 
   const handleRowClick = (ids: number[]) => onRowSelect?.(ids);
 
   const columns: GridColDef[] = professional
     ? [
-        {
-          field: "fullName",
-          headerName: "Nome Completo",
-          width: columnWidth,
-          flex: 3,
-          align: "center" as const,
-          headerAlign: "center" as const,
-          renderCell: (params) => `${params.row.name} ${params.row.lastName}`,
-        },
-        {
-          field: "email",
-          headerName: "Email",
-          width: columnWidth,
-          flex: 3,
-          align: "center" as const,
-          headerAlign: "center" as const,
-        },
-        {
-          field: "phone",
-          headerName: "Telefone",
-          width: columnWidth,
-          flex: 2,
-          align: "center" as const,
-          headerAlign: "center" as const,
-        },
-        {
-          field: "active",
-          headerName: "Ativo",
-          type: "boolean",
-          width: columnWidth,
-          flex: 1,
-          align: "center" as const,
-          headerAlign: "center" as const,
-          renderCell: (params: GridRenderCellParams) =>
-            params.value === "true" ? (
-              <img style={{ cursor: "pointer" }} src={confirm} alt="Ativo" />
-            ) : (
-              <img style={{ cursor: "pointer" }} src={remove} alt="Inativo" />
-            ),
-        },
+      {
+        field: "fullName",
+        headerName: "Nome Completo",
+        width: columnWidth,
+        flex: 3,
+        align: "center" as const,
+        headerAlign: "center" as const,
+        renderCell: (params) => `${params.row.name} ${params.row.lastName}`,
+      },
+      {
+        field: "email",
+        headerName: "Email",
+        width: columnWidth,
+        flex: 3,
+        align: "center" as const,
+        headerAlign: "center" as const,
+      },
+      {
+        field: "phone",
+        headerName: "Telefone",
+        width: columnWidth,
+        flex: 2,
+        align: "center" as const,
+        headerAlign: "center" as const,
+      },
+      {
+        field: "active",
+        headerName: "Ativo",
+        type: "boolean",
+        width: columnWidth,
+        flex: 1,
+        align: "center" as const,
+        headerAlign: "center" as const,
+        renderCell: (params: GridRenderCellParams) =>
+          params.value === "true" ? (
+            <img style={{ cursor: "pointer" }} src={confirm} alt="Ativo" />
+          ) : (
+            <img style={{ cursor: "pointer" }} src={remove} alt="Inativo" />
+          ),
+      },
 
-        ...(decodedData?.userRole === "Admin"
-          ? [
-              {
-                field: "acoes",
-                flex: 1,
-                headerName: "Ações",
-                renderCell: (params: GridCellParams) => (
-                  <div
-                    style={{
-                      display: "flex",
-                      gap: "50px",
-                      justifyContent: "center",
-                      margin: "12.5px 0px 0px 5px",
-                    }}
-                  >
-                    <img
-                      style={{ cursor: "pointer" }}
-                      src={edit}
-                      onClick={() => handleShowModal("edit", params.row.id)}
-                      alt="Editar"
-                    />
-                  </div>
-                ),
-                width: columnWidth,
-                align: "center" as const,
-                headerAlign: "center" as const,
-              },
-            ]
-          : []),
-      ]
+      ...(decodedData?.userRole === "Admin"
+        ? [
+          {
+            field: "acoes",
+            flex: 1,
+            headerName: "Ações",
+            renderCell: (params: GridCellParams) => (
+              <div
+                style={{
+                  display: "flex",
+                  gap: "50px",
+                  justifyContent: "center",
+                  margin: "12.5px 0px 0px 5px",
+                }}
+              >
+                <img
+                  style={{ cursor: "pointer" }}
+                  src={edit}
+                  onClick={() => handleShowModal("edit", params.row.id)}
+                  alt="Editar"
+                />
+              </div>
+            ),
+            width: columnWidth,
+            align: "center" as const,
+            headerAlign: "center" as const,
+          },
+        ]
+        : []),
+    ]
     : [];
 
   let rows: any[] = [];
@@ -188,18 +189,6 @@ const ProfessionalDataTable: React.FC<ProfessionalDataTableProps> = ({
           sx={{ border: 0 }}
         />
       </Paper>
-      {showModal.info && (
-        <InfoEmployeeServiceModal
-          title="Informações do professional"
-          info
-          subTitle="Todos os serviços que contém esse professional."
-          handleClose={handleClose}
-          handleShow={() => setShowModal({ ...showModal, info: true })}
-          size="small"
-          fetchData={() => {}}
-          rowId={selectedEmployeeId}
-        />
-      )}
       {showModal.edit && (
         <EditUserEmployeeModal
           title="Editar professional"

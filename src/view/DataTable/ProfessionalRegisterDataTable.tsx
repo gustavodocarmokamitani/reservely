@@ -54,18 +54,6 @@ const ProfessionalRegisterDataTable: React.FC<
   const storedToken = localStorage.getItem("authToken");
   const [decodedData, setDecodedData] = useState<DecodedToken>();
 
-
-  const fetchToken = async () => {
-    if (storedToken) {
-      try {
-        const data = await decodeToken(storedToken);
-        setDecodedData(data);
-      } catch (error) {
-        console.error("Error decoding token:", error);
-      }
-    }
-  };
-
   useEffect(() => {
     const updateColumnWidth = () => {
       if (containerRef.current) {
@@ -90,7 +78,7 @@ const ProfessionalRegisterDataTable: React.FC<
     updateColumnWidth();
     window.addEventListener("resize", updateColumnWidth);
     return () => window.removeEventListener("resize", updateColumnWidth);
-  }, [storedToken, decodedData]);  
+  }, [storedToken, decodedData?.userRole, decodedData]);  
   
 
   const handleRowClick = (ids: number[]) => onRowSelect?.(ids);

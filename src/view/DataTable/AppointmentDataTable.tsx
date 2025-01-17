@@ -38,7 +38,7 @@ const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
   useEffect(() => {
     fetchData();
     setUpdate(false);
-  }, [update]);
+  }, [fetchData, setUpdate]);
 
   useEffect(() => {
     const updateColumnWidth = () => {

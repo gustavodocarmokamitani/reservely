@@ -14,7 +14,7 @@ import closeIcon from "../../assets/remove.svg";
 import InputGroupProfissional from "../../components/InputGroup/InputGroupProfessionalEdit";
 import { useSnackbar } from "notistack";
 
-interface EditUserEmployeeModal {
+interface EditUserEmployeeModalProps {
   title: string;
   subTitle?: string;
   edit?: boolean;
@@ -26,7 +26,7 @@ interface EditUserEmployeeModal {
 
 interface CombinedData extends Employee, User {}
 
-const EditUserEmployeeModal: React.FC<EditUserEmployeeModal> = ({
+const EditUserEmployeeModal: React.FC<EditUserEmployeeModalProps> = ({
   handleClose,
   title,
   subTitle,
@@ -35,7 +35,6 @@ const EditUserEmployeeModal: React.FC<EditUserEmployeeModal> = ({
   edit = false,
   fetchData
 }) => {
-  const [employee, setEmployee] = useState<UserEmployee[]>([]);
   const [user, setUser] = useState<User[]>([]);
   const [combinedData, setCombinedData] = useState<CombinedData | null>(null);
  
@@ -88,7 +87,6 @@ const EditUserEmployeeModal: React.FC<EditUserEmployeeModal> = ({
             storeId: employee.storeId,
           }));
 
-          setEmployee(mappedEmployee);
           if (mappedEmployee.length > 0) {
             const resUser = await getUserById(mappedEmployee[0].userId);
 
@@ -118,7 +116,7 @@ const EditUserEmployeeModal: React.FC<EditUserEmployeeModal> = ({
       };
       fetchEmployee();
     }
-  }, [edit]);
+  }, [edit, rowId, storeUser]);
 
   const handleSubmit = async () => {
     if (edit) {
@@ -127,7 +125,7 @@ const EditUserEmployeeModal: React.FC<EditUserEmployeeModal> = ({
       const response = await getEmployeeIdByUserId(formValuesProfessional.id);
 
       if (response) {
-        const { id, userId, active, serviceIds, storeId } = response;
+        const { id, userId, active, serviceIds } = response;
 
         const updatedEmployee = {
           id,
