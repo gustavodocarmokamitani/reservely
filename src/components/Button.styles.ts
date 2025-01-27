@@ -16,6 +16,7 @@ interface ButtonProps {
 
 export const Button = styled.button<ButtonProps>`
   width: 200px;
+  min-width: 150px;
   height: 45px;
   border: transparent;
   border-radius: 50px;

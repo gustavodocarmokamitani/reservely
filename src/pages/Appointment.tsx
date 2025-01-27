@@ -141,13 +141,16 @@ export function Appointment() {
         <Col
           md={12}
           lg={5}
-          className="d-flex flex-row justify-content-md-center justify-content-lg-end align-items-center mt-md-5"
+          className="d-flex flex-row justify-content-md-center justify-content-lg-end align-items-center mt-md-5 mt-lg-0"
         >
           <Button onClick={handleSubmit} $isConfirm type="button" />
         </Col>
       </Row>
       <S.AppointmentContainer>
-        <Row className="justify-content-center align" style={{ width: "100%", flexWrap: "wrap" }}>
+        <Row
+          className="justify-content-center align"
+          style={{ width: "100%", flexWrap: "wrap" }}
+        >
           <Col>
             <S.AppointmentContent>
               <p>Funcionário</p>
@@ -185,7 +188,7 @@ export function Appointment() {
           </Col>
         </Row>
       </S.AppointmentContainer>
-      <S.AppointmentContainer className="justify-content-center justify-content-xl-start">
+      <S.AppointmentContainer className="justify-content-center justify-content-xl-start pb-5">
         <S.AppointmentContent>
           <AppointmentDateSelect setAppointmentDate={setAppointmentDate} />
         </S.AppointmentContent>

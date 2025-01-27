@@ -64,7 +64,7 @@ function Store() {
   return (
     <ContainerPage style={{ height: "100vh" }}>
       <Row>
-        <Col md={7} style={{ padding: "0px" }}>
+        <Col lg={12} xl={7} style={{ padding: "0px" }}>
           <HeaderTitle
             title="Store"
             subTitle="Área destinada para gerenciamento da store."
@@ -72,8 +72,9 @@ function Store() {
         </Col>
 
         <Col
-          md={5}
-          className="d-flex flex-row justify-content-end align-items-center"
+          lg={12}
+          xl={5}
+          className="d-flex flex-row justify-content-md-center justify-content-lg-end align-items-center  my-md-3 my-lg-5 mt-xl-0"
         >
           {decodedData?.userRole === "Admin" && (
             <Button $isConfigure onClick={handleButtonClick} type="button" />

@@ -80,11 +80,11 @@ function StoreConfigure() {
         if (!closingDates || closingDates.length === 0) {
           const ClosingDatesArray = response.closingDays
             ? response.closingDays
-              .map((data: string) => {
-                const date = new Date(data);
-                return isNaN(date.getTime()) ? null : date;
-              })
-              .filter((date: any) => date !== null)
+                .map((data: string) => {
+                  const date = new Date(data);
+                  return isNaN(date.getTime()) ? null : date;
+                })
+                .filter((date: any) => date !== null)
             : [];
 
           setClosingDates(
@@ -111,8 +111,8 @@ function StoreConfigure() {
         operatingHours: selectedTimes.join(" - "),
         closingDays: closingDates
           ? closingDates
-            .filter((data) => data instanceof Date && !isNaN(data.getTime()))
-            .map((data) => data.toISOString())
+              .filter((data) => data instanceof Date && !isNaN(data.getTime()))
+              .map((data) => data.toISOString())
           : [],
         operatingDays: openingWeekDay,
       };
@@ -155,7 +155,7 @@ function StoreConfigure() {
   return (
     <ContainerPage style={{ height: "100%" }}>
       <Row>
-        <Col md={7} style={{ padding: "0px" }}>
+        <Col lg={12} xl={7} style={{ padding: "0px" }}>
           <HeaderTitle
             title="Store"
             subTitle="Área destinada para gerenciamento da store."
@@ -163,15 +163,16 @@ function StoreConfigure() {
         </Col>
 
         <Col
-          md={5}
-          className="d-flex flex-row justify-content-end align-items-center"
+          lg={12}
+          xl={5}
+          className="d-flex flex-row justify-content-md-center justify-content-lg-end align-items-center  mt-md-3 mt-lg-5 mt-xl-0"
         >
           <Button $isBack onClick={handleButtonClick} type="button" />
           <Button $isConfirm onClick={handleSubmit} type="button" />
         </Col>
       </Row>
       <Row>
-        <Col md={3} style={{ padding: "0px" }}>
+        <Col lg={12} xl={3} style={{ padding: "0px" }}>
           <S.StoreContainer>
             <S.StoreContent>
               <p>Store</p>
@@ -197,7 +198,7 @@ function StoreConfigure() {
             </S.StoreContent>
           </S.StoreContainer>
         </Col>
-        <Col md={9}>
+        <Col lg={12} xl={9}>
           <h3 style={{ margin: "50px 0 25px 0" }}>Dados da store</h3>
           <S.CardStoreWrapper className="d-flex justify-content-start align-items-center">
             <CardStatus
@@ -225,8 +226,8 @@ function StoreConfigure() {
           </S.CardStoreWrapper>
 
           <h3 style={{ margin: "50px 0 25px 0" }}>Dias de funcionamento</h3>
-          {(store?.operatingDays?.some(day => day.trim() !== '') ||
-            openingWeekDay?.some(day => day && day.trim().length > 0)) ? (
+          {store?.operatingDays?.some((day) => day.trim() !== "") ||
+          openingWeekDay?.some((day) => day && day.trim().length > 0) ? (
             <>
               <S.CardStoreWrapper className="d-flex justify-content-start align-items-center flex-wrap">
                 {openingWeekDay.map((item: any) => (

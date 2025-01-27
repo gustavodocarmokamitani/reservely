@@ -6,6 +6,7 @@ import * as S from "./Sidebar.styles";
 import OptionNavigation from "../components/OptionNavigation";
 import store from "../assets/store.svg";
 import payment from "../assets/payment.svg";
+import home from "../assets/home.svg";
 import professional from "../assets/professional.svg";
 import service from "../assets/service.svg";
 import logo from "../assets/logo.png";
@@ -57,6 +58,7 @@ const Navigation = () => {
 
       <div className="flex-grow-1" style={{ position: "relative" }}>
         {[
+          { path: "/dashboard", icon: home, text: "Dashboard" },
           { path: "/appointment", icon: chamada, text: "Agendamento" },
           { path: "/appointment-history", icon: chamada, text: "Histórico Agendamento" },
           { path: "/service", icon: service, text: "Serviços" },

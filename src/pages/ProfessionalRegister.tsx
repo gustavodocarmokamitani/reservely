@@ -52,7 +52,7 @@ function ProfessionalRegister() {
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const fetchData =  useCallback(async () => {
+  const fetchData = useCallback(async () => {
     if (storedToken) {
       const data = await decodeToken(storedToken);
       setDecodedData(data);
@@ -92,7 +92,7 @@ function ProfessionalRegister() {
           }
 
           const getEmployeeResponse = await getEmployeeIdByUserId(user.id);
-          
+
           if (getEmployeeResponse.length !== 0) {
             enqueueSnackbar(
               `Antes de apagar o profissional registrado, é necessário removê-lo da aba "Profissional", incluindo seus serviços e status de agendamento.`,
@@ -141,7 +141,7 @@ function ProfessionalRegister() {
   return (
     <S.ContainerPage style={{ height: "100vh" }}>
       <Row>
-        <Col md={7} style={{ padding: "0px" }}>
+        <Col lg={12} xl={7} style={{ padding: "0px" }}>
           <HeaderTitle
             title="Registrar Professional"
             subTitle="Área destinada para registrar profissionais."
@@ -149,8 +149,9 @@ function ProfessionalRegister() {
         </Col>
 
         <Col
-          md={5}
-          className="d-flex flex-row justify-content-end align-items-center"
+          lg={12}
+          xl={5}
+          className="d-flex flex-row justify-content-md-center justify-content-lg-end align-items-center mt-md-3 mt-lg-5 mt-xl-0"
         >
           {decodedData?.userRole === "Admin" && (
             <>
