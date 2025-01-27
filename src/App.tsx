@@ -50,7 +50,7 @@ function App() {
           <Route
             path="/*"
             element={
-              // <ProtectedRoute>
+              <ProtectedRoute>
                 <React.Fragment>
                   <Navigation />
                   <div style={{ flex: 1, marginLeft: "18.75rem" }}>
@@ -69,7 +69,7 @@ function App() {
                     </Routes>
                   </div>
                 </React.Fragment>
-              // </ProtectedRoute>
+              </ProtectedRoute>
             }
           />
         </Routes>
