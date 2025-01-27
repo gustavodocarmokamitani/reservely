@@ -131,50 +131,61 @@ export function Appointment() {
 
   return (
     <ContainerPage style={{ height: "100vh" }}>
-      <Row>
-        <Col md={7} style={{ padding: "0px" }}>
+      <Row className="wrap">
+        <Col md={12} lg={7} style={{ padding: "0px" }}>
           <HeaderTitle
             title="Appointment"
             subTitle="Área destinada para realizar os agendamentos."
           />
         </Col>
         <Col
-          md={5}
-          className="d-flex flex-row justify-content-end align-items-center"
+          md={12}
+          lg={5}
+          className="d-flex flex-row justify-content-md-center justify-content-lg-end align-items-center mt-md-5"
         >
           <Button onClick={handleSubmit} $isConfirm type="button" />
         </Col>
       </Row>
       <S.AppointmentContainer>
-        <S.AppointmentContent>
-          <p>Funcionário</p>
-          <EmployeeAppointmentSelect
-            value={employee?.value}
-            setEmployee={setEmployee}
-            handleEmployeeChange={handleEmployeeChange}
-          />
-        </S.AppointmentContent>
-        <S.AppointmentContent>
-          <p>Cliente</p>
-          <ClientSelect value={client?.value} setClient={setClient} />
-        </S.AppointmentContent>
-        <S.AppointmentContent>
-          <p>Serviço</p>
-          <ServiceSelect
-            value={service?.map((s) => s.value) || undefined}
-            setService={setService}
-            selectedEmployee={selectedEmployee}
-          />
-        </S.AppointmentContent>
-        <S.AppointmentContent>
-          <p>Horário</p>
-          <TimeSelect
-            value={appointmentTime?.value}
-            setAppointmentTime={setAppointmentTime}
-          />
-        </S.AppointmentContent>
+        <Row className="justify-content-center align" style={{ width: "100%", flexWrap: "wrap" }}>
+          <Col>
+            <S.AppointmentContent>
+              <p>Funcionário</p>
+              <EmployeeAppointmentSelect
+                value={employee?.value}
+                setEmployee={setEmployee}
+                handleEmployeeChange={handleEmployeeChange}
+              />
+            </S.AppointmentContent>
+          </Col>
+          <Col>
+            <S.AppointmentContent>
+              <p>Cliente</p>
+              <ClientSelect value={client?.value} setClient={setClient} />
+            </S.AppointmentContent>
+          </Col>
+          <Col>
+            <S.AppointmentContent>
+              <p>Serviço</p>
+              <ServiceSelect
+                value={service?.map((s) => s.value) || undefined}
+                setService={setService}
+                selectedEmployee={selectedEmployee}
+              />
+            </S.AppointmentContent>
+          </Col>
+          <Col>
+            <S.AppointmentContent>
+              <p>Horário</p>
+              <TimeSelect
+                value={appointmentTime?.value}
+                setAppointmentTime={setAppointmentTime}
+              />
+            </S.AppointmentContent>
+          </Col>
+        </Row>
       </S.AppointmentContainer>
-      <S.AppointmentContainer>
+      <S.AppointmentContainer className="justify-content-center justify-content-xl-start">
         <S.AppointmentContent>
           <AppointmentDateSelect setAppointmentDate={setAppointmentDate} />
         </S.AppointmentContent>

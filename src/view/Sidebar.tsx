@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import { Col, Row } from "react-bootstrap";
@@ -18,6 +18,19 @@ const Navigation = () => {
   const navigate = useNavigate();
   const context = useContext(AppContext);
 
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [indicatorTop, setIndicatorTop] = useState(0);
+  const menuItemsRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    const itemRef = menuItemsRef.current[selectedIndex];
+    if (itemRef) {
+      const offsetTop = itemRef.offsetTop;
+      const itemHeight = itemRef.offsetHeight;
+      setIndicatorTop(offsetTop + itemHeight / 2 - itemHeight + 22);  
+    }
+  }, [selectedIndex]);
+
   const logout = () => {
     localStorage.removeItem("authToken");
     if (context?.setAuthToken) context.setAuthToken(null);
@@ -29,14 +42,8 @@ const Navigation = () => {
   };
 
   return (
-    <S.SidebarContainer
-      className="d-flex flex-column"
-      style={{ height: "100vh" }}
-    >
-      <Row
-        className="pt-1 d-flex align-items-center justify-content-center"
-        style={{ height: "130px" }}
-      >
+    <S.SidebarContainer className="d-flex flex-column" style={{ height: "100vh" }}>
+      <Row className="pt-1 d-flex align-items-center justify-content-center" style={{ height: "130px" }}>
         <Col className="d-flex justify-content-center">
           <img src={logo} alt="AgendaI" />
         </Col>
@@ -48,53 +55,39 @@ const Navigation = () => {
         </Col>
       </Row>
 
-      <div className="flex-grow-1">
+      <div className="flex-grow-1" style={{ position: "relative" }}>
         {[
           { path: "/appointment", icon: chamada, text: "Agendamento" },
-          {
-            path: "/appointment-history",
-            icon: chamada,
-            text: "Histórico Agendamento",
-          },
+          { path: "/appointment-history", icon: chamada, text: "Histórico Agendamento" },
           { path: "/service", icon: service, text: "Serviços" },
-          {
-            path: "/professional-register",
-            icon: professional,
-            text: "Registrar Profissionais",
-          },
+          { path: "/professional-register", icon: professional, text: "Registrar Profissionais" },
           { path: "/professional", icon: professional, text: "Profissionais" },
           { path: "/store", icon: store, text: "Loja" },
           { path: "/payment", icon: payment, text: "Formas de Pagamentos" },
-        ].map(({ path, icon, text }) => (
-          <S.MenuContainer key={path}>
+        ].map(({ path, icon, text }, index) => (
+          <S.MenuContainer
+            key={path}
+            ref={(el) => (menuItemsRef.current[index] = el)}
+            onClick={() => setSelectedIndex(index)}
+          >
             <Link to={path} style={{ textDecoration: "none" }}>
-              <Row
-                className="d-flex align-items-center justify-content-center"
-                style={{
-                  height: "100%",
-                  paddingLeft: "20px",
-                  borderLeft:
-                    location.pathname === path ? "8px solid #717171" : "none",
-                  backgroundColor:
-                    location.pathname === path ? "#E7E7E7" : "transparent",
-                }}
+              <S.StyledRow
+                isSelected={location.pathname === path}
+                className={location.pathname === path ? "selected" : ""}
               >
+                <S.Indicator top={indicatorTop} />
                 <OptionNavigation
                   icon={<img src={icon} alt={text} style={{ width: "25px" }} />}
                   text={text}
                 />
-              </Row>
+              </S.StyledRow>
             </Link>
           </S.MenuContainer>
         ))}
       </div>
 
       <S.MenuContainer style={{ borderTop: "1px solid gray" }}>
-        <Row
-          className="d-flex align-items-center justify-content-center"
-          style={{ height: "100%", paddingLeft: "20px" }}
-          onClick={logout}
-        >
+        <Row className="d-flex align-items-center justify-content-center" style={{ height: "100%", paddingLeft: "20px" }} onClick={logout}>
           <OptionNavigation
             icon={<img src={exit} alt="exit" style={{ width: "25px" }} />}
             text="Sair"

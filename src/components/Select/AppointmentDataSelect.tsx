@@ -16,7 +16,7 @@ const AppointmentDataSelect: React.FC<AppointmentDataSelectProps> = ({ setAppoin
   };
 
   return (
-    <S.StyledDatePicker style={{ width: "25rem" }}>
+    <S.StyledDatePicker style={{ width: "100%" }}>
       <DatePicker
         selected={selectedDate}
         onChange={handleSelectChangeAppointmentDate}
