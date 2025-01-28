@@ -20,7 +20,16 @@ const ClientSelect: React.FC<ClientSelectProps> = ({ setClient, value }) => {
           value: item.id,
           label: item.name,
         }));
-        formattedOptions.unshift({ value: 0, label: "Selecione...", isDisabled: true });
+        formattedOptions.unshift({
+          value: 0,
+          label: "Selecione...",
+          isDisabled: true,
+        });
+        formattedOptions.splice(1, 0, {
+          value: null,
+          label: "Visitante",
+          isDisabled: false,
+        });
         setOptions(formattedOptions);
       } catch (error) {
         console.error("Error fetching client:", error);
@@ -40,7 +49,7 @@ const ClientSelect: React.FC<ClientSelectProps> = ({ setClient, value }) => {
       options={options}
       placeholder="Selecione um cliente"
       styles={customStyles}
-      value={options.find(opt => opt.value === value)}
+      value={options.find((opt) => opt.value === value)}
     />
   );
 };

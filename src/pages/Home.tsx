@@ -19,7 +19,7 @@ const Home = () => {
             <WrapperLogin>
                 <Row>
                     <Col md={12}>
-                        <h1>agendaI</h1>
+                        <h1>agendai</h1>
                     </Col>
                 </Row>
                 <Row>

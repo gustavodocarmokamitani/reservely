@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { SelectOption } from "../../models/SelectOptions";
 import { ServiceType } from "../../models/ServiceType";
 import { getEmployeeIdByUserId } from "../../services/EmployeeServices";
-import { getServiceTypes, getServiceTypeById } from "../../services/ServiceTypeServices";
+import {
+  getServiceTypes,
+  getServiceTypeById,
+} from "../../services/ServiceTypeServices";
 import customStyles from "./styles/customStyles";
 import Select from "react-select";
 
@@ -12,66 +15,82 @@ interface ServiceSelectProps {
   selectedEmployee: SelectOption | null;
 }
 
-const ServiceSelect: React.FC<ServiceSelectProps> = ({ setService, value, selectedEmployee}) => {
+const ServiceSelect: React.FC<ServiceSelectProps> = ({
+  setService,
+  value,
+  selectedEmployee,
+}) => {
   const [options, setOptions] = useState<SelectOption[]>([]);
-  
+
   useEffect(() => {
     const fetchServices = async () => {
       try {
         const response = await getServiceTypes();
-  
+
         if (response && response.data) {
-          const serviceTypesActives = response.data.filter((serviceType: ServiceType) => serviceType.active === true);
-  
+          const serviceTypesActives = response.data.filter(
+            (serviceType: ServiceType) => serviceType.active === true
+          );
+          
           if (selectedEmployee) {
             try {
-              const responseEmployee = await getEmployeeIdByUserId(selectedEmployee.value);
-  
-              if (responseEmployee && responseEmployee.servicosId) {
+              const responseEmployee = await getEmployeeIdByUserId(
+                selectedEmployee.value
+              );                          
+              
+              if (responseEmployee && responseEmployee.serviceIds) {                                                
                 const responseServiceNames = await Promise.all(
-                  responseEmployee.servicosId.map(async (item: any) => {
+                  responseEmployee.serviceIds.map(async (item: any) => {                    
                     try {
-                      const resp = await getServiceTypeById(item);
+                      
+                      const resp = await getServiceTypeById(item);                                            
                       return resp && resp.data ? resp.data : null;
                     } catch (error) {
-                      console.error("Erro ao buscar serviço específico:", error);
+                      console.error(
+                        "Erro ao buscar serviço específico:",
+                        error
+                      );
                       return null;
                     }
                   })
-                );
-  
-                const formattedOptions2 = responseServiceNames.filter(Boolean).map((item: any) => ({
-                  value: item.id,
-                  label: item.name
-                }));
-  
+                );                                
+                
+                const formattedOptions2 = responseServiceNames
+                  .filter(Boolean)
+                  .map((item: any) => ({
+                    value: item.id,
+                    label: item.name,
+                  }));
+
                 setOptions(formattedOptions2);
               } else {
-                const formattedOptions = serviceTypesActives.map((item: any) => ({
-                  value: item.id,
-                  label: item.name
-                }));
-  
+                const formattedOptions = serviceTypesActives.map(
+                  (item: any) => ({
+                    value: item.id,
+                    label: item.name,
+                  })
+                );
+
                 formattedOptions.unshift({ value: 0, label: "Selecione..." });
                 setOptions(formattedOptions);
               }
             } catch (error) {
               console.error("Erro ao buscar serviços do funcionário:", error);
-  
+
               const formattedOptions = serviceTypesActives.map((item: any) => ({
                 value: item.id,
-                label: item.name
+                label: item.name,
               }));
-  
+
               formattedOptions.unshift({ value: 0, label: "Selecione..." });
               setOptions(formattedOptions);
             }
           } else {
             const formattedOptions = serviceTypesActives.map((item: any) => ({
               value: item.id,
-              label: item.name
+              label: item.name,
             }));
-  
+
             formattedOptions.unshift({ value: 0, label: "Selecione..." });
             setOptions(formattedOptions);
           }
@@ -82,14 +101,15 @@ const ServiceSelect: React.FC<ServiceSelectProps> = ({ setService, value, select
         console.error("Erro ao buscar todos os serviços:", error);
       }
     };
-  
+
     fetchServices();
   }, [selectedEmployee]);
   
-  
-  
+
   const handleChange = (selectedOptions: any) => {
-    const filteredOptions = selectedOptions?.filter((option: SelectOption) => option.value !== 0) || [];
+    const filteredOptions =
+      selectedOptions?.filter((option: SelectOption) => option.value !== 0) ||
+      [];
     setService(filteredOptions.length > 0 ? filteredOptions : null);
   };
 
@@ -100,7 +120,7 @@ const ServiceSelect: React.FC<ServiceSelectProps> = ({ setService, value, select
       placeholder="Selecione um serviço"
       onChange={handleChange}
       styles={customStyles}
-      value={options.filter(opt => value?.includes(opt.value))}
+      value={options.filter((opt) => value?.includes(opt.value))}
     />
   );
 };

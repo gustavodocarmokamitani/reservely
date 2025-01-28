@@ -44,12 +44,15 @@ const EmployeeAppointmentSelect: React.FC<EmployeeAppointmentSelectProps> = ({
               user: responseUser,
             };
           })
-        );
-
+        );        
+        
         const formattedOptions: Option[] = filteredWithUserData.map(
           (employeeWithUserData) => ({
             value: employeeWithUserData.user.id,
-            label: employeeWithUserData.user.name,
+            label:
+              employeeWithUserData.user.name +
+              " " +
+              employeeWithUserData.user.lastName,
             isDisabled: false,
           })
         );

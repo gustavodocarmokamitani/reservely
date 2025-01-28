@@ -30,23 +30,35 @@ function AppointmentHistory() {
   const mapAppointments = async (appointments: Appointment[]) => {
     return Promise.all(
       appointments.map(async (appointment) => {
-        const employeeData = await getEmployeeById(appointment.employeeId);
-        const userClientData = await getUserById(appointment.clientId);
-        const userData = await getUserById(employeeData.userId);
+        const employeeData = appointment.employeeId
+          ? await getEmployeeById(appointment.employeeId)
+          : null;
+                  
+        const userClientData = appointment.clientId
+          ? await getUserById(appointment.clientId)
+          : null;
+  
+        const userData = employeeData?.userId
+          ? await getUserById(employeeData.userId)
+          : null;
+  
         const appointmentStatusData = await getAppointmentStatusById(
           appointment.appointmentStatusId
         );
+        console.log(userData.name);
         
         return {
-          ...appointment,  
-          employeeId: userData.name,  
-          clientId: userClientData.name,  
-          appointmentDate: new Date(appointment.appointmentDate),  
-          appointmentStatus: appointmentStatusData.name,  
+          ...appointment,
+          employeeId: employeeData ? employeeData.id : 0,
+          employeeFullName: userData ? `${userData.name} ${userData.lastName}` : "N/A",
+          clientId: userClientData ? userClientData.name : "Visitante",  
+          appointmentDate: new Date(appointment.appointmentDate),
+          appointmentStatus: appointmentStatusData.name,
         };
       })
     );
   };
+  
 
   const fetchData = useCallback(async () => {
     try {
@@ -56,7 +68,8 @@ function AppointmentHistory() {
       }
 
       const appointmentData = await getAppointments();
-      const mappedAppointments = await mapAppointments(appointmentData);
+      
+      const mappedAppointments = await mapAppointments(appointmentData); 
 
       setRows(mappedAppointments);
       

@@ -72,7 +72,7 @@ export const ToggleInput = styled.input`
   cursor: pointer;
   
   &:checked {
-    background: rgba(0, 128, 0, 0.7);  
+    background: rgba(0, 128, 0, 0.7);    
   }
 
   &:checked::before {

@@ -47,7 +47,7 @@ export function Appointment() {
         message: "Por favor, selecione um funcionário.",
       },
       {
-        condition: !client?.value,
+        condition: client?.value === undefined || client?.value === null,
         message: "Por favor, selecione um cliente.",
       },
       {
@@ -112,6 +112,8 @@ export function Appointment() {
         serviceIds: service!.map((item) => item.value),
         storeId: storeUser,
       };
+      console.log(mapped);
+      
       const responseCraeteAppointment = await createAppointment([mapped]);
       if (responseCraeteAppointment) {
         setEmployee({ value: 0, label: "Nenhum" });

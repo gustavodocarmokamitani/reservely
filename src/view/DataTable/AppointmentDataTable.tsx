@@ -62,8 +62,8 @@ const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
 
   const columns: GridColDef[] = appointment
     ? [
-      { field: "clientId", headerName: "Cliente", flex: 2, align: "center", headerAlign: "center" },
-      { field: "employeeId", headerName: "Funcionário", flex: 2, align: "center", headerAlign: "center" },
+      { field: "clientId", headerName: "Cliente", flex: 1.5, align: "center", headerAlign: "center" },
+      { field: "employeeFullName", headerName: "Funcionário", flex: 1.5, align: "center", headerAlign: "center" },
       {
         field: "appointmentDate",
         headerName: "Data do Agendamento",
@@ -111,7 +111,7 @@ const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
 
   return (
     <div ref={containerRef} style={{ marginTop: "3rem" }}>
-      <Paper sx={{ height: 800, width: "100%", borderRadius: "15px", overflow: "hidden" }}>
+      <Paper sx={{ height: 700, width: "100%", borderRadius: "15px", overflow: "hidden" }}>
         <DataGrid
           rows={rows}
           columns={columns}
