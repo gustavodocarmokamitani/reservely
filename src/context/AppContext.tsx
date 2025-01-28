@@ -39,6 +39,7 @@ export interface UserRole {
   userEmail: string;
   userRole: string;
 }
+
 interface AppContextType {
   userRoleContext: UserRole | null;
   setUserRoleContext: React.Dispatch<React.SetStateAction<UserRole | null>>;

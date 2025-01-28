@@ -168,7 +168,7 @@ const ProfessionalDataTable: React.FC<ProfessionalDataTableProps> = ({
     <div ref={containerRef} style={{ marginTop: "3rem" }}>
       <Paper
         sx={{
-          height: 800,
+          height: 700,
           width: "100%",
           borderRadius: "15px",
           overflow: "hidden",

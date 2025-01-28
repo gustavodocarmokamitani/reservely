@@ -33,7 +33,8 @@ const EmployeeAppointmentSelect: React.FC<EmployeeAppointmentSelectProps> = ({
         const responseEmployee = await getEmployees();
 
         const filteredEmployees = responseEmployee.filter(
-          (employee: Employee) => employee.storeId === storeUser
+          (employee: Employee) =>
+            employee.storeId === storeUser && employee.active === "true"
         );
 
         const filteredWithUserData = await Promise.all(
@@ -44,15 +45,15 @@ const EmployeeAppointmentSelect: React.FC<EmployeeAppointmentSelectProps> = ({
               user: responseUser,
             };
           })
-        );        
-        
+        );
+
         const formattedOptions: Option[] = filteredWithUserData.map(
           (employeeWithUserData) => ({
             value: employeeWithUserData.user.id,
             label:
-              employeeWithUserData.user.name +
+              capitalizeFirstLetter(employeeWithUserData.user.name) +
               " " +
-              employeeWithUserData.user.lastName,
+              capitalizeFirstLetter(employeeWithUserData.user.lastName),
             isDisabled: false,
           })
         );
@@ -75,6 +76,11 @@ const EmployeeAppointmentSelect: React.FC<EmployeeAppointmentSelectProps> = ({
   const handleChange = (option: any) => {
     setEmployee(option);
     handleEmployeeChange(option);
+  };
+
+  const capitalizeFirstLetter = (str: string) => {
+    if (!str) return "";
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
   };
 
   return (

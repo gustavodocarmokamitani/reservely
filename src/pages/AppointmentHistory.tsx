@@ -50,7 +50,7 @@ function AppointmentHistory() {
         return {
           ...appointment,
           employeeId: employeeData ? employeeData.id : 0,
-          employeeFullName: userData ? `${userData.name} ${userData.lastName}` : "N/A",
+          employeeFullName: userData ? `${capitalizeFirstLetter(userData.name)} ${capitalizeFirstLetter(userData.lastName)}` : "N/A",
           clientId: userClientData ? userClientData.name : "Visitante",  
           appointmentDate: new Date(appointment.appointmentDate),
           appointmentStatus: appointmentStatusData.name,
@@ -96,17 +96,17 @@ function AppointmentHistory() {
 
             if (appointment) {
               await deleteAppointment(appointment.id);
-              enqueueSnackbar(`Appointment deleted successfully!`, { variant: "success" });
+              enqueueSnackbar(`Agendamento apagado com sucesso!`, { variant: "success" });
             } else {
-              enqueueSnackbar(`No appointment found with id: ${appointmentId}`, { variant: "error" });
+              enqueueSnackbar(`Agendamento com id: ${appointmentId} não encontrado.`, { variant: "error" });
             }
           } catch (error) {
             console.error(`Error deleting appointment ${appointmentId}:`, error);
           }
         })
       );
-      fetchData();
       setSelectedAppointmentIds([]);
+      fetchData();
     } catch (error) {
       console.error("Error deleting appointments:", error);
     }
@@ -115,6 +115,11 @@ function AppointmentHistory() {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  const capitalizeFirstLetter = (str: string) => {
+    if (!str) return "";  
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  };
 
   return (
     <ContainerPage style={{ height: "100vh" }}>

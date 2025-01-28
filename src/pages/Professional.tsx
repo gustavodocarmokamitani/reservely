@@ -77,8 +77,8 @@ function Professional() {
           if (user) {
             return {
               id: user.id,
-              name: user.name,
-              lastName: user.lastName,
+              name: capitalizeFirstLetter(user.name),
+              lastName: capitalizeFirstLetter(user.lastName),
               phone: user.phone,
               email: user.email,
               active: employee.active,
@@ -166,6 +166,11 @@ function Professional() {
 
   const handleRowSelect = (ids: number[]) => {
     setSelectedUserIds(ids);
+  };
+
+  const capitalizeFirstLetter = (str: string) => {
+    if (!str) return "";  
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
   };
 
   return (

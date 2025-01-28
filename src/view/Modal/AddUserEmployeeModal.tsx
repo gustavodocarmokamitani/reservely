@@ -145,8 +145,7 @@ const AddUserEmployeeModal: React.FC<AddUserEmployeeModalProps> = ({
             />
           </Col>
           <hr />
-        </Row>
-      
+        </Row>      
           <InputGroupProfessionalAdd
             setFormValuesProfessional={setFormValuesProfessional}
             data={serviceType}
@@ -154,7 +153,6 @@ const AddUserEmployeeModal: React.FC<AddUserEmployeeModalProps> = ({
             employee={employee}
             addProf
           />
-
         <hr />
         <Row>
           <Col

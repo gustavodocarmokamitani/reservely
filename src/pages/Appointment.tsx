@@ -9,10 +9,15 @@ import TimeSelect from "../components/Select/TimeSelect";
 import AppointmentDateSelect from "../components/Select/AppointmentDataSelect";
 import EmployeeAppointmentSelect from "../components/Select/EmployeeAppointmentSelect";
 import * as S from "./Appointment.styles";
-import { createAppointment } from "../services/AppointmentServices";
+import {
+  createAppointment,
+  getAppointmentByEmployeeId,
+} from "../services/AppointmentServices";
 import { getCorrigirIdByUserId } from "../services/EmployeeServices";
 import { SelectOption } from "../models/SelectOptions";
 import { useSnackbar } from "notistack";
+import { Appointment as AppointmentModel } from "../models/Appointment";
+import moment from "moment";
 
 export function Appointment() {
   const { enqueueSnackbar } = useSnackbar();
@@ -47,7 +52,7 @@ export function Appointment() {
         message: "Por favor, selecione um funcionário.",
       },
       {
-        condition: client?.value === undefined || client?.value === null,
+        condition: client?.value === undefined,
         message: "Por favor, selecione um cliente.",
       },
       {
@@ -112,8 +117,28 @@ export function Appointment() {
         serviceIds: service!.map((item) => item.value),
         storeId: storeUser,
       };
-      console.log(mapped);
-      
+
+      const responseAppointment = await getAppointmentByEmployeeId(
+        funcionarioId.id
+      );
+
+      const conflictingAppointment = responseAppointment.filter(
+        (appointment: AppointmentModel) => {
+          const appointmentDateObj = new Date(appointment.appointmentDate);
+
+          return (
+            moment(appointmentDateObj).format("DD/MM/YYYY") ===
+              moment(mapped.appointmentDate).format("DD/MM/YYYY"),
+            appointment.appointmentTime === mapped.appointmentTime
+          );
+        }
+      );
+      if (conflictingAppointment.length > 0) {
+        enqueueSnackbar("Horário já agendamento. Por favor, escolha outro.", {
+          variant: "warning",
+        });
+        return;
+      }
       const responseCraeteAppointment = await createAppointment([mapped]);
       if (responseCraeteAppointment) {
         setEmployee({ value: 0, label: "Nenhum" });

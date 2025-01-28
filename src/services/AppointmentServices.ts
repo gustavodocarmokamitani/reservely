@@ -21,6 +21,16 @@ export const getAppointmentById = async (id: number) => {
     }
 };
 
+export const getAppointmentByEmployeeId = async (id: number) => {
+    try {
+        const response = await api.get(`Appointment/employee/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error getting Appointment:", error);
+        throw error;
+    }
+};
+
 export const createAppointment = async (AppointmentData: Appointment[]) => {
     try {
         const response = await api.post('Appointment', AppointmentData);

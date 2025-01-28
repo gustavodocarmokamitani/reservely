@@ -1,5 +1,4 @@
-
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { getUserTypeIdById } from "../../services/UserServices";
 import { SelectOption } from "../../models/SelectOptions";
 import { getEmployeesByStoreId } from "../../services/EmployeeServices";
@@ -20,43 +19,49 @@ interface Option {
   isDisabled?: boolean;
 }
 
-const EmployeeSelect: React.FC<EmployeeSelectProps> = ({ setEmployee, value, handleEmployeeChange }) => {
+const EmployeeSelect: React.FC<EmployeeSelectProps> = ({
+  setEmployee,
+  value,
+  handleEmployeeChange,
+}) => {
   const [options, setOptions] = useState<SelectOption[]>([]);
 
   const storeUser = Number(localStorage.getItem("storeUser"));
-
 
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
         const responseUser = await getUserTypeIdById(2);
-  
+
         const responseEmployee = await getEmployeesByStoreId(storeUser);
-  
-        const formattedOptions: Option[] = responseUser.map((employee: User) => {
-          
-          const isUserInEmployeeList = responseEmployee.some(
-            (emp: Employee) => emp.userId === employee.id
-          );
-  
-          
-          if (!isUserInEmployeeList) {
-            return {
-              value: employee.id,
-              label: employee.name,
-              isDisabled: false,
-            };
-          }
-          
-          return null;
-        }).filter((option: any) => option !== null); 
-  
+
+        const formattedOptions: Option[] = responseUser
+          .map((employee: User) => {
+            const isUserInEmployeeList = responseEmployee.some(
+              (emp: Employee) => emp.userId === employee.id
+            );
+
+            if (!isUserInEmployeeList) {
+              return {
+                value: employee.id,
+                label:
+                  capitalizeFirstLetter(employee.name) +
+                  " " +
+                  capitalizeFirstLetter(employee.lastName),
+                isDisabled: false,
+              };
+            }
+
+            return null;
+          })
+          .filter((option: any) => option !== null);
+
         formattedOptions.unshift({
           value: 0,
           label: "Selecione...",
           isDisabled: true,
         });
-  
+
         setOptions(formattedOptions);
       } catch (error) {
         console.error("Erro ao buscar funcionários:", error);
@@ -64,22 +69,25 @@ const EmployeeSelect: React.FC<EmployeeSelectProps> = ({ setEmployee, value, han
     };
     fetchEmployees();
   }, [storeUser]);
-  
-  
-  
+
+  const capitalizeFirstLetter = (str: string) => {
+    if (!str) return "";
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  };
+
   const handleChange = (option: any) => {
     setEmployee(option);
-    handleEmployeeChange(option)
+    handleEmployeeChange(option);
   };
 
   return (
-      <Select
-        options={options}
-        placeholder="Selecione um funcionário"
-        onChange={handleChange}
-        styles={customStyles}
-        value={options.find(opt => opt.value === value)}
-      />
+    <Select
+      options={options}
+      placeholder="Selecione um funcionário"
+      onChange={handleChange}
+      styles={customStyles}
+      value={options.find((opt) => opt.value === value)}
+    />
   );
 };
 

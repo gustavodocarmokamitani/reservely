@@ -23,14 +23,29 @@ const Navigation = () => {
   const [indicatorTop, setIndicatorTop] = useState(0);
   const menuItemsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  useEffect(() => {
+  useEffect(() => { 
+    const path = location.pathname;
+    const menuPaths = [
+      "/appointment",
+      "/appointment-history",
+      "/dashboard",
+      "/service",
+      "/professional-register",
+      "/professional",
+      "/store",
+      "/payment",
+    ];
+
+    const newIndex = menuPaths.indexOf(path);
+    setSelectedIndex(newIndex >= 0 ? newIndex : 0); 
+ 
     const itemRef = menuItemsRef.current[selectedIndex];
     if (itemRef) {
       const offsetTop = itemRef.offsetTop;
       const itemHeight = itemRef.offsetHeight;
-      setIndicatorTop(offsetTop + itemHeight / 2 - itemHeight + 22);  
+      setIndicatorTop(offsetTop + itemHeight / 2 - itemHeight + 22);
     }
-  }, [selectedIndex]);
+  }, [location, selectedIndex]); 
 
   const logout = () => {
     localStorage.removeItem("authToken");
@@ -59,7 +74,7 @@ const Navigation = () => {
       <div className="flex-grow-1" style={{ position: "relative" }}>
         {[
           { path: "/appointment", icon: chamada, text: "Agendamento" },
-          { path: "/appointment-history", icon: chamada, text: "Histórico Agendamento" },          
+          { path: "/appointment-history", icon: chamada, text: "Histórico Agendamento" },
           { path: "/dashboard", icon: home, text: "Dashboard" },
           { path: "/service", icon: service, text: "Serviços" },
           { path: "/professional-register", icon: professional, text: "Registrar Profissionais" },
@@ -73,7 +88,7 @@ const Navigation = () => {
             onClick={() => setSelectedIndex(index)}
           >
             <Link to={path} style={{ textDecoration: "none" }}>
-              <S.StyledRow
+              <S.StyledRow             
                 isSelected={location.pathname === path}
                 className={location.pathname === path ? "selected" : ""}
               >
@@ -89,7 +104,11 @@ const Navigation = () => {
       </div>
 
       <S.MenuContainer style={{ borderTop: "1px solid gray" }}>
-        <Row className="d-flex align-items-center justify-content-center" style={{ height: "100%", paddingLeft: "20px" }} onClick={logout}>
+        <Row
+          className="d-flex align-items-center justify-content-center"
+          style={{ height: "100%", paddingLeft: "20px" }}
+          onClick={logout}
+        >
           <OptionNavigation
             icon={<img src={exit} alt="exit" style={{ width: "25px" }} />}
             text="Sair"

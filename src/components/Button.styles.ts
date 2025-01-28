@@ -34,7 +34,7 @@ export const Button = styled.button<ButtonProps>`
     return "#FF060B"; 
   }};
   color: ${(props) => (props.$isRemove || props.$isBack || props.$isRegister || props.$isGoogle ? "black" : "white")};
-  border: 1px solid ${(props) => (props.$isBack ? "black" : "none")};
+  border: 1px solid ${(props) => (props.$isBack ? "rgba(0, 0, 0, 0.50);" : "none")};
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   opacity: ${(props) => (props.disabled ? 0.5 : 1)};
   pointer-events: ${(props) => (props.disabled ? "none" : "auto")};

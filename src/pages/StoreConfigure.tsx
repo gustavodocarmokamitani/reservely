@@ -63,10 +63,8 @@ function StoreConfigure() {
 
         setStatusStore(response.status);
 
-        if (!selectedTimes || selectedTimes.length === 0) {
-          const timeArray = response.operatingHours
-            ? response.operatingHours.split(" - ")
-            : [];
+        if (selectedTimes.length === 0 && response.operatingHours) {
+          const timeArray = response.operatingHours.split(" - ");
           setSelectedTimes(timeArray);
         }
 
@@ -97,7 +95,7 @@ function StoreConfigure() {
     } catch (error) {
       console.error("Erro na requisição da store", error);
     }
-  }, [storeUser, selectedTimes, openingWeekDay, closingDates]);
+  }, [storeUser, selectedTimes.length, openingWeekDay, closingDates]);
 
   useEffect(() => {
     fetchData();
@@ -117,7 +115,7 @@ function StoreConfigure() {
         operatingDays: openingWeekDay,
       };
 
-      try {
+      try { 
         await updateStore(storeMapped.id, storeMapped);
         enqueueSnackbar(`Store editado com sucesso!`, { variant: "success" });
 
@@ -150,8 +148,8 @@ function StoreConfigure() {
 
   const handleButtonClick = () => {
     navigate("/store");
-  };
-
+  }; 
+  
   return (
     <ContainerPage style={{ height: "100%" }}>
       <Row>
