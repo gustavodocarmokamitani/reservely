@@ -8,6 +8,7 @@ import { AppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { getUserByEmail } from "../services/UserServices";
+import * as S from "./Login.styles";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -72,29 +73,28 @@ const Login = () => {
             </p>
             <p>Faça o login para começar a gerenciar seus projetos.</p>
           </div>
+        </Col>
+      </Row>
+      <S.ContainerLogin>
+        <S.WrapperLoginInput>
           <form onSubmit={handleLogin}>
-            <Row className="align-items-center">
-              <Col md={6}>
-                <Input
-                  placeholder="Email"
-                  name="email"
-                  type="email"
-                  width="400"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </Col>
-              <Col md={6}>
-                <Input
-                  placeholder="Password"
-                  name="password"
-                  type="password"
-                  width="400"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </Col>
-            </Row>
+            <Input
+              placeholder="Email"
+              name="email"
+              type="email"
+              width="350"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+
+            <Input
+              placeholder="Password"
+              name="password"
+              type="password"
+              width="350"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
             <Row className="text-center pt-4">
               <Col>
                 <Button $isLogin type="submit" disabled={loading} />
@@ -110,8 +110,8 @@ const Login = () => {
               </Col>
             </Row>
           </form>
-        </Col>
-      </Row>
+        </S.WrapperLoginInput>
+      </S.ContainerLogin>
     </ContainerRegister>
   );
 };

@@ -10,7 +10,14 @@ import {
   Legend,
 } from "chart.js";
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 interface BarChartProps {
   labels: string[];
@@ -63,11 +70,7 @@ const BarChart: React.FC<BarChartProps> = ({ labels, data }) => {
     },
   };
 
-  return (
-    <div style={{ width: "100%", height: "100%" }}>
-      <Bar data={chartData} options={options} />
-    </div>
-  );
+  return <Bar data={chartData} options={options} />;
 };
 
 export default BarChart;

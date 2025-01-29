@@ -21,7 +21,8 @@ const PieChart: React.FC<PieChartProps> = ({ data, labels }) => {
           "rgba(255, 99, 132, 1)",
           "rgba(255, 159, 64, 1)",
         ],
-        borderWidth: 1,
+        borderColor: "#999",
+        borderWidth: 2,
       },
     ],
   };
@@ -29,13 +30,13 @@ const PieChart: React.FC<PieChartProps> = ({ data, labels }) => {
   const options = {
     responsive: true,
     plugins: {
-      title: {
-        display: false,
-      },
       tooltip: {
         callbacks: {
           label: function (tooltipItem: any) {
-            return `${tooltipItem.label}: ${tooltipItem.raw} agendamentos`;
+            let value = tooltipItem.raw || 0;
+            return `${
+              tooltipItem.label
+            }: ${value.toLocaleString()} agendamentos`;
           },
         },
       },
@@ -43,29 +44,25 @@ const PieChart: React.FC<PieChartProps> = ({ data, labels }) => {
         display: true,
         position: "bottom" as const,
         labels: {
-          color: "rgb(255, 99, 132)",
-          font: {
-            size: 16,
-            family: "Poppins",
-          },
+          color: "#333",
+          font: { size: 14, family: "Poppins" },
           padding: 20,
           usePointStyle: true,
+          generateLabels: function (chart: any) {
+            let data = chart.data.datasets[0].data;
+            return chart.data.labels!.map((label: any, i: any) => ({
+              text: `${label}: ${data[i]}`,
+              fillStyle: chart.data.datasets[0].backgroundColor[i],
+              hidden: false,
+              index: i,
+            }));
+          },
         },
       },
     },
-    cutout: "50%",
   };
 
-  return (
-    <div className="mt-5">
-      <Pie
-        data={chartData}
-        options={options}
-        height={undefined}
-        width={undefined}
-      />
-    </div>
-  );
+  return <Pie data={chartData} options={options} />;
 };
 
 export default PieChart;

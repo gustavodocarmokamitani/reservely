@@ -25,6 +25,7 @@ import Payment from "./pages/Payment";
 import CallHelp from "./pages/CallHelp";
 import { Appointment } from "./pages/Appointment";
 import AppointmentHistory from "./pages/AppointmentHistory";
+import Calendar from "./pages/Calendar";
 
 
 function App() {
@@ -58,6 +59,7 @@ function App() {
                       <Route path="/appointment" element={<Appointment />} />
                       <Route path="/appointment-history" element={<AppointmentHistory />} />
                       <Route path="/dashboard" element={<Dashboard />} />
+                      <Route path="/calendar" element={<Calendar />} />
                       <Route path="/service" element={<Service />} />
                       <Route path="/professional-register" element={<ProfessionalRegister />} />
                       <Route path="/professional" element={<Professional />} />

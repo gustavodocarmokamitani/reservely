@@ -6,6 +6,7 @@ import Input from "../components/Input";
 import { registerUser, checkEmail } from "../services/AuthService";
 import { useSnackbar } from "notistack";
 import { createStore } from "../services/StoreServices";
+import * as S from "./Register.styles";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -64,17 +65,6 @@ const Register = () => {
     }
 
     try {
-      const responseStore = await createStore({
-        id: 0,
-        name: formData.storeName,
-        address: "",
-        status: false,
-        operatingHours: "",
-        closingDays: [""],
-        operatingDays: [""],
-        paymentMethods: [0],   
-      });
-  
       const response = await registerUser({
         name: formData.name,
         lastName: formData.lastname,
@@ -86,8 +76,21 @@ const Register = () => {
         storeId: 1,
       });
 
-      if ( responseStore && response) {
-        window.location.href = "/confirm-email";
+      if (response & response.success) {
+        const responseStore = await createStore({
+          id: 0,
+          name: formData.storeName,
+          address: "",
+          status: false,
+          operatingHours: "",
+          closingDays: [""],
+          operatingDays: [""],
+          paymentMethods: [0],
+        });
+
+        if (responseStore && responseStore.success ) {
+          window.location.href = "/confirm-email";
+        }
       }
     } catch (error) {
       enqueueSnackbar("Ocorreu um erro. Por favor, tente novamente.", {
@@ -101,88 +104,82 @@ const Register = () => {
   return (
     <ContainerRegister>
       <Row style={{ justifyContent: "center", paddingTop: "180px" }}>
-        <Col md={6}>
-          <h2>Join Us Today 🚀</h2>
-          <p>Sign up to begin managing your projects.</p>
-          <Row className="align-items-center">
-            <Col md={6}>
+        <Col md={12}>
+          <h2 style={{ textAlign: "center" }}>Junte-se a nós hoje 🚀</h2>
+          <p style={{ textAlign: "center" }}>
+            Cadastre-se para gerenciar seus projetos.
+          </p>
+          <S.ContainerRegister>
+            <S.WrapperRegisterInput>
               <Input
                 placeholder="Firstname"
                 name="name"
                 type="text"
-                width="400"
+                width="350"
                 value={formData.name}
                 onChange={handleInputChange}
               />
-            </Col>
-            <Col md={6}>
+
               <Input
                 placeholder="Lastname"
                 name="lastname"
                 type="text"
-                width="400"
+                width="350"
                 value={formData.lastname}
                 onChange={handleInputChange}
               />
-            </Col>
-          </Row>
-          <Row className="align-items-center">
-            <Col md={6}>
+
               <Input
                 placeholder="Email"
                 name="email"
                 type="text"
-                width="400"
+                width="350"
                 value={formData.email}
                 onChange={handleInputChange}
               />
-            </Col>
-            <Col md={6}>
+
               <Input
                 placeholder="Phone"
                 phone
                 name="phone"
                 type="text"
-                width="400"
+                width="350"
                 value={formData.phone}
                 onChange={handleInputChange}
               />
-            </Col>
-          </Row>
-          <Row className="align-items-center">
-            <Col md={6}>
+
               <Input
                 placeholder="Password"
                 name="password"
                 type={"password"}
-                width="400"
+                width="350"
                 value={formData.password}
                 onChange={handleInputChange}
               />
-            </Col>
-            <Col md={6}>
+
               <Input
                 placeholder="Confirm Password"
                 name="confirmPassword"
                 type={"password"}
-                width="400"
+                width="350"
                 value={formData.confirmPassword}
                 onChange={handleInputChange}
               />
-            </Col>
-          </Row>
-          <Row className="align-items-center justify-content-center">
-            <Col md={6}>
+            </S.WrapperRegisterInput>
+          </S.ContainerRegister>
+          <S.ContainerRegister>
+            <S.WrapperRegisterInput>
               <Input
                 placeholder="Store Name"
                 name="storeName"
                 type="text"
-                width="400"
+                width="350"
                 value={formData.storeName}
                 onChange={handleInputChange}
               />
-            </Col>
-          </Row>
+            </S.WrapperRegisterInput>
+          </S.ContainerRegister>
+
           <Row className="text-center pt-4">
             <Col>
               <Button

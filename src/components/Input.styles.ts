@@ -13,7 +13,7 @@ export const InputWrapper = styled.div<InputProps>`
 export const PasswordIcon = styled.div`
   position: relative;
   top: -35px;
-  left: 360px;
+  left: 300px;
   transform: translateY(-50%);
   cursor: pointer;
   color: #0;

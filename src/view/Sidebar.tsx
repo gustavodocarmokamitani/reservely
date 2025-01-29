@@ -76,6 +76,7 @@ const Navigation = () => {
           { path: "/appointment", icon: chamada, text: "Agendamento" },
           { path: "/appointment-history", icon: chamada, text: "Histórico Agendamento" },
           { path: "/dashboard", icon: home, text: "Dashboard" },
+          { path: "/calendar", icon: home, text: "Calendário" },
           { path: "/service", icon: service, text: "Serviços" },
           { path: "/professional-register", icon: professional, text: "Registrar Profissionais" },
           { path: "/professional", icon: professional, text: "Profissionais" },

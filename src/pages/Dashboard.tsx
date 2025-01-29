@@ -2,7 +2,8 @@ import { Col, Row } from "react-bootstrap";
 import HeaderTitle from "../view/HeaderTitle";
 import { ContainerPage } from "./_Page.styles";
 import DashboardCard from "../components/Card/DashboardCard";
-import PieDashboard from "../components/PieDashboard";
+import ChartDashboard from "../components/ChartDashboard";
+import * as S from "./Dashboard.styles"
 
 const Dashboard = () => {
   return (
@@ -16,21 +17,21 @@ const Dashboard = () => {
         </Col>
       </Row>
 
-      <Row style={{ paddingTop: "50px" }}>
-        <Col lg={12} xl={4} style={{ paddingLeft: "0px" }}>
+      <S.DashboardContainer>
+        <Col sm={12} xl={4}>
           <DashboardCard title="Valor Recebido" value="50.8K" icon="arrowUp" />
         </Col>
-        <Col lg={12} xl={4} style={{ paddingLeft: "0px", paddingRight: "0px" }}>
+        <Col sm={12} xl={4}>
           <DashboardCard title="Agendamentos" value="80" icon="arrowUp" />
         </Col>
-        <Col lg={12} xl={4} style={{ paddingRight: "0px" }}>
+        <Col sm={12} xl={4}>
           <DashboardCard title="Cancelamento" value="9%" icon="arrowDown" />
         </Col>
-      </Row>
+      </S.DashboardContainer>
 
       <Row>
         <Col>
-          <PieDashboard />
+          <ChartDashboard />
         </Col>
       </Row>
     </ContainerPage>

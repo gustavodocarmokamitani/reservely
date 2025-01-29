@@ -93,6 +93,7 @@ export function Appointment() {
       ) {
         return;
       }
+
       const horarioStr = appointmentTime?.value?.toString();
       if (!horarioStr) {
         enqueueSnackbar("Horário inválido.", { variant: "warning" });
@@ -104,6 +105,7 @@ export function Appointment() {
         parseInt(horarioHoras, 10),
         parseInt(horarioMinutos, 10)
       );
+
       const funcionarioId = await getCorrigirIdByUserId(employee!.value);
       const mapped = {
         id: 0,
@@ -122,23 +124,26 @@ export function Appointment() {
         funcionarioId.id
       );
 
-      const conflictingAppointment = responseAppointment.filter(
-        (appointment: AppointmentModel) => {
-          const appointmentDateObj = new Date(appointment.appointmentDate);
+      if (responseAppointment !== undefined) {
+        const conflictingAppointment = responseAppointment.filter(
+          (appointment: AppointmentModel) => {
+            const appointmentDateObj = new Date(appointment.appointmentDate);
 
-          return (
-            moment(appointmentDateObj).format("DD/MM/YYYY") ===
-              moment(mapped.appointmentDate).format("DD/MM/YYYY"),
-            appointment.appointmentTime === mapped.appointmentTime
-          );
+            return (
+              moment(appointmentDateObj).format("DD/MM/YYYY") ===
+                moment(mapped.appointmentDate).format("DD/MM/YYYY"),
+              appointment.appointmentTime === mapped.appointmentTime
+            );
+          }
+        );
+        if (conflictingAppointment.length > 0) {
+          enqueueSnackbar("Horário já agendamento. Por favor, escolha outro.", {
+            variant: "warning",
+          });
+          return;
         }
-      );
-      if (conflictingAppointment.length > 0) {
-        enqueueSnackbar("Horário já agendamento. Por favor, escolha outro.", {
-          variant: "warning",
-        });
-        return;
       }
+
       const responseCraeteAppointment = await createAppointment([mapped]);
       if (responseCraeteAppointment) {
         setEmployee({ value: 0, label: "Nenhum" });

@@ -27,7 +27,17 @@ export const getAppointmentByEmployeeId = async (id: number) => {
         return response.data;
     } catch (error) {
         console.error("Error getting Appointment:", error);
-        throw error;
+        return;
+    }
+};
+
+export const getAppointmentByStoreId = async (id: number) => {
+    try {
+        const response = await api.get(`Appointment/store/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error getting Appointment:", error);
+        return;
     }
 };
 

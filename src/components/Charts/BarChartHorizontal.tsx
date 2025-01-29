@@ -34,15 +34,15 @@ const BarChartHorizontal: React.FC<BarChartProps> = ({ data, labels }) => {
         backgroundColor: "rgba(250, 212, 0, 0.95)",
         borderColor: "rgba(250, 212, 0, 0.95)",
         borderWidth: 1,
-        
-        maxBarThickness: 80
+
+        maxBarThickness: 80,
       },
     ],
   };
 
   const options = {
     responsive: true,
-    indexAxis: "x",    
+    indexAxis: "x",
     plugins: {
       title: {
         display: false,
@@ -75,11 +75,7 @@ const BarChartHorizontal: React.FC<BarChartProps> = ({ data, labels }) => {
     },
   };
 
-  return (
-    <div className="mt-5" style={{ width: "100%", height: "100%" }}>
-      <Bar data={chartData} options={options as any} />
-    </div>
-  );
+  return <Bar data={chartData} options={options as any} />;
 };
 
 export default BarChartHorizontal;

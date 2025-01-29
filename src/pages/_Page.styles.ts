@@ -1,28 +1,27 @@
-import styled from 'styled-components';
+import styled from "styled-components"; 
 
 export const ContainerPage = styled.div`
-    width: calc(100vw - 19.98rem);
-    height: 100%;
-    padding: 80px;
-    margin-left: 10px;
-    background: #fafafa;
+  width: calc(100vw - 19.98rem);
+  height: 100%;
+  padding: 80px;
+  margin-left: 10px;
+  background: #fafafa;
 `;
 
 export const ContainerLogin = styled.div`
-    width: 100vw;
-    height: 100vh;
-    padding: 40px;
-    background: #fafafa;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  width: 100vw;
+  height: 100vh;
+  padding: 40px;
+  background: #fafafa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const ContainerRegister = styled.div`
-    width: 100vw;
-    height: 100vh;
-    padding: 40px;
-    background: #fafafa;
+  width: 100vw;
+  height: 100vh;
+  padding: 40px; 
 `;
 
 export const WrapperLogin = styled.div`
@@ -44,10 +43,10 @@ export const WrapperVerticalLogin = styled.div`
   flex-direction: row;
   background: #ebebeb;
   border-radius: 15px;
-  box-shadow: 4px 4px 15px 0px rgba(0, 0, 0, 0.50);
+  box-shadow: 4px 4px 15px 0px rgba(0, 0, 0, 0.5);
 `;
 
 export const ParagraphThin = styled.p`
-  font-size: 12px !important; 
-  color:rgb(131, 131, 131) !important;
+  font-size: 12px !important;
+  color: rgb(131, 131, 131) !important;
 `;
