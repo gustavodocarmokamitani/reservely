@@ -10,6 +10,7 @@
     "@schedule-x/events-service": "^2.16.0",
     "@schedule-x/react": "^2.16.0",
     "@schedule-x/theme-default": "^2.16.0",
+    "@schedule-x/theme-shadcn": "^2.16.0",
     "@schedule-x/translations": "^2.16.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",

@@ -2075,6 +2075,11 @@
   resolved "https://registry.npmjs.org/@schedule-x/theme-default/-/theme-default-2.16.0.tgz"
   integrity sha512-jEBhGXozn8lyy2cghsssNPVb16hhG3U7Gia/cXnT6WywKupU16HygLhsM3TGYTR1Mdiv2r3e7gqjE7TmLk3yew==
 
+"@schedule-x/theme-shadcn@^2.16.0":
+  version "2.16.0"
+  resolved "https://registry.npmjs.org/@schedule-x/theme-shadcn/-/theme-shadcn-2.16.0.tgz"
+  integrity sha512-L1ZEttVG7srnU3kIk3I/Bp2G06CzzBrtyta/leDANicUtYfxBbawcYOUVpK4eP/RRgKYncJxldgBHOvQZdOG4w==
+
 "@schedule-x/translations@^2.16.0":
   version "2.16.0"
   resolved "https://registry.npmjs.org/@schedule-x/translations/-/translations-2.16.0.tgz"

@@ -131,7 +131,7 @@ export function Appointment() {
 
             return (
               moment(appointmentDateObj).format("DD/MM/YYYY") ===
-                moment(mapped.appointmentDate).format("DD/MM/YYYY"),
+                moment(mapped.appointmentDate).format("DD/MM/YYYY") &&
               appointment.appointmentTime === mapped.appointmentTime
             );
           }

@@ -29,6 +29,7 @@ const Navigation = () => {
       "/appointment",
       "/appointment-history",
       "/dashboard",
+      "/calendar",
       "/service",
       "/professional-register",
       "/professional",
