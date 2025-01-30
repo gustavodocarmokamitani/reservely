@@ -25,26 +25,52 @@ function Calendar() {
   const fetchData = useCallback(async () => {
     try {
       const response = await getAppointmentByStoreId(storeUser);
+
       const fetchedEvents: Event[] = await Promise.all(
         response.map(async (appointment: Appointment) => {
           const serviceNames = await Promise.all(
             appointment.serviceIds.map(async (id) => {
-              const service = await getServiceTypeById(id);
-              if (service && service.data) {
-                return service.data.name;
+              const servicesName = await getServiceTypeById(id);
+              if (servicesName && servicesName.data) {
+                return servicesName.data.name;
               }
               return "";
             })
-          );          
+          );
+
+          const serviceDurationMinute = await Promise.all(
+            appointment.serviceIds.map(async (id) => {
+              const serviceDurationMinutes = await getServiceTypeById(id);
+              return serviceDurationMinutes?.data?.durationMinutes || 0; 
+            })
+          );
+           
+          const totalDuration = serviceDurationMinute.reduce((acc, curr) => acc + curr, 0);
+          
+          const startDateTime =
+            moment(appointment.appointmentDate).format("YYYY-MM-DD") +
+            " " +
+            appointment.appointmentTime;
+          
+          const endDateTimeFull = moment(appointment.appointmentTime, "HH:mm")
+            .add(totalDuration, "minutes")  
+            .format("HH:mm");
+              
+          const endDateTime =
+            moment(appointment.appointmentDate).format("YYYY-MM-DD") +
+            " " +
+            endDateTimeFull;
 
           return {
             id: appointment.id.toString(),
             title: `${serviceNames}`,
-            start: moment(appointment.appointmentDate).format("YYYY-MM-DD"),
-            end: moment(appointment.appointmentDate).format("YYYY-MM-DD"),                        
+            start: startDateTime,
+            end: endDateTime,
           };
         })
       );
+     
+      
       setEvents(fetchedEvents);
       setIsDataLoaded(true);
     } catch (error) {

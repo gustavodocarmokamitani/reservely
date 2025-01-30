@@ -41,6 +41,33 @@ export const getAppointmentByStoreId = async (id: number) => {
     }
 };
 
+//serviceIds 1 or 1, 2, 3
+export const getValidateAppointment = async (
+    id: number,
+    appointmentDate: Date,
+    appointmentTime: string,
+    serviceIds: string
+): Promise<boolean | undefined> => {
+    try {
+        const formattedDate = appointmentDate.toISOString().split("T")[0]; // Converte para "YYYY-MM-DD"
+        
+        const response = await api.get(`Appointment/validate-appointment`, {
+            params: {
+                employeeId: id,
+                appointmentDate: formattedDate,
+                appointmentTime: appointmentTime,
+                serviceIds: serviceIds
+            }
+        });
+
+        return response.data;
+    } catch (error) {
+        console.error("Erro ao validar agendamento:", error);
+        return undefined;
+    }
+};
+
+
 export const createAppointment = async (AppointmentData: Appointment[]) => {
     try {
         const response = await api.post('Appointment', AppointmentData);

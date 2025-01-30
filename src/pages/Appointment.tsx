@@ -10,14 +10,12 @@ import AppointmentDateSelect from "../components/Select/AppointmentDataSelect";
 import EmployeeAppointmentSelect from "../components/Select/EmployeeAppointmentSelect";
 import * as S from "./Appointment.styles";
 import {
-  createAppointment,
-  getAppointmentByEmployeeId,
+  createAppointment, 
+  getValidateAppointment,
 } from "../services/AppointmentServices";
 import { getCorrigirIdByUserId } from "../services/EmployeeServices";
 import { SelectOption } from "../models/SelectOptions";
-import { useSnackbar } from "notistack";
-import { Appointment as AppointmentModel } from "../models/Appointment";
-import moment from "moment";
+import { useSnackbar } from "notistack"; 
 
 export function Appointment() {
   const { enqueueSnackbar } = useSnackbar();
@@ -119,38 +117,23 @@ export function Appointment() {
         serviceIds: service!.map((item) => item.value),
         storeId: storeUser,
       };
-
-      const responseAppointment = await getAppointmentByEmployeeId(
-        funcionarioId.id
-      );
-
-      if (responseAppointment !== undefined) {
-        const conflictingAppointment = responseAppointment.filter(
-          (appointment: AppointmentModel) => {
-            const appointmentDateObj = new Date(appointment.appointmentDate);
-
-            return (
-              moment(appointmentDateObj).format("DD/MM/YYYY") ===
-                moment(mapped.appointmentDate).format("DD/MM/YYYY") &&
-              appointment.appointmentTime === mapped.appointmentTime
-            );
-          }
-        );
-        if (conflictingAppointment.length > 0) {
-          enqueueSnackbar("Horário já agendamento. Por favor, escolha outro.", {
-            variant: "warning",
-          });
-          return;
-        }
+ 
+      const appointmentTimeValue = appointmentTime?.value?.toString() || "";
+      const serviceIds = service ? service.map((item) => item.value).join(',') : '';
+  
+      const isAvailable = await getValidateAppointment(funcionarioId.id, agendamentoData, appointmentTimeValue, serviceIds);
+  
+      if (!isAvailable) {
+        enqueueSnackbar("Este horário já está ocupado. Não é possível realizar o agendamento.", { variant: "warning" });
+        return; 
       }
-
+      
       const responseCraeteAppointment = await createAppointment([mapped]);
       if (responseCraeteAppointment) {
         setEmployee({ value: 0, label: "Nenhum" });
         setClient({ value: 0, label: "Nenhum" });
         setService([{ value: 0, label: "Nenhum" }]);
-        setAppointmentTime({ value: 0, label: "Nenhum" });
-        setAppointmentDate(null);
+        setAppointmentTime({ value: 0, label: "Nenhum" }); 
         enqueueSnackbar("Appointment criado com sucesso!", {
           variant: "success",
         });

@@ -21,7 +21,7 @@ interface ScheduleXProps {
 }
 
 export function ScheduleX({ events }: ScheduleXProps) {
-  const eventsService = useState(() => createEventsServicePlugin())[0];
+  const eventsService = useState(() => createEventsServicePlugin())[0]; 
 
   const calendar = useCalendarApp({
     views: [
@@ -35,9 +35,7 @@ export function ScheduleX({ events }: ScheduleXProps) {
     locale: "pt-BR",
     defaultView: "monthGrid",
     theme: 'shadcn',
-  });
-
-  console.log("props events", events);  
+  }); 
 
   return (
     <div style={{ width: "100%", height: "100%" }}>
