@@ -24,7 +24,10 @@ import ClosingDateCard from "../components/Card/ClosingDateCard";
 
 function StoreConfigure() {
   const navigate = useNavigate();
-  const [formValuesStore, setFormValuesStore] = useState({ active: false });
+  const [formValuesStore, setFormValuesStore] = useState<{ name: string; active: boolean }>({
+    name: "", 
+    active: false,
+  });
   const [store, setStore] = useState<StoreModel | undefined>();
   const [selectedTimes, setSelectedTimes] = useState<string[]>([]);
   const [openingWeekDay, setOpeningWeekDay] = useState<string[]>([]);
@@ -58,6 +61,7 @@ function StoreConfigure() {
 
         setFormValuesStore((prev) => ({
           ...prev,
+          name: response.name,
           active: response.status,
         }));
 
@@ -95,7 +99,7 @@ function StoreConfigure() {
     } catch (error) {
       console.error("Erro na requisição da store", error);
     }
-  }, [storeUser, selectedTimes.length, openingWeekDay, closingDates]);
+  }, [storeUser]);
 
   useEffect(() => {
     fetchData();
@@ -105,6 +109,7 @@ function StoreConfigure() {
     if (store) {
       const storeMapped: Store = {
         ...store,
+        name: formValuesStore.name,
         status: formValuesStore.active,
         operatingHours: selectedTimes.join(" - "),
         closingDays: closingDates
@@ -115,7 +120,8 @@ function StoreConfigure() {
         operatingDays: openingWeekDay,
       };
 
-      try { 
+      try {
+        
         await updateStore(storeMapped.id, storeMapped);
         enqueueSnackbar(`Store editado com sucesso!`, { variant: "success" });
 
@@ -148,15 +154,15 @@ function StoreConfigure() {
 
   const handleButtonClick = () => {
     navigate("/store");
-  }; 
-  
+  };
+
   return (
     <ContainerPage style={{ height: "100%" }}>
       <Row>
         <Col lg={12} xl={7} style={{ padding: "0px" }}>
           <HeaderTitle
-            title="Store"
-            subTitle="Área destinada para gerenciamento da store."
+            title={`${store?.name}`}
+            subTitle="Área destinada para gerenciamento da loja."
           />
         </Col>
 
@@ -170,101 +176,125 @@ function StoreConfigure() {
         </Col>
       </Row>
       <Row>
-        <Col lg={12} xl={3} style={{ padding: "0px" }}>
-          <S.StoreContainer>
-            <S.StoreContent>
-              <p>Store</p>
-              <Input
-                type="toggle"
-                name="active"
-                value={formValuesStore.active.toString()}
-                onChange={handleInputChangeStore}
-                width="300"
+        <S.Store>
+          <S.StoreSectionOne>
+            <S.StoreContainer>
+              <S.StoreContent>
+                <p>Name</p>
+                <Input                
+                  type="text"
+                  name="name"
+                  value={formValuesStore.name}
+                  onChange={handleInputChangeStore}
+                  width="300"
+                />
+              </S.StoreContent>
+              <S.StoreContent>
+                <p>Loja</p>
+                <Input
+                  type="toggle"
+                  name="active"
+                  value={formValuesStore.active.toString()}
+                  onChange={handleInputChangeStore}
+                  width="300"
+                />
+              </S.StoreContent>
+              <S.StoreContent>
+                <p>Horários de funcionamento</p>
+                <OpeningHoursSelect setTime={setSelectedTimes} />
+              </S.StoreContent>
+              <S.StoreContent>
+                <p>Dias de funcionamento</p>
+                <OpeningWeekDaysSelect setOpeningWeekDay={setOpeningWeekDay} />
+              </S.StoreContent>
+              <S.StoreContent>
+                <p>Datas de fechamento</p>
+                <StoreDataSelect setClosingDates={setClosingDates} />
+              </S.StoreContent>
+            </S.StoreContainer>
+          </S.StoreSectionOne>
+
+          <S.StoreSectionTwo>
+            <h3 style={{ margin: "50px 0 25px 0" }}>Dados da loja</h3>
+            <S.CardStoreWrapper className="d-flex justify-content-start align-items-center">
+              <CardStatus
+                statusStore={statusStore}
+                data={store}
+                title="Status"
+                icon="confirm"
               />
-            </S.StoreContent>
-            <S.StoreContent>
-              <p>Horários de funcionamento</p>
-              <OpeningHoursSelect setTime={setSelectedTimes} />
-            </S.StoreContent>
-            <S.StoreContent>
-              <p>Dias de funcionamento</p>
-              <OpeningWeekDaysSelect setOpeningWeekDay={setOpeningWeekDay} />
-            </S.StoreContent>
-            <S.StoreContent>
-              <p>Datas de fechamento</p>
-              <StoreDataSelect setClosingDates={setClosingDates} />
-            </S.StoreContent>
-          </S.StoreContainer>
-        </Col>
-        <Col lg={12} xl={9}>
-          <h3 style={{ margin: "50px 0 25px 0" }}>Dados da store</h3>
-          <S.CardStoreWrapper className="d-flex justify-content-start align-items-center">
-            <CardStatus
-              statusStore={statusStore}
-              data={store}
-              title="Status"
-              icon="confirm"
-            />
-            {store?.operatingHours && store?.operatingHours.length > 0 ? (
+              {store?.operatingHours && store?.operatingHours.length > 0 ? (
+                <>
+                  <TimeCard
+                    selectedTimes={selectedTimes}
+                    title="Hora de abertura"
+                    icon="confirm"
+                  />
+                  <TimeCard
+                    selectedTimes={selectedTimes}
+                    title="Hora de fechamento"
+                    icon="confirm"
+                  />
+                </>
+              ) : (
+                <p></p>
+              )}
+            </S.CardStoreWrapper>
+
+            <h3 style={{ margin: "50px 0 25px 0" }}>Dias de funcionamento</h3>
+            {store?.operatingDays?.some((day) => day.trim() !== "") ||
+            openingWeekDay?.some((day) => day && day.trim().length > 0) ? (
               <>
-                <TimeCard
-                  selectedTimes={selectedTimes}
-                  title="Hora de abertura"
-                  icon="confirm"
-                />
-                <TimeCard
-                  selectedTimes={selectedTimes}
-                  title="Hora de fechamento"
-                  icon="confirm"
-                />
+                <S.CardStoreWrapper className="d-flex justify-content-start align-items-center flex-wrap">
+                  {openingWeekDay.map((item: any) => (
+                    <WeekDayCard
+                      key={item}
+                      text={item}
+                      icon="remove"
+                      onRemove={() => handleRemoveDateClosed(item)}
+                    />
+                  ))}
+                </S.CardStoreWrapper>
               </>
             ) : (
               <p></p>
             )}
-          </S.CardStoreWrapper>
 
-          <h3 style={{ margin: "50px 0 25px 0" }}>Dias de funcionamento</h3>
-          {store?.operatingDays?.some((day) => day.trim() !== "") ||
-          openingWeekDay?.some((day) => day && day.trim().length > 0) ? (
-            <>
-              <S.CardStoreWrapper className="d-flex justify-content-start align-items-center flex-wrap">
-                {openingWeekDay.map((item: any) => (
-                  <WeekDayCard
-                    key={item}
-                    text={item}
+            <h3 style={{ margin: "50px 0 25px 0" }}>Dias de fechamento</h3>
+            <S.CardStoreWrapper className="d-flex justify-content-start align-items-center flex-wrap">
+              {closingDates && closingDates.length > 0 ? (
+                closingDates.map((item: Date, index: number) => (
+                  <ClosingDateCard
+                    key={item.toISOString()}
+                    text={item.toLocaleDateString("pt-BR", {
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                    })}
                     icon="remove"
-                    onRemove={() => handleRemoveDateClosed(item)}
+                    onRemove={() => handleRemoveDataClosed(item)}
                   />
-                ))}
-              </S.CardStoreWrapper>
-            </>
-          ) : (
-            <p></p>
-          )}
-
-          <h3 style={{ margin: "50px 0 25px 0" }}>Dias de fechamento</h3>
-          <S.CardStoreWrapper className="d-flex justify-content-start align-items-center flex-wrap">
-            {closingDates && closingDates.length > 0 ? (
-              closingDates.map((item: Date, index: number) => (
-                <ClosingDateCard
-                  key={item.toISOString()}
-                  text={item.toLocaleDateString("pt-BR", {
-                    day: "2-digit",
-                    month: "2-digit",
-                    year: "numeric",
-                  })}
-                  icon="remove"
-                  onRemove={() => handleRemoveDataClosed(item)}
-                />
-              ))
-            ) : (
-              <p></p>
-            )}
-          </S.CardStoreWrapper>
-        </Col>
+                ))
+              ) : (
+                <p></p>
+              )}
+            </S.CardStoreWrapper>
+          </S.StoreSectionTwo>
+        </S.Store>
       </Row>
     </ContainerPage>
   );
 }
 
 export default StoreConfigure;
+
+{
+  /* <Col lg={12} xl={4} style={{ padding: "0px" }}>
+          
+        </Col> */
+}
+{
+  /* <Col lg={12} xl={8} className="px-5">
+          
+        </Col> */
+}

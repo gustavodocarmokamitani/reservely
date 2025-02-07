@@ -19,7 +19,7 @@ export const getServiceTypeById = async (id: number) => {
         return response;
     } catch (error) {
         console.error("Error getting service type by ID:", error);
-        throw error;
+        
     }
 };
 
@@ -77,3 +77,15 @@ export const createServiceTypeByStoreId = async (storeId: number, serviceTypeDat
         throw error;
     }
 };
+
+export const getServiceTypesByStore = async (storeId: number ) => {
+    if (!storeId) return;
+    try {
+        const response = await api.get(`serviceType/by-store/${storeId}`);
+        return response.data;
+    } catch (error) {
+        console.error(`Error getting service types for storeId ${storeId}:`, error);
+        throw error;
+    }
+};
+

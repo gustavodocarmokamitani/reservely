@@ -3,6 +3,7 @@ import * as S from "./Selected.styles";
 import {
   getServiceTypeById,
   getServiceTypes,
+  getServiceTypesByStore,
 } from "../services/ServiceTypeServices";
 import { getEmployeeIdByUserId } from "../services/EmployeeServices";
 import { getServices } from "../services/ServiceServices";
@@ -50,7 +51,7 @@ const Selected: React.FC<SelectedProps> = ({
   const [services, setServices] = useState<ServiceProps[]>([]);
   const [dataOptions, setDataOptions] = useState<number[]>([]);
 
-  const storeUser = localStorage.getItem("storeUser");
+  const storeUser = Number(localStorage.getItem("storeUser"));
 
   useEffect(() => {
     if (edit && options) {
@@ -65,9 +66,9 @@ const Selected: React.FC<SelectedProps> = ({
         let initialSelected: number[] = [];
 
         if (edit) {
-          const allServices = await getServiceTypes();
-
-          fetchedServices = [...fetchedServices, ...allServices.data];
+          const allServices = await getServiceTypesByStore(storeUser);          
+          
+          fetchedServices = [...fetchedServices, ...allServices];
 
           const existingServiceIds = dataOptions;
           initialSelected = existingServiceIds;
@@ -112,7 +113,7 @@ const Selected: React.FC<SelectedProps> = ({
 
           if (serviceData) {
             const filteredData = serviceData.filter(
-              (servico: any) => servico.storeId === Number(storeUser)
+              (servico: any) => servico.storeId === storeUser
             );
 
             const serviceTypePromises = filteredData.map(

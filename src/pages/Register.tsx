@@ -5,8 +5,9 @@ import Button from "../components/Button";
 import Input from "../components/Input";
 import { registerUser, checkEmail } from "../services/AuthService";
 import { useSnackbar } from "notistack";
-import { createStore } from "../services/StoreServices";
+import { createStore, deleteStore } from "../services/StoreServices";
 import * as S from "./Register.styles";
+import { deleteUser } from "../services/UserServices";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -65,6 +66,17 @@ const Register = () => {
     }
 
     try {
+      const responseStore = await createStore({
+        id: 0,
+        name: formData.storeName,
+        address: "",
+        status: false,
+        operatingHours: "",
+        closingDays: [""],
+        operatingDays: [""],
+        paymentMethods: [0],
+      });
+
       const response = await registerUser({
         name: formData.name,
         lastName: formData.lastname,
@@ -73,24 +85,14 @@ const Register = () => {
         password: formData.password,
         userName: formData.email,
         userTypeId: 1,
-        storeId: 1,
+        storeId: responseStore.id,
       });
 
-      if (response & response.success) {
-        const responseStore = await createStore({
-          id: 0,
-          name: formData.storeName,
-          address: "",
-          status: false,
-          operatingHours: "",
-          closingDays: [""],
-          operatingDays: [""],
-          paymentMethods: [0],
-        });
-
-        if (responseStore && responseStore.success ) {
-          window.location.href = "/confirm-email";
-        }
+      if (responseStore && response) {
+        window.location.href = "/confirm-email";
+      } else {
+        await deleteStore(responseStore.id);
+        await deleteUser(response.id);
       }
     } catch (error) {
       enqueueSnackbar("Ocorreu um erro. Por favor, tente novamente.", {

@@ -2,11 +2,12 @@ import { useState, useEffect, useContext, useCallback } from "react";
 
 import { ContainerPage } from "./_Page.styles";
 import { Col, Row } from "react-bootstrap";
-import { getUsers } from "../services/UserServices";
+import { getUserByUseTypeStore, getUsers } from "../services/UserServices";
 import {
   getEmployees,
   deleteEmployee,
   createEmployeeUser,
+  getEmployeesByStoreId,
 } from "../services/EmployeeServices";
 
 import { AppContext } from "../context/AppContext";
@@ -20,6 +21,7 @@ import AddUserEmployeeModal from "../view/Modal/AddUserEmployeeModal";
 import ProfessionalDataTable from "../view/DataTable/ProfessionalDataTable";
 
 import { decodeToken } from "../services/AuthService";
+import { capitalizeFirstLetter } from "../services/system/globalService";
 
 interface Employee {
   id: number;
@@ -51,7 +53,8 @@ function Professional() {
 
   const storedToken = localStorage.getItem("authToken");
   const [decodedData, setDecodedData] = useState<DecodedToken>();
-
+  const storeUser = Number(localStorage.getItem("storeUser"));
+  
   const { enqueueSnackbar } = useSnackbar();
 
   const { setUserEmployeeContext, userEmployeeContext } =
@@ -67,9 +70,10 @@ function Professional() {
     }
 
     try {
-      const usersData = await getUsers();
-      const employeesData = await getEmployees();
-
+      const usersData = await getUserByUseTypeStore(2, storeUser);
+      const employeesData = await getEmployeesByStoreId(storeUser);            
+      console.log();
+      
       const mappedRows: Rows[] = employeesData
         .map((employee: Employee) => {
           const user = usersData.find((u: any) => u.id === employee.userId);
@@ -96,33 +100,11 @@ function Professional() {
     }
   }, [storedToken]);
 
-  const handleCreateEmployeeUser = useCallback(async () => {
-    try {
-      if (post) {
-        if (!userEmployeeContext?.name || !userEmployeeContext.lastName || !userEmployeeContext.phone) {
-          setPost(false);
-          enqueueSnackbar("Por favor, preencha todos os dados obrigatórios antes de continuar.", { variant: "error" });
-          return;
-        }
-
-        await createEmployeeUser(userEmployeeContext);
-
-        enqueueSnackbar("Professional criado com sucesso!", { variant: "success" });
-        setUserEmployeeContext(null);
-        fetchData();
-        setPost(false);
-      }
-    } catch (error) {
-      console.error("Erro durante o request:", error);
-      enqueueSnackbar("Erro inesperado! Verifique os dados.", { variant: "error" });
-    }
-  }, [post, userEmployeeContext, enqueueSnackbar, fetchData, setUserEmployeeContext]);
-
+  
   useEffect(() => {
-    handleCreateEmployeeUser();
     fetchData();
     setPost(false);
-  }, [fetchData, handleCreateEmployeeUser, post]);
+  }, [fetchData, post]);
 
   const handleDeleteUsers = async () => {
     if (selectedUserIds.length > 0) {
@@ -168,11 +150,7 @@ function Professional() {
     setSelectedUserIds(ids);
   };
 
-  const capitalizeFirstLetter = (str: string) => {
-    if (!str) return "";  
-    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-  };
-
+ 
   return (
     <>
       <ContainerPage style={{ height: "100vh" }}>

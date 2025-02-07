@@ -66,8 +66,8 @@ function Store() {
       <Row>
         <Col lg={12} xl={7} style={{ padding: "0px" }}>
           <HeaderTitle
-            title="Store"
-            subTitle="Área destinada para gerenciamento da store."
+            title={`${store?.name}`}
+            subTitle="Área destinada para gerenciamento da loja."
           />
         </Col>
 
@@ -83,7 +83,7 @@ function Store() {
       </Row>
       <Row>
         <Col md={12}>
-          <h3 style={{ margin: "20px 0 25px 0" }}>Dados da store</h3>
+          <h3 style={{ margin: "20px 0 25px 0" }}>Dados da loja</h3>
           <S.CardStoreWrapper className="d-flex justify-content-start align-items-center">
             <CardStatus data={store} title="Status" icon="confirm" />
             {store?.operatingHours && store.operatingHours.length > 0 ? (

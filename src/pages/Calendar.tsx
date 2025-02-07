@@ -25,7 +25,7 @@ function Calendar() {
   const fetchData = useCallback(async () => {
     try {
       const response = await getAppointmentByStoreId(storeUser);
-
+ 
       const fetchedEvents: Event[] = await Promise.all(
         response.map(async (appointment: Appointment) => {
           const serviceNames = await Promise.all(
@@ -34,7 +34,7 @@ function Calendar() {
               if (servicesName && servicesName.data) {
                 return servicesName.data.name;
               }
-              return "";
+              return `Serviço Removido Id:${id} `;  
             })
           );
 

@@ -5,6 +5,7 @@ import { getEmployeeIdByUserId } from "../../services/EmployeeServices";
 import {
   getServiceTypes,
   getServiceTypeById,
+  getServiceTypesByStore,
 } from "../../services/ServiceTypeServices";
 import customStyles from "./styles/customStyles";
 import Select from "react-select";
@@ -22,13 +23,15 @@ const ServiceSelect: React.FC<ServiceSelectProps> = ({
 }) => {
   const [options, setOptions] = useState<SelectOption[]>([]);
 
+  const storeUser = Number(localStorage.getItem("storeUser"));
+
   useEffect(() => {
     const fetchServices = async () => {
-      try {
-        const response = await getServiceTypes();
+      try {        
+        const response = await getServiceTypesByStore(storeUser); 
 
-        if (response && response.data) {
-          const serviceTypesActives = response.data.filter(
+        if (response) {
+          const serviceTypesActives = response.filter(
             (serviceType: ServiceType) => serviceType.active === true
           );
           

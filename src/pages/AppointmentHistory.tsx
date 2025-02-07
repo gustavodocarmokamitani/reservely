@@ -4,13 +4,14 @@ import HeaderTitle from "../view/HeaderTitle";
 import AppointmentDataTable from "../view/DataTable/AppointmentDataTable";
 import Button from "../components/Button";
 import { Col, Row } from "react-bootstrap";
-import { deleteAppointment, getAppointments } from "../services/AppointmentServices";
+import { deleteAppointment, getAppointmentByStoreId, getAppointments } from "../services/AppointmentServices";
 import { getEmployeeById } from "../services/EmployeeServices";
 import { getUserById } from "../services/UserServices";
 import { getAppointmentStatusById } from "../services/AppointmentStatusServices";
 import { decodeToken } from "../services/AuthService";
 import { useSnackbar } from "notistack";
 import { Appointment } from "../models/Appointment";
+import { capitalizeFirstLetter } from "../services/system/globalService";
 
 interface DecodedToken {
   userId: string;
@@ -25,6 +26,7 @@ function AppointmentHistory() {
   const [decodedData, setDecodedData] = useState<DecodedToken>();
 
   const storedToken = localStorage.getItem("authToken");
+  const storeUser = Number(localStorage.getItem("storeUser"));
   const { enqueueSnackbar } = useSnackbar();
 
   const mapAppointments = async (appointments: Appointment[]) => {
@@ -67,13 +69,14 @@ function AppointmentHistory() {
         setDecodedData(data);
       }
 
-      const appointmentData = await getAppointments();
+      const appointmentData = await getAppointmentByStoreId(storeUser);
       
       const mappedAppointments = await mapAppointments(appointmentData); 
 
       setRows(mappedAppointments);
       
       setUpdate(false);
+      console.log(123);
       
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -115,11 +118,6 @@ function AppointmentHistory() {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
-
-  const capitalizeFirstLetter = (str: string) => {
-    if (!str) return "";  
-    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-  };
 
   return (
     <ContainerPage style={{ height: "100vh" }}>

@@ -5,6 +5,7 @@ import { getEmployees } from "../../services/EmployeeServices";
 import { Employee } from "../../models/Employee";
 import customStyles from "./styles/customStyles";
 import Select from "react-select";
+import { capitalizeFirstLetter } from "../../services/system/globalService";
 
 interface EmployeeAppointmentSelectProps {
   setEmployee: (option: SelectOption | null) => void;
@@ -76,12 +77,7 @@ const EmployeeAppointmentSelect: React.FC<EmployeeAppointmentSelectProps> = ({
   const handleChange = (option: any) => {
     setEmployee(option);
     handleEmployeeChange(option);
-  };
-
-  const capitalizeFirstLetter = (str: string) => {
-    if (!str) return "";
-    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-  };
+  };  
 
   return (
     <Select

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import * as S from "./styles/DataPicker.styles"
 import DatePicker from "react-datepicker";
+import { ptBR } from "date-fns/locale";
 
 interface AppointmentDataSelectProps {
   setAppointmentDate: (date: Date | null) => void;
@@ -25,6 +26,7 @@ const AppointmentDataSelect: React.FC<AppointmentDataSelectProps> = ({ setAppoin
         minDate={new Date()}
         className="custom-datepicker"
         inline
+        locale={ptBR}
       />
     </S.StyledDatePicker>
   );

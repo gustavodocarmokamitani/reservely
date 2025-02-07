@@ -33,11 +33,13 @@ const Navigation = () => {
       "/service",
       "/professional-register",
       "/professional",
-      "/store",
+      "/store",      
       "/payment",
+      "/store-configure"  
     ];
 
-    const newIndex = menuPaths.indexOf(path);
+    const newIndex = path === "/store-configure" ? menuPaths.indexOf("/store") : menuPaths.indexOf(path);
+ 
     setSelectedIndex(newIndex >= 0 ? newIndex : 0); 
  
     const itemRef = menuItemsRef.current[selectedIndex];

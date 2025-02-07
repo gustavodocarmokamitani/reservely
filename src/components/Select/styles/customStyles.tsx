@@ -1,7 +1,7 @@
 const customStyles = {
   control: (provided: any) => ({
     ...provided,
-    minWidth: "300px",
+    minWidth: "280px",
     minHeight: "40px",
     padding: "5px 25px",
     fontSize: "14px",

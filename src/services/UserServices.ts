@@ -45,6 +45,16 @@ export const getUserByEmail = async (email: string) => {
     }
 };
 
+export const getUserByUseTypeStore = async (userTypeId: number, storeId: number) => {
+    try {
+        const response = await api.get(`user/type/${userTypeId}/store/${storeId}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error getting user by email:", error);
+        throw error;
+    }
+};
+
 
 export const createUser = async (userData: User) => {
     try {

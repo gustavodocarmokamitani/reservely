@@ -1,11 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
-import { getUserTypeIdById } from "../../services/UserServices";
+import {
+  getUserByUseTypeStore,
+  getUserTypeIdById,
+} from "../../services/UserServices";
 import { SelectOption } from "../../models/SelectOptions";
 import { getEmployeesByStoreId } from "../../services/EmployeeServices";
 import { Employee } from "../../models/Employee";
 import customStyles from "./styles/customStyles";
 import Select from "react-select";
 import { User } from "../../context/AppContext";
+import { capitalizeFirstLetter } from "../../services/system/globalService";
 
 interface EmployeeSelectProps {
   setEmployee: (option: SelectOption | null) => void;
@@ -31,30 +35,23 @@ const EmployeeSelect: React.FC<EmployeeSelectProps> = ({
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const responseUser = await getUserTypeIdById(2);
+        const responseEmployee = await getUserByUseTypeStore(2, storeUser);
+        const response = await getEmployeesByStoreId(storeUser);
 
-        const responseEmployee = await getEmployeesByStoreId(storeUser);
+        const filteredResponseEmployee = responseEmployee.filter(
+          (emp: any) => !response.some((res: any) => res.userId === emp.id)
+        );
 
-        const formattedOptions: Option[] = responseUser
-          .map((employee: User) => {
-            const isUserInEmployeeList = responseEmployee.some(
-              (emp: Employee) => emp.userId === employee.id
-            );
-
-            if (!isUserInEmployeeList) {
-              return {
-                value: employee.id,
-                label:
-                  capitalizeFirstLetter(employee.name) +
-                  " " +
-                  capitalizeFirstLetter(employee.lastName),
-                isDisabled: false,
-              };
-            }
-
-            return null;
+        const formattedOptions: Option[] = filteredResponseEmployee.map(
+          (employee: User) => ({
+            value: employee.id,
+            label:
+              capitalizeFirstLetter(employee.name) +
+              " " +
+              capitalizeFirstLetter(employee.lastName),
+            isDisabled: false,
           })
-          .filter((option: any) => option !== null);
+        );
 
         formattedOptions.unshift({
           value: 0,
@@ -69,11 +66,6 @@ const EmployeeSelect: React.FC<EmployeeSelectProps> = ({
     };
     fetchEmployees();
   }, [storeUser]);
-
-  const capitalizeFirstLetter = (str: string) => {
-    if (!str) return "";
-    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-  };
 
   const handleChange = (option: any) => {
     setEmployee(option);

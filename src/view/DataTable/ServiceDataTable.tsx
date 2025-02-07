@@ -83,8 +83,32 @@ const ServiceDataTable: React.FC<ServiceDataTableProps> = ({
     ? [
         { field: "id", headerName: "ID", flex: 1, align: "center" as const, headerAlign: "center" as const },
         { field: "name", headerName: "Nome", flex: 2, align: "center" as const, headerAlign: "center" as const },
-        { field: "value", headerName: "Valor", flex: 1, align: "center" as const, headerAlign: "center" as const },
-        { field: "durationMinutes", headerName: "Duração", flex: 1, align: "center" as const, headerAlign: "center" as const },
+        {
+          field: "value",
+          headerName: "Valor",
+          flex: 1,
+          align: "center" as const,
+          headerAlign: "center" as const,
+          renderCell: (params: any) => {
+            return new Intl.NumberFormat('pt-BR', {
+              style: 'currency',
+              currency: 'BRL',
+            }).format(params.value);
+          },
+        },
+        {
+          field: "durationMinutes",
+          headerName: "Duração",
+          flex: 1,
+          align: "center" as const,
+          headerAlign: "center" as const,
+          renderCell: (params) => {
+            const minutes = params.value || 0;
+            const hours = Math.floor(minutes / 60);
+            const mins = minutes % 60;
+            return <span>{`${String(hours).padStart(2, "0")}:${String(mins).padStart(2, "0")}`}</span>;
+          }
+        },        
         {
           field: "active",
           headerName: "Ativo",

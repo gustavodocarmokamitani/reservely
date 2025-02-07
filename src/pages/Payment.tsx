@@ -74,7 +74,7 @@ function Payment() {
 
       await updateStore(store.id, mapped);
 
-      enqueueSnackbar("Metodos de payment adicionado com sucesso!", {
+      enqueueSnackbar("Metodos de pagamento adicionado com sucesso!", {
         variant: "success",
       });
     } catch (error) {

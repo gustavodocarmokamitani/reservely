@@ -62,12 +62,12 @@ const AddServiceModal: React.FC<AddServiceModalProps> = ({
   };  
 
   const handleSubmit = async () => {
-    try {
+    try {       
       if (!validateFormValues(formValuesService)) {
         return;
       }
 
-      const tipoService: ServiceServiceType[] = [
+      const typeService: ServiceServiceType[] = [
         {
           id: formValuesService.id,
           name: formValuesService.name,
@@ -86,8 +86,8 @@ const AddServiceModal: React.FC<AddServiceModalProps> = ({
           ],
         },
       ];
-
-      const responsePost = await createServiceTypeByStoreId(1, tipoService);
+      
+      const responsePost = await createServiceTypeByStoreId(storeUser, typeService);
 
       if (responsePost) {
         enqueueSnackbar("Serviço criado com sucesso!", { variant: "success" });

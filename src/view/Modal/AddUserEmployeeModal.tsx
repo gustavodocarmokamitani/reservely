@@ -85,6 +85,8 @@ const AddUserEmployeeModal: React.FC<AddUserEmployeeModalProps> = ({
         serviceIds: formValuesProfessional.serviceIds,
       };
 
+      console.log(employeeData);
+      
       handleEmployeeAdd([employeeData]);
     }
 
@@ -98,14 +100,16 @@ const AddUserEmployeeModal: React.FC<AddUserEmployeeModalProps> = ({
       const updatedEmployeeData = employeeData.map((employee) => ({
         ...employee,
         serviceIds: formValuesProfessional.serviceIds,
-      }));
-
-      const response = await createEmployee(updatedEmployeeData);
-      if (response) {
-        enqueueSnackbar("Profissional adicionado com sucesso.", {
-          variant: "success",
-        });
-      }
+      })); 
+      
+      console.log(updatedEmployeeData);
+      
+      // const response = await createEmployee(updatedEmployeeData);
+      // if (response) {
+      //   enqueueSnackbar("Profissional adicionado com sucesso.", {
+      //     variant: "success",
+      //   });
+      // }
     } catch (error) {
       console.error("Erro ao registrar o profissional: ", error);
       enqueueSnackbar("Ocorreu um erro. Por favor, tente novamente.", {

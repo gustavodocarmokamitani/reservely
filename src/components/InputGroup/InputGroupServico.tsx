@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
 import Input from "../Input";
 import { Service } from "../../models/Service";
+import DurationMinuteSelect from "../Select/DurationMinuteSelect";
 
 interface InputGroupServiceProps {
   editService?: boolean;
@@ -40,7 +41,12 @@ const InputGroupService: React.FC<InputGroupServiceProps> = ({
   const storeUser = Number(localStorage.getItem("storeUser"));
 
   useEffect(() => {
-    if (!isInitialized && editService && Array.isArray(data) && data.length > 0) {
+    if (
+      !isInitialized &&
+      editService &&
+      Array.isArray(data) &&
+      data.length > 0
+    ) {
       const item = data[0];
       const newState = {
         id: item.id,
@@ -95,15 +101,9 @@ const InputGroupService: React.FC<InputGroupServiceProps> = ({
           md={6}
           className="mt-3 mb-3 d-flex justify-content-center align-items-center"
         >
-          <Input
-            width="300"
-            type="text"
-            placeholder="Duração"
-            name="durationMinutes"
+          <DurationMinuteSelect
             value={formValuesService.durationMinutes}
-            onChange={(e) =>
-              handleInputChange(e as React.ChangeEvent<HTMLInputElement>)
-            }
+            setFormValuesService={setFormValuesService}
           />
         </Col>
         <Col

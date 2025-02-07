@@ -26,8 +26,12 @@ export const StyledDatePicker = styled.div`
     padding-top: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 350px;
-    height: 350px;
+    height: 390px;
     font-size: 18px;
+  }
+
+  & .react-datepicker__day-name {
+    margin: 10px 10px;
   }
 
   & .react-datepicker__header {

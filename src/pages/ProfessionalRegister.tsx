@@ -11,11 +11,13 @@ import {
   getUsers,
   deleteUser,
   getUserTypeIdById,
+  getUserByUseTypeStore,
 } from "../services/UserServices";
 import { decodeToken } from "../services/AuthService";
 
 import * as S from "./_Page.styles";
 import { getEmployeeIdByUserId } from "../services/EmployeeServices";
+import { capitalizeFirstLetter } from "../services/system/globalService";
 
 interface User {
   id: number;
@@ -50,6 +52,8 @@ function ProfessionalRegister() {
   const storedToken = localStorage.getItem("authToken");
   const [decodedData, setDecodedData] = useState<DecodedToken>();
 
+  const storeUser = Number(localStorage.getItem("storeUser"));
+
   const { enqueueSnackbar } = useSnackbar();
 
   const fetchData = useCallback(async () => {
@@ -58,15 +62,20 @@ function ProfessionalRegister() {
       setDecodedData(data);
     }
     try {
-      const usersData = await getUserTypeIdById(2);
+      const usersData = await getUserByUseTypeStore(2, storeUser);
 
       if (usersData === 404) {
         return;
       }
-
-      const mappedRows: Rows[] = usersData;
-
+      
+      const mappedRows: Rows[] = usersData.map((user: any) => ({
+        ...user,
+        name: capitalizeFirstLetter(user.name),
+        lastName: capitalizeFirstLetter(user.lastName),
+      }));
+      
       setRows(mappedRows);
+      
     } catch (error) {
       console.error("Erro ao buscar dados:", error);
     }

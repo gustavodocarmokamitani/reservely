@@ -18,6 +18,8 @@ const iconMap = {
 };
 
 const CardTime: React.FC<CardTimeProps> = ({ title, icon, selectedTimes }) => {
+    console.log(selectedTimes);
+    
     return (
         <S.CardStoreContainer>
             <S.CardStoreContent>
@@ -27,7 +29,7 @@ const CardTime: React.FC<CardTimeProps> = ({ title, icon, selectedTimes }) => {
                         <Col md={8}>
                             {
                                 title === 'Hora de abertura' ?
-                                    <p style={{ textAlign: 'center' }}>{selectedTimes ? selectedTimes[0] : null}</p>
+                                    <p style={{ textAlign: 'center' }}>{(selectedTimes && selectedTimes[0] !== "string") ? selectedTimes[0] : null}</p>
                                     :
                                     <p style={{ textAlign: 'center' }}>{selectedTimes ? selectedTimes[1] : null}</p>
                             }

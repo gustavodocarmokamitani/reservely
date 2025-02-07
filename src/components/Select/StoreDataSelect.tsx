@@ -2,6 +2,7 @@ import React from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import * as S from "./styles/dataStyles";
+import { ptBR } from "date-fns/locale";
 
 interface StoreDataSelectProps {
   setClosingDates: React.Dispatch<React.SetStateAction<Date[] | null>>;
@@ -31,6 +32,7 @@ const StoreDataSelect: React.FC<StoreDataSelectProps> = ({
           dateFormat="dd/MM/yyyy"
           minDate={new Date()}
           placeholderText="Selecione a data"
+          locale={ptBR}
           isClearable
           inline
         />

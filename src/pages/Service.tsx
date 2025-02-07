@@ -4,6 +4,7 @@ import { Col, Row } from "react-bootstrap";
 import {
   deleteServiceType,
   getServiceTypes,
+  getServiceTypesByStore,
 } from "../services/ServiceTypeServices";
 import { decodeToken } from "../services/AuthService";
 import { ServiceType } from "../models/ServiceType";
@@ -29,6 +30,8 @@ function Service() {
   const storedToken = localStorage.getItem("authToken");
   const [decodedData, setDecodedData] = useState<DecodedToken>();
 
+  const storeUser = Number(localStorage.getItem("storeUser"));
+
   const { enqueueSnackbar } = useSnackbar();
 
   const fetchData = useCallback(async () => {
@@ -37,8 +40,8 @@ function Service() {
       setDecodedData(data);
     }
     try {
-      const serviceData = await getServiceTypes();
-      setRows(serviceData?.data);
+      const serviceData = await getServiceTypesByStore(storeUser);
+      setRows(serviceData);
     } catch (error) {
       console.error("Erro ao buscar dados:", error);
     }
