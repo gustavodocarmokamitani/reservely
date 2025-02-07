@@ -104,12 +104,12 @@ const AddUserEmployeeModal: React.FC<AddUserEmployeeModalProps> = ({
       
       console.log(updatedEmployeeData);
       
-      // const response = await createEmployee(updatedEmployeeData);
-      // if (response) {
-      //   enqueueSnackbar("Profissional adicionado com sucesso.", {
-      //     variant: "success",
-      //   });
-      // }
+      const response = await createEmployee(updatedEmployeeData);
+      if (response) {
+        enqueueSnackbar("Profissional adicionado com sucesso.", {
+          variant: "success",
+        });
+      }
     } catch (error) {
       console.error("Erro ao registrar o profissional: ", error);
       enqueueSnackbar("Ocorreu um erro. Por favor, tente novamente.", {
