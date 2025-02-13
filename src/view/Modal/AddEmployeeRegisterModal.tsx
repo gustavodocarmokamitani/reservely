@@ -3,7 +3,7 @@ import { useSnackbar } from "notistack";
 import { Col, Row } from "react-bootstrap";
 
 import { AppContext } from "../../context/AppContext";
-import Button from "../../components/Button";
+import Button from "../../components/Button/Button";
 import InputGroupProfessionalRegister from "../../components/InputGroup/InputGroupProfessionalRegister";
 
 import { checkEmail, registerProfessional } from "../../services/AuthService";
@@ -18,7 +18,6 @@ import * as S from "./Modal.styles";
 interface AddUserEmployeeModalProps {
   title: string;
   subTitle?: string;
-  handleShow: () => void;
   handleClose: () => void;
   fetchData: () => void;
   size: "small" | "medium" | "large";

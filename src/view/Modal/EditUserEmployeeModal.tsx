@@ -9,7 +9,7 @@ import {
 } from "../../services/EmployeeServices";
 import { getUserById } from "../../services/UserServices";
 import * as S from "./Modal.styles";
-import Button from "../../components/Button";
+import Button from "../../components/Button/Button";
 import closeIcon from "../../assets/remove.svg";
 import InputGroupProfissional from "../../components/InputGroup/InputGroupProfessionalEdit";
 import { useSnackbar } from "notistack";
@@ -192,7 +192,7 @@ const EditUserEmployeeModal: React.FC<EditUserEmployeeModalProps> = ({
             setFormValuesProfessional={setFormValuesProfessional}
             formValuesProfessional={formValuesProfessional}
             handleInputChange={handleInputChangeProfissional}
-            data={combinedData ? [combinedData] : undefined}
+            employeeSelected={combinedData ? [combinedData] : undefined}
             edit
           />
         )}

@@ -51,7 +51,6 @@ export const getUserByUseTypeStore = async (userTypeId: number, storeId: number)
         return response.data;
     } catch (error) {
         console.error("Error getting user by email:", error);
-        throw error;
     }
 };
 

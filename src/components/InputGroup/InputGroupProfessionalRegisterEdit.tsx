@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 import { Col, Row } from "react-bootstrap";
 
-import Input from "../Input";
+import Input from "../Input/Input";
 
 import { UserEmployee } from "../../models/UserEmployee";
 

@@ -1,20 +1,20 @@
-import { useState } from "react";
 import { Col, Row } from "react-bootstrap";
-import { Service, ServiceServiceType } from "../../models/Service";
+import { Service } from "../../models/Service";
 import * as S from "./Modal.styles";
-import Button from "../../components/Button";
+import Button from "../../components/Button/Button";
 import InputGroupServico from "../../components/InputGroup/InputGroupServico";
 import closeIcon from "../../assets/remove.svg";
-import { enqueueSnackbar } from "notistack";
-import { createServiceTypeByStoreId } from "../../services/ServiceTypeServices";
 
 interface AddServiceModalProps {
   title: string;
   subTitle?: string;
+  setFormValuesService: React.Dispatch<React.SetStateAction<Service>>;
+  formValuesService: Service;
   handleShow: () => void;
   handleClose: () => void;
-  fetchData: () => void;
-  size: "small" | "medium" | "large"; 
+  handleSubmit: () => void;
+  handleInputChangeService: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  size: "small" | "medium" | "large";
 }
 
 const AddServiceModal: React.FC<AddServiceModalProps> = ({
@@ -22,94 +22,17 @@ const AddServiceModal: React.FC<AddServiceModalProps> = ({
   handleClose,
   title,
   subTitle,
-  size, 
-  fetchData,
+  size,
+  setFormValuesService,
+  formValuesService,
+  handleInputChangeService,
+  handleSubmit,
 }) => {
-  const [formValuesService, setFormValuesService] = useState<Service>({
-    id: 0,
-    name: "",
-    description: "",
-    value: "",
-    durationMinutes: "",
-    active: "false",
-    storeId: 0,
-  });
- 
-  const storeUser = Number(localStorage.getItem("storeUser"));
 
   const sizeMap = {
     small: "650px",
     medium: "850px",
     large: "1050px",
-  };
-
-  const validateFormValues = (formValues: Service): boolean => {
-    const fieldValidations = [
-      { field: "name", message: "O campo 'Nome' é obrigatório." },
-      { field: "value", message: "O campo 'Valor' é obrigatório." },
-      { field: "durationMinutes", message: "O campo 'Duração (minutos)' é obrigatório." },
-      { field: "description", message: "O campo 'Descrição' é obrigatório." },
-    ];
-  
-    for (const { field, message } of fieldValidations) {
-      if (!formValues[field as keyof Service]) {
-        enqueueSnackbar(message, { variant: "error" });
-        return false;
-      }
-    }
-  
-    return true;
-  };  
-
-  const handleSubmit = async () => {
-    try {       
-      if (!validateFormValues(formValuesService)) {
-        return;
-      }
-
-      const typeService: ServiceServiceType[] = [
-        {
-          id: formValuesService.id,
-          name: formValuesService.name,
-          description: formValuesService.description,
-          value: parseFloat(formValuesService.value as string),
-          active: formValuesService.active === "true",
-          durationMinutes: parseFloat(
-            formValuesService.durationMinutes as string
-          ),
-          services: [
-            {
-              id: formValuesService.id,
-              serviceTypeId: formValuesService.id,
-              storeId: storeUser,
-            },
-          ],
-        },
-      ];
-      
-      const responsePost = await createServiceTypeByStoreId(storeUser, typeService);
-
-      if (responsePost) {
-        enqueueSnackbar("Serviço criado com sucesso!", { variant: "success" });
-        fetchData();
-      }
-      handleClose();
-    } catch (error) {
-      console.error("Erro durante o request:", error);
-      enqueueSnackbar("Erro inesperado! Verifique os dados.", {
-        variant: "error",
-      });
-    }
-  };
-
-  const handleInputChangeService = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const { name, type, checked, value } = event.target;
-    setFormValuesService((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? (checked ? "true" : "false") : value,
-    }));
   };
 
   return (

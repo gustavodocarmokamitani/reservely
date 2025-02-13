@@ -1,14 +1,18 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useSnackbar } from "notistack";
-import Button from "../../components/Button";
-import StatusAppointmentSelect from "../../components/Select/AppointmentStatusSelect";
-import { getAppointmentById, updateAppointment } from "../../services/AppointmentServices";
+import Button from "../../components/Button/Button";
+import {
+  getAppointmentById,
+  updateAppointment,
+} from "../../services/AppointmentServices";
 import { Appointment } from "../../models/Appointment";
 import { SelectOption } from "../../models/SelectOptions";
 import { AppContext } from "../../context/AppContext";
 import * as S from "./Modal.styles";
 import closeIcon from "../../assets/remove.svg";
+import Select from "../../components/Select/Select";
+import { getAppointmentStatus } from "../../services/AppointmentStatusServices";
 
 interface EditStatusAppointmentModalProps {
   title: string;
@@ -29,7 +33,10 @@ const EditStatusAppointmentModal: React.FC<EditStatusAppointmentModalProps> = ({
   rowId,
   setUpdate,
 }) => {
-  const [statusAppointment, setAppointmentStatus] = useState<SelectOption | null>(null);
+  const [statusAppointment, setAppointmentStatus] = useState<SelectOption[]>(
+    []
+  );
+  const [options, setOptions] = useState<SelectOption[]>([]);
   const { enqueueSnackbar } = useSnackbar();
   const { setAppointmentUpdateContext } = useContext(AppContext)!;
   const storeUser = React.useMemo(() => localStorage.getItem("storeUser"), []);
@@ -40,7 +47,7 @@ const EditStatusAppointmentModal: React.FC<EditStatusAppointmentModalProps> = ({
   };
 
   const handleSubmit = async () => {
-    if (!rowId) return;  
+    if (!rowId) return;
 
     try {
       const response = await getAppointmentById(rowId);
@@ -51,7 +58,8 @@ const EditStatusAppointmentModal: React.FC<EditStatusAppointmentModalProps> = ({
           employeeId: response.employeeId,
           appointmentDate: response.appointmentDate,
           appointmentTime: response.appointmentTime,
-          appointmentStatusId: statusAppointment.value,
+          appointmentStatusId:
+            statusAppointment[statusAppointment.length - 1].value,
           serviceIds: response.serviceIds,
           storeId: Number(storeUser),
         };
@@ -64,16 +72,43 @@ const EditStatusAppointmentModal: React.FC<EditStatusAppointmentModalProps> = ({
         );
 
         if (responseAppointment) {
-          enqueueSnackbar("Status do appointment editado com sucesso!", { variant: "success" });
+          enqueueSnackbar("Status do appointment editado com sucesso!", {
+            variant: "success",
+          });
           setUpdate(true);
         }
       }
     } catch (error) {
       console.error(`Erro ao editar appointment ${rowId}:`, error);
-      enqueueSnackbar("Erro ao editar o status do appointment.", { variant: "error" });
+      enqueueSnackbar("Erro ao editar o status do appointment.", {
+        variant: "error",
+      });
     }
     handleClose();
   };
+
+  useEffect(() => {
+    const fetchFuncionarios = async () => {
+      try {
+        const response = await getAppointmentStatus();
+        const formattedOptions = response.map((item: any) => ({
+          value: item.id,
+          label: item.name,
+        }));
+
+        formattedOptions.unshift({
+          value: 0,
+          label: "Selecione...",
+          isDisabled: true,
+        });
+        setOptions(formattedOptions);
+      } catch (error) {
+        console.error("Erro ao buscar funcionários:", error);
+      }
+    };
+
+    fetchFuncionarios();
+  }, []);
 
   return (
     <S.Overlay>
@@ -107,16 +142,25 @@ const EditStatusAppointmentModal: React.FC<EditStatusAppointmentModalProps> = ({
         </Row>
 
         <Col md={6} style={{ margin: "15px 0px 35px 15px" }}>
-          <StatusAppointmentSelect
+          <Select
+            setData={setAppointmentStatus}
+            value={statusAppointment}
+            options={options}
+            placeholder="Selecione um status"
+          />         
+          {/* <StatusAppointmentSelect
             setAppointmentStatus={setAppointmentStatus}
             value={statusAppointment?.value}
-          />
+          /> */}
         </Col>
 
         <hr />
 
         <Row>
-          <Col md={12} className="d-flex flex-row justify-content-center align-items-center">
+          <Col
+            md={12}
+            className="d-flex flex-row justify-content-center align-items-center"
+          >
             <Button $isClosed type="button" onClick={handleClose} />
             <Button $isConfirm type="button" onClick={handleSubmit} />
           </Col>

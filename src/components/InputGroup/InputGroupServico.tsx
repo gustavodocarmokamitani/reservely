@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
-import Input from "../Input";
-import { Service } from "../../models/Service";
-import DurationMinuteSelect from "../Select/DurationMinuteSelect";
+import Input from "../Input/Input";
+import { Service } from "../../models/Service"; 
+import Select from "../Select/Select";
+import { SelectOption } from "../../models/SelectOptions";
 
 interface InputGroupServiceProps {
   editService?: boolean;
@@ -36,32 +37,49 @@ const InputGroupService: React.FC<InputGroupServiceProps> = ({
   editService = false,
   setFormValuesService,
 }) => {
-  const [isInitialized, setIsInitialized] = React.useState(false);
-
-  const storeUser = Number(localStorage.getItem("storeUser"));
+  const [durationMinutes, setDurationMinutes] = useState<SelectOption[]>([]);
+  const [options, setOptions] = useState<SelectOption[]>([]);
 
   useEffect(() => {
-    if (
-      !isInitialized &&
-      editService &&
-      Array.isArray(data) &&
-      data.length > 0
-    ) {
-      const item = data[0];
-      const newState = {
-        id: item.id,
-        name: item.name,
-        description: item.description,
-        value: String(item.value),
-        active: item.active ? "true" : "false",
-        durationMinutes: String(item.durationMinutes),
-        storeId: storeUser,
-      };
-      setFormValuesService(newState);
-      setIsInitialized(true);
-    }
-  }, [data, editService, isInitialized, setFormValuesService, storeUser]);
+    const generatedTimes = [];
 
+    for (let hour = 0; hour < 6; hour++) {
+      if (hour > 0) {
+        generatedTimes.push({
+          label: `${String(hour).padStart(2, "0")}:00`,
+          value: hour * 60,
+        });
+      }
+
+      for (let minute = 15; minute < 60; minute += 15) {
+        const label =
+          hour === 0
+            ? `${String(minute).padStart(2, "0")}`
+            : `${String(hour).padStart(2, "0")}:${String(minute).padStart(
+                2,
+                "0"
+              )}`;
+        const value = hour * 60 + minute;
+
+        generatedTimes.push({ label, value });
+      }
+    }
+
+    generatedTimes.push({ label: "06:00", value: 360 });
+
+    setOptions(generatedTimes);
+  }, []);
+
+  useEffect(() => {
+    if (durationMinutes.length > 0) {
+      const selectedOption = durationMinutes[0]; 
+      setFormValuesService((prevValues) => ({
+        ...prevValues,
+        durationMinutes: String(selectedOption.value),
+      }));
+    }
+  }, [durationMinutes, setFormValuesService]);
+  
   return (
     <>
       <Row>
@@ -101,10 +119,16 @@ const InputGroupService: React.FC<InputGroupServiceProps> = ({
           md={6}
           className="mt-3 mb-3 d-flex justify-content-center align-items-center"
         >
-          <DurationMinuteSelect
+          <Select
+            setData={setDurationMinutes}
+            value={durationMinutes}
+            options={options}
+            placeholder="Selecione a duração"       
+          />
+          {/* <DurationMinuteSelect
             value={formValuesService.durationMinutes}
             setFormValuesService={setFormValuesService}
-          />
+          /> */}
         </Col>
         <Col
           md={6}

@@ -23,7 +23,7 @@ const DashboardCard: React.FC<DashboardCardProps> = ({
   return (
     <S.CardDashboardContainer>
       <S.CardDashboardContent>
-        <h4 style={{ marginBottom: "20px", textAlign: "center" }}>{title}</h4>
+        <h4 style={{ marginBottom: "5px", textAlign: "center" }}>{title}</h4>
         {icon && iconMap[icon] && (
           <Row>
             <Col className="d-flex justify-content-center align-items-center ">

@@ -37,7 +37,7 @@ export const CardDashboardContainer = styled.div`
 export const CardDashboardContent = styled.div`
   width: 49.5%;
   min-width: 300px;
-  padding: 25px;
+  padding: 0px;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;

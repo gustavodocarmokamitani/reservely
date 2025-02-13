@@ -85,7 +85,6 @@ export const getServiceTypesByStore = async (storeId: number ) => {
         return response.data;
     } catch (error) {
         console.error(`Error getting service types for storeId ${storeId}:`, error);
-        throw error;
     }
 };
 

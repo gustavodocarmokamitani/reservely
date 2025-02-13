@@ -29,7 +29,7 @@ const BarChartHorizontal: React.FC<BarChartProps> = ({ data, labels }) => {
     labels: labels,
     datasets: [
       {
-        label: "Agendamentos por Dia da Semana",
+        label: "",
         data: data,
         backgroundColor: "rgba(250, 212, 0, 0.95)",
         borderColor: "rgba(250, 212, 0, 0.95)",
@@ -55,7 +55,7 @@ const BarChartHorizontal: React.FC<BarChartProps> = ({ data, labels }) => {
         },
       },
       legend: {
-        display: true,
+        display: false,
         position: "bottom" as const,
         labels: {
           color: "rgb(255, 99, 132)",

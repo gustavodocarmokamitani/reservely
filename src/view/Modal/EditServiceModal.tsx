@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { enqueueSnackbar } from "notistack";
 
-import Button from "../../components/Button";
+import Button from "../../components/Button/Button";
 import InputGroupService from "../../components/InputGroup/InputGroupServico";
 import closeIcon from "../../assets/remove.svg";
 import * as S from "./Modal.styles";

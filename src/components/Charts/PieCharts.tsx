@@ -10,6 +10,8 @@ interface PieChartProps {
 }
 
 const PieChart: React.FC<PieChartProps> = ({ data, labels }) => {
+  const total = data.reduce((acc, val) => acc + val, 0);
+
   const chartData = {
     labels: labels,
     datasets: [
@@ -17,12 +19,14 @@ const PieChart: React.FC<PieChartProps> = ({ data, labels }) => {
         label: "Status dos Agendamentos",
         data: data,
         backgroundColor: [
-          "rgba(75, 192, 192, 1)",
-          "rgba(255, 99, 132, 1)",
-          "rgba(255, 159, 64, 1)",
+          "rgb(255, 245, 130)",
+          "rgb(71, 105, 243)",
+          "rgb(241, 80, 80)",
+          "rgb(120, 120, 120)",
+          "rgb(13, 139, 8)",
         ],
         borderColor: "#999",
-        borderWidth: 2,
+        borderWidth: 1,
       },
     ],
   };
@@ -34,9 +38,8 @@ const PieChart: React.FC<PieChartProps> = ({ data, labels }) => {
         callbacks: {
           label: function (tooltipItem: any) {
             let value = tooltipItem.raw || 0;
-            return `${
-              tooltipItem.label
-            }: ${value.toLocaleString()} agendamentos`;
+            let percentage = ((value / total) * 100).toFixed(1); 
+            return `${tooltipItem.label}: ${value} agendamentos (${percentage}%)`;
           },
         },
       },
@@ -45,17 +48,20 @@ const PieChart: React.FC<PieChartProps> = ({ data, labels }) => {
         position: "bottom" as const,
         labels: {
           color: "#333",
-          font: { size: 14, family: "Poppins" },
+          font: { size: 12, family: "Poppins" },
           padding: 20,
           usePointStyle: true,
           generateLabels: function (chart: any) {
             let data = chart.data.datasets[0].data;
-            return chart.data.labels!.map((label: any, i: any) => ({
-              text: `${label}: ${data[i]}`,
-              fillStyle: chart.data.datasets[0].backgroundColor[i],
-              hidden: false,
-              index: i,
-            }));
+            return chart.data.labels!.map((label: any, i: any) => {
+              let percentage = ((data[i] / total) * 100).toFixed(1); 
+              return {
+                text: `${label}: ${data[i]} (${percentage}%)`,
+                fillStyle: chart.data.datasets[0].backgroundColor[i],
+                hidden: false,
+                index: i,
+              };
+            });
           },
         },
       },

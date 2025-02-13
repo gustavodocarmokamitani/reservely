@@ -5,27 +5,27 @@ import { AppContext } from "./context/AppContext";
 
 import "./App.css";
 
-import Navigation from "./view/Sidebar";
+import Navigation from "./view/Sidebar/Sidebar";
 
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import RegisterConfirmEmail from "./pages/RegisterConfirmEmail";
-import RegisterReSendEmail from "./pages/RegisterReSendEmail";
-import RegisterHelp from "./pages/RegisterHelp";
+import Home from "./pages/Home/Home";
+import Login from "./pages/Login/Login";
+import Register from "./pages/Register/Register";
+import RegisterConfirmEmail from "./pages/Register/RegisterConfirmEmail";
+import RegisterReSendEmail from "./pages/Register/RegisterReSendEmail";
+import RegisterHelp from "./pages/Register/RegisterHelp";
 
-import Dashboard from "./pages/Dashboard";
-import Service from "./pages/Service";
-import Professional from "./pages/Professional";
-import ProfessionalRegister from "./pages/ProfessionalRegister";
-import Image from "./pages/Image";
-import Store from "./pages/Store";
-import StoreConfigurar from "./pages/StoreConfigure";
-import Payment from "./pages/Payment";
-import CallHelp from "./pages/CallHelp";
-import { Appointment } from "./pages/Appointment";
-import AppointmentHistory from "./pages/AppointmentHistory";
-import Calendar from "./pages/Calendar";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import Service from "./pages/Service/Service";
+import Professional from "./pages/Professional/Professional";
+import ProfessionalRegister from "./pages/Professional/ProfessionalRegister";
+import Image from "./pages/Image/Image";
+import Store from "./pages/Store/Store";
+import StoreConfigurar from "./pages/Store/StoreConfigure";
+import Payment from "./pages/Payment/Payment";
+import CallHelp from "./pages/CallHelp/CallHelp";
+import { Appointment } from "./pages/Appointment/Appointment";
+import AppointmentHistory from "./pages/Appointment/AppointmentHistory";
+import Calendar from "./pages/Calendar/Calendar";
 
 
 function App() {

@@ -1,6 +1,6 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
-import Input from "../Input";
+import Input from "../Input/Input";
 
 interface InputGroupProfessionalRegisterProps {
   formValuesProfessionalRegister: {

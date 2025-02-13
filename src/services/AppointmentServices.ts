@@ -21,6 +21,47 @@ export const getAppointmentById = async (id: number) => {
     }
 };
 
+export const getAppointmentRevenue = async (storeId: number) => {
+    try {
+        const response = await api.get(`Appointment/revenue/${storeId}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error getting Appointment:", error);
+        throw error;
+    }
+
+};
+
+export const getAppointmentStatusCount = async (storeId: number) => {
+    try {
+        const response = await api.get(`Appointment/status-count/${storeId}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error getting Appointment:", error);
+        throw error;
+    }
+};
+
+export const getAppointmentMostRequestedServices = async (storeId: number) => {
+    try {
+        const response = await api.get(`Appointment/most-requested-services/${storeId}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error getting Appointment:", error);
+        throw error;
+    }
+};
+
+export const getAppointmentByDay = async (storeId: number) => {
+    try {
+        const response = await api.get(`Appointment/appointments-by-day/${storeId}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error getting Appointment:", error);
+        throw error;
+    }
+};
+
 export const getAppointmentByEmployeeId = async (id: number) => {
     try {
         const response = await api.get(`Appointment/employee/${id}`);

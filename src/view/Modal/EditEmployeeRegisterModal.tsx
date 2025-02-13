@@ -6,7 +6,7 @@ import { UserEmployee } from "../../models/UserEmployee";
 import { Employee } from "../../models/Employee";
 import { getUserById, updateUser } from "../../services/UserServices";
 
-import Button from "../../components/Button";
+import Button from "../../components/Button/Button";
 
 import closeIcon from "../../assets/remove.svg";
 

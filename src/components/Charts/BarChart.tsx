@@ -42,7 +42,7 @@ const BarChart: React.FC<BarChartProps> = ({ labels, data }) => {
     responsive: true,
     plugins: {
       title: {
-        display: true,
+        display: false,
         text: "Serviços Mais Solicitados",
       },
       tooltip: {
@@ -56,7 +56,7 @@ const BarChart: React.FC<BarChartProps> = ({ labels, data }) => {
     scales: {
       x: {
         title: {
-          display: true,
+          display: false,
           text: "Serviços",
         },
       },
