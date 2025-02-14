@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as S from "./SelectableBox.styles";
 import { Service } from "../../models/Service";
 
@@ -14,7 +14,7 @@ const SelectableBox: React.FC<SelectableBoxProps> = ({
   data,
   selectedServices,
   setSelectedServices,
-}) => {
+}) => {  
   const toggleService = (id: number) => {
     setSelectedServices((prev) => {
       const newSelectedServices = prev.includes(id)

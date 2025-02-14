@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 import { ContainerPage } from "../Styles/_Page.styles";
 import { Col, Row } from "react-bootstrap";
@@ -11,6 +11,8 @@ import {
   deleteEmployee,
   getEmployeesByStoreId,
   createEmployee,
+  getEmployeeIdByUserId,
+  updateEmployee,
 } from "../../services/EmployeeServices";
 
 import { useSnackbar } from "notistack";
@@ -37,6 +39,20 @@ import Modal from "../../view/Modal/Modal";
 import Select from "../../components/Select/Select";
 import SelectableBox from "../../components/SelectableBox/SelectableBox";
 
+import {
+  DataGrid,
+  GridCellParams,
+  GridColDef,
+  GridRenderCellParams,
+  GridRowSelectionModel,
+} from "@mui/x-data-grid";
+
+
+import edit from "../../assets/edit.svg";
+import confirm from "../../assets/confirmCardStore.svg";
+import remove from "../../assets/removeRed.svg";
+
+
 interface Employee {
   id: number;
   userId: number;
@@ -59,7 +75,23 @@ interface DecodedToken {
   userRole: string;
 }
 
+interface CombinedData extends Employee, User { }
+
 function Professional() {
+  const [combinedData, setCombinedData] = useState<CombinedData | null>(null);
+
+
+  const [showModal, setShowModal] = useState<boolean>();
+  const [selectedEmployeeId, setSelectedEmployeeId] = useState<number>();
+  const [columnWidth, setColumnWidth] = useState(250);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const handleShowModal = (status: boolean, id: number) => {
+    setSelectedEmployeeId(id);
+    setShowModal(status);
+  };
+
+
   const [serviceType, setServiceType] = useState([]);
 
   const [employeeSelect, setEmployeeSelect] = useState<SelectOption[]>([]);
@@ -97,7 +129,10 @@ function Professional() {
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    setShowModal(false);
+  }
   const handleShow = () => setShow(true);
 
   const fetchData = useCallback(async () => {
@@ -186,7 +221,7 @@ function Professional() {
     setSelectedUserIds(ids);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmitEmployeeAdd = async () => {
     if (employee) {
       const responseEmployee = await getUserById(employee.value);
 
@@ -333,6 +368,209 @@ function Professional() {
     fetchEmployee();
   }, [storeUser]);
 
+
+
+  const fetchToken = useCallback(async () => {
+    const storedToken = localStorage.getItem("authToken");
+    if (storedToken) {
+      try {
+        const data = await decodeToken(storedToken);
+        setDecodedData(data);
+      } catch (error) {
+        console.error("Error decoding token:", error);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    const updateColumnWidth = () => {
+      if (containerRef.current) {
+        const totalWidth = containerRef.current.offsetWidth;
+        const columnsCount = decodedData?.userRole === "Admin" ? 5 : 4;
+        setColumnWidth(Math.floor(totalWidth / columnsCount));
+      }
+    };
+
+    fetchToken();
+    updateColumnWidth();
+    window.addEventListener("resize", updateColumnWidth);
+
+    return () => window.removeEventListener("resize", updateColumnWidth);
+  }, [fetchToken, decodedData?.userRole]);
+
+
+  const handleRowClick = (ids: number[]) => handleRowSelect?.(ids);
+
+  const columns: GridColDef[] = rows
+    ? [
+      {
+        field: "fullName",
+        headerName: "Nome Completo",
+        width: columnWidth,
+        flex: 3,
+        align: "center" as const,
+        headerAlign: "center" as const,
+        renderCell: (params) => `${params.row.name} ${params.row.lastName}`,
+      },
+      {
+        field: "email",
+        headerName: "Email",
+        width: columnWidth,
+        flex: 3,
+        align: "center" as const,
+        headerAlign: "center" as const,
+      },
+      {
+        field: "phone",
+        headerName: "Telefone",
+        width: columnWidth,
+        flex: 2,
+        align: "center" as const,
+        headerAlign: "center" as const,
+      },
+      {
+        field: "active",
+        headerName: "Ativo",
+        type: "boolean",
+        width: columnWidth,
+        flex: 1,
+        align: "center" as const,
+        headerAlign: "center" as const,
+        renderCell: (params: GridRenderCellParams) =>
+          params.value === "true" ? (
+            <img style={{ cursor: "pointer" }} src={confirm} alt="Ativo" />
+          ) : (
+            <img style={{ cursor: "pointer" }} src={remove} alt="Inativo" />
+          ),
+      },
+
+      ...(decodedData?.userRole === "Admin"
+        ? [
+          {
+            field: "acoes",
+            flex: 1,
+            headerName: "Ações",
+            renderCell: (params: GridCellParams) => (
+              <div
+                style={{
+                  display: "flex",
+                  gap: "50px",
+                  justifyContent: "center",
+                  margin: "12.5px 0px 0px 5px",
+                }}
+              >
+                <img
+                  style={{ cursor: "pointer" }}
+                  src={edit}
+                  onClick={() => handleShowModal(true, params.row.id)}
+                  alt="Editar"
+                />
+              </div>
+            ),
+            width: columnWidth,
+            align: "center" as const,
+            headerAlign: "center" as const,
+          },
+        ]
+        : []),
+    ]
+    : [];
+
+  useEffect(() => {
+    if (edit) {
+      const fetchEmployee = async () => {
+        try {
+          const resEmployee = await getEmployeeIdByUserId(selectedEmployeeId!);
+
+          let employeeData = Array.isArray(resEmployee)
+            ? resEmployee
+            : [resEmployee];
+
+          const mappedEmployee = employeeData.map((employee: UserEmployee) => ({
+            id: employee.id,
+            userId: employee.userId,
+            name: employee.name,
+            lastName: employee.lastName,
+            email: employee.email,
+            phone: employee.phone,
+            password: employee.password,
+            active: employee.active,
+            userTypeId: employee.userTypeId,
+            serviceIds: employee.serviceIds || [],
+            storeId: employee.storeId,
+          }));
+
+          if (mappedEmployee.length > 0) {
+            const resUser = await getUserById(mappedEmployee[0].userId);
+
+            let userData = Array.isArray(resUser) ? resUser : [resUser];
+
+            const mappedUser = userData.map((user: User) => ({
+              id: user.id,
+              name: user.name,
+              lastName: user.lastName,
+              email: user.email,
+              phone: user.phone,
+              password: user.password,
+              userTypeId: user.userTypeId,
+              storeId: storeUser,
+            }));
+
+            const combined = {
+              ...mappedEmployee[0],
+              ...mappedUser[0],
+            };
+            setCombinedData(combined);
+          }
+        } catch (error) {
+          console.error("Error when fetching service type", error);
+        }
+      };
+      fetchEmployee();
+    }
+  }, [edit, selectedEmployeeId, storeUser]);
+
+  const handleSubmitEmployeeEdit = async () => {
+    if (edit) {
+
+      const response = await getEmployeeIdByUserId(formValuesProfessional.id);
+
+      if (response) {
+        const { id, userId, active, serviceIds } = response;
+
+        const updatedEmployee = {
+          id,
+          userId,
+          active: formValuesProfessional.active || active,
+          serviceIds: formValuesProfessional.serviceIds || serviceIds,
+          storeId: storeUser,
+        };
+        
+        const updateEmployeeResponse = await updateEmployee(
+          updatedEmployee.id,
+          updatedEmployee
+        );
+        if (updateEmployeeResponse) {
+          fetchData();
+          enqueueSnackbar("Professional criado com sucesso!", {
+            variant: "success",
+          });
+        }
+      }
+    }
+    handleClose();
+  };
+
+  const handleInputChangeProfissional = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { name, type, checked, value } = event.target;
+    setFormValuesProfessional((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? (checked ? "true" : "false") : value,
+    }));
+  };
+
   return (
     <>
       <ContainerPage style={{ height: "100vh" }}>
@@ -358,16 +596,25 @@ function Professional() {
           </Col>
         </Row>
         <ProfessionalDataTable
-          professional
-          rowsProfessional={rows}
+          rows={rows}
           onRowSelect={handleRowSelect}
           fetchData={fetchData}
+          selectedEmployeeId={selectedEmployeeId}
+          columns={columns}
+          containerRef={containerRef}
+          showModal={showModal}
+          handleClose={handleClose}
+          setFormValuesProfessional={setFormValuesProfessional}
+          formValuesProfessional={formValuesProfessional}
+          handleInputChangeProfessional={handleInputChangeProfissional} 
+          combinedData={combinedData}
+          handleSubmit={handleSubmitEmployeeEdit}
         />
         {show && (
           <Modal
             title="Adicionar profissional"
             subTitle="Preencha as informações abaixo para criar um novo profissional."
-            handleSubmit={handleSubmit}
+            handleSubmit={handleSubmitEmployeeAdd}
             handleClose={handleClose}
             size="large"
           >

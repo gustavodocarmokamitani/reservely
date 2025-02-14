@@ -45,7 +45,7 @@ const InputGroupProfessionalEdit: React.FC<InputGroupProfessionalEditProps> = ({
   );
   const [dataOptions, setDataOptions] = useState<number[]>([]);
   const [selectedServices, setSelectedServices] =
-      useState<number[]>(employeeSelected ? employeeSelected[0].serviceIds : []);
+    useState<number[]>(employeeSelected ? employeeSelected[0].serviceIds : []);
   const storeUser = Number(localStorage.getItem("storeUser"));
 
   useEffect(() => {
@@ -87,9 +87,9 @@ const InputGroupProfessionalEdit: React.FC<InputGroupProfessionalEditProps> = ({
       try {
         let fetchedServices: Service[] = [];
 
-          const allServices = await getServiceTypesByStore(storeUser);
+        const allServices = await getServiceTypesByStore(storeUser);
 
-          fetchedServices = [...fetchedServices, ...allServices];
+        fetchedServices = [...fetchedServices, ...allServices];
 
         const uniqueServices = Array.from(
           new Map(
@@ -109,7 +109,7 @@ const InputGroupProfessionalEdit: React.FC<InputGroupProfessionalEditProps> = ({
 
     fetchSelectableBox();
   }, [storeUser, employeeSelected && employeeSelected[0].serviceIds]);
-  
+
 
   return (
     <Row>
