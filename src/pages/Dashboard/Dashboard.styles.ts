@@ -5,4 +5,5 @@ export const DashboardContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
+  margin-top: 50px;
 `;

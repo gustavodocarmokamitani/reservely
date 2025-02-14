@@ -92,7 +92,7 @@ function Calendar() {
 
   return (
     <>
-      <ContainerPage>
+      <ContainerPage style={{ height: "100vh" }}>
         <Row className="wrap">
           <Col md={12} lg={7} style={{ padding: "0px" }}>
             <HeaderTitle

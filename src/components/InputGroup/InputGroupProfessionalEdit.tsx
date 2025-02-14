@@ -6,9 +6,7 @@ import SelectableBox from "../SelectableBox/SelectableBox";
 import { Service } from "../../models/Service";
 import { getServiceTypesByStore } from "../../services/ServiceTypeServices";
 
-interface InputGroupProfessionalEditProps {
-  edit?: boolean;
-  addProf?: boolean;
+interface InputGroupProfessionalEditProps {  
   formValuesProfessional: {
     name: string;
     lastName: string;
@@ -37,19 +35,17 @@ const InputGroupProfessionalEdit: React.FC<InputGroupProfessionalEditProps> = ({
   handleInputChange,
   setFormValuesProfessional,
   employeeSelected,
-  edit = false,
-  addProf = false,
 }) => {
   const [selectableBoxServices, setSelectableBoxServices] = useState<Service[]>(
     []
   );
-  const [dataOptions, setDataOptions] = useState<number[]>([]);
-  const [selectedServices, setSelectedServices] =
-    useState<number[]>(employeeSelected ? employeeSelected[0].serviceIds : []);
+  const [selectedServices, setSelectedServices] = useState<number[]>(
+    employeeSelected ? employeeSelected[0].serviceIds : []
+  );
   const storeUser = Number(localStorage.getItem("storeUser"));
 
   useEffect(() => {
-    if (edit && employeeSelected?.[0]) {
+    if (employeeSelected?.[0]) {
       const newState = {
         id: employeeSelected[0].id,
         userId: employeeSelected[0].userId,
@@ -71,9 +67,7 @@ const InputGroupProfessionalEdit: React.FC<InputGroupProfessionalEditProps> = ({
         return prevState;
       });
     }
-  }, [edit, employeeSelected, setFormValuesProfessional]);
-
-  const professionalData = employeeSelected?.[0] ?? null;
+  }, [employeeSelected, setFormValuesProfessional]);
 
   const handleServiceSelection = (serviceIds: number[]) => {
     setFormValuesProfessional((prev) => ({
@@ -98,7 +92,9 @@ const InputGroupProfessionalEdit: React.FC<InputGroupProfessionalEditProps> = ({
         );
         setSelectableBoxServices(uniqueServices);
 
-        setSelectedServices(employeeSelected ? employeeSelected[0].serviceIds : []);
+        setSelectedServices(
+          employeeSelected ? employeeSelected[0].serviceIds : []
+        );
       } catch (error) {
         console.error(
           "Error when searching for employee and service information:",
@@ -109,7 +105,6 @@ const InputGroupProfessionalEdit: React.FC<InputGroupProfessionalEditProps> = ({
 
     fetchSelectableBox();
   }, [storeUser, employeeSelected && employeeSelected[0].serviceIds]);
-
 
   return (
     <Row>
@@ -126,14 +121,12 @@ const InputGroupProfessionalEdit: React.FC<InputGroupProfessionalEditProps> = ({
         />
       </Col>
       <Col md={8}>
-        {edit && (
           <SelectableBox
             onChange={handleServiceSelection}
             data={selectableBoxServices}
             setSelectedServices={setSelectedServices}
             selectedServices={selectedServices}
           />
-        )}
       </Col>
     </Row>
   );

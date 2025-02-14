@@ -10,13 +10,14 @@ import InputGroupProfissional from "../../components/InputGroup/InputGroupProfes
 interface EditUserEmployeeModalProps {
   title: string;
   subTitle?: string;
-  edit?: boolean;
-  handleClose: () => void;
   size: "small" | "medium" | "large";
-  setFormValuesProfessional: React.Dispatch<React.SetStateAction<UserEmployee>>;
   formValuesProfessional: UserEmployee;
-  handleInputChangeProfessional: (event: React.ChangeEvent<HTMLInputElement>) => void;
   combinedData: CombinedData | null;
+  setFormValuesProfessional: React.Dispatch<React.SetStateAction<UserEmployee>>;
+  handleClose: () => void;
+  handleInputChangeProfessional: (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => void;
   handleSubmit: () => void;
 }
 
@@ -27,7 +28,6 @@ const EditUserEmployeeModal: React.FC<EditUserEmployeeModalProps> = ({
   title,
   subTitle,
   size,
-  edit = false,
   setFormValuesProfessional,
   formValuesProfessional,
   handleInputChangeProfessional,
@@ -70,15 +70,12 @@ const EditUserEmployeeModal: React.FC<EditUserEmployeeModalProps> = ({
           </Col>
           <hr />
         </Row>
-        {edit && (
-          <InputGroupProfissional
-            setFormValuesProfessional={setFormValuesProfessional}
-            formValuesProfessional={formValuesProfessional}
-            handleInputChange={handleInputChangeProfessional}
-            employeeSelected={combinedData ? [combinedData] : undefined}
-            edit
-          />
-        )}
+        <InputGroupProfissional
+          setFormValuesProfessional={setFormValuesProfessional}
+          formValuesProfessional={formValuesProfessional}
+          handleInputChange={handleInputChangeProfessional}
+          employeeSelected={combinedData ? [combinedData] : undefined}
+        />
         <hr />
         <Row>
           <Col

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import * as S from "./SelectableBox.styles";
 import { Service } from "../../models/Service";
 

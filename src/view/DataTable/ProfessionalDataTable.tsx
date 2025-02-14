@@ -1,15 +1,11 @@
 import React from "react";
-import {
-  DataGrid,
-  GridColDef,
-  GridRowSelectionModel,
-} from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
 
 import Paper from "@mui/material/Paper";
 import EditUserEmployeeModal from "../Modal/EditUserEmployeeModal";
-import { UserEmployee } from "../../models/UserEmployee";
 import { Employee } from "../../models/Employee";
 import { User } from "../../models/User";
+import { UserEmployee } from "../../models/UserEmployee";
 
 interface CombinedData extends Employee, User {}
 
@@ -21,35 +17,33 @@ interface ProfessionalDataTableProps {
     phone: string;
     services: number[];
   }>;
-  onRowSelect: (id: number[]) => void;
-  fetchData: () => void;
-  selectedEmployeeId: number | undefined;
-  columns: GridColDef[]
-  containerRef: React.RefObject<HTMLDivElement>;
-  showModal: boolean | undefined;
-  handleClose: () => void;
-  setFormValuesProfessional: React.Dispatch<React.SetStateAction<UserEmployee>>;
-  formValuesProfessional: UserEmployee;
-  handleInputChangeProfessional: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  columns: GridColDef[];
   combinedData: CombinedData | null;
+  containerRef: React.RefObject<HTMLDivElement>;
+  formValuesProfessional: UserEmployee;
+  handleClose: () => void;
+  handleInputChangeProfessional: (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => void;
   handleSubmit: () => void;
+  onRowSelect: (id: number[]) => void;
+  selectedEmployeeId: number | undefined;
+  setFormValuesProfessional: React.Dispatch<React.SetStateAction<UserEmployee>>;
+  showModal: boolean | undefined;
 }
 
 const ProfessionalDataTable: React.FC<ProfessionalDataTableProps> = ({
   rows,
-  onRowSelect,
-  fetchData,
-  selectedEmployeeId,
   columns,
-  containerRef,
-  showModal,
-  handleClose,
-  setFormValuesProfessional,
-  formValuesProfessional,
-  handleInputChangeProfessional,
   combinedData,
+  containerRef,
+  formValuesProfessional,
+  handleClose,
+  handleInputChangeProfessional,
   handleSubmit,
-  
+  onRowSelect,
+  setFormValuesProfessional,
+  showModal,
 }) => {
   const handleRowClick = (ids: number[]) => onRowSelect?.(ids);
 
@@ -82,12 +76,11 @@ const ProfessionalDataTable: React.FC<ProfessionalDataTableProps> = ({
         <EditUserEmployeeModal
           title="Editar professional"
           subTitle="Preencha as informações abaixo para editar o professional."
-          edit
           handleClose={handleClose}
           size="large"
           setFormValuesProfessional={setFormValuesProfessional}
           formValuesProfessional={formValuesProfessional}
-          handleInputChangeProfessional={handleInputChangeProfessional} 
+          handleInputChangeProfessional={handleInputChangeProfessional}
           combinedData={combinedData}
           handleSubmit={handleSubmit}
         />

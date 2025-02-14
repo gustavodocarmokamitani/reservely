@@ -77,7 +77,7 @@ export function Appointment() {
         >
           <Col>
             <S.AppointmentContent>
-              <Paragraph text="Funcionário"/>
+              <Paragraph text="Funcionário" />
               <Select
                 setData={setEmployee}
                 options={optionsEmployee}
@@ -88,7 +88,7 @@ export function Appointment() {
           </Col>
           <Col>
             <S.AppointmentContent>
-              <Paragraph text="Cliente"/>
+              <Paragraph text="Cliente" />
               <Select
                 setData={setClient}
                 options={optionsClient}
@@ -99,7 +99,7 @@ export function Appointment() {
           </Col>
           <Col>
             <S.AppointmentContent>
-              <Paragraph text="Serviço"/>
+              <Paragraph text="Serviço" />
               <Select
                 setData={setService}
                 options={optionsService}
@@ -111,7 +111,7 @@ export function Appointment() {
           </Col>
           <Col>
             <S.AppointmentContent>
-              <Paragraph text="Horário"/>
+              <Paragraph text="Horário" />
               <Select
                 setData={setAppointmentTime}
                 options={optionsTime}
