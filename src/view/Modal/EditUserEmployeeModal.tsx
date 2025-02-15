@@ -6,19 +6,31 @@ import * as S from "./Modal.styles";
 import Button from "../../components/Button/Button";
 import closeIcon from "../../assets/remove.svg";
 import InputGroupProfissional from "../../components/InputGroup/InputGroupProfessionalEdit";
+import { Service } from "../../models/Service";
 
 interface EditUserEmployeeModalProps {
   title: string;
   subTitle?: string;
   size: "small" | "medium" | "large";
   formValuesProfessional: UserEmployee;
-  combinedData: CombinedData | null;
-  setFormValuesProfessional: React.Dispatch<React.SetStateAction<UserEmployee>>;
-  handleClose: () => void;
+  setFormValuesProfessional: React.Dispatch<React.SetStateAction<UserEmployee>>;  
+  selectedServices: number[];
+  selectableBoxServices: Service[];
+  handleSubmit: () => void;
+  handleServiceSelection: (serviceIds: number[]) => void;
+  setSelectedServices: React.Dispatch<React.SetStateAction<number[]>>;
+  fetchLoadEditFormValues: (
+    employeeSelected: CombinedData[],
+    setFormValuesProfessional: React.Dispatch<
+    React.SetStateAction<UserEmployee>
+    >
+  ) => void;
   handleInputChangeProfessional: (
     event: React.ChangeEvent<HTMLInputElement>
   ) => void;
-  handleSubmit: () => void;
+
+  combinedData: CombinedData | null;
+  handleClose: () => void;
 }
 
 interface CombinedData extends Employee, User {}
@@ -28,11 +40,18 @@ const EditUserEmployeeModal: React.FC<EditUserEmployeeModalProps> = ({
   title,
   subTitle,
   size,
-  setFormValuesProfessional,
+
   formValuesProfessional,
+  setFormValuesProfessional,
   handleInputChangeProfessional,
+
   combinedData,
   handleSubmit,
+  selectedServices,
+  selectableBoxServices,
+  setSelectedServices,
+  fetchLoadEditFormValues,
+  handleServiceSelection,
 }) => {
   const sizeMap = {
     small: "650px",
@@ -75,6 +94,11 @@ const EditUserEmployeeModal: React.FC<EditUserEmployeeModalProps> = ({
           formValuesProfessional={formValuesProfessional}
           handleInputChange={handleInputChangeProfessional}
           employeeSelected={combinedData ? [combinedData] : undefined}
+          selectableBoxServices={selectableBoxServices}
+          selectedServices={selectedServices}
+          setSelectedServices={setSelectedServices}
+          fetchLoadEditFormValues={fetchLoadEditFormValues}
+          handleServiceSelection={handleServiceSelection}
         />
         <hr />
         <Row>

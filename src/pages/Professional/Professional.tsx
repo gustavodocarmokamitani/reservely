@@ -26,7 +26,6 @@ function Professional() {
     formValuesProfessional,
     options,
     selectableBoxServices,
-    selectedEmployeeId,
     selectedServices,
     selectedUserIds,
     setCombinedData,
@@ -47,16 +46,17 @@ function Professional() {
 
   const {
     fetchData,
-    fetchEmployeeSelectAdd,
-    fetchEmployeeSelectableBox,
-    fetchLoadEmployeeSelectedDatatable,
+    fetchLoadDataAddEmployee,
     rows,
+    fetchLoadDataEditEmployee,
+    fetchLoadEditFormValues,
   } = useFetch(
     storeUser,
     setDecodedData,
     setOptions,
     setSelectableBoxServices,
-    setCombinedData
+    setCombinedData,
+    setSelectedServices
   );
 
   const {
@@ -67,9 +67,8 @@ function Professional() {
     setShowModal,
     setShow,
     setSelectedServices,
-    fetchEmployeeSelectAdd,
-    fetchEmployeeSelectableBox,
-    fetchLoadEmployeeSelectedDatatable
+    fetchLoadDataAddEmployee,
+    fetchLoadDataEditEmployee
   );
 
   const {
@@ -130,7 +129,6 @@ function Professional() {
         <ProfessionalDataTable
           rows={rows}
           onRowSelect={handleRowSelect}
-          selectedEmployeeId={selectedEmployeeId}
           columns={columns}
           containerRef={containerRef}
           showModal={showModal}
@@ -140,6 +138,11 @@ function Professional() {
           handleInputChangeProfessional={handleInputChangeProfissional}
           combinedData={combinedData}
           handleSubmit={handleSubmitEmployeeEdit}
+          selectableBoxServices={selectableBoxServices}
+          selectedServices={selectedServices}
+          setSelectedServices={setSelectedServices}
+          fetchLoadEditFormValues={fetchLoadEditFormValues}
+          handleServiceSelection={handleServiceSelection}
         />
         {show && (
           <Modal

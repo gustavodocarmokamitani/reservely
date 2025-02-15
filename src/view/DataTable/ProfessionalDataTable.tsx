@@ -1,11 +1,11 @@
 import React from "react";
 import { DataGrid, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
-
 import Paper from "@mui/material/Paper";
 import EditUserEmployeeModal from "../Modal/EditUserEmployeeModal";
 import { Employee } from "../../models/Employee";
 import { User } from "../../models/User";
 import { UserEmployee } from "../../models/UserEmployee";
+import { Service } from "../../models/Service";
 
 interface CombinedData extends Employee, User {}
 
@@ -17,33 +17,47 @@ interface ProfessionalDataTableProps {
     phone: string;
     services: number[];
   }>;
-  columns: GridColDef[];
   combinedData: CombinedData | null;
   containerRef: React.RefObject<HTMLDivElement>;
+  columns: GridColDef[];
+  showModal: boolean | undefined;
   formValuesProfessional: UserEmployee;
+  setFormValuesProfessional: React.Dispatch<React.SetStateAction<UserEmployee>>;
+  selectedServices: number[];
+  setSelectedServices: React.Dispatch<React.SetStateAction<number[]>>;
+  selectableBoxServices: Service[];
+  handleServiceSelection: (serviceIds: number[]) => void;
   handleClose: () => void;
   handleInputChangeProfessional: (
     event: React.ChangeEvent<HTMLInputElement>
   ) => void;
   handleSubmit: () => void;
   onRowSelect: (id: number[]) => void;
-  selectedEmployeeId: number | undefined;
-  setFormValuesProfessional: React.Dispatch<React.SetStateAction<UserEmployee>>;
-  showModal: boolean | undefined;
+  fetchLoadEditFormValues: (
+    employeeSelected: CombinedData[],
+    setFormValuesProfessional: React.Dispatch<
+      React.SetStateAction<UserEmployee>
+    >
+  ) => void;
 }
 
 const ProfessionalDataTable: React.FC<ProfessionalDataTableProps> = ({
   rows,
-  columns,
   combinedData,
   containerRef,
+  columns,
+  showModal,
   formValuesProfessional,
+  setFormValuesProfessional,
+  selectedServices,
+  setSelectedServices,
+  selectableBoxServices,
+  handleServiceSelection,
   handleClose,
   handleInputChangeProfessional,
   handleSubmit,
   onRowSelect,
-  setFormValuesProfessional,
-  showModal,
+  fetchLoadEditFormValues,
 }) => {
   const handleRowClick = (ids: number[]) => onRowSelect?.(ids);
 
@@ -83,6 +97,11 @@ const ProfessionalDataTable: React.FC<ProfessionalDataTableProps> = ({
           handleInputChangeProfessional={handleInputChangeProfessional}
           combinedData={combinedData}
           handleSubmit={handleSubmit}
+          selectableBoxServices={selectableBoxServices}
+          selectedServices={selectedServices}
+          setSelectedServices={setSelectedServices}
+          fetchLoadEditFormValues={fetchLoadEditFormValues}
+          handleServiceSelection={handleServiceSelection}
         />
       )}
     </div>
