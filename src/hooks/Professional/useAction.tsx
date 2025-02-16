@@ -17,8 +17,10 @@ export const useAction = (
   employee: SelectOption | null,
   setSelectedUserIds: React.Dispatch<React.SetStateAction<number[]>>,
   storeUser: number,
-  formValuesProfessional: UserEmployee,
-  setFormValuesProfessional: React.Dispatch<React.SetStateAction<UserEmployee>>,
+  formValuesProfessionalRegister: UserEmployee,
+  setFormValuesProfessionalRegister: React.Dispatch<
+    React.SetStateAction<UserEmployee>
+  >,
   selectedUserIds: number[]
 ) => {
   const { enqueueSnackbar } = useSnackbar();
@@ -36,7 +38,7 @@ export const useAction = (
         userId: responseEmployee.id,
         active: "true",
         storeId: Number(storeUser),
-        serviceIds: formValuesProfessional.serviceIds,
+        serviceIds: formValuesProfessionalRegister.serviceIds,
       };
 
       handleEmployeeAdd([employeeData]);
@@ -47,7 +49,9 @@ export const useAction = (
   };
 
   const handleSubmitEmployeeEdit = async () => {
-    const response = await getEmployeeIdByUserId(formValuesProfessional.id);
+    const response = await getEmployeeIdByUserId(
+      formValuesProfessionalRegister.id
+    );
 
     if (response) {
       const { id, userId, active, serviceIds } = response;
@@ -55,8 +59,8 @@ export const useAction = (
       const updatedEmployee = {
         id,
         userId,
-        active: formValuesProfessional.active || active,
-        serviceIds: formValuesProfessional.serviceIds || serviceIds,
+        active: formValuesProfessionalRegister.active || active,
+        serviceIds: formValuesProfessionalRegister.serviceIds || serviceIds,
         storeId: storeUser,
       };
 
@@ -71,7 +75,7 @@ export const useAction = (
         });
       }
     }
-    
+
     fetchData();
     handleClose();
   };
@@ -80,7 +84,7 @@ export const useAction = (
     try {
       const updatedEmployeeData = employeeData.map((employee) => ({
         ...employee,
-        serviceIds: formValuesProfessional.serviceIds,
+        serviceIds: formValuesProfessionalRegister.serviceIds,
       }));
 
       const response = await createEmployee(updatedEmployeeData);
@@ -99,10 +103,10 @@ export const useAction = (
 
   const handleServiceSelection = (serviceIds: number[]) => {
     const updatedFormValues: UserEmployee = {
-      ...formValuesProfessional,
+      ...formValuesProfessionalRegister,
       serviceIds,
     };
-    setFormValuesProfessional(updatedFormValues);
+    setFormValuesProfessionalRegister(updatedFormValues);
   };
 
   const handleDeleteUsers = async () => {
@@ -145,13 +149,13 @@ export const useAction = (
     }
   };
 
-  const handleInputChangeProfissional = (
+  const handleInputChangeProfessional = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const { name, type, checked, value } = event.target;
-    setFormValuesProfessional((prev: UserEmployee) => ({
+    const { name, value } = event.target;
+    setFormValuesProfessionalRegister((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? (checked ? "true" : "false") : value,
+      [name]: value,
     }));
   };
 
@@ -162,6 +166,6 @@ export const useAction = (
     handleServiceSelection,
     handleDeleteUsers,
     handleSubmitEmployeeEdit,
-    handleInputChangeProfissional
+    handleInputChangeProfessional,
   };
 };

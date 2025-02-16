@@ -23,20 +23,13 @@ interface Rows {
 }
 
 export const useEffectCustom = (
-  employeeSelect: SelectOption[],
-  setEmployee: (data: SelectOption | null) => void,
   setColumnWidth: (data: number) => void,
   decodedData: DecodedToken | null,
-  handleShowEditProfessionalModal: (status: boolean, id: number) => void
+  handleShowEditProfessionalModal: (status: boolean, id: number) => void,
 ) => {
+
   const containerRef = useRef<HTMLDivElement>(null);
   const columnWidth = 250;
-
-  useEffect(() => {
-    if (employeeSelect.length > 0) {
-      setEmployee(employeeSelect[0]);
-    }
-  }, [employeeSelect, setEmployee]);
 
   const updateColumnWidth = useCallback(() => {
     if (containerRef.current) {
@@ -60,8 +53,8 @@ export const useEffectCustom = (
       field: "fullName",
       headerName: "Nome Completo",
       width: columnWidth,
-      flex: 3,
       align: "center" as const,
+      flex: 3,
       headerAlign: "center" as const,
       renderCell: (params) => `${params.row.name} ${params.row.lastName}`,
     },
@@ -77,32 +70,31 @@ export const useEffectCustom = (
       field: "phone",
       headerName: "Telefone",
       width: columnWidth,
-      flex: 2,
+      flex: 1,
       align: "center" as const,
       headerAlign: "center" as const,
     },
     {
-      field: "active",
-      headerName: "Ativo",
+      field: "emailConfirmed",
+      headerName: "Email Confirmado",
       type: "boolean",
+      flex: 2,
       width: columnWidth,
-      flex: 1,
       align: "center" as const,
       headerAlign: "center" as const,
       renderCell: (params: GridRenderCellParams) =>
-        params.value === "true" ? (
+        params.value === true ? (
           <img style={{ cursor: "pointer" }} src={confirm} alt="Ativo" />
         ) : (
           <img style={{ cursor: "pointer" }} src={remove} alt="Inativo" />
         ),
     },
-
     ...(decodedData?.userRole === "Admin"
       ? [
           {
             field: "acoes",
-            flex: 1,
             headerName: "Ações",
+            flex: 1,
             renderCell: (params: GridCellParams) => (
               <div
                 style={{

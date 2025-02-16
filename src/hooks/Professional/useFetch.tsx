@@ -41,8 +41,8 @@ export const useFetch = (
   setSelectableBoxServices: React.Dispatch<React.SetStateAction<Service[]>>,
   setCombinedData: React.Dispatch<React.SetStateAction<CombinedData | null>>,
   setSelectedServices: React.Dispatch<React.SetStateAction<number[]>>,
+  setRows: React.Dispatch<React.SetStateAction<Rows[]>>,
 ) => {
-  const [rows, setRows] = useState<Rows[]>([]);
 
   const storedToken = localStorage.getItem("authToken");
 
@@ -261,7 +261,6 @@ export const useFetch = (
   
 
   return {
-    rows,
     setRows,
     fetchData,
     fetchLoadDataAddEmployee,

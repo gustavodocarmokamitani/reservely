@@ -13,8 +13,9 @@ interface Rows {
   phone: string;
   email: string;
   services: number[];
+  active: boolean;
+  storeId: number;
 }
-
 interface CombinedData extends Employee, User {}
 
 export const useStateCustom = () => {

@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { DataGrid, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
-import EditUserEmployeeModal from "../Modal/EditUserEmployeeModal";
 import { Employee } from "../../models/Employee";
 import { User } from "../../models/User";
 import { UserEmployee } from "../../models/UserEmployee";
 import { Service } from "../../models/Service";
+import Modal from "../Modal/Modal";
+import { Col, Row } from "react-bootstrap";
+import Input from "../../components/Input/Input";
+import SelectableBox from "../../components/SelectableBox/SelectableBox";
 
 interface CombinedData extends Employee, User {}
 
@@ -31,8 +34,8 @@ interface ProfessionalDataTableProps {
   handleInputChangeProfessional: (
     event: React.ChangeEvent<HTMLInputElement>
   ) => void;
-  handleSubmit: () => void;
-  onRowSelect: (id: number[]) => void;
+  handleSubmitEmployeeEdit: () => void;
+  handleRowSelect: (id: number[]) => void;
   fetchLoadEditFormValues: (
     employeeSelected: CombinedData[],
     setFormValuesProfessional: React.Dispatch<
@@ -55,11 +58,16 @@ const ProfessionalDataTable: React.FC<ProfessionalDataTableProps> = ({
   handleServiceSelection,
   handleClose,
   handleInputChangeProfessional,
-  handleSubmit,
-  onRowSelect,
+  handleSubmitEmployeeEdit,
+  handleRowSelect,
   fetchLoadEditFormValues,
 }) => {
-  const handleRowClick = (ids: number[]) => onRowSelect?.(ids);
+  useEffect(() => {
+    fetchLoadEditFormValues(
+      combinedData ? [combinedData] : [],
+      setFormValuesProfessional
+    );
+  }, [combinedData, setFormValuesProfessional]);
 
   return (
     <div ref={containerRef} style={{ marginTop: "3rem" }}>
@@ -72,8 +80,10 @@ const ProfessionalDataTable: React.FC<ProfessionalDataTableProps> = ({
         }}
       >
         <DataGrid
-          rows={rows}
-          columns={columns}
+          {...{
+            rows,
+            columns,
+          }}
           initialState={{ pagination: { paginationModel: { pageSize: 13 } } }}
           pageSizeOptions={[13, 20, 25]}
           checkboxSelection
@@ -81,28 +91,49 @@ const ProfessionalDataTable: React.FC<ProfessionalDataTableProps> = ({
           onRowSelectionModelChange={(newSelection: GridRowSelectionModel) => {
             const selectedRowIds = newSelection.map((id) => Number(id));
             if (selectedRowIds.every((id) => !isNaN(id)))
-              handleRowClick(selectedRowIds);
+              handleRowSelect(selectedRowIds);
           }}
           sx={{ border: 0 }}
         />
       </Paper>
       {showModal && (
-        <EditUserEmployeeModal
+        <Modal
           title="Editar professional"
           subTitle="Preencha as informações abaixo para editar o professional."
-          handleClose={handleClose}
+          handleSubmit={handleSubmitEmployeeEdit}
           size="large"
-          setFormValuesProfessional={setFormValuesProfessional}
-          formValuesProfessional={formValuesProfessional}
-          handleInputChangeProfessional={handleInputChangeProfessional}
-          combinedData={combinedData}
-          handleSubmit={handleSubmit}
-          selectableBoxServices={selectableBoxServices}
-          selectedServices={selectedServices}
-          setSelectedServices={setSelectedServices}
-          fetchLoadEditFormValues={fetchLoadEditFormValues}
-          handleServiceSelection={handleServiceSelection}
-        />
+          {...{
+            handleClose,
+          }}
+        >
+          <Row>
+            <Col md={4} className="mt-3 mb-3">
+              <Input
+                width="300"
+                type="toggle"
+                placeholder="Ativo"
+                name="active"
+                value={formValuesProfessional.active}
+                onChange={(e) =>
+                  handleInputChangeProfessional(
+                    e as React.ChangeEvent<HTMLInputElement>
+                  )
+                }
+              />
+            </Col>
+
+            <Col md={8}>
+              <SelectableBox
+                onChange={handleServiceSelection}
+                data={selectableBoxServices}
+                {...{
+                  setSelectedServices,
+                  selectedServices,
+                }}
+              />
+            </Col>
+          </Row>
+        </Modal>
       )}
     </div>
   );

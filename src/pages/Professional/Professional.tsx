@@ -42,12 +42,13 @@ function Professional() {
     setColumnWidth,
     show,
     showModal,
+    rows,
+    setRows
   } = useStateCustom();
 
   const {
     fetchData,
     fetchLoadDataAddEmployee,
-    rows,
     fetchLoadDataEditEmployee,
     fetchLoadEditFormValues,
   } = useFetch(
@@ -56,7 +57,8 @@ function Professional() {
     setOptions,
     setSelectableBoxServices,
     setCombinedData,
-    setSelectedServices
+    setSelectedServices,
+    setRows
   );
 
   const {
@@ -73,7 +75,7 @@ function Professional() {
 
   const {
     handleDeleteUsers,
-    handleInputChangeProfissional,
+    handleInputChangeProfessional,
     handleRowSelect,
     handleServiceSelection,
     handleSubmitEmployeeAdd,
@@ -94,7 +96,6 @@ function Professional() {
     setEmployee,
     setColumnWidth,
     decodedData,
-    rows,
     handleShowEditProfessionalModal
   );
 
@@ -127,30 +128,34 @@ function Professional() {
           </Col>
         </Row>
         <ProfessionalDataTable
-          rows={rows}
-          onRowSelect={handleRowSelect}
-          columns={columns}
-          containerRef={containerRef}
-          showModal={showModal}
-          handleClose={handleClose}
-          setFormValuesProfessional={setFormValuesProfessional}
-          formValuesProfessional={formValuesProfessional}
-          handleInputChangeProfessional={handleInputChangeProfissional}
-          combinedData={combinedData}
-          handleSubmit={handleSubmitEmployeeEdit}
-          selectableBoxServices={selectableBoxServices}
-          selectedServices={selectedServices}
-          setSelectedServices={setSelectedServices}
-          fetchLoadEditFormValues={fetchLoadEditFormValues}
-          handleServiceSelection={handleServiceSelection}
+          {...{
+            rows,
+            handleRowSelect,
+            columns,
+            containerRef,
+            showModal,
+            handleClose,
+            setFormValuesProfessional,
+            formValuesProfessional,
+            handleInputChangeProfessional,
+            combinedData,
+            handleSubmitEmployeeEdit,
+            selectableBoxServices,
+            selectedServices,
+            setSelectedServices,
+            fetchLoadEditFormValues,
+            handleServiceSelection,
+          }}
         />
         {show && (
           <Modal
             title="Adicionar profissional"
             subTitle="Preencha as informações abaixo para criar um novo profissional."
             handleSubmit={handleSubmitEmployeeAdd}
-            handleClose={handleClose}
             size="large"
+            {...{
+              handleClose,
+            }}
           >
             <Row>
               <Col md={4} className="mt-3 mb-3">
@@ -165,8 +170,10 @@ function Professional() {
                 <SelectableBox
                   onChange={handleServiceSelection}
                   data={selectableBoxServices}
-                  setSelectedServices={setSelectedServices}
-                  selectedServices={selectedServices}
+                  {...{
+                    setSelectedServices,
+                    selectedServices,
+                  }}
                 />
               </Col>
             </Row>

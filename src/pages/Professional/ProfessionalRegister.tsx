@@ -1,151 +1,81 @@
-import { useState, useEffect, useCallback } from "react";
 import { Col, Row } from "react-bootstrap";
-import { useSnackbar } from "notistack";
-
 import HeaderTitle from "../../view/HeaderTitle/HeaderTitle";
 import Button from "../../components/Button/Button";
 import ProfessionalRegisterDataTable from "../../view/DataTable/ProfessionalRegisterDataTable";
-import AddUserEmployeeRegisterModal from "../../view/Modal/AddEmployeeRegisterModal";
-
-import {
-  getUsers,
-  deleteUser,
-  getUserByUseTypeStore,
-} from "../../services/UserServices";
-import { decodeToken } from "../../services/AuthService";
 
 import * as S from "../Styles/_Page.styles";
-import { getEmployeeIdByUserId } from "../../services/EmployeeServices";
+import { useStateCustom } from "../../hooks/ProfessionalRegister/useStateCustom";
+import { useFetch } from "../../hooks/ProfessionalRegister/useFetch";
+import { useAction } from "../../hooks/ProfessionalRegister/useAction";
+import { useModal } from "../../hooks/ProfessionalRegister/useModal";
+import { useEffectCustom } from "../../hooks/ProfessionalRegister/useEffectCustom";
+import Modal from "../../view/Modal/Modal";
+import Input from "../../components/Input/Input";
 import { capitalizeFirstLetter } from "../../services/system/globalService";
 
-interface User {
-  id: number;
-  name: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  password: string;
-  userTypeId: number;
-}
-
-interface Rows {
-  id: number;
-  name: string;
-  lastName: string;
-  phone: string;
-  email: string;
-  services: number[];
-}
-
-interface DecodedToken {
-  userId: string;
-  userEmail: string;
-  userRole: string;
-}
-
 function ProfessionalRegister() {
-  const [rows, setRows] = useState<Rows[]>([]);
-  const [selectedUserIds, setSelectedUserIds] = useState<number[]>([]);
-  const [show, setShow] = useState(false);
-
   const storedToken = localStorage.getItem("authToken");
-  const [decodedData, setDecodedData] = useState<DecodedToken>();
-
   const storeUser = Number(localStorage.getItem("storeUser"));
 
-  const { enqueueSnackbar } = useSnackbar();
+  const {
+    rows,
+    selectedUserIds,
+    show,
+    setShow,
+    setShowEditModal,
+    setSelectedUserIds,
+    decodedData,
+    combinedData,
+    formValuesProfessionalRegister,
+    setFormValuesProfessionalRegister,
+    setCombinedData,
+    setRows,
+    setDecodedData,
+    showEditModal,
+    setColumnWidth,
+  } = useStateCustom();
 
-  const fetchData = useCallback(async () => {
-    if (storedToken) {
-      const data = await decodeToken(storedToken);
-      setDecodedData(data);
-    }
-    try {
-      const usersData = await getUserByUseTypeStore(2, storeUser);
+  const { fetchData, fetchLoadEditFormValues } = useFetch(
+    storeUser,
+    combinedData,
+    setCombinedData,
+    setFormValuesProfessionalRegister,
+    setRows,
+    setDecodedData
+  );
 
-      if (usersData === undefined) {
-        setRows([]);
-        return;
-      }
-      
-      const mappedRows: Rows[] = usersData.map((user: any) => ({
-        ...user,
-        name: capitalizeFirstLetter(user.name),
-        lastName: capitalizeFirstLetter(user.lastName),
-      }));
-      
-      setRows(mappedRows);
-      
-    } catch (error) {
-      console.error("Erro ao buscar dados:", error);
-    }
-  }, [storedToken, storeUser]);
+  const {
+    handleClose,
+    handleShowAddProfessionalModal,
+    handleShowEditProfessionalModal,
+  } = useModal(
+    setShow,
+    setShowEditModal,
+    fetchLoadEditFormValues,
+    setFormValuesProfessionalRegister
+  );
 
-  const handleDeleteUsers = async () => {
-    if (selectedUserIds.length === 0) {
-      return alert("Nenhum usuário selecionado!");
-    }
+  const {
+    handleSubmitEditProfessionalRegister,
+    handleDeleteUsers,
+    handleRowSelect,
+    handleInputChangeProfessionalRegister,
+    handleRegisterProfessionalRegister,
+  } = useAction(
+    formValuesProfessionalRegister,
+    setFormValuesProfessionalRegister,
+    selectedUserIds,
+    setSelectedUserIds,
+    fetchData,
+    handleClose,
+    storeUser
+  );
 
-    try {
-      const deleteUserById = async (userId: number) => {
-        try {
-          const usersResponse = await getUsers();
-          const user = usersResponse.find((u: User) => u.id === userId);
-
-          if (!user) {
-            enqueueSnackbar(
-              `Nenhum funcionário encontrado para o usuário com ID ${userId}`,
-              { variant: "error" }
-            );
-            return;
-          }
-
-          const getEmployeeResponse = await getEmployeeIdByUserId(user.id);
-
-          if (getEmployeeResponse.length !== 0) {
-            enqueueSnackbar(
-              `Antes de apagar o profissional registrado, é necessário removê-lo da aba "Profissional", incluindo seus serviços e status de agendamento.`,
-              { variant: "warning" }
-            );
-          }
-
-          if (getEmployeeResponse.length === 0) {
-            const deleteUserResponse = await deleteUser(userId);
-            if (deleteUserResponse) {
-              enqueueSnackbar(`Professional excluído com sucesso!`, {
-                variant: "success",
-              });
-
-              setSelectedUserIds([]);
-            }
-          }
-        } catch (error) {
-          console.error(`Erro ao remover o usuário ${userId}:`, error);
-          enqueueSnackbar(`Erro ao excluir o usuário ${userId}.`, {
-            variant: "error",
-          });
-        }
-      };
-
-      await Promise.all(selectedUserIds.map(deleteUserById));
-
-      await fetchData();
-    } catch (error) {
-      console.error("Erro ao remover os usuários:", error);
-      enqueueSnackbar("Erro ao excluir usuários.", { variant: "error" });
-    }
-  };
-
-  const handleRowSelect = (ids: number[]) => {
-    setSelectedUserIds(ids);
-  };
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+  const { containerRef, columns } = useEffectCustom(
+    setColumnWidth,
+    decodedData,
+    handleShowEditProfessionalModal
+  );
 
   return (
     <S.ContainerPage style={{ height: "100vh" }}>
@@ -165,24 +95,104 @@ function ProfessionalRegister() {
           {decodedData?.userRole === "Admin" && (
             <>
               <Button $isRemove type="button" onClick={handleDeleteUsers} />
-              <Button $isAdd type="button" onClick={handleShow} />
+              <Button
+                $isAdd
+                type="button"
+                onClick={handleShowAddProfessionalModal}
+              />
             </>
           )}
         </Col>
       </Row>
       <ProfessionalRegisterDataTable
-        rowsProfessional={rows}
-        onRowSelect={handleRowSelect}
-        fetchData={fetchData}
+        {...{
+          rows,
+          handleRowSelect,
+          fetchData,
+          formValuesProfessionalRegister,
+          setFormValuesProfessionalRegister,
+          combinedData,
+          setCombinedData,
+          fetchLoadEditFormValues,
+          handleInputChangeProfessionalRegister,
+          handleSubmitEditProfessionalRegister,
+          handleShowEditProfessionalModal,
+          showEditModal,
+          handleClose,
+          containerRef,
+          columns,
+        }}
       />
       {show && (
-        <AddUserEmployeeRegisterModal
-          title="Adicionar profissional"
-          subTitle="Preencha as informações abaixo para criar um novo profissional."
+        <Modal
+          title="Editar profissional"
+          subTitle="Preencha as informações abaixo para editar o profissional."
+          handleSubmit={handleRegisterProfessionalRegister}
           handleClose={handleClose}
           size="large"
-          fetchData={fetchData}
-        />
+        >
+          <Row>
+            <Col md={6} className="mt-3 mb-3">
+              <Input
+                width="300"
+                type="text"
+                placeholder="Nome"
+                name="name"
+                value={capitalizeFirstLetter(
+                  formValuesProfessionalRegister.name
+                )}
+                onChange={(e) =>
+                  handleInputChangeProfessionalRegister(
+                    e as React.ChangeEvent<HTMLInputElement>
+                  )
+                }
+              />
+              <Input
+                width="300"
+                type="text"
+                placeholder="Sobrenome"
+                name="lastName"
+                value={capitalizeFirstLetter(
+                  formValuesProfessionalRegister.lastName
+                )}
+                onChange={(e) =>
+                  handleInputChangeProfessionalRegister(
+                    e as React.ChangeEvent<HTMLInputElement>
+                  )
+                }
+              />
+            </Col>
+            <Col md={6} className="mt-3 mb-3">
+              <Input
+                width="300"
+                type="text"
+                placeholder="Email"
+                name="email"
+                value={formValuesProfessionalRegister.email}
+                onChange={(e) =>
+                  handleInputChangeProfessionalRegister(
+                    e as React.ChangeEvent<HTMLInputElement>
+                  )
+                }
+              />
+              <Input
+                width="300"
+                type="text"
+                placeholder="Telefone"
+                phone
+                name="phone"
+                value={capitalizeFirstLetter(
+                  formValuesProfessionalRegister.phone
+                )}
+                onChange={(e) =>
+                  handleInputChangeProfessionalRegister(
+                    e as React.ChangeEvent<HTMLInputElement>
+                  )
+                }
+              />
+            </Col>
+          </Row>
+        </Modal>
       )}
     </S.ContainerPage>
   );
