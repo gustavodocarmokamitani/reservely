@@ -1,17 +1,16 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React from "react";
 
-import { DataGrid, GridColDef, GridRenderCellParams, GridRowSelectionModel } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 
 import { ServiceType } from "../../models/ServiceType";
 
-import edit from "../../assets/edit.svg";
-import confirm from "../../assets/confirmCardStore.svg";
-import remove from "../../assets/removeRed.svg";
-
-import EditServiceModal from "../Modal/EditServiceModal";
-
-import { decodeToken } from "../../services/AuthService";
+import { SelectOption } from "../../models/SelectOptions";
+import { Service } from "../../models/Service";
+import Modal from "../Modal/Modal";
+import Input from "../../components/Input/Input";
+import { Col, Row } from "react-bootstrap";
+import Select from "../../components/Select/Select";
 
 interface DecodedToken {
   userId: string;
@@ -21,142 +20,49 @@ interface DecodedToken {
 
 interface ServiceDataTableProps {
   service?: boolean;
-  rowsService?: ServiceType[];
-  onRowSelect?: (id: number[]) => void;
+  rows?: ServiceType[];
+  handleRowSelect: (id: number[]) => void;
   fetchData: () => void;
+  options: SelectOption[];
+  setOptions: React.Dispatch<React.SetStateAction<SelectOption[]>>;
+  durationMinutes: SelectOption[];
+  setDurationMinutes: React.Dispatch<React.SetStateAction<SelectOption[]>>;
+  handleShowEditServiceModal: (status: boolean, serviceId: number) => void;
+  serviceType: Service | null;
+  setServiceType: React.Dispatch<React.SetStateAction<Service | null>>;
+  handleSubmitEditService: () => void;
+  showEditModal: boolean;
+  handleClose: () => void;
+  formValuesService: Service;
+  setFormValuesService: React.Dispatch<React.SetStateAction<Service>>;
+  handleInputChangeService: (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => void;
+  containerRef: React.RefObject<HTMLDivElement>;
+  columns: GridColDef[];
 }
 
 const ServiceDataTable: React.FC<ServiceDataTableProps> = ({
-  rowsService,
+  rows,
   service,
-  onRowSelect,
-  fetchData, 
-}) => { 
-  const [showModal, setShowModal] = useState({ editService: false });
-  const [selectedEmployeeId, setSelectedEmployeeId] = useState<number>();
-  const [columnWidth, setColumnWidth] = useState(250);
-  const containerRef = useRef<HTMLDivElement>(null);
- 
-  const handleClose = () => setShowModal({ editService: false });
-  const handleShowModal = (type: "editService", id: number) => {
-    setSelectedEmployeeId(id);
-    setShowModal({ ...showModal, [type]: true });
-  };
- 
-  const storedToken = localStorage.getItem("authToken");
-  const [decodedData, setDecodedData] = useState<DecodedToken>();
- 
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
-
-  const fetchToken = useCallback(async () => {
-    if (storedToken) {
-      try {
-        const data = await decodeToken(storedToken);
-        setDecodedData(data);
-      } catch (error) {
-        console.error("Error decoding token:", error);
-      }
-    }
-  }, [storedToken]);
-  
-  useEffect(() => {
-    fetchToken();
-  
-    const updateColumnWidth = () => {
-      if (containerRef.current) {
-        const totalWidth = containerRef.current.offsetWidth;
-        const columnsCount = decodedData?.userRole === "Admin" ? 6 : 5;
-        setColumnWidth(Math.floor(totalWidth / columnsCount));
-      }
-    };
-    updateColumnWidth();
-    window.addEventListener("resize", updateColumnWidth);
-  
-    return () => window.removeEventListener("resize", updateColumnWidth);
-  }, [fetchToken, decodedData?.userRole]);
- 
-  const handleRowClick = (ids: number[]) => onRowSelect?.(ids);
- 
-  const columns: GridColDef[] = service
-    ? [
-        { field: "id", headerName: "ID", flex: 1, align: "center" as const, headerAlign: "center" as const },
-        { field: "name", headerName: "Nome", flex: 2, align: "center" as const, headerAlign: "center" as const },
-        {
-          field: "value",
-          headerName: "Valor",
-          flex: 1,
-          align: "center" as const,
-          headerAlign: "center" as const,
-          renderCell: (params: any) => {
-            return new Intl.NumberFormat('pt-BR', {
-              style: 'currency',
-              currency: 'BRL',
-            }).format(params.value);
-          },
-        },
-        {
-          field: "durationMinutes",
-          headerName: "Duração",
-          flex: 1,
-          align: "center" as const,
-          headerAlign: "center" as const,
-          renderCell: (params) => {
-            const minutes = params.value || 0;
-            const hours = Math.floor(minutes / 60);
-            const mins = minutes % 60;
-            return <span>{`${String(hours).padStart(2, "0")}:${String(mins).padStart(2, "0")}`}</span>;
-          }
-        },        
-        {
-          field: "active",
-          headerName: "Ativo",
-          type: "boolean",
-          flex: 1,
-          headerAlign: "center" as const,
-          renderCell: (params) =>
-            params.value === true ? (
-              <img style={{ cursor: "pointer" }} src={confirm} alt="Ativo" />
-            ) : (
-              <img style={{ cursor: "pointer" }} src={remove} alt="Inactive" />
-            ),
-        },
-        ...(decodedData?.userRole === "Admin"
-          ? [
-              {
-                field: "acoes",
-                headerName: "Ações",
-                flex: 1,
-                renderCell: (params: GridRenderCellParams) => (
-                  <div
-                    style={{
-                      display: "flex",
-                      gap: "50px",
-                      justifyContent: "center",
-                      margin: "12.5px 0px 0px 5px",
-                    }}
-                  >
-                    <img
-                      style={{ cursor: "pointer" }}
-                      src={edit}
-                      onClick={() => handleShowModal("editService", params.row.id)}
-                      alt="Editar"
-                    />
-                  </div>
-                ),
-                width: columnWidth,
-                align: "center" as const,
-                headerAlign: "center" as const,
-              },
-            ]
-          : []),
-      ]
-    : [];
- 
-  let rows: any[] = [];
-  if (service) rows = rowsService || [];
-
+  handleRowSelect,
+  fetchData,
+  options,
+  setOptions,
+  durationMinutes,
+  setDurationMinutes,
+  handleShowEditServiceModal,
+  serviceType,
+  setServiceType,
+  handleSubmitEditService,
+  showEditModal,
+  handleClose,
+  formValuesService,
+  setFormValuesService,
+  handleInputChangeService,
+  containerRef,
+  columns,
+}) => {
   return (
     <div ref={containerRef} style={{ marginTop: "3rem" }}>
       <Paper
@@ -176,21 +82,107 @@ const ServiceDataTable: React.FC<ServiceDataTableProps> = ({
           disableRowSelectionOnClick
           onRowSelectionModelChange={(newSelection: GridRowSelectionModel) => {
             const selectedRowIds = newSelection.map((id) => Number(id));
-            if (selectedRowIds.every((id) => !isNaN(id))) handleRowClick(selectedRowIds);
+            if (selectedRowIds.every((id) => !isNaN(id)))
+              handleRowSelect(selectedRowIds);
           }}
           sx={{ border: 0 }}
         />
       </Paper>
-      {showModal.editService && (
-        <EditServiceModal
-          fetchData={fetchData}
+      {showEditModal && (
+        <Modal
           title="Editar serviço"
           subTitle="Preencha as informações abaixo para editar o serviço."
-          handleClose={handleClose}
+          handleSubmit={handleSubmitEditService}
           size="small"
-          rowId={selectedEmployeeId}
-          editService
-        />
+          {...{
+            handleClose,
+          }}
+        >
+          <Row>
+            <Col
+              md={6}
+              className="mt-3 mb-3 d-flex justify-content-center align-items-center"
+            >
+              <Input
+                width="300"
+                type="text"
+                placeholder="Nome"
+                name="name"
+                value={formValuesService.name}
+                onChange={(e) =>
+                  handleInputChangeService(
+                    e as React.ChangeEvent<HTMLInputElement>
+                  )
+                }
+              />
+            </Col>
+            <Col
+              md={6}
+              className="mt-3 mb-3 d-flex justify-content-center align-items-center"
+            >
+              <Input
+                width="300"
+                type="text"
+                placeholder="Valor"
+                name="value"
+                value={formValuesService.value}
+                onChange={(e) =>
+                  handleInputChangeService(
+                    e as React.ChangeEvent<HTMLInputElement>
+                  )
+                }
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col
+              md={6}
+              className="mt-3 mb-3 d-flex justify-content-center align-items-center"
+            >
+              <Select
+                setData={setDurationMinutes}
+                value={durationMinutes[0]}
+                options={options}
+                placeholder="Selecione a duração"
+              />
+            </Col>
+            <Col
+              md={6}
+              className="mt-3 mb-3 d-flex justify-content-center align-items-center"
+            >
+              <Input
+                width="300"
+                type="toggle"
+                name="active"
+                value={formValuesService.active}
+                onChange={(e) =>
+                  handleInputChangeService(
+                    e as React.ChangeEvent<HTMLInputElement>
+                  )
+                }
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col
+              md={12}
+              className="mt-3 mb-3 d-flex justify-content-center align-items-center"
+            >
+              <Input
+                width="600"
+                type="text"
+                placeholder="Descrição"
+                name="description"
+                value={formValuesService.description}
+                onChange={(e) =>
+                  handleInputChangeService(
+                    e as React.ChangeEvent<HTMLInputElement>
+                  )
+                }
+              />
+            </Col>
+          </Row>
+        </Modal>
       )}
     </div>
   );
