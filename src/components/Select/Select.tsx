@@ -9,7 +9,7 @@ interface SelectProps {
   placeholder?: string;
   value?: SelectOption | SelectOption[];
   isMulti?: boolean;
-  maxSelections?: number; 
+  maxSelections?: number;
 }
 
 const Select: React.FC<SelectProps> = ({
@@ -18,20 +18,30 @@ const Select: React.FC<SelectProps> = ({
   placeholder = "Selecione...",
   value,
   isMulti = false,
-  maxSelections, 
+  maxSelections,
 }) => {
   const handleChange = (selectedOption: any) => {
-    
     if (maxSelections && selectedOption?.length > maxSelections) {
-      selectedOption.pop(); 
+      selectedOption.pop();
     }
 
-    setData(isMulti || maxSelections ? selectedOption : selectedOption ? [selectedOption] : []);
+    setData(
+      isMulti || maxSelections
+        ? selectedOption
+        : selectedOption
+        ? [selectedOption]
+        : []
+    );
   };
+  console.log((value as SelectOption)?.value);
 
-  const selectedValue = isMulti || maxSelections
-    ? value
-    : options.find((opt) => opt.value === (value as SelectOption)?.value);
+  const selectedValue =
+    isMulti || maxSelections
+      ? value
+      : options.find(
+          (opt) =>
+            opt.value === ((value as SelectOption)?.value ?? Number(value))
+        );
 
   return (
     <SelectReact
@@ -40,7 +50,7 @@ const Select: React.FC<SelectProps> = ({
       placeholder={placeholder}
       styles={customStyles}
       value={selectedValue}
-      isMulti={isMulti || !!maxSelections} 
+      isMulti={isMulti || !!maxSelections}
     />
   );
 };

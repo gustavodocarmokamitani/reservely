@@ -38,25 +38,3 @@ const Home = () => {
 };
 
 export default Home;
-
-// <Row>
-//           <Col lg={6}>
-//             <h1>agendai</h1>
-//           </Col>
-//         </Row>
-//         <Row>
-//           <Col lg={6}>
-//             <div style={{ marginBottom: "10px" }}>
-//               <Button
-//                 $isLogin
-//                 type="button"
-//                 onClick={() => handleButtonClick(true, false)}
-//               />
-//             </div>
-//             <Button
-//               $isRegister
-//               type="button"
-//               onClick={() => handleButtonClick(false, true)}
-//             />
-//           </Col>
-//         </Row>

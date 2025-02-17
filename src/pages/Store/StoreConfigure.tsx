@@ -14,213 +14,83 @@ import { ContainerPage } from "../Styles/_Page.styles";
 import HeaderTitle from "../../view/HeaderTitle/HeaderTitle";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
-import CardStatus from "../../components/Card/StatusCard";
-import TimeCard from "../../components/Card/TimeCard"; 
-import WeekDayCard from "../../components/Card/WeekDayCard";
-import ClosingDateCard from "../../components/Card/ClosingDateCard";
 import SelectDataPicker from "../../components/Select/SelectDataPicker";
 import Select from "../../components/Select/Select";
 import { SelectOption } from "../../models/SelectOptions";
+import Card from "../../components/Card/Card";
+import { useStateCustom } from "../../hooks/StoreConfigure/useStateCustom";
+import { useFetch } from "../../hooks/StoreConfigure/useFetch";
+import { useAction } from "../../hooks/StoreConfigure/useAction";
+import { useEffectCustom } from "../../hooks/StoreConfigure/useEffectCustom";
 
 function StoreConfigure() {
-  const navigate = useNavigate();
-  const [formValuesStore, setFormValuesStore] = useState<{
-    name: string;
-    active: boolean;
-  }>({
-    name: "",
-    active: false,
-  });
-  const [store, setStore] = useState<StoreModel | undefined>();
-  const [selectedTimes, setSelectedTimes] = useState<string[]>([]);
-  const [selectedTimesSelect, setSelectedTimesSelect] = useState<SelectOption[]>([]);
-  const [openingWeekDay, setOpeningWeekDay] = useState<string[]>([]);  
-  const [openingWeekDaySelect, setOpeningWeekDaySelect] = useState<SelectOption[]>([]);
-  const [closingDates, setClosingDates] = useState<Date[] | null>([]);
-  const [statusStore, setStatusStore] = useState<boolean>();
-
-  const [optionsWeekDay] = useState<SelectOption[]>([
-    {
-      value: 1,
-      label: "Segunda",
-    },
-    {
-      value: 2,
-      label: "Terça",
-    },
-    {
-      value: 3,
-      label: "Quarta",
-    },
-    {
-      value: 4,
-      label: "Quinta",
-    },
-    {
-      value: 5,
-      label: "Sexta",
-    },
-    {
-      value: 6,
-      label: "Sábado",
-    },
-    {
-      value: 7,
-      label: "Domingo",
-    },
-  ]);
-  const [optionsTime, setOptionsTime] = useState<SelectOption[]>([]);
   const { enqueueSnackbar } = useSnackbar();
 
   const storeUser = Number(localStorage.getItem("storeUser"));
 
-  const handleInputChangeStore = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const { name, type, checked, value } = event.target;
+  const navigate = useNavigate();
 
-    setFormValuesStore((prev) => {
-      const updatedValues = {
-        ...prev,
-        [name]: type === "checkbox" ? checked : value,
-      };
+  const {
+    formValuesStore,
+    setFormValuesStore,
+    store,
+    setStore,
+    selectedTimes,
+    setSelectedTimes,
+    selectedTimesSelect,
+    setSelectedTimesSelect,
+    openingWeekDay,
+    setOpeningWeekDay,
+    openingWeekDaySelect,
+    setOpeningWeekDaySelect,
+    closingDates,
+    setClosingDates,
+    statusStore,
+    setStatusStore,
+    optionsTime,
+    setOptionsTime,
+    optionsWeekDay,
+  } = useStateCustom();
 
-      setStatusStore(updatedValues.active);
-      return updatedValues;
-    });
-  };
+  const { generateTimeOptions } = useFetch(
+    storeUser,
+    setStore,
+    setFormValuesStore,
+    setStatusStore,
+    selectedTimes,
+    setSelectedTimes,
+    openingWeekDay,
+    setOpeningWeekDay,
+    closingDates,
+    setClosingDates
+  );
 
-  const fetchData = useCallback(async () => {
-    try {
-      const response = await getStoreById(storeUser);
-      if (response) {
-        setStore(response);
+  const {
+    handleSubmit,
+    handleInputChangeStore,
+    handleRemoveDataClosed,
+    handleRemoveDateClosed,
+    handleButtonClick,
+  } = useAction(
+    store,
+    selectedTimes,
+    closingDates,
+    setClosingDates,
+    openingWeekDay,
+    setOpeningWeekDay,
+    formValuesStore,
+    setFormValuesStore,
+    setStatusStore
+  );
 
-        setFormValuesStore((prev) => ({
-          ...prev,
-          name: response.name,
-          active: response.status,
-        }));
-
-        setStatusStore(response.status);
-
-        if (selectedTimes.length === 0 && response.operatingHours) {
-          const timeArray = response.operatingHours.split(" - ");
-          setSelectedTimes(timeArray);
-        }
-
-        if (!openingWeekDay || openingWeekDay.length === 0) {
-          const OpeningWeekDayArray = response.operatingDays
-            ? response.operatingDays
-            : [];
-          setOpeningWeekDay(OpeningWeekDayArray);
-        }
-
-        if (!closingDates || closingDates.length === 0) {
-          const ClosingDatesArray = response.closingDays
-            ? response.closingDays
-                .map((data: string) => {
-                  const date = new Date(data);
-                  return isNaN(date.getTime()) ? null : date;
-                })
-                .filter((date: any) => date !== null)
-            : [];
-
-          setClosingDates(
-            ClosingDatesArray.sort(
-              (a: Date, b: Date) => a.getTime() - b.getTime()
-            )
-          );
-        }
-      }
-    } catch (error) {
-      console.error("Erro na requisição da store", error);
-    }
-  }, [storeUser, closingDates, openingWeekDay, selectedTimes.length]);
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
-
-  const handleSubmit = async () => {
-    if (store) {
-      const storeMapped: Store = {
-        ...store,
-        name: formValuesStore.name,
-        status: formValuesStore.active,
-        operatingHours: selectedTimes.join(" - "),
-        closingDays: closingDates
-          ? closingDates
-              .filter((data) => data instanceof Date && !isNaN(data.getTime()))
-              .map((data) => data.toISOString())
-          : [],
-        operatingDays: openingWeekDay.map((option) => option),
-      };
-
-      try {
-        await updateStore(storeMapped.id, storeMapped);
-        enqueueSnackbar(`Store editado com sucesso!`, { variant: "success" });
-
-        navigate("/store");
-      } catch (error) {
-        enqueueSnackbar(`Falha ao editar store com ID ${storeMapped.id}`, {
-          variant: "error",
-        });
-      }
-    }
-  };
-
-  const handleRemoveDataClosed = (dateToRemove: Date) => {
-    setClosingDates((closingDates) => {
-      if (closingDates) {
-        return closingDates.filter(
-          (data) => data.getTime() !== dateToRemove.getTime()
-        );
-      } else {
-        return [];
-      }
-    });
-  };
-
-  const handleRemoveDateClosed = (dayToRemove: string) => {
-    setOpeningWeekDay((prevDays) =>
-      prevDays.filter((day) => day !== dayToRemove)
-    );
-  };
-
-  const handleButtonClick = () => {
-    navigate("/store");
-  };
-
-    useEffect(() => {
-      if (openingWeekDaySelect.length > 0) {
-        setOpeningWeekDay(openingWeekDaySelect.map(item => item.label))
-      }
-    }, [openingWeekDaySelect]);
-
-    const generateTimeOptions = () => {
-      const times = [];
-      for (let hour = 0; hour < 24; hour++) {
-        for (let minute = 0; minute < 60; minute += 30) {
-          const formattedHour = hour < 10 ? `0${hour}` : `${hour}`;
-          const formattedMinute = minute < 10 ? `0${minute}` : `${minute}`;
-          const time = `${formattedHour}:${formattedMinute}`;
-          times.push({ value: parseFloat(time), label: time });
-        }
-      }
-      return times;
-    };
-  
-    useEffect(() => {
-      const times = generateTimeOptions();
-      setOptionsTime(times);
-    }, []);
-
-    useEffect(() => {
-      if (selectedTimesSelect.length > 0) {
-        setSelectedTimes(selectedTimesSelect.map(item => item.label))
-      }
-    }, [selectedTimesSelect]);
+  useEffectCustom(
+    openingWeekDaySelect,
+    selectedTimesSelect,
+    setOpeningWeekDay,
+    generateTimeOptions,
+    setOptionsTime,
+    setSelectedTimes
+  );
 
   return (
     <ContainerPage style={{ height: "100%" }}>
@@ -298,20 +168,22 @@ function StoreConfigure() {
           <S.StoreSectionTwo>
             <h3 style={{ margin: "50px 0 25px 0" }}>Dados da loja</h3>
             <S.CardStoreWrapper className="d-flex justify-content-start align-items-center">
-              <CardStatus
+              <Card
+                type="status"
                 statusStore={statusStore}
-                data={store}
                 title="Status"
                 icon="confirm"
               />
               {store?.operatingHours && store?.operatingHours.length > 0 ? (
                 <>
-                  <TimeCard
+                  <Card
+                    type="time"
                     selectedTimes={selectedTimes}
                     title="Hora de abertura"
                     icon="confirm"
                   />
-                  <TimeCard
+                  <Card
+                    type="time"
                     selectedTimes={selectedTimes}
                     title="Hora de fechamento"
                     icon="confirm"
@@ -325,14 +197,12 @@ function StoreConfigure() {
             <h3 style={{ margin: "50px 0 25px 0" }}>Dias de funcionamento</h3>
             {store?.operatingDays?.some(
               (day) => day.toString().trim() !== ""
-            ) ||
-            openingWeekDay?.some(
-              (day) => day && day.trim().length > 0
-            ) ? (
+            ) || openingWeekDay?.some((day) => day && day.trim().length > 0) ? (
               <>
                 <S.CardStoreWrapper className="d-flex justify-content-start align-items-center flex-wrap">
                   {openingWeekDay.map((item: any) => (
-                    <WeekDayCard
+                    <Card
+                      type="weekDay"
                       key={item}
                       text={item}
                       icon="remove"
@@ -349,7 +219,8 @@ function StoreConfigure() {
             <S.CardStoreWrapper className="d-flex justify-content-start align-items-center flex-wrap">
               {closingDates && closingDates.length > 0 ? (
                 closingDates.map((item: Date, index: number) => (
-                  <ClosingDateCard
+                  <Card
+                    type="closingDate"
                     key={item.toISOString()}
                     text={item.toLocaleDateString("pt-BR", {
                       day: "2-digit",

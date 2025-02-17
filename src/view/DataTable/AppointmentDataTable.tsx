@@ -1,117 +1,53 @@
-import React, { useEffect, useState, useRef } from "react";
-import { DataGrid, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
-import moment from "moment";
+import React from "react";
 import Paper from "@mui/material/Paper";
-import info from "../../assets/info.svg";
-import edit from "../../assets/edit.svg";
-import EditStatusAppointmentModal from "../Modal/EditStatusAppointmentModal";
-import InfoAppointmentServiceModal from "../Modal/InfoAppointmentServiceModal";
+import Modal from "../Modal/Modal";
+import Select from "../../components/Select/Select";
+import SelectableBox from "../../components/SelectableBox/SelectableBox";
+import { DataGrid, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
+import { Col, Row } from "react-bootstrap";
 import { Appointment } from "../../models/Appointment";
+import { Service } from "../../models/Service";
+import { SelectOption } from "../../models/SelectOptions";
 
 interface AppointmentDataTableProps {
-  appointment?: boolean;
-  rowsAppointment?: Appointment[];
-  onRowSelect?: (id: number[]) => void;
-  setUpdate: React.Dispatch<React.SetStateAction<boolean>>;
-  update: boolean;
-  fetchData: () => void;
+  rows: Appointment[];
+  handleRowSelect: (id: number[]) => void;
+  selectableBoxServices: Service[];
+  showModalAppointmentHistoryInfo: boolean;
+  showModalAppointmentHistoryStatus: boolean;
+  handleClose: () => void;
+  columns: GridColDef[];
+  containerRef: React.RefObject<HTMLDivElement>;
+  statusAppointment: SelectOption[];
+  setStatusAppointment: React.Dispatch<React.SetStateAction<SelectOption[]>>;
+  handleSubmitAppointmentHistoryStatus: () => void;
+  options: SelectOption[];
 }
 
 const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
-  rowsAppointment = [],
-  appointment = false,
-  onRowSelect,
-  fetchData,
-  update,
-  setUpdate
+  rows = [],
+  handleRowSelect,
+  selectableBoxServices,
+  showModalAppointmentHistoryInfo,
+  showModalAppointmentHistoryStatus,
+  handleClose,
+  columns,
+  containerRef,
+  statusAppointment,
+  setStatusAppointment,
+  handleSubmitAppointmentHistoryStatus,
+  options,
 }) => {
-  const [showModal, setShowModal] = useState({
-    editAppointmentStatus: false,
-    infoAppointmentService: false,
-    editAppointment: false,
-    editService: false
-  });
-  const [selectedEmployeeId, setSelectedEmployeeId] = useState<number>();
-  const [columnWidth, setColumnWidth] = useState(250);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    fetchData();
-    setUpdate(false);
-  }, [fetchData, setUpdate]);
-
-  useEffect(() => {
-    const updateColumnWidth = () => {
-      if (containerRef.current) {
-        const totalWidth = containerRef.current.offsetWidth;
-        setColumnWidth(Math.floor(totalWidth / 6));
-      }
-    };
-    updateColumnWidth();
-    window.addEventListener("resize", updateColumnWidth);
-    return () => window.removeEventListener("resize", updateColumnWidth);
-  }, []);
-
-  const handleClose = () => setShowModal({ editAppointmentStatus: false, infoAppointmentService: false, editAppointment: false, editService: false });
-  const handleShowModal = (type: "infoAppointmentService" | "editAppointment" | "editAppointmentStatus" | "editService", id: number) => {
-    setSelectedEmployeeId(id);
-    setShowModal({ ...showModal, [type]: true });
-  };
-
-  const handleRowClick = (ids: number[]) => onRowSelect?.(ids);
-
-  const columns: GridColDef[] = appointment
-    ? [
-      { field: "clientId", headerName: "Cliente", flex: 1.5, align: "center", headerAlign: "center" },
-      { field: "employeeFullName", headerName: "Funcionário", flex: 1.5, align: "center", headerAlign: "center" },
-      {
-        field: "appointmentDate",
-        headerName: "Data do Agendamento",
-        flex: 1,
-        align: "center",
-        headerAlign: "center",
-        renderCell: (params) => {
-          const formattedDate = moment(params.value).format("DD/MM/YYYY");
-          return <span>{formattedDate}</span>;
-        }
-      },
-      { field: "appointmentTime", headerName: "Horário do Agendamento", flex: 1, align: "center", headerAlign: "center" },
-      { field: "appointmentStatus", headerName: "Status", flex: 1, align: "center", headerAlign: "center" },
-      {
-        field: "acoes",
-        headerName: "Ações",
-        flex: 1,
-        renderCell: (params) => (
-          <div style={{ display: "flex", gap: "50px", justifyContent: "center", margin: '12.5px 0px 0px 5px' }}>
-            <img
-              style={{ cursor: "pointer" }}
-              src={info}
-              onClick={() => handleShowModal("infoAppointmentService", params.row.serviceIds)}
-              alt="Informações"
-            />
-            <img
-              style={{ cursor: "pointer" }}
-              src={edit}
-              onClick={() => handleShowModal("editAppointmentStatus", params.row.id)}
-              alt="Alterar status"
-            />
-          </div>
-        ),
-        width: columnWidth,
-        align: "center",
-        headerAlign: "center",
-      },
-    ]
-    : [];
-
-  let rows: Appointment[] = [];
-  if (appointment) {
-    rows = rowsAppointment.slice().sort((a, b) => new Date(b.appointmentDate).getTime() - new Date(a.appointmentDate).getTime());
-  }
-
   return (
     <div ref={containerRef} style={{ marginTop: "3rem" }}>
-      <Paper sx={{ height: 700, width: "100%", borderRadius: "15px", overflow: "hidden" }}>
+      <Paper
+        sx={{
+          height: 700,
+          width: "100%",
+          borderRadius: "15px",
+          overflow: "hidden",
+        }}
+      >
         <DataGrid
           rows={rows}
           columns={columns}
@@ -121,32 +57,55 @@ const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
           disableRowSelectionOnClick
           onRowSelectionModelChange={(newSelection: GridRowSelectionModel) => {
             const selectedRowIds = newSelection.map((id) => Number(id));
-            if (selectedRowIds.every((id) => !isNaN(id))) handleRowClick(selectedRowIds);
+            if (selectedRowIds.every((id) => !isNaN(id)))
+              handleRowSelect(selectedRowIds);
           }}
           sx={{ border: 0 }}
         />
       </Paper>
-      {showModal.infoAppointmentService && (
-        <InfoAppointmentServiceModal
-          title="Informações do appointment"
-          subTitle="Todos os serviços que contém esse appointment."
-          handleClose={handleClose}
-          handleShow={() => setShowModal({ ...showModal, infoAppointmentService: true })}
-          size="pequeno"
-          fetchData={() => {}}
-          rowId={selectedEmployeeId}
-        />
-      )}
-      {showModal.editAppointmentStatus && (
-        <EditStatusAppointmentModal
-          title="Editar status de appointment"
-          subTitle="Preencha as informações abaixo para editar o status."
-          handleClose={handleClose}
-          handleShow={() => setShowModal({ ...showModal, editService: true })}
+
+      {showModalAppointmentHistoryInfo && (
+        <Modal
+          title="Serviços do apontamento"
+          subTitle="Todos os serviços que contém esse apontamento."
+          handleSubmit={handleClose}
           size="small"
-          rowId={selectedEmployeeId}
-          setUpdate={setUpdate}
-        />
+          {...{ handleClose }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            <SelectableBox
+              data={selectableBoxServices}
+              setSelectedServices={() => {}}
+            />
+          </div>
+        </Modal>
+      )}
+
+      {showModalAppointmentHistoryStatus && (
+        <Modal
+          title="Serviços do apontamento"
+          subTitle="Todos os serviços que contém esse apontamento."
+          handleSubmit={handleSubmitAppointmentHistoryStatus}
+          size="small"
+          {...{ handleClose }}
+        >
+          <Row>
+            <Col md={6} style={{ margin: "15px 0px 35px 15px" }}>
+              <Select
+                setData={setStatusAppointment}
+                value={statusAppointment}
+                options={options}
+                placeholder="Selecione um status"
+              />
+            </Col>
+          </Row>
+        </Modal>
       )}
     </div>
   );

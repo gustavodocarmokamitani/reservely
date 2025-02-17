@@ -10,14 +10,13 @@ import { Store as StoreModel } from "../../models/Store";
 
 import HeaderTitle from "../../view/HeaderTitle/HeaderTitle";
 import Button from "../../components/Button/Button";
-import CardStatus from "../../components/Card/StatusCard";
-import CardHorario from "../../components/Card/TimeCard";
-import CardDiaSemana from "../../components/Card/WeekDayCard";
-import CardDiaFechamento from "../../components/Card/ClosingDateCard";
 
 import * as S from "./Store.styles";
 
 import { ContainerPage } from "../Styles/_Page.styles";
+import Card from "../../components/Card/Card";
+import { useStateCustom } from "../../hooks/Store/useStateCustom";
+import { useFetch } from "../../hooks/Store/useFetch";
 
 interface DecodedToken {
   userId: string;
@@ -27,35 +26,18 @@ interface DecodedToken {
 
 function Store() {
   const navigate = useNavigate();
-  const [store, setStore] = useState<StoreModel | undefined>();
-  const [selectedTimes, setSelectedTimes] = useState<string[]>([]);
-  const storedToken = localStorage.getItem("authToken");
-  const [decodedData, setDecodedData] = useState<DecodedToken>();
-
   const storeUser = Number(localStorage.getItem("storeUser"));
 
-  const fetchData = useCallback(async () => {
-    try {
-      if (storedToken) {
-        const data = await decodeToken(storedToken);
-        setDecodedData(data);
-      }
-      const response = await getStoreById(storeUser);
-      if (response) {
-        setStore(response);
-        const horariosArray = response.operatingHours
-          ? response.operatingHours.split(" - ")
-          : [];
-        setSelectedTimes(horariosArray);
-      }
-    } catch (error) {
-      console.error("Erro ao buscar dados da loja:", error);
-    }
-  }, [storedToken, storeUser]);
+  const {
+    store,
+    setStore,
+    selectedTimes,
+    setSelectedTimes,
+    decodedData,
+    setDecodedData,
+  } = useStateCustom();
 
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+  useFetch(storeUser, setDecodedData, setStore, setSelectedTimes);
 
   const handleButtonClick = () => {
     navigate("/store-configure");
@@ -85,15 +67,22 @@ function Store() {
         <Col md={12}>
           <h3 style={{ margin: "20px 0 25px 0" }}>Dados da loja</h3>
           <S.CardStoreWrapper className="d-flex justify-content-start align-items-center">
-            <CardStatus data={store} title="Status" icon="confirm" />
+            <Card
+              type="status"
+              statusStore={store?.status}
+              title="Status"
+              icon="confirm"
+            />
             {store?.operatingHours && store.operatingHours.length > 0 ? (
               <>
-                <CardHorario
+                <Card
+                  type="time"
                   selectedTimes={selectedTimes}
                   title="Hora de abertura"
                   icon="calendar"
                 />
-                <CardHorario
+                <Card
+                  type="time"
                   selectedTimes={selectedTimes}
                   title="Hora de fechamento"
                   icon="calendar"
@@ -111,7 +100,7 @@ function Store() {
               <h3 style={{ margin: "20px 0 25px 0" }}>Dias de funcionamento</h3>
               <S.CardStoreWrapper className="d-flex justify-content-start align-items-center flex-wrap">
                 {store.operatingDays.map((day, index) => (
-                  <CardDiaSemana key={index} text={day} icon="confirm" />
+                  <Card type="weekDay" key={index} text={day} icon="confirm" />
                 ))}
               </S.CardStoreWrapper>
             </>
@@ -140,7 +129,8 @@ function Store() {
                       }
                     );
                     return (
-                      <CardDiaFechamento
+                      <Card
+                        type="closingDate"
                         key={index}
                         text={formattedData}
                         icon="confirm"

@@ -1,65 +1,30 @@
 import { Col, Row } from "react-bootstrap";
 import HeaderTitle from "../../view/HeaderTitle/HeaderTitle";
-import { ContainerPage } from "../Styles/_Page.styles";
-import DashboardCard from "../../components/Card/DashboardCard";
 import ChartDashboard from "../../view/ChartsDashBoard/ChartDashboard";
-import * as S from "./Dashboard.styles";
-import { useEffect, useState } from "react";
-import {
-  getAppointmentByStoreId,
-  getAppointmentRevenue,
-} from "../../services/AppointmentServices";
+import Card from "../../components/Card/Card";
 import { formatCurrencyBRL } from "../../services/system/globalService";
+import { useStateCustom } from "../../hooks/Dashboard/useStateCustom";
+import { useFetch } from "../../hooks/Dashboard/useFetch";
+import { ContainerPage } from "../Styles/_Page.styles";
+import * as S from "./Dashboard.styles";
 
 const Dashboard = () => {
   const storeUser = Number(localStorage.getItem("storeUser"));
-  const [amountReceived, setAmountReceived] = useState<number>(0);
-  const [appointmentCount, setAppointmentCount] = useState<number>(0);
-  const [appointmentPercentageCanceled, setAppointmentPercentageCanceled] =
-    useState<number>(0);
+  const {
+    amountReceived,
+    setAmountReceived,
+    appointmentCount,
+    setAppointmentCount,
+    appointmentPercentageCanceled,
+    setAppointmentPercentageCanceled,
+  } = useStateCustom();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const responseRevenue = await getAppointmentRevenue(storeUser);
-
-        if (responseRevenue && Array.isArray(responseRevenue)) {
-          const totalRevenue = responseRevenue.reduce(
-            (acc: number, currentValue: any) => acc + currentValue.totalRevenue,
-            0
-          );
-
-          setAmountReceived(totalRevenue);
-
-          const responseAppointmentCount = await getAppointmentByStoreId(
-            storeUser
-          );
-
-          if (
-            responseAppointmentCount &&
-            Array.isArray(responseAppointmentCount)
-          ) {
-            const totalAppointments = responseAppointmentCount.length;
-            setAppointmentCount(totalAppointments);
-
-            const canceledAppointments = responseAppointmentCount.filter(
-              (appointment: any) => appointment.appointmentStatusId === 3
-            );
-
-            const percentageCanceled =
-              (canceledAppointments.length / totalAppointments) * 100;
-            console.log(percentageCanceled);
-
-            setAppointmentPercentageCanceled(percentageCanceled);
-          }
-        }
-      } catch (error) {
-        console.error("Erro ao buscar dados de receita:", error);
-      }
-    };
-
-    fetchData();
-  }, [storeUser]);
+  useFetch(
+    storeUser,
+    setAmountReceived,
+    setAppointmentCount,
+    setAppointmentPercentageCanceled
+  );
 
   return (
     <ContainerPage style={{ height: "100%", width: "99.4%" }}>
@@ -74,21 +39,24 @@ const Dashboard = () => {
 
       <S.DashboardContainer>
         <Col sm={12} xl={4}>
-          <DashboardCard
+          <Card
+            type="dashboard"
             title="Valor Recebido"
             value={formatCurrencyBRL(amountReceived)}
             icon="arrowUp"
           />
         </Col>
         <Col sm={12} xl={4}>
-          <DashboardCard
+          <Card
+            type="dashboard"
             title="Agendamentos"
             value={appointmentCount.toString()}
             icon="arrowUp"
           />
         </Col>
         <Col sm={12} xl={4}>
-          <DashboardCard
+          <Card
+            type="dashboard"
             title="Cancelamento"
             value={`${Number(appointmentPercentageCanceled).toFixed(2)}%`}
             icon="arrowDown"
