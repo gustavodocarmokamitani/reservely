@@ -19,10 +19,12 @@ export const useAction = (
   selectedServiceIds: number[],
   setSelectedServiceIds: React.Dispatch<React.SetStateAction<number[]>>,
   rows: ServiceType[],
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   const { enqueueSnackbar } = useSnackbar();
 
   const handleSubmitAddService = async () => {
+    setIsLoading(true);
     try {
       const newService = {
         id: 0,
@@ -55,7 +57,6 @@ export const useAction = (
           ],
         },
       ];
-      console.log(typeService);
 
       const responsePost = await createServiceTypeByStoreId(
         storeUser,
@@ -66,16 +67,18 @@ export const useAction = (
         enqueueSnackbar("Serviço criado com sucesso!", { variant: "success" });
         fetchData();
       }
-      handleClose();
     } catch (error) {
       console.error("Erro durante o request:", error);
       enqueueSnackbar("Erro inesperado! Verifique os dados.", {
         variant: "error",
       });
     }
+    setIsLoading(false);            
+    handleClose();
   };
 
   const handleSubmitEditService = async () => {
+    setIsLoading(true);
     try {
       const responseServiceType = await getServiceTypeById(
         formValuesService.id
@@ -119,7 +122,7 @@ export const useAction = (
         variant: "error",
       });
     }
-
+    setIsLoading(false);
     handleClose();
   };
 
@@ -155,6 +158,7 @@ export const useAction = (
   };
 
   const handleDeleteServices = async () => {
+    setIsLoading(true);
     if (selectedServiceIds.length > 0) {
       try {
         await Promise.all(
@@ -191,10 +195,10 @@ export const useAction = (
         });
       }
       fetchData();
-      console.log(123);
     } else {
       enqueueSnackbar(`Nenhum serviço selecionado`, { variant: "error" });
     }
+    setIsLoading(false);
   };
 
   const handleRowSelect = (ids: number[]) => {

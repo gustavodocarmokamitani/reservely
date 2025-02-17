@@ -17,11 +17,13 @@ export const useFetch = (
   openingWeekDay: string[],
   setOpeningWeekDay: React.Dispatch<React.SetStateAction<string[]>>,
   closingDates: Date[] | null,
-  setClosingDates: React.Dispatch<React.SetStateAction<Date[] | null>>
+  setClosingDates: React.Dispatch<React.SetStateAction<Date[] | null>>,
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   const fetchDataRef = useRef(false);
 
   const fetchData = async () => {
+    setIsLoading(true);
     try {
       const response = await getStoreById(storeUser);
       if (response) {
@@ -67,6 +69,7 @@ export const useFetch = (
     } catch (error) {
       console.error("Erro na requisição da store", error);
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {

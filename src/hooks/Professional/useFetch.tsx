@@ -42,13 +42,13 @@ export const useFetch = (
   setCombinedData: React.Dispatch<React.SetStateAction<CombinedData | null>>,
   setSelectedServices: React.Dispatch<React.SetStateAction<number[]>>,
   setRows: React.Dispatch<React.SetStateAction<Rows[]>>,
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
-
   const storedToken = localStorage.getItem("authToken");
 
   const fetchDataRef = useRef(false);
 
-  const fetchData = useCallback(async () => {
+  const fetchData = async () => {
     if (storedToken) {
       try {
         const data = await decodeToken(storedToken);
@@ -57,6 +57,7 @@ export const useFetch = (
         console.error("Erro ao decodificar token:", error);
       }
     }
+    setIsLoading(true);
 
     try {
       const usersData = await getUserByUseTypeStore(2, storeUser);
@@ -86,24 +87,26 @@ export const useFetch = (
     } catch (error) {
       console.error("Erro ao buscar dados:", error);
     }
-  }, [storedToken, storeUser, setDecodedData]);
+    setIsLoading(false);
+  };
 
   useEffect(() => {
     if (!fetchDataRef.current) {
-      fetchData();
+      fetchData();      
       fetchDataRef.current = true;
     }
   }, [fetchData]);
 
   const fetchLoadDataAddEmployee = async () => {
+    setIsLoading(true);
     try {
       const responseEmployee = await getUserByUseTypeStore(2, storeUser);
       const response = await getEmployeesByStoreId(storeUser);
-  
+
       const filteredResponseEmployee = responseEmployee.filter(
         (emp: any) => !response.some((res: any) => res.userId === emp.id)
       );
-  
+
       const formattedOptions: Option[] = filteredResponseEmployee.map(
         (employee: User) => ({
           value: employee.id,
@@ -114,23 +117,23 @@ export const useFetch = (
           isDisabled: false,
         })
       );
-  
+
       formattedOptions.unshift({
         value: 0,
         label: "Selecione...",
         isDisabled: true,
       });
-  
+
       setOptions(formattedOptions);
-  
+
       let fetchedServices: Service[] = [];
       const serviceData = await getServices();
-  
+
       if (serviceData) {
         const filteredData = serviceData.filter(
           (servico: any) => servico.storeId === storeUser
         );
-  
+
         const serviceTypePromises = filteredData.map(async (servico: any) => {
           try {
             const serviceTypeData = await getServiceTypeById(
@@ -145,11 +148,11 @@ export const useFetch = (
             return [];
           }
         });
-  
+
         const serviceTypeData = await Promise.all(serviceTypePromises);
         fetchedServices = [...fetchedServices, ...serviceTypeData.flat()];
       }
-  
+
       const uniqueServices = Array.from(
         new Map(
           fetchedServices.map((service) => [service.id, service])
@@ -159,10 +162,11 @@ export const useFetch = (
     } catch (error) {
       console.error("Erro ao buscar dados:", error);
     }
+    setIsLoading(false);
   };
-  
 
-  const fetchLoadDataEditEmployee = async ( selectedEmployeeId: number) => {
+  const fetchLoadDataEditEmployee = async (selectedEmployeeId: number) => {
+    setIsLoading(true);
     try {
       let fetchedServices: Service[] = [];
 
@@ -174,16 +178,16 @@ export const useFetch = (
         new Map(
           fetchedServices.map((service) => [service.id, service])
         ).values()
-      );      
+      );
       setSelectableBoxServices(uniqueServices);
-      
+
       try {
         const resEmployee = await getEmployeeIdByUserId(selectedEmployeeId!);
-  
+
         let employeeData = Array.isArray(resEmployee)
           ? resEmployee
           : [resEmployee];
-  
+
         const mappedEmployee = employeeData.map((employee: UserEmployee) => ({
           id: employee.id,
           userId: employee.userId,
@@ -197,12 +201,12 @@ export const useFetch = (
           serviceIds: employee.serviceIds || [],
           storeId: employee.storeId,
         }));
-  
+
         if (mappedEmployee.length > 0) {
           const resUser = await getUserById(mappedEmployee[0].userId);
-  
+
           let userData = Array.isArray(resUser) ? resUser : [resUser];
-  
+
           const mappedUser = userData.map((user: User) => ({
             id: user.id,
             name: user.name,
@@ -213,7 +217,7 @@ export const useFetch = (
             userTypeId: user.userTypeId,
             storeId: storeUser,
           }));
-  
+
           const combined = {
             ...mappedEmployee[0],
             ...mappedUser[0],
@@ -224,17 +228,22 @@ export const useFetch = (
       } catch (error) {
         console.error("Error when fetching service type", error);
       }
-     
-      
     } catch (error) {
       console.error(
         "Error when searching for employee and service information:",
         error
       );
     }
+    setIsLoading(false);
   };
 
-  const fetchLoadEditFormValues = (employeeSelected: CombinedData[], setFormValuesProfessional: React.Dispatch<React.SetStateAction<UserEmployee>>) => {
+  const fetchLoadEditFormValues = (
+    employeeSelected: CombinedData[],
+    setFormValuesProfessional: React.Dispatch<
+      React.SetStateAction<UserEmployee>
+    >
+  ) => {
+    setIsLoading(true);
     if (employeeSelected?.[0]) {
       const newState = {
         id: employeeSelected[0].id,
@@ -249,7 +258,7 @@ export const useFetch = (
         serviceIds: employeeSelected[0].serviceIds,
         storeId: employeeSelected[0].storeId,
       };
-  
+
       setFormValuesProfessional?.((prevState) => {
         if (newState.id !== prevState.id) {
           return newState;
@@ -257,14 +266,14 @@ export const useFetch = (
         return prevState;
       });
     }
+    setIsLoading(false);
   };
-  
 
   return {
     setRows,
     fetchData,
     fetchLoadDataAddEmployee,
     fetchLoadDataEditEmployee,
-    fetchLoadEditFormValues
+    fetchLoadEditFormValues,
   };
 };

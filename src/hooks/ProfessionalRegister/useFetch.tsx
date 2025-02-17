@@ -29,12 +29,14 @@ export const useFetch = (
     React.SetStateAction<UserEmployee>
   >,
   setRows: React.Dispatch<React.SetStateAction<Rows[]>>,
-  setDecodedData: React.Dispatch<React.SetStateAction<DecodedToken | null>>
+  setDecodedData: React.Dispatch<React.SetStateAction<DecodedToken | null>>,
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   const storedToken = localStorage.getItem("authToken");
   const fetchDataRef = useRef(false);
 
   const fetchData = async () => {
+    setIsLoading(true);
     if (storedToken) {
       const data = await decodeToken(storedToken);
       setDecodedData(data);
@@ -57,6 +59,7 @@ export const useFetch = (
     } catch (error) {
       console.error("Erro ao buscar dados:", error);
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -67,6 +70,7 @@ export const useFetch = (
   }, [fetchData]);
 
   const fetchLoadEditFormValues = async (userId: number) => {
+    setIsLoading(true);
     try {
       const resEmployee = await getUserById(userId);
       const mappedEmployee = {
@@ -135,6 +139,7 @@ export const useFetch = (
     } catch (error) {
       console.error("Error fetching data:", error);
     }
+    setIsLoading(false);
   };
 
   return {

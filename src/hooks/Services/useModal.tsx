@@ -11,7 +11,7 @@ export const useModal = (
   fetchEditService: (serviceId: number) => void,
   setFormValuesService: React.Dispatch<React.SetStateAction<Service>>,
   setDurationMinutes: React.Dispatch<React.SetStateAction<SelectOption[]>>,
-  generateTimes: () => SelectOption[]
+  generateTimes: () => SelectOption[],
 ) => {
   const handleClose = () => {
     setShowAddModal(false);

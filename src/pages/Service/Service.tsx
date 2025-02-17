@@ -12,6 +12,7 @@ import Modal from "../../view/Modal/Modal";
 import Input from "../../components/Input/Input";
 import Select from "../../components/Select/Select";
 import { useEffectCustom } from "../../hooks/Services/useEffectCustom";
+import Loading from "../../components/Loading/loading";
 
 interface DecodedToken {
   userId: string;
@@ -41,6 +42,8 @@ function Service() {
     setServiceType,
     setSelectedEmployeeId,
     setColumnWidth,
+    isLoading,
+    setIsLoading,
   } = useStateCustom();
 
   const storeUser = Number(localStorage.getItem("storeUser"));
@@ -53,7 +56,8 @@ function Service() {
     setServiceType,
     setFormValuesService,
     durationMinutes,
-    setDurationMinutes
+    setDurationMinutes,
+    setIsLoading
   );
 
   const { handleClose, handleShowAddServiceModal, handleShowEditServiceModal } =
@@ -64,7 +68,7 @@ function Service() {
       fetchEditService,
       setFormValuesService,
       setDurationMinutes,
-      generateTimes
+      generateTimes,      
     );
 
   const {
@@ -82,7 +86,8 @@ function Service() {
     setFormValuesService,
     selectedServiceIds,
     setSelectedServiceIds,
-    rows
+    rows,
+    setIsLoading
   );
 
   const { columns, containerRef } = useEffectCustom(
@@ -97,6 +102,7 @@ function Service() {
 
   return (
     <>
+     {isLoading && <Loading />}
       <ContainerPage style={{ height: "100vh" }}>
         <Row>
           <Col lg={12} xl={7} style={{ padding: "0px" }}>

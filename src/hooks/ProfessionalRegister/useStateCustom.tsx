@@ -39,7 +39,7 @@ export const useStateCustom = () => {
       serviceIds: [] as number[],
       storeId: 0,
     });
-
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   return {
     rows,
     setRows,
@@ -61,5 +61,7 @@ export const useStateCustom = () => {
     setShowEditModal,
     columnWidth,
     setColumnWidth,
+    isLoading,
+    setIsLoading,
   };
 };

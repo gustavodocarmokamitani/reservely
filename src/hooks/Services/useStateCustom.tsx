@@ -30,6 +30,7 @@ export const useStateCustom = () => {
   const [selectedEmployeeId, setSelectedEmployeeId] = useState<
     number | undefined
   >();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   return {
     showAddModal,
@@ -54,5 +55,7 @@ export const useStateCustom = () => {
     setSelectedEmployeeId,
     columnWidth,
     setColumnWidth,
+    isLoading,
+    setIsLoading,
   };
 };

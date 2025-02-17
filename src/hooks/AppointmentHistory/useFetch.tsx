@@ -22,13 +22,15 @@ export const useFetch = (
   setOptions: React.Dispatch<React.SetStateAction<SelectOption[]>>,
   setRows: React.Dispatch<React.SetStateAction<Appointment[]>>,
   setDecodedData: React.Dispatch<React.SetStateAction<DecodedToken | null>>,
-  setStatusAppointment: React.Dispatch<React.SetStateAction<SelectOption[]>>
+  setStatusAppointment: React.Dispatch<React.SetStateAction<SelectOption[]>>,
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   const fetchDataRef = useRef(false);
   const storedToken = localStorage.getItem("authToken");
 
   const fetchData = async () => {
     try {
+      setIsLoading(true);
       if (storedToken) {
         const data = await decodeToken(storedToken);
         setDecodedData(data);
@@ -66,13 +68,13 @@ export const useFetch = (
             appointmentStatus: appointmentStatusData.name,
           };
         })
-      );
-      console.log(mappedAppointments);
+      );      
 
       setRows(mappedAppointments);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -119,6 +121,7 @@ export const useFetch = (
   };
 
   const fetchAppointmentHistoryStatus = async (appointmentHistoryId: number) => {
+    setIsLoading(true);
     try {
         const responseAppointmentSelectedStatus = await getAppointmentById(appointmentHistoryId);
         setStatusAppointment(responseAppointmentSelectedStatus.appointmentStatusId)        
@@ -138,6 +141,7 @@ export const useFetch = (
     } catch (error) {
       console.error("Erro ao buscar funcionários:", error);
     }
+    setIsLoading(false);
   };
 
   return {

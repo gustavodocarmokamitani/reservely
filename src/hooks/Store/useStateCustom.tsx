@@ -6,6 +6,7 @@ export const useStateCustom = () => {
   const [store, setStore] = useState<Store | null>(null);
   const [selectedTimes, setSelectedTimes] = useState<string[]>([]);
   const [decodedData, setDecodedData] = useState<DecodedToken | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   return {
     store,
     setStore,
@@ -13,5 +14,7 @@ export const useStateCustom = () => {
     setSelectedTimes,
     decodedData,
     setDecodedData,
+    isLoading,
+    setIsLoading,
   };
 };

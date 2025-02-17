@@ -25,6 +25,7 @@ export const useStateCustom = () => {
   const [selectedAppointmentIds, setSelectedAppointmentIds] = useState<
     number[]
   >([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   return {
     showModalAppointmentHistoryInfo,
     setShowModalAppointmentHistoryInfo,
@@ -44,5 +45,7 @@ export const useStateCustom = () => {
     setDecodedData,
     selectedAppointmentIds,
     setSelectedAppointmentIds,
+    isLoading,
+    setIsLoading,
   };
 };

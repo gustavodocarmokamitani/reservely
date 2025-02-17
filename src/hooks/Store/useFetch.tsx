@@ -8,12 +8,14 @@ export const useFetch = (
   storeUser: number,
   setDecodedData: React.Dispatch<React.SetStateAction<DecodedToken | null>>,
   setStore: React.Dispatch<React.SetStateAction<Store | null>>,
-  setSelectedTimes: React.Dispatch<React.SetStateAction<string[]>>
+  setSelectedTimes: React.Dispatch<React.SetStateAction<string[]>>,
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   const fetchDataRef = useRef(false);
   const storedToken = localStorage.getItem("authToken");
 
   const fetchData = async () => {
+    setIsLoading(true);
     try {
       if (storedToken) {
         const data = await decodeToken(storedToken);
@@ -30,6 +32,7 @@ export const useFetch = (
     } catch (error) {
       console.error("Erro ao buscar dados da loja:", error);
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {

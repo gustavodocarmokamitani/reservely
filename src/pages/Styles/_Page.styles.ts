@@ -3,15 +3,15 @@ import styled from "styled-components";
 export const ContainerPage = styled.div`
   width: calc(100vw - 19.98rem);
   height: 100%;
-  padding: 80px;
-  margin-left: 10px;
+  padding: 5rem;
+  margin-left: 0.625rem;
   background: #fafafa;
 `;
 
 export const ContainerLogin = styled.div`
   width: 100vw;
   height: 100vh;
-  padding: 40px;
+  padding: 2.5rem;
   background: #fafafa;
   display: flex;
   justify-content: center;
@@ -21,7 +21,7 @@ export const ContainerLogin = styled.div`
 export const ContainerRegister = styled.div`
   width: 100vw;
   height: 100vh;
-  padding: 40px;
+  padding: 2.5rem;
 `;
 
 export const WrapperLogin = styled.div`

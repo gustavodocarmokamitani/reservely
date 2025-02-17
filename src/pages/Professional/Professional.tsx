@@ -14,6 +14,7 @@ import { useStateCustom } from "../../hooks/Professional/useStateCustom";
 import { useAction } from "../../hooks/Professional/useAction";
 import { useModal } from "../../hooks/Professional/useModal";
 import { useEffectCustom } from "../../hooks/Professional/useEffectCustom";
+import Loading from "../../components/Loading/loading";
 
 function Professional() {
   const storeUser = Number(localStorage.getItem("storeUser"));
@@ -43,7 +44,9 @@ function Professional() {
     show,
     showModal,
     rows,
-    setRows
+    setRows,
+    isLoading,
+    setIsLoading,
   } = useStateCustom();
 
   const {
@@ -58,7 +61,8 @@ function Professional() {
     setSelectableBoxServices,
     setCombinedData,
     setSelectedServices,
-    setRows
+    setRows,
+    setIsLoading
   );
 
   const {
@@ -101,6 +105,7 @@ function Professional() {
 
   return (
     <>
+      {isLoading && <Loading />}
       <ContainerPage style={{ height: "100vh" }}>
         <Row>
           <Col lg={12} xl={7} style={{ padding: "0px" }}>

@@ -20,7 +20,7 @@ export const Button = styled.button<ButtonProps>`
   height: 45px;
   border: transparent;
   border-radius: 50px;
-  box-shadow: 4px 4px 15px 0px rgba(0, 0, 0, 0.50);
+  box-shadow: 4px 4px 15px 0px rgba(0, 0, 0, 0.5);
   background-color: ${(props) => {
     if (props.$isAdd) return "#2B2B2B";
     if (props.$isRemove) return "#CDCDCD";
@@ -31,12 +31,21 @@ export const Button = styled.button<ButtonProps>`
     if (props.$isLogin) return "#2A2A2A";
     if (props.$isRegister) return "#fff";
     if (props.$isGoogle) return "#fff";
-    return "#FF060B"; 
+    return "#FF060B";
   }};
-  color: ${(props) => (props.$isRemove || props.$isBack || props.$isRegister || props.$isGoogle ? "black" : "white")};
-  border: 1px solid ${(props) => (props.$isBack ? "rgba(0, 0, 0, 0.50);" : "none")};
+  color: ${(props) =>
+    props.$isRemove || props.$isBack || props.$isRegister || props.$isGoogle
+      ? "black"
+      : "white"};
+  border: 1px solid
+    ${(props) => (props.$isBack ? "rgba(0, 0, 0, 0.50);" : "none")};
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   opacity: ${(props) => (props.disabled ? 0.5 : 1)};
   pointer-events: ${(props) => (props.disabled ? "none" : "auto")};
- 
+  transition: transform 0.2s ease-in, box-shadow 0.3s ease-in;
+
+  &: hover {
+    transform: scale(1.02);
+    box-shadow: 6px 6px 20px 0px rgba(0, 0, 0, 0.6);
+  }
 `;

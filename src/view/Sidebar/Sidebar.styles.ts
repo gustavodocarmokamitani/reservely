@@ -41,7 +41,15 @@ export const Indicator = styled.div<IndicatorProps>`
   height: 2.75rem;
   background-color: #fff;
   border-radius: 25px;
-  transition: top .5s ease-in-out;
+  transition: top 0.5s ease-in-out;
   box-shadow: 2px 0px 7px rgba(0, 0, 0, 0.05);
   z-index: -1;
+
+  @media (max-width: 1281px) {
+    & {
+      top: ${(props) => props.top - 5}px !important;
+    }
+  }
 `;
+
+// top: ${(props) => (props.top - 5)}px;

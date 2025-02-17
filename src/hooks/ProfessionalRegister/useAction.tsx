@@ -28,11 +28,13 @@ export const useAction = (
   setSelectedUserIds: React.Dispatch<React.SetStateAction<number[]>>,
   fetchData: () => void,
   handleClose: () => void,
-  storeUser: number
+  storeUser: number,
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   const { enqueueSnackbar } = useSnackbar();
 
   const handleSubmitEditProfessionalRegister = async () => {
+    setIsLoading(true);
     try {
       const response = await getUserById(formValuesProfessionalRegister.id);
 
@@ -59,11 +61,12 @@ export const useAction = (
       }
     } catch (error) {
       console.error("Error updating user:", error);
-    } finally {
     }
+    setIsLoading(false);
   };
 
   const handleDeleteUsers = async () => {
+    setIsLoading(true);
     if (selectedUserIds.length === 0) {
       return alert("Nenhum usuário selecionado!");
     }
@@ -111,14 +114,16 @@ export const useAction = (
 
       await Promise.all(selectedUserIds.map(deleteUserById));
 
-      await fetchData();
+      fetchData();
     } catch (error) {
       console.error("Erro ao remover os usuários:", error);
       enqueueSnackbar("Erro ao excluir usuários.", { variant: "error" });
     }
+    setIsLoading(false);
   };
 
   const handleRegisterProfessionalRegister = async () => {
+    setIsLoading(true);
     const formatString = (str: string): string => str.toLowerCase();
 
     const isValidEmail =
@@ -170,6 +175,7 @@ export const useAction = (
       });
     }
     fetchData();
+    setIsLoading(false);
     handleClose();
   };
 

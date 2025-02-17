@@ -26,12 +26,14 @@ export const useFetch = (
   setServiceType: React.Dispatch<React.SetStateAction<Service | null>>,
   setFormValuesService: React.Dispatch<React.SetStateAction<Service>>,
   durationMinutes: SelectOption[],
-  setDurationMinutes: React.Dispatch<React.SetStateAction<SelectOption[]>>
+  setDurationMinutes: React.Dispatch<React.SetStateAction<SelectOption[]>>,
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   const storedToken = localStorage.getItem("authToken");
   const fetchDataRef = useRef(false);
 
   const fetchData = async () => {
+    setIsLoading(true);
     if (storedToken) {
       const data = await decodeToken(storedToken);
       setDecodedData(data);
@@ -42,6 +44,7 @@ export const useFetch = (
     } catch (error) {
       console.error("Erro ao buscar dados:", error);
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -51,36 +54,33 @@ export const useFetch = (
     }
   }, [fetchData]);
 
-  const fetchEditService = async (serviceId: number) => {
+  const fetchEditService = async (serviceId: number) => {    
+    setIsLoading(true);
     try {
       const response = await getServiceTypeById(serviceId);
-  
+
       if (response) {
         const data = response.data;
-  
-        // Atualizando o estado do serviço
+        
         setServiceType(data);
-  
-        // Preenchendo o formulário com os dados
+        
         setFormValuesService({
           id: data.id,
           name: data.name,
           description: data.description,
           value: data.value,
-          durationMinutes: data.durationMinutes.toString(),  // Certifique-se de que seja uma string
+          durationMinutes: data.durationMinutes.toString(),
           active: data.active === true ? "true" : "false",
           storeId: data.storeId,
         });
-  
-        // Gerando os tempos e definindo a duração selecionada
+        
         let generatedTimes: SelectOption[] = generateTimes();
         const selectedTime = generatedTimes.find(
           (option) => option.value === data.durationMinutes
         ) || { label: "", value: 0 };
-  
+
         setDurationMinutes([selectedTime]);
-  
-        // Atualizando o valor de durationMinutes no formulário
+        
         setFormValuesService((prevValues) => ({
           ...prevValues,
           durationMinutes: String(selectedTime.value),
@@ -89,8 +89,8 @@ export const useFetch = (
     } catch (error) {
       console.error("Error when fetching service:", error);
     }
+    setIsLoading(false);
   };
-  
 
   const generateTimes = () => {
     const generatedTimes = [];

@@ -1,13 +1,13 @@
 const customStyles = {
   control: (provided: any) => ({
     ...provided,
-    minWidth: "280px",
-    maxWidth: "350px",
-    minHeight: "40px",
-    padding: "5px 25px",
-    fontSize: "14px",
+    minWidth: "17.5rem",
+    maxWidth: "21.875rem",
+    minHeight: "1.5rem",
+    padding: "0.3rem 1.56rem",
+    fontSize: "0.875rem",
     border: "1px solid rgba(0, 0, 0, 0.25)",
-    borderRadius: "15px",
+    borderRadius: "0.93rem",
     boxShadow: "4px 4px 15px 0px rgba(0, 0, 0, 0.25)",
     backgroundColor: "#f0f0f0",
     borderColor: "#ccc",
@@ -34,8 +34,8 @@ const customStyles = {
   }),
   multiValue: (provided: any) => ({
     ...provided,
-    borderRadius: "15px",
-    padding: "0 5px",
+    borderRadius: "0.93rem",
+    padding: "0 0.31rem",
     backgroundColor: "#616060",
   }),
   multiValueLabel: (provided: any) => ({
@@ -46,7 +46,7 @@ const customStyles = {
     ...provided,
     color: "#fff",
     "&:hover": {
-      borderRadius: "15px",
+      borderRadius: "0.93rem",
       backgroundColor: "#616060",
       color: "#fff",
     },

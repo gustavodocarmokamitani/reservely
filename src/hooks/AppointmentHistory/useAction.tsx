@@ -15,11 +15,13 @@ export const useAction = (
   handleClose: () => void,
   fetchData: () => void,
   selectedAppointmentIds: number[],
-  setSelectedAppointmentIds: React.Dispatch<React.SetStateAction<number[]>>
+  setSelectedAppointmentIds: React.Dispatch<React.SetStateAction<number[]>>,  
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   const { enqueueSnackbar } = useSnackbar();
 
   const handleSubmitAppointmentHistoryStatus = async () => {
+    setIsLoading(true);
     try {
       const response = await getAppointmentById(selectedAppointmentHistoryId);
       const mappedAppointment: Appointment = {
@@ -32,15 +34,14 @@ export const useAction = (
           statusAppointment[statusAppointment.length - 1].value,
         serviceIds: response.serviceIds,
         storeId: Number(storeUser),
-      };
-
-      // setAppointmentUpdateContext(mappedAppointment);
+      };      
 
       const responseAppointment = await updateAppointment(
         mappedAppointment.id,
         mappedAppointment
       );
 
+      setIsLoading(false);
       if (responseAppointment) {
         enqueueSnackbar("Status do appointment editado com sucesso!", {
           variant: "success",
@@ -64,6 +65,7 @@ export const useAction = (
   };
 
   const handleDeleteAppointment = async () => {
+    setIsLoading(true);
     try {
       await Promise.all(
         selectedAppointmentIds.map(async (appointmentId) => {
@@ -78,6 +80,7 @@ export const useAction = (
               enqueueSnackbar(`Agendamento apagado com sucesso!`, {
                 variant: "success",
               });
+              setIsLoading(false);
             } else {
               enqueueSnackbar(
                 `Agendamento com id: ${appointmentId} não encontrado.`,

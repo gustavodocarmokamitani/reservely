@@ -22,6 +22,7 @@ export const useStateCustom = () => {
   const [openingWeekDaySelect, setOpeningWeekDaySelect] = useState<
     SelectOption[]
   >([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [optionsWeekDay] = useState([
     {
       value: 1,
@@ -72,6 +73,8 @@ export const useStateCustom = () => {
     setStatusStore,
     optionsTime,
     setOptionsTime,
+    isLoading,
+    setIsLoading,
     optionsWeekDay,
   };
 };

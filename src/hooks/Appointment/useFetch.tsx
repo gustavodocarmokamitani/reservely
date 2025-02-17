@@ -1,4 +1,4 @@
-import { useStateData } from "./useStateData";
+import { useStateCustom } from "./useStateCustom";
 import { useEffect, useState } from "react";
 import { SelectOption } from "../../models/SelectOptions";
 import { ServiceType } from "../../models/ServiceType";
@@ -16,15 +16,22 @@ import {
 } from "../../services/ServiceTypeServices";
 import { capitalizeFirstLetter } from "../../services/system/globalService";
 
-export const useFetch = (storeUser: number) => {
-  const { employee } = useStateData();
-
-  const [optionsEmployee, setOptionsEmployee] = useState<SelectOption[]>([]);
-  const [optionsService, setOptionsService] = useState<SelectOption[]>([]);
-  const [optionsClient, setOptionsClient] = useState<SelectOption[]>([]);
-  const [optionsTime, setOptionsTime] = useState<SelectOption[]>([]);
+export const useFetch = (
+  storeUser: number,
+  optionsEmployee: SelectOption[],
+  setOptionsEmployee: React.Dispatch<React.SetStateAction<SelectOption[]>>,
+  optionsService: SelectOption[],
+  setOptionsService: React.Dispatch<React.SetStateAction<SelectOption[]>>,
+  optionsClient: SelectOption[],
+  setOptionsClient: React.Dispatch<React.SetStateAction<SelectOption[]>>,
+  optionsTime: SelectOption[],
+  setOptionsTime: React.Dispatch<React.SetStateAction<SelectOption[]>>,
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  const { employee } = useStateCustom();
 
   useEffect(() => {
+    setIsLoading(true);
     const fetchEmployees = async () => {
       try {
         const responseEmployee = await getEmployees();
@@ -62,6 +69,7 @@ export const useFetch = (storeUser: number) => {
         });
 
         setOptionsEmployee(formattedOptions);
+        setIsLoading(false);
       } catch (error) {
         console.error("Erro ao buscar funcionários:", error);
       }
@@ -201,8 +209,9 @@ export const useFetch = (storeUser: number) => {
         }
 
         setOptionsTime([
+          { value: 0, label: "Selecione..." },
           ...generatedTimes.map((time, index) => ({
-            value: index,
+            value: index + 1, 
             label: time,
           })),
         ]);
@@ -214,5 +223,5 @@ export const useFetch = (storeUser: number) => {
     fetchTime();
   }, [storeUser]);
 
-  return { optionsEmployee, optionsService, optionsClient, optionsTime };
+  return {};
 };

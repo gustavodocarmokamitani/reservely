@@ -33,7 +33,6 @@ const Select: React.FC<SelectProps> = ({
         : []
     );
   };
-  console.log((value as SelectOption)?.value);
 
   const selectedValue =
     isMulti || maxSelections

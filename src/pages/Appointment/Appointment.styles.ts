@@ -8,6 +8,6 @@ export const AppointmentContainer= styled.div`
 `
 
 export const AppointmentContent = styled.div`
-    margin: 0 15px 0 15px;
+    margin: 0 0.93rem 0 0.93rem;
     margin-top: 20px;   
 `

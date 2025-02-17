@@ -1,6 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button/Button";
-import { ContainerLogin, ContentButton, WrapperLogin } from "../Styles/_Page.styles";
+import {
+  ContainerLogin,
+  ContentButton,
+  WrapperLogin,
+} from "../Styles/_Page.styles";
+import { TypingText } from "../Styles/animationTyping.styles";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -18,7 +23,7 @@ const Home = () => {
       <WrapperLogin>
         <div>
           {" "}
-          <h1>agendai</h1>
+          <TypingText numLetters={7}>agendai</TypingText>
         </div>
         <ContentButton>
           <Button

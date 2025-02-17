@@ -12,6 +12,7 @@ import { useEffectCustom } from "../../hooks/ProfessionalRegister/useEffectCusto
 import Modal from "../../view/Modal/Modal";
 import Input from "../../components/Input/Input";
 import { capitalizeFirstLetter } from "../../services/system/globalService";
+import Loading from "../../components/Loading/loading";
 
 function ProfessionalRegister() {
   const storedToken = localStorage.getItem("authToken");
@@ -33,6 +34,8 @@ function ProfessionalRegister() {
     setDecodedData,
     showEditModal,
     setColumnWidth,
+    isLoading,
+    setIsLoading,
   } = useStateCustom();
 
   const { fetchData, fetchLoadEditFormValues } = useFetch(
@@ -41,7 +44,8 @@ function ProfessionalRegister() {
     setCombinedData,
     setFormValuesProfessionalRegister,
     setRows,
-    setDecodedData
+    setDecodedData,
+    setIsLoading
   );
 
   const {
@@ -68,7 +72,8 @@ function ProfessionalRegister() {
     setSelectedUserIds,
     fetchData,
     handleClose,
-    storeUser
+    storeUser,
+    setIsLoading
   );
 
   const { containerRef, columns } = useEffectCustom(
@@ -78,123 +83,126 @@ function ProfessionalRegister() {
   );
 
   return (
-    <S.ContainerPage style={{ height: "100vh" }}>
-      <Row>
-        <Col lg={12} xl={7} style={{ padding: "0px" }}>
-          <HeaderTitle
-            title="Registrar Professional"
-            subTitle="Área destinada para registrar profissionais."
-          />
-        </Col>
+    <>
+      {isLoading && <Loading />}
+      <S.ContainerPage style={{ height: "100vh" }}>
+        <Row>
+          <Col lg={12} xl={7} style={{ padding: "0px" }}>
+            <HeaderTitle
+              title="Registrar Professional"
+              subTitle="Área destinada para registrar profissionais."
+            />
+          </Col>
 
-        <Col
-          lg={12}
-          xl={5}
-          className="d-flex flex-row justify-content-md-center justify-content-lg-end align-items-center mt-md-3 mt-lg-5 mt-xl-0"
-        >
-          {decodedData?.userRole === "Admin" && (
-            <>
-              <Button $isRemove type="button" onClick={handleDeleteUsers} />
-              <Button
-                $isAdd
-                type="button"
-                onClick={handleShowAddProfessionalModal}
-              />
-            </>
-          )}
-        </Col>
-      </Row>
-      <ProfessionalRegisterDataTable
-        {...{
-          rows,
-          handleRowSelect,
-          fetchData,
-          formValuesProfessionalRegister,
-          setFormValuesProfessionalRegister,
-          combinedData,
-          setCombinedData,
-          fetchLoadEditFormValues,
-          handleInputChangeProfessionalRegister,
-          handleSubmitEditProfessionalRegister,
-          handleShowEditProfessionalModal,
-          showEditModal,
-          handleClose,
-          containerRef,
-          columns,
-        }}
-      />
-      {show && (
-        <Modal
-          title="Editar profissional"
-          subTitle="Preencha as informações abaixo para editar o profissional."
-          handleSubmit={handleRegisterProfessionalRegister}
-          handleClose={handleClose}
-          size="large"
-        >
-          <Row>
-            <Col md={6} className="mt-3 mb-3">
-              <Input
-                width="300"
-                type="text"
-                placeholder="Nome"
-                name="name"
-                value={capitalizeFirstLetter(
-                  formValuesProfessionalRegister.name
-                )}
-                onChange={(e) =>
-                  handleInputChangeProfessionalRegister(
-                    e as React.ChangeEvent<HTMLInputElement>
-                  )
-                }
-              />
-              <Input
-                width="300"
-                type="text"
-                placeholder="Sobrenome"
-                name="lastName"
-                value={capitalizeFirstLetter(
-                  formValuesProfessionalRegister.lastName
-                )}
-                onChange={(e) =>
-                  handleInputChangeProfessionalRegister(
-                    e as React.ChangeEvent<HTMLInputElement>
-                  )
-                }
-              />
-            </Col>
-            <Col md={6} className="mt-3 mb-3">
-              <Input
-                width="300"
-                type="text"
-                placeholder="Email"
-                name="email"
-                value={formValuesProfessionalRegister.email}
-                onChange={(e) =>
-                  handleInputChangeProfessionalRegister(
-                    e as React.ChangeEvent<HTMLInputElement>
-                  )
-                }
-              />
-              <Input
-                width="300"
-                type="text"
-                placeholder="Telefone"
-                phone
-                name="phone"
-                value={capitalizeFirstLetter(
-                  formValuesProfessionalRegister.phone
-                )}
-                onChange={(e) =>
-                  handleInputChangeProfessionalRegister(
-                    e as React.ChangeEvent<HTMLInputElement>
-                  )
-                }
-              />
-            </Col>
-          </Row>
-        </Modal>
-      )}
-    </S.ContainerPage>
+          <Col
+            lg={12}
+            xl={5}
+            className="d-flex flex-row justify-content-md-center justify-content-lg-end align-items-center mt-md-3 mt-lg-5 mt-xl-0"
+          >
+            {decodedData?.userRole === "Admin" && (
+              <>
+                <Button $isRemove type="button" onClick={handleDeleteUsers} />
+                <Button
+                  $isAdd
+                  type="button"
+                  onClick={handleShowAddProfessionalModal}
+                />
+              </>
+            )}
+          </Col>
+        </Row>
+        <ProfessionalRegisterDataTable
+          {...{
+            rows,
+            handleRowSelect,
+            fetchData,
+            formValuesProfessionalRegister,
+            setFormValuesProfessionalRegister,
+            combinedData,
+            setCombinedData,
+            fetchLoadEditFormValues,
+            handleInputChangeProfessionalRegister,
+            handleSubmitEditProfessionalRegister,
+            handleShowEditProfessionalModal,
+            showEditModal,
+            handleClose,
+            containerRef,
+            columns,
+          }}
+        />
+        {show && (
+          <Modal
+            title="Editar profissional"
+            subTitle="Preencha as informações abaixo para editar o profissional."
+            handleSubmit={handleRegisterProfessionalRegister}
+            handleClose={handleClose}
+            size="large"
+          >
+            <Row>
+              <Col md={6} className="mt-3 mb-3">
+                <Input
+                  width="300"
+                  type="text"
+                  placeholder="Nome"
+                  name="name"
+                  value={capitalizeFirstLetter(
+                    formValuesProfessionalRegister.name
+                  )}
+                  onChange={(e) =>
+                    handleInputChangeProfessionalRegister(
+                      e as React.ChangeEvent<HTMLInputElement>
+                    )
+                  }
+                />
+                <Input
+                  width="300"
+                  type="text"
+                  placeholder="Sobrenome"
+                  name="lastName"
+                  value={capitalizeFirstLetter(
+                    formValuesProfessionalRegister.lastName
+                  )}
+                  onChange={(e) =>
+                    handleInputChangeProfessionalRegister(
+                      e as React.ChangeEvent<HTMLInputElement>
+                    )
+                  }
+                />
+              </Col>
+              <Col md={6} className="mt-3 mb-3">
+                <Input
+                  width="300"
+                  type="text"
+                  placeholder="Email"
+                  name="email"
+                  value={formValuesProfessionalRegister.email}
+                  onChange={(e) =>
+                    handleInputChangeProfessionalRegister(
+                      e as React.ChangeEvent<HTMLInputElement>
+                    )
+                  }
+                />
+                <Input
+                  width="300"
+                  type="text"
+                  placeholder="Telefone"
+                  phone
+                  name="phone"
+                  value={capitalizeFirstLetter(
+                    formValuesProfessionalRegister.phone
+                  )}
+                  onChange={(e) =>
+                    handleInputChangeProfessionalRegister(
+                      e as React.ChangeEvent<HTMLInputElement>
+                    )
+                  }
+                />
+              </Col>
+            </Row>
+          </Modal>
+        )}
+      </S.ContainerPage>
+    </>
   );
 }
 

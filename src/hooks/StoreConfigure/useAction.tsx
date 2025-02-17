@@ -17,7 +17,8 @@ export const useAction = (
       active: boolean;
     }>
   >,
-  setStatusStore: React.Dispatch<React.SetStateAction<boolean>>
+  setStatusStore: React.Dispatch<React.SetStateAction<boolean>>,
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   const { enqueueSnackbar } = useSnackbar();
 
@@ -25,7 +26,7 @@ export const useAction = (
 
   const handleSubmit = async () => {
     if (!store) return;
-
+    setIsLoading(true);
     const storeMapped: Store = {
       ...store,
       name: formValuesStore.name,
@@ -49,6 +50,7 @@ export const useAction = (
         variant: "error",
       });
     }
+    setIsLoading(false);
   };
 
   const handleInputChangeStore = (

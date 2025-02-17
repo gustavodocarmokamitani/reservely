@@ -37,7 +37,7 @@ const Navigation = () => {
       "/professional-register",
       "/professional",
       "/store",      
-      "/payment",
+      // "/payment",
       "/store-configure"  
     ];
 
@@ -87,7 +87,7 @@ const Navigation = () => {
           { path: "/professional-register", icon: professionalRegister, text: "Registrar Profissionais" },
           { path: "/professional", icon: professionalCheck, text: "Profissionais" },
           { path: "/store", icon: store, text: "Loja" },
-          { path: "/payment", icon: payment, text: "Formas de Pagamentos" },
+          // { path: "/payment", icon: payment, text: "Formas de Pagamentos" },
         ].map(({ path, icon, text }, index) => (
           <S.MenuContainer
             key={path}
@@ -101,7 +101,7 @@ const Navigation = () => {
               >
                 <S.Indicator top={indicatorTop} />
                 <OptionNavigation
-                  icon={<img src={icon} alt={text} style={{ width: "25px" }} />}
+                  icon={<img src={icon} alt={text} style={{ width: "1.56rem" }} />}
                   text={text}
                 />
               </S.StyledRow>

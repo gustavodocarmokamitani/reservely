@@ -82,7 +82,6 @@ export const getAppointmentByStoreId = async (id: number) => {
     }
 };
 
-//serviceIds 1 or 1, 2, 3
 export const getValidateAppointment = async (
     id: number,
     appointmentDate: Date,

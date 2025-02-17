@@ -51,6 +51,7 @@ export const useStateCustom = () => {
   const [decodedData, setDecodedData] = useState<DecodedToken | null>(null);
   const [combinedData, setCombinedData] = useState<CombinedData | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   return {
     showModal,
@@ -86,5 +87,7 @@ export const useStateCustom = () => {
     containerRef,
     combinedData,
     setCombinedData,
+    isLoading,
+    setIsLoading,
   };
 };
