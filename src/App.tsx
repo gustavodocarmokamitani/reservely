@@ -54,7 +54,7 @@ function App() {
               <ProtectedRoute>
                 <React.Fragment>
                   <Navigation />
-                  <div style={{ flex: 1, marginLeft: "18.75rem" }}>
+                  <div style={{ flex: 1, marginLeft: "19.5rem" }}>
                     <Routes>
                       <Route path="/appointment" element={<Appointment />} />
                       <Route path="/appointment-history" element={<AppointmentHistory />} />

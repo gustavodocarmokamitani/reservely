@@ -23,9 +23,9 @@ const Modal: React.FC<ModalProps> = ({
   size,
 }) => {
   const sizeMap = {
-    small: "650px",
-    medium: "850px",
-    large: "1050px",
+    small: "40.625rem",
+    medium: "53.125rem",
+    large: "65.625rem",
   };
 
   return (

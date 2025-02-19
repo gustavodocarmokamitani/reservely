@@ -67,6 +67,7 @@ const ProfessionalRegisterDataTable: React.FC<
               handleRowSelect(selectedRowIds);
           }}
           sx={{ border: 0 }}
+          localeText={{ noRowsLabel: "" }}
         />
       </Paper>
 

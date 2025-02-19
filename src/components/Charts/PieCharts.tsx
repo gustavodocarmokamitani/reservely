@@ -9,18 +9,21 @@ interface PieChartProps {
   labels: string[];
 }
 
-const PieChart: React.FC<PieChartProps> = ({ data, labels }) => {
-  const total = data.reduce((acc, val) => acc + val, 0);
+const PieChart: React.FC<PieChartProps> = ({
+  data = [1],
+  labels = ["Sem dados"],
+}) => {
+  const total = data.reduce((acc, val) => acc + val, 0) || 1;
 
   const chartData = {
-    labels: labels,
+    labels: labels.length > 0 ? labels : ["Sem dados"],
     datasets: [
       {
         label: "Status dos Agendamentos",
-        data: data,
+        data: data.length > 0 ? data : [1],
         backgroundColor: [
-          "rgb(255, 245, 130)",
-          "rgb(71, 105, 243)",
+          "rgb(31, 73, 241)",
+          "rgb(248, 231, 42)",
           "rgb(241, 80, 80)",
           "rgb(120, 120, 120)",
           "rgb(13, 139, 8)",
@@ -38,7 +41,7 @@ const PieChart: React.FC<PieChartProps> = ({ data, labels }) => {
         callbacks: {
           label: function (tooltipItem: any) {
             let value = tooltipItem.raw || 0;
-            let percentage = ((value / total) * 100).toFixed(1); 
+            let percentage = ((value / total) * 100).toFixed(1);
             return `${tooltipItem.label}: ${value} agendamentos (${percentage}%)`;
           },
         },
@@ -54,7 +57,7 @@ const PieChart: React.FC<PieChartProps> = ({ data, labels }) => {
           generateLabels: function (chart: any) {
             let data = chart.data.datasets[0].data;
             return chart.data.labels!.map((label: any, i: any) => {
-              let percentage = ((data[i] / total) * 100).toFixed(1); 
+              let percentage = ((data[i] / total) * 100).toFixed(1);
               return {
                 text: `${label}: ${data[i]} (${percentage}%)`,
                 fillStyle: chart.data.datasets[0].backgroundColor[i],

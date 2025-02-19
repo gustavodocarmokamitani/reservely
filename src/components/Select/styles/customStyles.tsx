@@ -2,14 +2,14 @@ const customStyles = {
   control: (provided: any) => ({
     ...provided,
     minWidth: "17.5rem",
-    maxWidth: "21.875rem",
-    minHeight: "1.5rem",
-    padding: "0.3rem 1.56rem",
+    maxWidth: "23.875rem",
+    height: " 3.125rem",
+    padding: window.innerWidth < 1468 ? ".15rem 1.56rem" : "0.2rem 1.56rem",
     fontSize: "0.875rem",
     border: "1px solid rgba(0, 0, 0, 0.25)",
     borderRadius: "0.93rem",
     boxShadow: "4px 4px 15px 0px rgba(0, 0, 0, 0.25)",
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "#fafafa",
     borderColor: "#ccc",
     "&:hover": {
       borderColor: "#888",

@@ -6,23 +6,28 @@ interface IndicatorProps {
 }
 
 export const SidebarContainer = styled.div`
-  min-width: 18.75rem;
+  min-width: 18rem;
   position: fixed;
   box-shadow: 8px 0px 7px rgba(0, 0, 0, 0.25);
   border-radius: 0px 25px 25px 0px;
+
+  @media (max-width: 1467px) {
+    min-width: 10rem;
+    width: 20rem;
+  }
 `;
 
 export const MenuContainer = styled.div`
   height: 2.75rem;
   cursor: pointer;
-  margin: 10px;
+  margin: 0.625rem;
 `;
 
 export const StyledRow = styled(Row)`
   align-items: center;
   justify-content: center;
   height: 2.75rem;
-  padding-left: 20px;
+  padding-left: 1.25rem;
   border-radius: 25px;
   transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
   cursor: pointer;
@@ -35,9 +40,9 @@ export const StyledRow = styled(Row)`
 
 export const Indicator = styled.div<IndicatorProps>`
   position: absolute;
-  top: ${(props) => props.top}px;
+  top: ${(props) => props.top}rem;
   left: 10px;
-  width: 95%;
+  width: 92%;
   height: 2.75rem;
   background-color: #fff;
   border-radius: 25px;
@@ -45,11 +50,13 @@ export const Indicator = styled.div<IndicatorProps>`
   box-shadow: 2px 0px 7px rgba(0, 0, 0, 0.05);
   z-index: -1;
 
-  @media (max-width: 1281px) {
+  @media (max-width: 1467px) {
+    h4 {
+    font
+    }
     & {
-      top: ${(props) => props.top - 5}px !important;
+      top: ${(props) => props.top - 0.4}rem !important;
     }
   }
+    
 `;
-
-// top: ${(props) => (props.top - 5)}px;

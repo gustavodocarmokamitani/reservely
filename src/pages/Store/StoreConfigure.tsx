@@ -85,7 +85,7 @@ function StoreConfigure() {
   return (
     <>
       {isLoading && <Loading />}
-      <ContainerPage style={{ height: "100%" }}>
+      <ContainerPage style={{ height: "100%", width: "calc(100vw - 20.6rem)" }}>
         <Row>
           <Col lg={12} xl={7} style={{ padding: "0px" }}>
             <HeaderTitle
@@ -114,7 +114,7 @@ function StoreConfigure() {
                     name="name"
                     value={formValuesStore.name}
                     onChange={handleInputChangeStore}
-                    width="300"
+                    width={`${window.innerWidth > 1467 ? "350" : "285"}`}
                   />
                 </S.StoreContent>
                 <S.StoreContent>
@@ -124,7 +124,7 @@ function StoreConfigure() {
                     name="active"
                     value={formValuesStore.active.toString()}
                     onChange={handleInputChangeStore}
-                    width="300"
+                    width={`${window.innerWidth > 1467 ? "350" : "285"}`}
                   />
                 </S.StoreContent>
                 <S.StoreContent>

@@ -36,6 +36,7 @@ function ProfessionalRegister() {
     setColumnWidth,
     isLoading,
     setIsLoading,
+    size,
   } = useStateCustom();
 
   const { fetchData, fetchLoadEditFormValues } = useFetch(
@@ -136,10 +137,10 @@ function ProfessionalRegister() {
             subTitle="Preencha as informações abaixo para editar o profissional."
             handleSubmit={handleRegisterProfessionalRegister}
             handleClose={handleClose}
-            size="large"
+            size={`${window.innerWidth > 1467 ? "large" : "small"}`}
           >
             <Row>
-              <Col md={6} className="mt-3 mb-3">
+              <Col md={6} className="mt-3 mb-3 flex-column align-items-center">
                 <Input
                   width="300"
                   type="text"
@@ -157,6 +158,20 @@ function ProfessionalRegister() {
                 <Input
                   width="300"
                   type="text"
+                  placeholder="Email"
+                  name="email"
+                  value={formValuesProfessionalRegister.email}
+                  onChange={(e) =>
+                    handleInputChangeProfessionalRegister(
+                      e as React.ChangeEvent<HTMLInputElement>
+                    )
+                  }
+                />
+              </Col>
+              <Col md={6} className="mt-3 mb-3 flex-column align-items-center">
+                <Input
+                  width="300"
+                  type="text"
                   placeholder="Sobrenome"
                   name="lastName"
                   value={capitalizeFirstLetter(
@@ -168,20 +183,7 @@ function ProfessionalRegister() {
                     )
                   }
                 />
-              </Col>
-              <Col md={6} className="mt-3 mb-3">
-                <Input
-                  width="300"
-                  type="text"
-                  placeholder="Email"
-                  name="email"
-                  value={formValuesProfessionalRegister.email}
-                  onChange={(e) =>
-                    handleInputChangeProfessionalRegister(
-                      e as React.ChangeEvent<HTMLInputElement>
-                    )
-                  }
-                />
+
                 <Input
                   width="300"
                   type="text"

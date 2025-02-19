@@ -1,20 +1,21 @@
 import styled from "styled-components";
 
 export const CardStoreContainer = styled.div`
-  min-width: 220px;
-  height: 125px;
-  padding: 25px;
+  min-width: 13.75rem;
+  height: 7.8125rem;
+  padding: 1.5625rem;
   border: 1px solid rgba(0, 0, 0, 0.25);
-  border-radius: 15px;
+  border-radius: 0.937rem;
   box-shadow: 4px 4px 15px 0px rgba(0, 0, 0, 0.25);
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0 25px 25px 0;
-`;
 
-// Corrigir
-export const CardStoreContent = styled.div``;
+  & img {
+    margin-bottom: 10px;
+  }
+`;
 
 export const CardDashboardContainer = styled.div`
   min-width: 245px;
@@ -33,7 +34,7 @@ export const CardDashboardContainer = styled.div`
     width: 100%;
   }
 `;
-// Corrigir
+
 export const CardDashboardContent = styled.div`
   width: 49.5%;
   min-width: 300px;

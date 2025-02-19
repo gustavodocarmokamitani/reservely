@@ -45,12 +45,12 @@ function Store() {
           <Col
             lg={12}
             xl={5}
-            className="d-flex flex-row justify-content-md-center justify-content-lg-end align-items-center  my-md-3 my-lg-5 mt-xl-0"
+            className="d-flex flex-row justify-content-md-center justify-content-lg-end align-items-center mt-md-3 mt-lg-5 mt-xl-0"
           >
             {decodedData?.userRole === "Admin" && (
               <Button $isConfigure onClick={handleButtonClick} type="button" />
             )}
-          </Col>
+          </Col>         
         </Row>
         <Row>
           <Col md={12}>

@@ -40,6 +40,16 @@ const movementRight = keyframes`
   }
 `;
 
+export const LoadingLocaleContainer = styled.div`
+  width: 100%;
+  margin-top: 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 999999;
+`;
+
 export const LoadingContainer = styled.div`
   position: absolute;
   top: 0;

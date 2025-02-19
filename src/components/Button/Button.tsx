@@ -27,22 +27,22 @@ const Button: React.FC<ButtonProps> = ({ $isResend, disabled, $isGoogle, $isAdd,
   let buttonText = "";
 
   if ($isAdd) {
-    icon = <img src={addIcon} alt="Add Icon" style={{ marginRight: "8px", verticalAlign: "middle" }} width={25} />;
+    icon = <img src={addIcon} alt="Add Icon" style={{ marginRight: "0.5rem", verticalAlign: "middle" }} width={25} />;
     buttonText = "Adicionar";
   } else if ($isRemove) {
-    icon = <img src={removeIcon} alt="Remove Icon" style={{ marginRight: "8px" }} />;
+    icon = <img src={removeIcon} alt="Remove Icon" style={{ marginRight: "0.5rem" }} />;
     buttonText = "Remover";
   } else if ($isClosed) {
-    icon = <img src={closedIcon} alt="Close Icon" style={{ marginRight: "8px" }} />;
+    icon = <img src={closedIcon} alt="Close Icon" style={{ marginRight: "0.5rem" }} />;
     buttonText = "Fechar";
   } else if ($isConfirm) {
-    icon = <img src={confirmIcon} alt="Confirm Icon" style={{ marginRight: "8px" }} />;
+    icon = <img src={confirmIcon} alt="Confirm Icon" style={{ marginRight: "0.5rem" }} />;
     buttonText = "Confirmar";
   } else if ($isConfigure) {
-    icon = <img src={confirmIcon} alt="Confirm Icon" style={{ marginRight: "8px" }} />;
+    icon = <img src={confirmIcon} alt="Confirm Icon" style={{ marginRight: "0.5rem" }} />;
     buttonText = "Configuração";
   } else if ($isBack) {
-    icon = <img src={removeIcon} alt="Confirm Icon" style={{ marginRight: "8px" }} />;
+    icon = <img src={removeIcon} alt="Confirm Icon" style={{ marginRight: "0.5rem" }} />;
     buttonText = "Voltar";
   } else if ($isLogin) {
     buttonText = "Login";
@@ -51,16 +51,16 @@ const Button: React.FC<ButtonProps> = ({ $isResend, disabled, $isGoogle, $isAdd,
   } else if ($isResend) {
     buttonText = "Reenviar e-mail";
   } else if ($isGoogle) {
-    icon = <img src={googleIcon} alt="Google Icon" style={{ marginRight: "8px" }} />;
+    icon = <img src={googleIcon} alt="Google Icon" style={{ marginRight: "0.5rem" }} />;
     buttonText = "Google";
   }
 
   return (
     <S.Button disabled={disabled} type={type} $isResend={$isResend} $isGoogle={$isGoogle} $isRegister={$isRegister} $isLogin={$isLogin} $isBack={$isBack} $isAdd={$isAdd} $isConfigure={$isConfigure}  $isRemove={$isRemove} $isClosed={$isClosed} $isConfirm={$isConfirm} style={{ margin: "0 1rem" }} onClick={onClick}>
-      <div className="d-flex align-items-center justify-content-center">
-        {icon}
-        {buttonText}
-      </div>
+      <span className="d-flex align-items-center justify-content-center">
+        {icon && <span style={{ marginRight: "8px" }}>{icon}</span>}
+        <span>{buttonText}</span>
+      </span>
     </S.Button>
   );
 };

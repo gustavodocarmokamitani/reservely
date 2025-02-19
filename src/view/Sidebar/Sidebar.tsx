@@ -5,7 +5,6 @@ import { Col, Row } from "react-bootstrap";
 import * as S from "./Sidebar.styles";
 import OptionNavigation from "../../components/OptionNavigation/OptionNavigation";
 import store from "../../assets/store.svg";
-import payment from "../../assets/payment.svg";
 import dashboard from "../../assets/dashboard.svg";
 import service from "../../assets/service.svg";
 import logo from "../../assets/logo.png";
@@ -49,7 +48,12 @@ const Navigation = () => {
     if (itemRef) {
       const offsetTop = itemRef.offsetTop;
       const itemHeight = itemRef.offsetHeight;
-      setIndicatorTop(offsetTop + itemHeight / 2 - itemHeight + 22);
+      setIndicatorTop(
+        window.innerWidth < 1468
+          ? (offsetTop + itemHeight / 2 - itemHeight + 22) / 12
+          : (offsetTop + itemHeight / 2 - itemHeight + 22) / 16
+      );
+      
     }
   }, [location, selectedIndex]); 
 

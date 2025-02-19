@@ -61,6 +61,7 @@ const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
               handleRowSelect(selectedRowIds);
           }}
           sx={{ border: 0 }}
+          localeText={{ noRowsLabel: "" }}
         />
       </Paper>
 

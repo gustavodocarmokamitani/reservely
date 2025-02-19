@@ -94,6 +94,7 @@ const ProfessionalDataTable: React.FC<ProfessionalDataTableProps> = ({
               handleRowSelect(selectedRowIds);
           }}
           sx={{ border: 0 }}
+          localeText={{ noRowsLabel: "" }}
         />
       </Paper>
       {showModal && (

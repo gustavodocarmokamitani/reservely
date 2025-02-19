@@ -40,8 +40,8 @@ const Card: React.FC<CardProps> = ({
 
   return (
     <S.CardStoreContainer>
-      <S.CardStoreContent>
-        <h4 style={{ marginBottom: "20px", textAlign: "center" }}>{title}</h4>
+      <div>
+        <h4 style={{  marginBottom: type === "dashboard" ? "0px" : "20px", textAlign: "center" }}>{title}</h4>
 
         {type === "status" && (
           <Row>
@@ -58,6 +58,7 @@ const Card: React.FC<CardProps> = ({
               <img
                 src={selectedIcon}
                 alt={statusStore ? "confirm" : "remove"}
+                style={{ cursor: "pointer", width: "1.375rem" }}
               />
             </Col>
           </Row>
@@ -75,7 +76,7 @@ const Card: React.FC<CardProps> = ({
                   src={iconMap[icon]}
                   alt={icon}
                   onClick={icon === "remove" ? onRemove : undefined}
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: "pointer", width: "1.375rem" }}
                 />
               </Col>
             </Row>
@@ -93,7 +94,7 @@ const Card: React.FC<CardProps> = ({
                 style={{
                   textAlign: "center",
                   cursor: "pointer",
-                  width: "20px",
+                  width: "1.375rem",
                 }}
               />
             </Col>
@@ -116,12 +117,12 @@ const Card: React.FC<CardProps> = ({
               )}
             </Col>
             <Col md={4}>
-              <img src={iconMap[icon]} alt={icon} />
+              <img src={iconMap[icon]} alt={icon} style={{ cursor: "pointer", width: "1.375rem" }}/>
             </Col>
           </Row>
         )}
         
-      </S.CardStoreContent>
+      </div>
     </S.CardStoreContainer>
   );
 };

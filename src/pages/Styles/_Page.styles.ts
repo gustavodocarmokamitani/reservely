@@ -1,11 +1,14 @@
 import styled from "styled-components";
 
 export const ContainerPage = styled.div`
-  width: calc(100vw - 19.98rem);
+  width: calc(100vw - 19.5rem);
   height: 100%;
   padding: 5rem;
-  margin-left: 0.625rem;
   background: #fafafa;
+
+  @media (max-width: 1468px) {
+    width: calc(100vw - 18rem);
+  }
 `;
 
 export const ContainerLogin = styled.div`
@@ -72,5 +75,4 @@ export const ContainerReSendEmail = styled.div`
   align-items: center;
   flex-direction: column;
   height: 100vh;
-
 `;

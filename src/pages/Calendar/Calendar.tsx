@@ -8,6 +8,7 @@ import { getAppointmentByStoreId } from "../../services/AppointmentServices";
 import { getServiceTypeById } from "../../services/ServiceTypeServices";
 import { Appointment } from "../../models/Appointment";
 import moment from "moment";
+import LoadingLocale from "../../components/Loading/loadingLocale";
 
 interface Event {
   id: string;
@@ -25,7 +26,6 @@ function Calendar() {
   const fetchData = useCallback(async () => {
     try {
       const response = await getAppointmentByStoreId(storeUser);
-      console.log(storeUser);
       
       const fetchedEvents: Event[] = await Promise.all(
         response.map(async (appointment: Appointment) => {
@@ -87,7 +87,7 @@ function Calendar() {
     if (isDataLoaded) {
       return <ScheduleX events={events} />;
     }
-    return <div>Carregando eventos...</div>;
+    return <LoadingLocale/>;
   };
 
   return (
@@ -97,7 +97,7 @@ function Calendar() {
           <Col md={12} lg={7} style={{ padding: "0px" }}>
             <HeaderTitle
               title="Calendário"
-              subTitle="Área dedicada ao gerenciamento e visualização de agendamentos."
+              subTitle="Área dedicada a visualização de agendamentos."
             ></HeaderTitle>
           </Col>
         </Row>

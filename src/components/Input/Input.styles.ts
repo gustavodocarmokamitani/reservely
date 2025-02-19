@@ -6,7 +6,7 @@ interface InputProps {
 
 export const InputWrapper = styled.div<InputProps>`
   position: relative;
-  width: ${(props: { width: string }) => props.width}px;
+  width: ${(props) => Number(props.width) / (window.innerWidth > 1467 ? 16 : 12)}rem;
   height: 70px;
 `;
 
@@ -19,73 +19,75 @@ export const PasswordIcon = styled.div`
   color: #0;
 `;
 
-
 export const Input = styled.input<InputProps>`
-  width: ${(props) => props.width}px; 
-  height: 50px;
-  padding: 0 25px;
-  font-size: 14px;
+  width: ${(props) => Number(props.width) / (window.innerWidth > 1467 ? 16 : 12)}rem;
+  height: 3.125rem;
+  padding: 0 1.562rem;
+  font-size: 0.875rem;
   border: 1px solid rgba(0, 0, 0, 0.25);
-  border-radius: 15px;  
+  border-radius: 0.93rem;
   box-shadow: 4px 4px 15px 0px rgba(0, 0, 0, 0.25);
-  margin: 10px 0;
+  margin: 0.625rem 0;
+
   &:focus {
     outline: none;
-    border: 2px solid  rgba(0, 0, 0, 0.5);
+    border: 2px solid rgba(0, 0, 0, 0.5);
+  }
+
+  &::placeholder {
+    font-size: 1rem;    
   }
 `;
 
 export const ToggleWrapper = styled.div<InputProps>`
-   display: flex;
+  display: flex;
   align-items: center;
   justify-content: space-between; /* Adicione esta linha */
-  width: ${(props) => props.width}px; 
-  height: 50px;
+  width: ${(props) => Number(props.width) / (window.innerWidth > 1467 ? 16 : 12)}rem;
+  height: 3.125rem;
   padding: 0 25px;
-  font-size: 14px;
   border: 1px solid rgba(0, 0, 0, 0.25);
-  border-radius: 15px;  
+  border-radius: 0.93rem;
   box-shadow: 4px 4px 15px 0px rgba(0, 0, 0, 0.25);
 
   &:focus {
     outline: none;
-    border: 2px solid  rgba(0, 0, 0, 0.5);
+    border: 2px solid rgba(0, 0, 0, 0.5);
   }
-  width: ${(props) => props.width}px;
 `;
 
 export const ToggleLabel = styled.label`
   margin-right: 8px;
-  font-size: 14px; 
+  font-size: 1rem;
   color: #757575;
 `;
 
 export const ToggleInput = styled.input`
-  -webkit-appearance: none; 
-  width: 50px; 
-  height: 27px; 
-  background: rgba(0, 0, 0, 0.25);  
+  -webkit-appearance: none;
+  width: 3.125rem;
+  height: 1.68rem;
+  background: rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(0, 0, 0, 0.25);
-  border-radius: 15px;  
+  border-radius: 0.9375rem;
   position: relative;
   outline: none;
   cursor: pointer;
-  
+
   &:checked {
-    background: rgba(0, 128, 0, 0.7);    
+    background: rgba(0, 128, 0, 0.7);
   }
 
   &:checked::before {
-    transform: translateX(25px);  
+    transform: translateX(1.45rem);
   }
 
   &::before {
-    content: '';
-    width: 25px;  
-    height: 25px;  
-    border-radius: 50%;  
-    background: white;  
+    content: "";
+    width: 1.56rem;
+    height: 1.54rem;
+    border-radius: 50%;
+    background: white;
     position: absolute;
-    transition: transform 0.2s; 
+    transition: transform 0.2s;
   }
 `;

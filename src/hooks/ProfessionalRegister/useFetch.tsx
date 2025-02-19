@@ -43,20 +43,21 @@ export const useFetch = (
     }
     try {
       const usersData = await getUserByUseTypeStore(2, storeUser);
-
+      
       if (usersData === undefined) {
         setRows([]);
+        setIsLoading(false);
         return;
       }
-
+      
       const mappedRows: Rows[] = usersData.map((user: any) => ({
         ...user,
         name: capitalizeFirstLetter(user.name),
         lastName: capitalizeFirstLetter(user.lastName),
       }));
-
+      
       setRows(mappedRows);
-    } catch (error) {
+    } catch (error) {      
       console.error("Erro ao buscar dados:", error);
     }
     setIsLoading(false);

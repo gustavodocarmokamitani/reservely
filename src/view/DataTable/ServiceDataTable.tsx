@@ -86,6 +86,7 @@ const ServiceDataTable: React.FC<ServiceDataTableProps> = ({
               handleRowSelect(selectedRowIds);
           }}
           sx={{ border: 0 }}
+          localeText={{ noRowsLabel: "" }}
         />
       </Paper>
       {showEditModal && (

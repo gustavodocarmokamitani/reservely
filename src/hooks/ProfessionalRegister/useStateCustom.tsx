@@ -40,6 +40,7 @@ export const useStateCustom = () => {
       storeId: 0,
     });
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const size = window.innerWidth > 1467 ? "large" : "small";
   return {
     rows,
     setRows,
@@ -63,5 +64,6 @@ export const useStateCustom = () => {
     setColumnWidth,
     isLoading,
     setIsLoading,
+    size
   };
 };

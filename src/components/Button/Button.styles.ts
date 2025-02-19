@@ -15,9 +15,9 @@ interface ButtonProps {
 }
 
 export const Button = styled.button<ButtonProps>`
-  width: 200px;
-  min-width: 150px;
-  height: 45px;
+  width: 12.5rem;
+  min-width: 9.375rem;
+  height: 2.812rem;
   border: transparent;
   border-radius: 50px;
   box-shadow: 4px 4px 15px 0px rgba(0, 0, 0, 0.5);
@@ -37,15 +37,45 @@ export const Button = styled.button<ButtonProps>`
     props.$isRemove || props.$isBack || props.$isRegister || props.$isGoogle
       ? "black"
       : "white"};
-  border: 1px solid
-    ${(props) => (props.$isBack ? "rgba(0, 0, 0, 0.50);" : "none")};
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   opacity: ${(props) => (props.disabled ? 0.5 : 1)};
   pointer-events: ${(props) => (props.disabled ? "none" : "auto")};
   transition: transform 0.2s ease-in, box-shadow 0.3s ease-in;
+  position: relative;
+  overflow: hidden;
 
-  &: hover {
+  &:hover {
     transform: scale(1.02);
     box-shadow: 6px 6px 20px 0px rgba(0, 0, 0, 0.6);
+    border: 1.25px solid #2c2c2c;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      45deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.4) 50%,
+      transparent 100%
+    );
+    width: 200px;
+
+    transition: left 0.5s ease-in-out;
+  }
+
+  &:hover::after {
+    left: 100%;
+  }
+
+  & span img {
+    width: 1.56rem;
+  }
+  & span {
+    font-size: 1rem;
   }
 `;
