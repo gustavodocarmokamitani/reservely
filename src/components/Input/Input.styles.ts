@@ -6,7 +6,7 @@ interface InputProps {
 
 export const InputWrapper = styled.div<InputProps>`
   position: relative;
-  width: ${(props) => Number(props.width) / (window.innerWidth > 1467 ? 16 : 12)}rem;
+  width: ${(props) => Number(props.width) / (window.innerWidth > 1680 ? 16 : 12)}rem;
   height: 70px;
 `;
 
@@ -20,7 +20,7 @@ export const PasswordIcon = styled.div`
 `;
 
 export const Input = styled.input<InputProps>`
-  width: ${(props) => Number(props.width) / (window.innerWidth > 1467 ? 16 : 12)}rem;
+  width: ${(props) => Number(props.width) / (window.innerWidth > 1680 ? 16 : 18)}rem;
   height: 3.125rem;
   padding: 0 1.562rem;
   font-size: 0.875rem;
@@ -43,7 +43,7 @@ export const ToggleWrapper = styled.div<InputProps>`
   display: flex;
   align-items: center;
   justify-content: space-between; /* Adicione esta linha */
-  width: ${(props) => Number(props.width) / (window.innerWidth > 1467 ? 16 : 12)}rem;
+  width: ${(props) => Number(props.width) / (window.innerWidth > 1680 ? 16 : 12)}rem;
   height: 3.125rem;
   padding: 0 25px;
   border: 1px solid rgba(0, 0, 0, 0.25);

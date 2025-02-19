@@ -6,7 +6,7 @@ export const ContainerPage = styled.div`
   padding: 5rem;
   background: #fafafa;
 
-  @media (max-width: 1468px) {
+  @media (max-width: 1680px) {
     width: calc(100vw - 18rem);
   }
 `;

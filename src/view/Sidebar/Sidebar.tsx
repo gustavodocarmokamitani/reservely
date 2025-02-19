@@ -49,7 +49,7 @@ const Navigation = () => {
       const offsetTop = itemRef.offsetTop;
       const itemHeight = itemRef.offsetHeight;
       setIndicatorTop(
-        window.innerWidth < 1468
+        window.innerWidth <= 1680
           ? (offsetTop + itemHeight / 2 - itemHeight + 22) / 12
           : (offsetTop + itemHeight / 2 - itemHeight + 22) / 16
       );

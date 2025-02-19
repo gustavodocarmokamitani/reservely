@@ -114,7 +114,7 @@ function StoreConfigure() {
                     name="name"
                     value={formValuesStore.name}
                     onChange={handleInputChangeStore}
-                    width={`${window.innerWidth > 1467 ? "350" : "285"}`}
+                    width={`${window.innerWidth > 1680 ? "350" : "285"}`}
                   />
                 </S.StoreContent>
                 <S.StoreContent>
@@ -124,7 +124,7 @@ function StoreConfigure() {
                     name="active"
                     value={formValuesStore.active.toString()}
                     onChange={handleInputChangeStore}
-                    width={`${window.innerWidth > 1467 ? "350" : "285"}`}
+                    width={`${window.innerWidth > 1680 ? "350" : "285"}`}
                   />
                 </S.StoreContent>
                 <S.StoreContent>

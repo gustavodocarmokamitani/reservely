@@ -4,7 +4,7 @@ const customStyles = {
     minWidth: "17.5rem",
     maxWidth: "23.875rem",
     height: " 3.125rem",
-    padding: window.innerWidth < 1468 ? ".15rem 1.56rem" : "0.2rem 1.56rem",
+    padding: window.innerWidth < 1680 ? ".15rem 1.56rem" : "0.2rem 1.56rem",
     fontSize: "0.875rem",
     border: "1px solid rgba(0, 0, 0, 0.25)",
     borderRadius: "0.93rem",

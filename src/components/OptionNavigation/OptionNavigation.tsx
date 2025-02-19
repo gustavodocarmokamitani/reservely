@@ -9,7 +9,7 @@ interface OptionNavigationProps {
 const OptionNavigation: React.FC<OptionNavigationProps> = ({ icon, text }) => {
   return (
     <>
-      <Col md={1} className="p-0">
+      <Col md={1} className="p-0" style={{width: "auto"}}>
         {icon}
       </Col>
       <Col>
