@@ -5,12 +5,12 @@ interface InputProps {
 }
 
 export const InputWrapper = styled.div<InputProps>`
-  position: relative;
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center;
-
+  position: relative;
+  width: ${(props) => Number(props.width) / (window.innerWidth > 1680 ? 16 : 12)}rem;
+  position: relative;
 `;
 
 export const PasswordIcon = styled.div`
