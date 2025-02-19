@@ -40,7 +40,7 @@ export const useStateCustom = () => {
       storeId: 0,
     });
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const size = window.innerWidth > 1467 ? "large" : "small";
+  const size = window.innerWidth > 1680 ? "large" : "small";
   return {
     rows,
     setRows,

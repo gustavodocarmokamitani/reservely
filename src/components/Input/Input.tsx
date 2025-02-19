@@ -67,7 +67,7 @@ const Input: React.FC<InputProps> = ({
             onChange={handleInputChange}
           />
           <S.PasswordIcon onClick={handleTogglePasswordVisibility}>
-            {showPassword ? <FaEyeSlash size={18} /> : <FaEye />}
+            {showPassword ? <FaEyeSlash size={"1.125rem"} /> : <FaEye />}
           </S.PasswordIcon>
         </S.InputWrapper>
       );

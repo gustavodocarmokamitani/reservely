@@ -11,7 +11,7 @@ export const SidebarContainer = styled.div`
   box-shadow: 8px 0px 7px rgba(0, 0, 0, 0.25);
   border-radius: 0px 25px 25px 0px;
 
-  @media (max-width: 1467px) {
+  @media (max-width: 1680px) {
     min-width: 10rem;
     width: 20rem;
   }
@@ -50,7 +50,7 @@ export const Indicator = styled.div<IndicatorProps>`
   box-shadow: 2px 0px 7px rgba(0, 0, 0, 0.05);
   z-index: -1;
 
-  @media (max-width: 1467px) {
+  @media (max-width: 1680px) {
     h4 {
     font
     }

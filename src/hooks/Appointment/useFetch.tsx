@@ -137,7 +137,7 @@ export const useFetch = (
                 label: item.name,
               }));
 
-              formattedOptions.unshift({ value: 0, label: "Selecione..." });
+              formattedOptions.unshift({ value: 0, label: "Selecione...", isDisabled: true, });
               setOptionsService(formattedOptions);
             }
           } else {

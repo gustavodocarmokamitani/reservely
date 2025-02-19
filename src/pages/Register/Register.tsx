@@ -44,7 +44,7 @@ const Register = () => {
                   placeholder="Firstname"
                   name="name"
                   type="text"
-                  width="350"
+                  width="450"
                   value={formData.name}
                   onChange={handleInputChange}
                 />
@@ -53,7 +53,7 @@ const Register = () => {
                   placeholder="Lastname"
                   name="lastname"
                   type="text"
-                  width="350"
+                  width="450"
                   value={formData.lastname}
                   onChange={handleInputChange}
                 />
@@ -62,7 +62,7 @@ const Register = () => {
                   placeholder="Email"
                   name="email"
                   type="text"
-                  width="350"
+                  width="450"
                   value={formData.email}
                   onChange={handleInputChange}
                 />
@@ -72,7 +72,7 @@ const Register = () => {
                   phone
                   name="phone"
                   type="text"
-                  width="350"
+                  width="450"
                   value={formData.phone}
                   onChange={handleInputChange}
                 />
@@ -81,7 +81,7 @@ const Register = () => {
                   placeholder="Password"
                   name="password"
                   type={"password"}
-                  width="350"
+                  width="450"
                   value={formData.password}
                   onChange={handleInputChange}
                 />
@@ -90,19 +90,19 @@ const Register = () => {
                   placeholder="Confirm Password"
                   name="confirmPassword"
                   type={"password"}
-                  width="350"
+                  width="450"
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
                 />
               </S.WrapperRegisterInput>
             </S.ContainerRegister>
             <S.ContainerRegister>
-              <S.WrapperRegisterInput>
+              <S.WrapperRegisterInput className="mt-2">
                 <Input
                   placeholder="Store Name"
                   name="storeName"
                   type="text"
-                  width="350"
+                  width="450"
                   value={formData.storeName}
                   onChange={handleInputChange}
                 />
