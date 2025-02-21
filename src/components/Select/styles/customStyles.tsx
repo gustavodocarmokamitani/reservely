@@ -2,8 +2,8 @@ const customStyles = {
   control: (provided: any) => ({
     ...provided,
     minWidth: "17.5rem",
-    maxWidth: "23.875rem",
-    height: " 3.125rem",
+    maxWidth: "23.875rem",    
+    minHeight: " 3.125rem",
     padding: window.innerWidth < 1680 ? ".15rem 1.56rem" : "0.2rem 1.56rem",
     fontSize: "0.875rem",
     border: "1px solid rgba(0, 0, 0, 0.25)",
@@ -18,6 +18,7 @@ const customStyles = {
   menu: (provided: any) => ({
     ...provided,
     zIndex: 5,
+    width: "24rem",
   }),
   menuPortal: (provided: any) => ({
     ...provided,
@@ -25,7 +26,10 @@ const customStyles = {
   }),
   option: (provided: any, state: any) => ({
     ...provided,
-    backgroundColor: state.isSelected ? "#007bff" : "#fff",
+    backgroundColor: state.isSelected ? "#2c2c2c" : "#fff",
+    padding: "0.3rem 1rem",
+    minHeight: "2.125rem",
+    fontSize: "1rem",
     color: state.isSelected ? "#fff" : "#333",
     "&:hover": {
       backgroundColor: "#e0e0e0",
@@ -36,7 +40,7 @@ const customStyles = {
     ...provided,
     borderRadius: "0.93rem",
     padding: "0 0.31rem",
-    backgroundColor: "#616060",
+    backgroundColor: "#2c2c2c",
   }),
   multiValueLabel: (provided: any) => ({
     ...provided,
@@ -47,7 +51,7 @@ const customStyles = {
     color: "#fff",
     "&:hover": {
       borderRadius: "0.93rem",
-      backgroundColor: "#616060",
+      backgroundColor: "#2c2c2c",
       color: "#fff",
     },
   }),

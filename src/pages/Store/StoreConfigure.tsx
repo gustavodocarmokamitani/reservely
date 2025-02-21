@@ -137,7 +137,6 @@ function StoreConfigure() {
                     isMulti
                     maxSelections={2}
                   />
-                  {/* <OpeningHoursSelect setTime={setSelectedTimes} /> */}
                 </S.StoreContent>
                 <S.StoreContent>
                   <p>Dias de funcionamento</p>
@@ -148,11 +147,10 @@ function StoreConfigure() {
                     placeholder={`Selecione até ${optionsWeekDay.length} dias`}
                     isMulti
                   />
-                  {/* <OpeningWeekDaysSelect setOpeningWeekDay={setOpeningWeekDay} /> */}
                 </S.StoreContent>
                 <S.StoreContent>
                   <p>Datas de fechamento</p>
-                  <SelectDataPicker setDate={setClosingDates} isClearable />
+                  <SelectDataPicker type="store" setDate={setClosingDates} isClearable />
                 </S.StoreContent>
               </S.StoreContainer>
             </S.StoreSectionOne>

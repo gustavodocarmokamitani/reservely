@@ -23,7 +23,7 @@ const Home = () => {
       <WrapperLogin>
         <div>
           {" "}
-          <TypingText numLetters={7}>agendai</TypingText>
+          <TypingText numLetters={10}>reserve.ly</TypingText>
         </div>
         <ContentButton>
           <Button

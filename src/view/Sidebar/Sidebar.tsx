@@ -25,7 +25,7 @@ const Navigation = () => {
   const [indicatorTop, setIndicatorTop] = useState(0);
   const menuItemsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  useEffect(() => { 
+  useEffect(() => {
     const path = location.pathname;
     const menuPaths = [
       "/appointment",
@@ -35,15 +35,18 @@ const Navigation = () => {
       "/service",
       "/professional-register",
       "/professional",
-      "/store",      
+      "/store",
       // "/payment",
-      "/store-configure"  
+      "/store-configure",
     ];
 
-    const newIndex = path === "/store-configure" ? menuPaths.indexOf("/store") : menuPaths.indexOf(path);
- 
-    setSelectedIndex(newIndex >= 0 ? newIndex : 0); 
- 
+    const newIndex =
+      path === "/store-configure"
+        ? menuPaths.indexOf("/store")
+        : menuPaths.indexOf(path);
+
+    setSelectedIndex(newIndex >= 0 ? newIndex : 0);
+
     const itemRef = menuItemsRef.current[selectedIndex];
     if (itemRef) {
       const offsetTop = itemRef.offsetTop;
@@ -53,9 +56,8 @@ const Navigation = () => {
           ? (offsetTop + itemHeight / 2 - itemHeight + 22) / 12
           : (offsetTop + itemHeight / 2 - itemHeight + 22) / 16
       );
-      
     }
-  }, [location, selectedIndex]); 
+  }, [location, selectedIndex]);
 
   const logout = () => {
     localStorage.removeItem("authToken");
@@ -68,28 +70,42 @@ const Navigation = () => {
   };
 
   return (
-    <S.SidebarContainer className="d-flex flex-column" style={{ height: "100vh" }}>
-      <Row className="pt-1 d-flex align-items-center justify-content-center" style={{ height: "130px" }}>
-        <Col className="d-flex justify-content-center">
-          <img src={logo} alt="AgendaI" />
+    <S.SidebarContainer
+      className="d-flex flex-column"
+      style={{ height: "100vh" }}
+    >
+      <Row
+        className="pt-1 d-flex align-items-center justify-content-center"
+        style={{ height: "130px" }}
+      >
+        <Col className="d-flex justify-content-center mt-3">
+          <img width={85} src={logo} alt="reserve.ly" />
         </Col>
+      </Row>
+      <Row>        
       </Row>
       <hr />
-      <Row>
-        <Col>
-          <h2 style={{ paddingLeft: "20px" }}>Acesso rápido</h2>
-        </Col>
-      </Row>
-
       <div className="flex-grow-1" style={{ position: "relative" }}>
         {[
           { path: "/appointment", icon: chamada, text: "Agendamento" },
-          { path: "/appointment-history", icon: appointmentHistory, text: "Histórico Agendamento" },
+          {
+            path: "/appointment-history",
+            icon: appointmentHistory,
+            text: "Histórico Agendamento",
+          },
           { path: "/calendar", icon: calendar, text: "Calendário" },
           { path: "/dashboard", icon: dashboard, text: "Dashboard" },
           { path: "/service", icon: service, text: "Serviços" },
-          { path: "/professional-register", icon: professionalRegister, text: "Registrar Profissionais" },
-          { path: "/professional", icon: professionalCheck, text: "Profissionais" },
+          {
+            path: "/professional-register",
+            icon: professionalRegister,
+            text: "Registrar Profissionais",
+          },
+          {
+            path: "/professional",
+            icon: professionalCheck,
+            text: "Profissionais",
+          },
           { path: "/store", icon: store, text: "Loja" },
           // { path: "/payment", icon: payment, text: "Formas de Pagamentos" },
         ].map(({ path, icon, text }, index) => (
@@ -99,13 +115,15 @@ const Navigation = () => {
             onClick={() => setSelectedIndex(index)}
           >
             <Link to={path} style={{ textDecoration: "none" }}>
-              <S.StyledRow             
+              <S.StyledRow
                 isSelected={location.pathname === path}
                 className={location.pathname === path ? "selected" : ""}
               >
                 <S.Indicator top={indicatorTop} />
                 <OptionNavigation
-                  icon={<img src={icon} alt={text} style={{ width: "1.56rem" }} />}
+                  icon={
+                    <img src={icon} alt={text} style={{ width: "1.56rem" }} />
+                  }
                   text={text}
                 />
               </S.StyledRow>

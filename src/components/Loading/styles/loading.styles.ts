@@ -8,7 +8,7 @@ const movementLeft = keyframes`
    
   }
   50% {
-  transform: translateX(-15px);
+  transform: translateX(-18px);
    fill: white;
     stroke: #2c2c2c;
   }
@@ -28,7 +28,7 @@ const movementRight = keyframes`
     
   }
   50% {
-  transform: translateX(15px);
+  transform: translateX(18px);
   fill: white;
     stroke: #2c2c2c;
   }
@@ -65,16 +65,17 @@ export const LoadingContainer = styled.div`
 `;
 
 export const Spinner = styled.div`
+  padding: 15px;
   svg {
     width: 101px;
     height: 81px;
 
     path:nth-child(1) {
-      animation: ${movementLeft} 3s ease-out infinite;
+      animation: ${movementRight} 3s ease-out infinite;
     }
 
     path:nth-child(2) {
-      animation: ${movementRight} 3s ease-out infinite;
+      animation: ${movementLeft} 3s ease-out infinite;
     }
   }
 `;

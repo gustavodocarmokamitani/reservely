@@ -27,14 +27,14 @@ export const Button = styled.button<ButtonProps>`
     if (props.$isClosed) return "#FF3535";
     if (props.$isConfirm) return "#1A8439";
     if (props.$isConfigure || props.$isResend) return "#2B2B2B";
-    if (props.$isBack) return "#fff";
+    if (props.$isBack) return "#2c2c2c";
     if (props.$isLogin) return "#2A2A2A";
     if (props.$isRegister) return "#fff";
     if (props.$isGoogle) return "#fff";
     return "#FF060B";
   }};
   color: ${(props) =>
-    props.$isRemove || props.$isBack || props.$isRegister || props.$isGoogle
+    props.$isRemove || props.$isRegister || props.$isGoogle
       ? "black"
       : "white"};
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};

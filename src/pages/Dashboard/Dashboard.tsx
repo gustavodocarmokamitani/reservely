@@ -27,7 +27,7 @@ const Dashboard = () => {
   );
 
   return (
-    <ContainerPage style={{ height: "100%", width: "99.99%" }}>
+    <ContainerPage>
       <Row>
         <Col style={{ padding: "0px" }}>
           <HeaderTitle

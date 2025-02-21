@@ -1,5 +1,10 @@
 import React, { useContext } from "react";
-import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 
 import { AppContext } from "./context/AppContext";
 
@@ -27,10 +32,11 @@ import { Appointment } from "./pages/Appointment/Appointment";
 import AppointmentHistory from "./pages/Appointment/AppointmentHistory";
 import Calendar from "./pages/Calendar/Calendar";
 
+import sidebarRetratil from "./assets/sidebarRetratil.svg";
 
 function App() {
   const context = useContext(AppContext);
-  const authToken = context?.authToken; 
+  const authToken = context?.authToken;
   const isAuthenticated = authToken !== null;
 
   const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
@@ -53,21 +59,38 @@ function App() {
             element={
               <ProtectedRoute>
                 <React.Fragment>
-                  <Navigation />
-                  <div style={{ flex: 1, marginLeft: "19.5rem" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      width: "20rem",
+                      position: "relative",
+                    }}
+                  >
+                    <Navigation />
+                  </div>
+                  <div style={{ flexGrow: 1, overflowX: "hidden" }}>
                     <Routes>
                       <Route path="/appointment" element={<Appointment />} />
-                      <Route path="/appointment-history" element={<AppointmentHistory />} />
+                      <Route
+                        path="/appointment-history"
+                        element={<AppointmentHistory />}
+                      />
                       <Route path="/dashboard" element={<Dashboard />} />
                       <Route path="/calendar" element={<Calendar />} />
                       <Route path="/service" element={<Service />} />
-                      <Route path="/professional-register" element={<ProfessionalRegister />} />
+                      <Route
+                        path="/professional-register"
+                        element={<ProfessionalRegister />}
+                      />
                       <Route path="/professional" element={<Professional />} />
                       <Route path="/image" element={<Image />} />
                       <Route path="/store" element={<Store />} />
-                      <Route path="/store-configure" element={<StoreConfigurar />} />
+                      <Route
+                        path="/store-configure"
+                        element={<StoreConfigurar />}
+                      />
                       <Route path="/payment" element={<Payment />} />
-                      <Route path="/callhelp" element={<CallHelp	 />} />
+                      <Route path="/callhelp" element={<CallHelp />} />
                     </Routes>
                   </div>
                 </React.Fragment>

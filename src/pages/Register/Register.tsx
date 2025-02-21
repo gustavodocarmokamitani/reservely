@@ -40,48 +40,50 @@ const Register = () => {
             </p>
             <S.ContainerRegister>
               <S.WrapperRegisterInput>
-                <Input
-                  placeholder="Firstname"
-                  name="name"
-                  type="text"
-                  width="350"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                />
+                <S.ContentRegister>
+                  <Input
+                    placeholder="Firstname"
+                    name="name"
+                    type="text"
+                    width="450"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                  />
 
-                <Input
-                  placeholder="Lastname"
-                  name="lastname"
-                  type="text"
-                  width="350"
-                  value={formData.lastname}
-                  onChange={handleInputChange}
-                />
+                  <Input
+                    placeholder="Lastname"
+                    name="lastname"
+                    type="text"
+                    width="450"
+                    value={formData.lastname}
+                    onChange={handleInputChange}
+                  />
+                </S.ContentRegister>
+                <S.ContentRegister>
+                  <Input
+                    placeholder="Email"
+                    name="email"
+                    type="text"
+                    width="450"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                  />
 
-                <Input
-                  placeholder="Email"
-                  name="email"
-                  type="text"
-                  width="350"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                />
-
-                <Input
-                  placeholder="Phone"
-                  phone
-                  name="phone"
-                  type="text"
-                  width="350"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                />
-
+                  <Input
+                    placeholder="Phone"
+                    phone
+                    name="phone"
+                    type="text"
+                    width="450"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                  />
+                </S.ContentRegister>
                 <Input
                   placeholder="Password"
                   name="password"
                   type={"password"}
-                  width="350"
+                  width="450"
                   value={formData.password}
                   onChange={handleInputChange}
                 />
@@ -90,19 +92,19 @@ const Register = () => {
                   placeholder="Confirm Password"
                   name="confirmPassword"
                   type={"password"}
-                  width="350"
+                  width="450"
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
                 />
               </S.WrapperRegisterInput>
             </S.ContainerRegister>
             <S.ContainerRegister>
-              <S.WrapperRegisterInput>
+              <S.WrapperRegisterInput className="mt-2">
                 <Input
                   placeholder="Store Name"
                   name="storeName"
                   type="text"
-                  width="350"
+                  width="450"
                   value={formData.storeName}
                   onChange={handleInputChange}
                 />

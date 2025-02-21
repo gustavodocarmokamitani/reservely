@@ -15,6 +15,7 @@ import {
   getServiceTypesByStore,
 } from "../../services/ServiceTypeServices";
 import { capitalizeFirstLetter } from "../../services/system/globalService";
+import { isDisabled } from "@testing-library/user-event/dist/utils";
 
 export const useFetch = (
   storeUser: number,
@@ -137,7 +138,7 @@ export const useFetch = (
                 label: item.name,
               }));
 
-              formattedOptions.unshift({ value: 0, label: "Selecione..." });
+              formattedOptions.unshift({ value: 0, label: "Selecione...", isDisabled: true });
               setOptionsService(formattedOptions);
             }
           } else {

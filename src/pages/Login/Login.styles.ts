@@ -16,3 +16,10 @@ export const WrapperLoginInput = styled.div`
   max-width: 400px;
   margin: 15px 0px;
 `;
+
+export const FormContainer = styled.form`
+  display: flex;
+  flex-direction: column;
+  aling-items: center;
+  justify-content: center;  
+`;

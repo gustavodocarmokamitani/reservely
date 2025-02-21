@@ -5,7 +5,6 @@ import SelectDataPicker from "../../components/Select/SelectDataPicker";
 import Select from "../../components/Select/Select";
 import { useFetch } from "../../hooks/Appointment/useFetch";
 import { useStateCustom } from "../../hooks/Appointment/useStateCustom";
-import { useValidate } from "../../hooks/Appointment/useValidade";
 import { useSubmit } from "../../hooks/Appointment/useSubmit";
 import { Paragraph } from "../../components/Paragraph/Paragraph";
 import { ContainerPage } from "../Styles/_Page.styles";
@@ -62,7 +61,6 @@ export function Appointment() {
     );
   };
 
-  const validate = useValidate();
   const submit = useSubmit(setIsLoading);
 
   return (
@@ -138,7 +136,7 @@ export function Appointment() {
         </S.AppointmentContainer>
         <S.AppointmentContainer className="justify-content-center justify-content-xl-start pb-5">
           <S.AppointmentContent>
-            <SelectDataPicker setDate={setAppointmentDate} />
+            <SelectDataPicker setDate={setAppointmentDate} type="appointment"/>
           </S.AppointmentContent>
         </S.AppointmentContainer>
       </ContainerPage>

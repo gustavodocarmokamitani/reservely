@@ -137,7 +137,7 @@ function ProfessionalRegister() {
             subTitle="Preencha as informações abaixo para editar o profissional."
             handleSubmit={handleRegisterProfessionalRegister}
             handleClose={handleClose}
-            size={`${window.innerWidth > 1680 ? "large" : "small"}`}
+            size="small"
           >
             <Row>
               <Col md={6} className="mt-3 mb-3 flex-column align-items-center">

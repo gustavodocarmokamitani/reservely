@@ -61,6 +61,7 @@ export const useAction = (
       }
     } catch (error) {
       console.error("Error updating user:", error);
+      setIsLoading(false);      
     }
     setIsLoading(false);
   };
@@ -118,6 +119,7 @@ export const useAction = (
     } catch (error) {
       console.error("Erro ao remover os usuários:", error);
       enqueueSnackbar("Erro ao excluir usuários.", { variant: "error" });
+      setIsLoading(false);
     }
     setIsLoading(false);
   };
@@ -139,6 +141,7 @@ export const useAction = (
           variant: "warning",
         }
       );
+      setIsLoading(false);
       return;
     }
 
@@ -158,6 +161,7 @@ export const useAction = (
         enqueueSnackbar("Este e-mail já está cadastrado.", {
           variant: "default",
         });
+        setIsLoading(false);
         return;
       }
 
@@ -173,6 +177,7 @@ export const useAction = (
       enqueueSnackbar("Erro ao registrar profissional. Tente novamente.", {
         variant: "error",
       });
+      setIsLoading(false);
     }
     fetchData();
     setIsLoading(false);

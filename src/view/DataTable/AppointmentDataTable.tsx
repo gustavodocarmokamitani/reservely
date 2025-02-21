@@ -50,8 +50,16 @@ const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
       >
         <DataGrid
           rows={rows}
-          columns={columns}
-          initialState={{ pagination: { paginationModel: { pageSize: 13 } } }}
+          columns={columns}          
+          initialState={{
+            pagination: { paginationModel: { pageSize: 13 } },
+            sorting: {
+              sortModel: [
+                { field: "appointmentDate", sort: "desc" }, 
+                { field: "appointmentStatus", sort: "asc" }, 
+              ],
+            },
+          }}
           pageSizeOptions={[13, 20, 25]}
           checkboxSelection
           disableRowSelectionOnClick

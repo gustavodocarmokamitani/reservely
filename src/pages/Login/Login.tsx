@@ -41,12 +41,12 @@ const Login = () => {
         </Row>
         <S.ContainerLogin>
           <S.WrapperLoginInput>
-            <form onSubmit={handleLogin}>
+            <S.FormContainer onSubmit={handleLogin}>
               <Input
                 placeholder="Email"
                 name="email"
                 type="email"
-                width="350"
+                width="400"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -55,7 +55,7 @@ const Login = () => {
                 placeholder="Password"
                 name="password"
                 type="password"
-                width="350"
+                width="400"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -73,7 +73,7 @@ const Login = () => {
                 </ParagraphThin> */}
                 </Col>
               </Row>
-            </form>
+            </S.FormContainer>
           </S.WrapperLoginInput>
         </S.ContainerLogin>
       </ContainerRegister>

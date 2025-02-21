@@ -1,6 +1,7 @@
 import React from "react";
 import addIcon from '../../assets/add.svg'; 
-import removeIcon from '../../assets/remove.svg'; 
+import removeWhite from '../../assets/removeWhite.svg'; 
+import removeBlack from '../../assets/remove.svg'; 
 import confirmIcon from '../../assets/confirm.svg'; 
 import closedIcon from '../../assets/closed.svg'; 
 import googleIcon from '../../assets/googleIcon.svg';
@@ -30,7 +31,7 @@ const Button: React.FC<ButtonProps> = ({ $isResend, disabled, $isGoogle, $isAdd,
     icon = <img src={addIcon} alt="Add Icon" style={{ marginRight: "0.5rem", verticalAlign: "middle" }} width={25} />;
     buttonText = "Adicionar";
   } else if ($isRemove) {
-    icon = <img src={removeIcon} alt="Remove Icon" style={{ marginRight: "0.5rem" }} />;
+    icon = <img src={removeBlack} alt="Remove Icon" style={{ marginRight: "0.5rem" }} />;
     buttonText = "Remover";
   } else if ($isClosed) {
     icon = <img src={closedIcon} alt="Close Icon" style={{ marginRight: "0.5rem" }} />;
@@ -42,7 +43,7 @@ const Button: React.FC<ButtonProps> = ({ $isResend, disabled, $isGoogle, $isAdd,
     icon = <img src={confirmIcon} alt="Confirm Icon" style={{ marginRight: "0.5rem" }} />;
     buttonText = "Configuração";
   } else if ($isBack) {
-    icon = <img src={removeIcon} alt="Confirm Icon" style={{ marginRight: "0.5rem" }} />;
+    icon = <img src={removeWhite} alt="Confirm Icon" style={{ marginRight: "0.5rem" }} />;
     buttonText = "Voltar";
   } else if ($isLogin) {
     buttonText = "Login";
