@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import * as S from "./styles/DataPicker.styles"; 
 import "react-datepicker/dist/react-datepicker.css";
-import { ptBR, se } from "date-fns/locale";
+import { ptBR } from "date-fns/locale";
 
 interface SelectDataPickerProps {
   setDate: (date: Date[]) => void;

@@ -39,13 +39,9 @@ export function Appointment() {
 
   useFetch(
     storeUser,
-    optionsEmployee,
     setOptionsEmployee,
-    optionsService,
     setOptionsService,
-    optionsClient,
     setOptionsClient,
-    optionsTime,
     setOptionsTime,
     setIsLoading
   );

@@ -12,12 +12,6 @@ import Input from "../../components/Input/Input";
 import { Col, Row } from "react-bootstrap";
 import Select from "../../components/Select/Select";
 
-interface DecodedToken {
-  userId: string;
-  userEmail: string;
-  userRole: string;
-}
-
 interface ServiceDataTableProps {
   service?: boolean;
   rows?: ServiceType[];

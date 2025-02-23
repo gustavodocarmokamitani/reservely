@@ -67,7 +67,7 @@ const ProfessionalDataTable: React.FC<ProfessionalDataTableProps> = ({
       combinedData ? [combinedData] : [],
       setFormValuesProfessional
     );
-  }, [combinedData, setFormValuesProfessional]);
+  }, [combinedData, setFormValuesProfessional, fetchLoadEditFormValues]);
 
   return (
     <div ref={containerRef} style={{ marginTop: "3rem" }}>

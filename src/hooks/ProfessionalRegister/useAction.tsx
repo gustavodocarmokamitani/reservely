@@ -1,22 +1,13 @@
 import { useSnackbar } from "notistack";
-import {
-  createEmployee,
-  deleteEmployee,
-  getEmployeeIdByUserId,
-  getEmployees,
-  updateEmployee,
-} from "../../services/EmployeeServices";
+import { getEmployeeIdByUserId } from "../../services/EmployeeServices";
 import {
   deleteUser,
   getUserById,
   getUsers,
   updateUser,
 } from "../../services/UserServices";
-import { SelectOption } from "../../models/SelectOptions";
 import { UserEmployee } from "../../models/UserEmployee";
-import { Employee, Employee as EmployeeModel } from "../../models/Employee";
 import { User } from "../../models/User";
-import { RegisterEmployee } from "../../models/RegisterEmployee";
 import { checkEmail, registerProfessional } from "../../services/AuthService";
 
 export const useAction = (
@@ -61,7 +52,7 @@ export const useAction = (
       }
     } catch (error) {
       console.error("Error updating user:", error);
-      setIsLoading(false);      
+      setIsLoading(false);
     }
     setIsLoading(false);
   };

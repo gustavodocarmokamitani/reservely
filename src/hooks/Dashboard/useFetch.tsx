@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import {
   getAppointmentByStoreId,
   getAppointmentRevenue,
@@ -12,45 +12,42 @@ export const useFetch = (
 ) => {
   const fetchDataRef = useRef(false);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const responseRevenue = await getAppointmentRevenue(storeUser);
-
-      if (responseRevenue && Array.isArray(responseRevenue)) {
-        const totalRevenue = responseRevenue.reduce(
-          (acc: number, currentValue: any) => acc + currentValue.totalRevenue,
-          0
-        );
-
-        setAmountReceived(totalRevenue);
-
-        const responseAppointmentCount = await getAppointmentByStoreId(
-          storeUser
-        );
-
-        if (
-          responseAppointmentCount &&
-          Array.isArray(responseAppointmentCount)
-        ) {
-          const totalAppointments = responseAppointmentCount.length;
-          setAppointmentCount(totalAppointments);
-
-          const canceledAppointments = responseAppointmentCount.filter(
-            (appointment: any) => appointment.appointmentStatusId === 3
-          );
-
-          const percentageCanceled =
-            (canceledAppointments.length / totalAppointments) * 100;
-          console.log(percentageCanceled);
-
-          setAppointmentPercentageCanceled(percentageCanceled);
-        }
-      }
+  
+      if (!Array.isArray(responseRevenue)) return;
+  
+      const totalRevenue = responseRevenue.reduce(
+        (acc: number, currentValue: any) => acc + currentValue.totalRevenue,
+        0
+      );
+  
+      setAmountReceived(totalRevenue);
+  
+      const responseAppointmentCount = await getAppointmentByStoreId(storeUser);
+  
+      if (!Array.isArray(responseAppointmentCount)) return;
+  
+      const totalAppointments = responseAppointmentCount.length;
+      setAppointmentCount(totalAppointments);
+  
+      const canceledAppointments = responseAppointmentCount.filter(
+        (appointment: any) => appointment.appointmentStatusId === 3
+      );
+  
+      const percentageCanceled =
+        totalAppointments > 0
+          ? (canceledAppointments.length / totalAppointments) * 100
+          : 0;
+  
+      console.log(percentageCanceled);
+      setAppointmentPercentageCanceled(percentageCanceled);
     } catch (error) {
       console.error("Erro ao buscar dados de receita:", error);
     }
-  };
-
+  }, [storeUser, setAmountReceived, setAppointmentCount, setAppointmentPercentageCanceled]); // ✅ Dependências corretas
+  
   useEffect(() => {
     if (!fetchDataRef.current) {
       fetchData();

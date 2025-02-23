@@ -13,17 +13,17 @@ export const useEffectCustom = (
     if (openingWeekDaySelect.length > 0) {
       setOpeningWeekDay(openingWeekDaySelect.map((item) => item.label));
     }
-  }, [openingWeekDaySelect]);
+  }, [openingWeekDaySelect, setOpeningWeekDay]);
 
   useEffect(() => {
     const times = generateTimeOptions();
     setOptionsTime(times);
-  }, []);
+  }, [generateTimeOptions, setOptionsTime]);
 
   useEffect(() => {
     if (selectedTimesSelect.length > 0) {
       setSelectedTimes(selectedTimesSelect.map((item) => item.label));
     }
-  }, [selectedTimesSelect]);
+  }, [selectedTimesSelect, setSelectedTimes]);
   return {};
 };

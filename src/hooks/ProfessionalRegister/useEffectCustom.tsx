@@ -1,5 +1,4 @@
 import { useEffect, useRef, useCallback } from "react";
-import { SelectOption } from "../../models/SelectOptions";
 import { DecodedToken } from "../../models/DecodedToken";
 import {
   GridCellParams,
@@ -10,17 +9,6 @@ import {
 import edit from "../../assets/edit.svg";
 import confirm from "../../assets/confirmCardStore.svg";
 import remove from "../../assets/removeRed.svg";
-
-interface Rows {
-  id: number;
-  name: string;
-  lastName: string;
-  phone: string;
-  email: string;
-  services: number[];
-  active: boolean;
-  storeId: number;
-}
 
 export const useEffectCustom = (
   setColumnWidth: (data: number) => void,

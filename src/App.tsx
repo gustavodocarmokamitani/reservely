@@ -32,8 +32,6 @@ import { Appointment } from "./pages/Appointment/Appointment";
 import AppointmentHistory from "./pages/Appointment/AppointmentHistory";
 import Calendar from "./pages/Calendar/Calendar";
 
-import sidebarRetratil from "./assets/sidebarRetratil.svg";
-
 function App() {
   const context = useContext(AppContext);
   const authToken = context?.authToken;

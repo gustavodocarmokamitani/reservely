@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { getStoreById } from "../../services/StoreServices";
 import { Store } from "../../models/Store";
 
@@ -22,7 +22,7 @@ export const useFetch = (
 ) => {
   const fetchDataRef = useRef(false);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setIsLoading(true);
     try {
       const response = await getStoreById(storeUser);
@@ -70,7 +70,19 @@ export const useFetch = (
       console.error("Erro na requisição da store", error);
     }
     setIsLoading(false);
-  };
+  }, [
+    storeUser,
+    setStore,
+    setFormValuesStore,
+    setStatusStore,
+    selectedTimes,
+    setSelectedTimes,
+    openingWeekDay,
+    setOpeningWeekDay,
+    closingDates,
+    setClosingDates,
+    setIsLoading,
+  ]);
 
   useEffect(() => {
     if (!fetchDataRef.current) {
@@ -92,6 +104,5 @@ export const useFetch = (
     return times;
   };
 
-
-  return {generateTimeOptions};
+  return { generateTimeOptions };
 };

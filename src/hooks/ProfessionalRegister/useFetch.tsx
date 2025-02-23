@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { DecodedToken } from "../../models/DecodedToken";
 import { Employee } from "../../models/Employee";
 import { User } from "../../models/User";
@@ -32,36 +32,43 @@ export const useFetch = (
   setDecodedData: React.Dispatch<React.SetStateAction<DecodedToken | null>>,
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
-  const storedToken = localStorage.getItem("authToken");
+  const storedToken = localStorage.getItem("authToken");  
   const fetchDataRef = useRef(false);
-
-  const fetchData = async () => {
+    
+  const fetchData = useCallback(async () => {
     setIsLoading(true);
+    
     if (storedToken) {
-      const data = await decodeToken(storedToken);
-      setDecodedData(data);
+      try {
+        const data = await decodeToken(storedToken);
+        setDecodedData(data);
+      } catch (error) {
+        console.error("Erro ao decodificar token:", error);
+      }
     }
+  
     try {
       const usersData = await getUserByUseTypeStore(2, storeUser);
-      
-      if (usersData === undefined) {
+  
+      if (!usersData) {
         setRows([]);
         setIsLoading(false);
         return;
       }
-      
+  
       const mappedRows: Rows[] = usersData.map((user: any) => ({
         ...user,
         name: capitalizeFirstLetter(user.name),
         lastName: capitalizeFirstLetter(user.lastName),
       }));
-      
+  
       setRows(mappedRows);
     } catch (error) {      
       console.error("Erro ao buscar dados:", error);
     }
+  
     setIsLoading(false);
-  };
+  }, [storedToken, storeUser, setDecodedData, setRows, setIsLoading]);
 
   useEffect(() => {
     if (!fetchDataRef.current) {
@@ -70,7 +77,7 @@ export const useFetch = (
     }
   }, [fetchData]);
 
-  const fetchLoadEditFormValues = async (userId: number) => {
+  const fetchLoadEditFormValues = useCallback(async (userId: number) => {
     setIsLoading(true);
     try {
       const resEmployee = await getUserById(userId);
@@ -87,7 +94,7 @@ export const useFetch = (
         serviceIds: resEmployee.serviceIds || [],
         storeId: resEmployee.storeId,
       };
-
+  
       const resUser = await getUserById(mappedEmployee.id);
       const mappedUser = {
         id: resUser.id,
@@ -99,49 +106,20 @@ export const useFetch = (
         userTypeId: resUser.userTypeId,
         storeId: storeUser,
       };
-
+  
       const combined = { ...mappedEmployee, ...mappedUser };
       setCombinedData(combined);
-
+  
       if (combined) {
-        const {
-          id,
-          userId,
-          name,
-          lastName,
-          email,
-          phone,
-          active,
-          userTypeId,
-          password,
-          serviceIds,
-          storeId,
-        } = combined;
-
-        setFormValuesProfessionalRegister((prevState) => {
-          if (id !== prevState.id) {
-            return {
-              id,
-              userId,
-              name,
-              lastName,
-              email,
-              phone,
-              active,
-              userTypeId,
-              password,
-              serviceIds,
-              storeId,
-            };
-          }
-          return prevState;
-        });
+        setFormValuesProfessionalRegister((prevState) => 
+          prevState.id !== combined.id ? { ...combined } : prevState
+        );
       }
     } catch (error) {
       console.error("Error fetching data:", error);
     }
     setIsLoading(false);
-  };
+  }, [storeUser, setCombinedData, setFormValuesProfessionalRegister, setIsLoading]); // ✅ Dependências corretas    
 
   return {
     fetchData,

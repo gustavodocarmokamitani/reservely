@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { Appointment } from "../../models/Appointment";
 import { SelectOption } from "../../models/SelectOptions";
 import { Service } from "../../models/Service";
@@ -28,7 +28,7 @@ export const useFetch = (
   const fetchDataRef = useRef(false);
   const storedToken = localStorage.getItem("authToken");
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       setIsLoading(true);
       if (storedToken) {
@@ -75,7 +75,7 @@ export const useFetch = (
       console.error("Error fetching data:", error);
     }
     setIsLoading(false);
-  };
+  }, [setDecodedData, setIsLoading, setRows, storeUser, storedToken]);
 
   useEffect(() => {
     if (!fetchDataRef.current) {

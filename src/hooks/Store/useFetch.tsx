@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { decodeToken } from "../../services/AuthService";
 import { getStoreById } from "../../services/StoreServices";
 import { DecodedToken } from "../../models/DecodedToken";
@@ -14,7 +14,7 @@ export const useFetch = (
   const fetchDataRef = useRef(false);
   const storedToken = localStorage.getItem("authToken");
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setIsLoading(true);
     try {
       if (storedToken) {
@@ -33,7 +33,14 @@ export const useFetch = (
       console.error("Erro ao buscar dados da loja:", error);
     }
     setIsLoading(false);
-  };
+  }, [
+    storedToken,
+    storeUser,
+    setDecodedData,
+    setStore,
+    setSelectedTimes,
+    setIsLoading,
+  ]);
 
   useEffect(() => {
     if (!fetchDataRef.current) {

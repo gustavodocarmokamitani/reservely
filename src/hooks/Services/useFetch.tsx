@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { SelectOption } from "../../models/SelectOptions";
 import { decodeToken } from "../../services/AuthService";
 import {
@@ -8,15 +8,6 @@ import {
 import { DecodedToken } from "../../models/DecodedToken";
 import { ServiceType } from "../../models/ServiceType";
 import { Service } from "../../models/Service";
-
-interface Rows {
-  id: number;
-  name: string;
-  lastName: string;
-  phone: string;
-  email: string;
-  services: number[];
-}
 
 export const useFetch = (
   storeUser: number,
@@ -32,20 +23,23 @@ export const useFetch = (
   const storedToken = localStorage.getItem("authToken");
   const fetchDataRef = useRef(false);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setIsLoading(true);
+  
     if (storedToken) {
       const data = await decodeToken(storedToken);
       setDecodedData(data);
     }
+  
     try {
       const serviceData = await getServiceTypesByStore(storeUser);
       setRows(serviceData);
     } catch (error) {
       console.error("Erro ao buscar dados:", error);
     }
+  
     setIsLoading(false);
-  };
+  }, [storedToken, storeUser, setDecodedData, setRows, setIsLoading]);
 
   useEffect(() => {
     if (!fetchDataRef.current) {
@@ -54,45 +48,7 @@ export const useFetch = (
     }
   }, [fetchData]);
 
-  const fetchEditService = async (serviceId: number) => {    
-    setIsLoading(true);
-    try {
-      const response = await getServiceTypeById(serviceId);
-
-      if (response) {
-        const data = response.data;
-        
-        setServiceType(data);
-        
-        setFormValuesService({
-          id: data.id,
-          name: data.name,
-          description: data.description,
-          value: data.value,
-          durationMinutes: data.durationMinutes.toString(),
-          active: data.active === true ? "true" : "false",
-          storeId: data.storeId,
-        });
-        
-        let generatedTimes: SelectOption[] = generateTimes();
-        const selectedTime = generatedTimes.find(
-          (option) => option.value === data.durationMinutes
-        ) || { label: "", value: 0 };
-
-        setDurationMinutes([selectedTime]);
-        
-        setFormValuesService((prevValues) => ({
-          ...prevValues,
-          durationMinutes: String(selectedTime.value),
-        }));
-      }
-    } catch (error) {
-      console.error("Error when fetching service:", error);
-    }
-    setIsLoading(false);
-  };
-
-  const generateTimes = () => {
+  const generateTimes = useCallback(() => {
     const generatedTimes = [];
 
     for (let hour = 0; hour < 6; hour++) {
@@ -121,7 +77,46 @@ export const useFetch = (
 
     setOptions(generatedTimes);
     return generatedTimes;
-  };
+  },[setOptions]);
+
+  const fetchEditService = useCallback(async (serviceId: number) => {
+    setIsLoading(true);
+    try {
+      const response = await getServiceTypeById(serviceId);
+  
+      if (response) {
+        const data = response.data;
+        setServiceType(data);
+  
+        setFormValuesService({
+          id: data.id,
+          name: data.name,
+          description: data.description,
+          value: data.value,
+          durationMinutes: data.durationMinutes.toString(),
+          active: data.active ? "true" : "false",
+          storeId: data.storeId,
+        });
+  
+        let generatedTimes: SelectOption[] = generateTimes();
+        const selectedTime =
+          generatedTimes.find((option) => option.value === data.durationMinutes) || {
+            label: "",
+            value: 0,
+          };
+  
+        setDurationMinutes([selectedTime]);
+  
+        setFormValuesService((prevValues) => ({
+          ...prevValues,
+          durationMinutes: String(selectedTime.value),
+        }));
+      }
+    } catch (error) {
+      console.error("Error when fetching service:", error);
+    }
+    setIsLoading(false);
+  }, [generateTimes, setDurationMinutes, setFormValuesService, setServiceType, setIsLoading]); // ✅ Adiciona todas as dependências necessárias 
 
   return { fetchData, fetchEditService, generateTimes };
 };

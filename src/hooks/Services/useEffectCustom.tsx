@@ -1,6 +1,6 @@
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { DecodedToken } from "../../models/DecodedToken";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 import edit from "../../assets/edit.svg";
 import confirm from "../../assets/confirmCardStore.svg";
@@ -14,22 +14,23 @@ export const useEffectCustom = (
   const containerRef = useRef<HTMLDivElement>(null);
   const columnWidth = 250;
 
-  const updateColumnWidth = () => {
+  const updateColumnWidth = useCallback(() => {
     if (containerRef.current) {
       const totalWidth = containerRef.current.offsetWidth;
       const columnsCount = decodedData?.userRole === "Admin" ? 5 : 4;
       setColumnWidth(Math.floor(totalWidth / columnsCount));
     }
-  };
-
+  }, [decodedData, setColumnWidth]);
+  
   useEffect(() => {
     updateColumnWidth();
     window.addEventListener("resize", updateColumnWidth);
-
+  
     return () => {
       window.removeEventListener("resize", updateColumnWidth);
     };
-  }, [updateColumnWidth]);
+  }, [updateColumnWidth]); 
+  
 
   const columns: GridColDef[] = [
     {

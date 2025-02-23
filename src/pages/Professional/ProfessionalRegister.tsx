@@ -14,8 +14,7 @@ import Input from "../../components/Input/Input";
 import { capitalizeFirstLetter } from "../../services/system/globalService";
 import Loading from "../../components/Loading/loading";
 
-function ProfessionalRegister() {
-  const storedToken = localStorage.getItem("authToken");
+function ProfessionalRegister() { 
   const storeUser = Number(localStorage.getItem("storeUser"));
 
   const {
@@ -35,8 +34,7 @@ function ProfessionalRegister() {
     showEditModal,
     setColumnWidth,
     isLoading,
-    setIsLoading,
-    size,
+    setIsLoading, 
   } = useStateCustom();
 
   const { fetchData, fetchLoadEditFormValues } = useFetch(

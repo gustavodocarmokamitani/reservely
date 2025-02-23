@@ -1,5 +1,5 @@
 import { useStateCustom } from "./useStateCustom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { SelectOption } from "../../models/SelectOptions";
 import { ServiceType } from "../../models/ServiceType";
 import { Option } from "../../models/Option";
@@ -15,17 +15,12 @@ import {
   getServiceTypesByStore,
 } from "../../services/ServiceTypeServices";
 import { capitalizeFirstLetter } from "../../services/system/globalService";
-import { isDisabled } from "@testing-library/user-event/dist/utils";
 
 export const useFetch = (
   storeUser: number,
-  optionsEmployee: SelectOption[],
   setOptionsEmployee: React.Dispatch<React.SetStateAction<SelectOption[]>>,
-  optionsService: SelectOption[],
   setOptionsService: React.Dispatch<React.SetStateAction<SelectOption[]>>,
-  optionsClient: SelectOption[],
   setOptionsClient: React.Dispatch<React.SetStateAction<SelectOption[]>>,
-  optionsTime: SelectOption[],
   setOptionsTime: React.Dispatch<React.SetStateAction<SelectOption[]>>,
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
@@ -77,7 +72,7 @@ export const useFetch = (
     };
 
     fetchEmployees();
-  }, [storeUser]);
+  }, [storeUser, setIsLoading, setOptionsEmployee]);
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -159,7 +154,7 @@ export const useFetch = (
     };
 
     fetchServices();
-  }, [employee, storeUser]);
+  }, [employee, storeUser, setOptionsService]);
 
   useEffect(() => {
     const fetchClientes = async () => {
@@ -186,7 +181,7 @@ export const useFetch = (
     };
 
     fetchClientes();
-  }, []);
+  }, [setOptionsClient]);
 
   useEffect(() => {
     const fetchTime = async () => {
@@ -222,7 +217,7 @@ export const useFetch = (
     };
 
     fetchTime();
-  }, [storeUser]);
+  }, [storeUser, setOptionsTime]);
 
   return {};
 };

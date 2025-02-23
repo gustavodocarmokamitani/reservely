@@ -2,14 +2,10 @@ import React from "react";
 import { DataGrid, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import { UserEmployee } from "../../models/UserEmployee";
-import { Employee } from "../../models/Employee";
-import { User } from "../../models/User";
 import Modal from "../Modal/Modal";
 import { Col, Row } from "react-bootstrap";
 import Input from "../../components/Input/Input";
 import { capitalizeFirstLetter } from "../../services/system/globalService";
-
-interface CombinedData extends Employee, User {}
 
 interface ProfessionalRegisterDataTableProps {
   columns: GridColDef[];

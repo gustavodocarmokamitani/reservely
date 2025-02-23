@@ -2,7 +2,6 @@ import { useState } from "react";
 import {
   Service,
   Service as ServiceModel,
-  ServiceServiceType,
 } from "../../models/Service";
 import { ServiceType } from "../../models/ServiceType";
 import { DecodedToken } from "../../models/DecodedToken";

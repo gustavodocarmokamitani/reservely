@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { decodeToken } from "../../services/AuthService";
 import {
   getUserById,
@@ -48,7 +48,7 @@ export const useFetch = (
 
   const fetchDataRef = useRef(false);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     if (storedToken) {
       try {
         const data = await decodeToken(storedToken);
@@ -57,16 +57,17 @@ export const useFetch = (
         console.error("Erro ao decodificar token:", error);
       }
     }
+  
     setIsLoading(true);
-
+  
     try {
       const usersData = await getUserByUseTypeStore(2, storeUser);
       const employeesData = await getEmployeesByStoreId(storeUser);
-
+  
       const mappedRows: Rows[] = employeesData
         .map((employee: Employee) => {
           const user = usersData.find((u: any) => u.id === employee.userId);
-
+  
           if (user) {
             return {
               id: user.id,
@@ -82,13 +83,14 @@ export const useFetch = (
           return null;
         })
         .filter(Boolean) as Rows[];
-
+  
       setRows(mappedRows);
     } catch (error) {
       console.error("Erro ao buscar dados:", error);
     }
+  
     setIsLoading(false);
-  };
+  }, [storedToken, storeUser, setDecodedData, setIsLoading, setRows]);   
 
   useEffect(() => {
     if (!fetchDataRef.current) {

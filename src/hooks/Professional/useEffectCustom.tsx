@@ -11,17 +11,6 @@ import edit from "../../assets/edit.svg";
 import confirm from "../../assets/confirmCardStore.svg";
 import remove from "../../assets/removeRed.svg";
 
-interface Rows {
-  id: number;
-  name: string;
-  lastName: string;
-  phone: string;
-  email: string;
-  services: number[];
-  active: boolean;
-  storeId: number;
-}
-
 export const useEffectCustom = (
   employeeSelect: SelectOption[],
   setEmployee: (data: SelectOption | null) => void,

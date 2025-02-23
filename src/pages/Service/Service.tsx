@@ -1,6 +1,5 @@
 import { ContainerPage } from "../Styles/_Page.styles";
-import { Col, Row } from "react-bootstrap";
-import { useSnackbar } from "notistack";
+import { Col, Row } from "react-bootstrap"; 
 import HeaderTitle from "../../view/HeaderTitle/HeaderTitle";
 import Button from "../../components/Button/Button";
 import ServiceDataTable from "../../view/DataTable/ServiceDataTable";
@@ -13,12 +12,6 @@ import Input from "../../components/Input/Input";
 import Select from "../../components/Select/Select";
 import { useEffectCustom } from "../../hooks/Services/useEffectCustom";
 import Loading from "../../components/Loading/loading";
-
-interface DecodedToken {
-  userId: string;
-  userEmail: string;
-  userRole: string;
-}
 
 function Service() {
   const {
@@ -94,11 +87,7 @@ function Service() {
     decodedData,
     setColumnWidth,
     handleShowEditServiceModal
-  );
-
-  const storedToken = localStorage.getItem("authToken");
-
-  const { enqueueSnackbar } = useSnackbar();
+  ); 
 
   return (
     <>
