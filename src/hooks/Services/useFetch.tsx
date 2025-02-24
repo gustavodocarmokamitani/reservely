@@ -16,7 +16,6 @@ export const useFetch = (
   setRows: React.Dispatch<React.SetStateAction<ServiceType[]>>,
   setServiceType: React.Dispatch<React.SetStateAction<Service | null>>,
   setFormValuesService: React.Dispatch<React.SetStateAction<Service>>,
-  durationMinutes: SelectOption[],
   setDurationMinutes: React.Dispatch<React.SetStateAction<SelectOption[]>>,
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) => {

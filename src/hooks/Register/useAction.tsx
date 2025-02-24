@@ -1,8 +1,6 @@
 import { useSnackbar } from "notistack";
 import { checkEmail, registerUser } from "../../services/AuthService";
-
-import { createStore, deleteStore } from "../../services/StoreServices";
-import { deleteUser } from "../../services/UserServices";
+import { createStore } from "../../services/StoreServices";
 
 export const useAction = (
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,

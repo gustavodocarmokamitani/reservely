@@ -13,22 +13,15 @@ import { Col, Row } from "react-bootstrap";
 import Select from "../../components/Select/Select";
 
 interface ServiceDataTableProps {
-  service?: boolean;
   rows?: ServiceType[];
   handleRowSelect: (id: number[]) => void;
-  fetchData: () => void;
   options: SelectOption[];
-  setOptions: React.Dispatch<React.SetStateAction<SelectOption[]>>;
   durationMinutes: SelectOption[];
   setDurationMinutes: React.Dispatch<React.SetStateAction<SelectOption[]>>;
-  handleShowEditServiceModal: (status: boolean, serviceId: number) => void;
-  serviceType: Service | null;
-  setServiceType: React.Dispatch<React.SetStateAction<Service | null>>;
   handleSubmitEditService: () => void;
   showEditModal: boolean;
   handleClose: () => void;
   formValuesService: Service;
-  setFormValuesService: React.Dispatch<React.SetStateAction<Service>>;
   handleInputChangeService: (
     event: React.ChangeEvent<HTMLInputElement>
   ) => void;
@@ -38,21 +31,14 @@ interface ServiceDataTableProps {
 
 const ServiceDataTable: React.FC<ServiceDataTableProps> = ({
   rows,
-  service,
   handleRowSelect,
-  fetchData,
   options,
-  setOptions,
   durationMinutes,
   setDurationMinutes,
-  handleShowEditServiceModal,
-  serviceType,
-  setServiceType,
   handleSubmitEditService,
   showEditModal,
   handleClose,
   formValuesService,
-  setFormValuesService,
   handleInputChangeService,
   containerRef,
   columns,

@@ -44,9 +44,7 @@ function AppointmentHistory() {
     fetchAppointmentHistoryStatus,
   } = useFetch(
     storeUser,
-    selectableBoxServices,
     setSelectableBoxServices,
-    options,
     setOptions,
     setRows,
     setDecodedData,

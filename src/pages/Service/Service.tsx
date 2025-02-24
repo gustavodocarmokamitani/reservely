@@ -31,7 +31,6 @@ function Service() {
     setDecodedData,
     durationMinutes,
     setDurationMinutes,
-    serviceType,
     setServiceType,
     setSelectedEmployeeId,
     setColumnWidth,
@@ -48,7 +47,6 @@ function Service() {
     setRows,
     setServiceType,
     setFormValuesService,
-    durationMinutes,
     setDurationMinutes,
     setIsLoading
   );
@@ -123,26 +121,19 @@ function Service() {
           </Col>
         </Row>
         <ServiceDataTable
-          service
-          fetchData={fetchData}
           {...{
             rows,
             options,
-            setOptions,
             durationMinutes,
             setDurationMinutes,
-            handleShowEditServiceModal,
-            serviceType,
-            setServiceType,
             handleSubmitEditService,
             showEditModal,
             handleClose,
             formValuesService,
-            setFormValuesService,
             handleInputChangeService,
             columns,
             containerRef,
-            handleRowSelect,
+            handleRowSelect,            
           }}
         />
         {showAddModal && (
