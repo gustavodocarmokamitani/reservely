@@ -78,10 +78,7 @@ export const useAction = (
 
       if (responseStore && response) {
         window.location.href = "/confirm-email";
-      } else {
-        await deleteStore(responseStore.id);
-        await deleteUser(response.id);
-      }
+      } 
     } catch (error) {
       enqueueSnackbar("Ocorreu um erro. Por favor, tente novamente.", {
         variant: "error",
