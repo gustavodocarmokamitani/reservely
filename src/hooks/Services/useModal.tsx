@@ -27,7 +27,7 @@ export const useModal = (
   const handleShowEditServiceModal = (status: boolean, serviceId: number) => {
     fetchEditService(serviceId);
     setSelectedEmployeeId(serviceId);
-    setShowEditModal(true);
+    setShowEditModal(status);
   };
   return {
     handleClose,

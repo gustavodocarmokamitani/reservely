@@ -209,7 +209,7 @@ function StoreConfigure() {
               <h3 style={{ margin: "50px 0 25px 0" }}>Dias de fechamento</h3>
               <S.CardStoreWrapper className="d-flex justify-content-start align-items-center flex-wrap">
                 {closingDates && closingDates.length > 0 ? (
-                  closingDates.map((item: Date, index: number) => (
+                  closingDates.map((item: Date) => (
                     <Card
                       type="closingDate"
                       key={item.toISOString()}

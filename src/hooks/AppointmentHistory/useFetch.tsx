@@ -16,9 +16,7 @@ import { DecodedToken } from "../../models/DecodedToken";
 
 export const useFetch = (
   storeUser: number,
-  selectableBoxServices: Service[],
   setSelectableBoxServices: React.Dispatch<React.SetStateAction<Service[]>>,
-  options: SelectOption[],
   setOptions: React.Dispatch<React.SetStateAction<SelectOption[]>>,
   setRows: React.Dispatch<React.SetStateAction<Appointment[]>>,
   setDecodedData: React.Dispatch<React.SetStateAction<DecodedToken | null>>,

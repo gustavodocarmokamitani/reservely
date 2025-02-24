@@ -1,8 +1,6 @@
 import { useSnackbar } from "notistack";
 import { checkEmail, registerUser } from "../../services/AuthService";
-
-import { createStore, deleteStore } from "../../services/StoreServices";
-import { deleteUser } from "../../services/UserServices";
+import { createStore } from "../../services/StoreServices";
 
 export const useAction = (
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
@@ -45,13 +43,13 @@ export const useAction = (
       return;
     }    
 
-    const emailExists = await checkEmail(formData.email);
-    if (emailExists) {
-      enqueueSnackbar("Este e-mail já está cadastrado.", {
-        variant: "default",
-      });      
-      return;
-    }
+    // const emailExists = await checkEmail(formData.email);
+    // if (emailExists) {
+    //   enqueueSnackbar("Este e-mail já está cadastrado.", {
+    //     variant: "default",
+    //   });      
+    //   return;
+    // }
 
     try {
       const responseStore = await createStore({
@@ -78,10 +76,7 @@ export const useAction = (
 
       if (responseStore && response) {
         window.location.href = "/confirm-email";
-      } else {
-        await deleteStore(responseStore.id);
-        await deleteUser(response.id);
-      }
+      } 
     } catch (error) {
       enqueueSnackbar("Ocorreu um erro. Por favor, tente novamente.", {
         variant: "error",

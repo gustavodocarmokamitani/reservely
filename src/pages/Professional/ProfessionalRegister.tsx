@@ -39,7 +39,6 @@ function ProfessionalRegister() {
 
   const { fetchData, fetchLoadEditFormValues } = useFetch(
     storeUser,
-    combinedData,
     setCombinedData,
     setFormValuesProfessionalRegister,
     setRows,

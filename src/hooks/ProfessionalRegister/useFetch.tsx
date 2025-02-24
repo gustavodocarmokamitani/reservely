@@ -23,7 +23,6 @@ interface CombinedData extends Employee, User {}
 
 export const useFetch = (
   storeUser: number,
-  combinedData: CombinedData | null,
   setCombinedData: React.Dispatch<React.SetStateAction<CombinedData | null>>,
   setFormValuesProfessionalRegister: React.Dispatch<
     React.SetStateAction<UserEmployee>
