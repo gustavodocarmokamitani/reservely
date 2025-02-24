@@ -43,13 +43,13 @@ export const useAction = (
       return;
     }    
 
-    const emailExists = await checkEmail(formData.email);
-    if (emailExists) {
-      enqueueSnackbar("Este e-mail já está cadastrado.", {
-        variant: "default",
-      });      
-      return;
-    }
+    // const emailExists = await checkEmail(formData.email);
+    // if (emailExists) {
+    //   enqueueSnackbar("Este e-mail já está cadastrado.", {
+    //     variant: "default",
+    //   });      
+    //   return;
+    // }
 
     try {
       const responseStore = await createStore({
