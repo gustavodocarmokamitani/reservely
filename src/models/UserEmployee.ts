@@ -1,4 +1,3 @@
-// src/models/Profissional.ts
 export interface UserEmployee {
   id: number;
   userId: number;
@@ -10,6 +9,7 @@ export interface UserEmployee {
   serviceIds: number[];
   password: string;
   userTypeId: number;
+  storeId: number;
 }
 
 export interface UserEmployeeUpdate {
@@ -24,4 +24,5 @@ export interface UserEmployeeUpdate {
   active: string;
   serviceIds: number[];
   password: string;
+  storeId: number;
 }

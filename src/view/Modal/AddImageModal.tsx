@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
-import Button from "../../components/Button";
+import Button from "../../components/Button/Button";
 import * as S from "./Modal.styles";
 import closeIcon from "../../assets/remove.svg";
-import ImageUpload from "../../components/ImageUpload";
+import ImageUpload from "../../components/ImageUpload/ImageUpload";
 
 interface AddImageModalProps {
   title: string;

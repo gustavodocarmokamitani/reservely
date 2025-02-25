@@ -1,9 +1,5 @@
-import React, { createContext, useState, ReactNode } from "react";
-import { UserEmployeeUpdate } from "../models/UserEmployee";
-import { ServiceType } from "../models/ServiceType";
-import { Appointment } from "../models/Appointment";
+import React, { createContext, useState, ReactNode, useEffect } from "react";
 
-// Definindo as interfaces para as entidades
 export interface User {
   id: number;
   name: string;
@@ -12,6 +8,7 @@ export interface User {
   phone: string;
   password: string;
   userTypeId: number;
+  storeId: number;
 }
 
 export interface Employee {
@@ -32,65 +29,78 @@ export interface UserEmployee {
   serviceIds: number[];
   password: string;
   userTypeId: number;
+  storeId: number;
 }
 
-// Definindo o tipo do contexto, incluindo todos os dados
+export interface UserRole {
+  userId: string;
+  userEmail: string;
+  userRole: string;
+}
+
 interface AppContextType {
   userContext: User | null;
   setUserContext: React.Dispatch<React.SetStateAction<User | null>>;
   employeeContext: Employee | null;
   setEmployeeContext: React.Dispatch<React.SetStateAction<Employee | null>>;
   userEmployeeContext: UserEmployee | null;
-  setUserEmployeeContext: React.Dispatch<React.SetStateAction<UserEmployee | null>>;
-  userEmployeeUpdateContext: UserEmployeeUpdate | null;
-  setUserEmployeeUpdateContext: React.Dispatch<React.SetStateAction<UserEmployeeUpdate | null>>;
-  serviceContext: ServiceType | null;
-  setServiceContext: React.Dispatch<React.SetStateAction<ServiceType | null>>;
-  serviceUpdateContext: ServiceType | null;
-  setServiceUpdateContext: React.Dispatch<React.SetStateAction<ServiceType | null>>;
-  appointmentUpdateContext: Appointment | null;
-  setAppointmentUpdateContext: React.Dispatch<React.SetStateAction<Appointment | null>>;
-  ServiceTypeContext: ServiceType | null;
-  setServiceTypeContext: React.Dispatch<React.SetStateAction<ServiceType | null>>;
+  setUserEmployeeContext: React.Dispatch<
+    React.SetStateAction<UserEmployee | null>
+  >;
+  authToken: string | null;
+  setAuthToken: React.Dispatch<React.SetStateAction<string | null>>;
+  login: (token: string) => void;
+  logout: () => void;
 }
 
-// Criando o contexto
 export const AppContext = createContext<AppContextType | undefined>(undefined);
 
 interface AppProviderProps {
   children: ReactNode;
 }
 
-// Criando o provider que envolvem os componentes que precisam acessar o contexto
 export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [userContext, setUserContext] = useState<User | null>(null);
   const [employeeContext, setEmployeeContext] = useState<Employee | null>(null);
-  const [userEmployeeContext, setUserEmployeeContext] = useState<UserEmployee | null>(null);
-  const [userEmployeeUpdateContext, setUserEmployeeUpdateContext] = useState<UserEmployeeUpdate | null>(null);
-  const [serviceContext, setServiceContext] = useState<ServiceType | null>(null);
-  const [serviceUpdateContext, setServiceUpdateContext] = useState<ServiceType | null>(null);
-  const [appointmentUpdateContext, setAppointmentUpdateContext] = useState<Appointment | null>(null);
-  const [ServiceTypeContext, setServiceTypeContext] = useState<ServiceType | null>(null);
+  const [userEmployeeContext, setUserEmployeeContext] =
+    useState<UserEmployee | null>(null);
+
+  const [authToken, setAuthToken] = useState<string | null>(
+    localStorage.getItem("authToken")
+  );
+
+  const login = (token: string) => {
+    setAuthToken(token);
+    localStorage.setItem("authToken", token);
+  };
+
+  const logout = () => {
+    setAuthToken(null);
+    localStorage.removeItem("authToken");
+  };
+
+  useEffect(() => {
+    const tokenFromStorage = localStorage.getItem("authToken");
+    if (tokenFromStorage) {
+      setAuthToken(tokenFromStorage);
+    }
+  }, []);
 
   return (
-    <AppContext.Provider value={{ 
-      userContext, 
-      setUserContext,
-       employeeContext,
-       setEmployeeContext,
-       userEmployeeContext,
-       setUserEmployeeContext,
-       userEmployeeUpdateContext,
-       setUserEmployeeUpdateContext,
-       serviceContext,
-       setServiceContext,
-       serviceUpdateContext,
-       setServiceUpdateContext,
-       appointmentUpdateContext,
-       setAppointmentUpdateContext,
-       ServiceTypeContext,
-       setServiceTypeContext
-       }}>
+    <AppContext.Provider
+      value={{
+        userContext,
+        setUserContext,
+        employeeContext,
+        setEmployeeContext,
+        userEmployeeContext,
+        setUserEmployeeContext,
+        authToken,
+        setAuthToken,
+        login,
+        logout,
+      }}
+    >
       {children}
     </AppContext.Provider>
   );

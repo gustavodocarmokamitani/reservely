@@ -1,51 +1,85 @@
+import React, { useContext } from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
+
+import { AppContext } from "./context/AppContext";
+
 import "./App.css";
-import Navigation from "./view/Sidebar";
-import Dashboard from "./pages/Dashboard";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Service from "./pages/Service";
-import Professional from "./pages/Professional";
-import Image from "./pages/Image";
-import Store from "./pages/Store";
-import Payment from "./pages/Payment";
-import Chamada from "./pages/Chamada";
-import { Appointment } from "./pages/Appointment";
-import AppointmentHistory from "./pages/AppointmentHistory";
-import StoreConfigurar from "./pages/StoreConfigure";
-import Login from "./pages/Login";
-import Home from "./pages/Home";
-import Register from "./pages/Register";
+
+import Navigation from "./view/Sidebar/Sidebar";
+
+import Home from "./pages/Home/Home";
+import Login from "./pages/Login/Login";
+import Register from "./pages/Register/Register";
+import RegisterConfirmEmail from "./pages/Register/RegisterConfirmEmail";
+import RegisterReSendEmail from "./pages/Register/RegisterReSendEmail";
+import RegisterHelp from "./pages/Register/RegisterHelp";
+
+import Dashboard from "./pages/Dashboard/Dashboard";
+import Service from "./pages/Service/Service";
+import Professional from "./pages/Professional/Professional";
+import ProfessionalRegister from "./pages/Professional/ProfessionalRegister";
+import Image from "./pages/Image/Image";
+import Store from "./pages/Store/Store";
+import StoreConfigurar from "./pages/Store/StoreConfigure";
+import Payment from "./pages/Payment/Payment";
+import CallHelp from "./pages/CallHelp/CallHelp";
+import { Appointment } from "./pages/Appointment/Appointment";
+import AppointmentHistory from "./pages/Appointment/AppointmentHistory";
+import Calendar from "./pages/Calendar/Calendar";
 
 function App() {
-  const isAuthenticated = true;
+  const context = useContext(AppContext);
+  const authToken = context?.authToken;
+  const isAuthenticated = authToken !== null;
+
+  const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
+    return isAuthenticated ? children : <Navigate to="/login" />;
+  };
 
   return (
     <div className="App" style={{ display: "flex" }}>
       <Router>
         <Routes>
-          {/* Tela de Login, isolada */}
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/confirm-email" element={<RegisterConfirmEmail />} />
+          <Route path="/resend-email" element={<RegisterReSendEmail />} />
+          <Route path="/help-login" element={<RegisterHelp />} />
 
-          {/* Rotas protegidas para usuários autenticados */}
-          {isAuthenticated && (
-            <Route
-              path="/*"
-              element={
-                <>
-                  <Navigation />
-                  <div style={{ flex: 1, marginLeft: "18.75rem" }}>
+          <Route
+            path="/*"
+            element={
+              <ProtectedRoute>
+                <React.Fragment>
+                  <div
+                    style={{
+                      display: "flex",
+                      width: "20rem",
+                      position: "relative",
+                    }}
+                  >
+                    <Navigation />
+                  </div>
+                  <div style={{ flexGrow: 1, overflowX: "hidden" }}>
                     <Routes>
                       <Route path="/appointment" element={<Appointment />} />
                       <Route
                         path="/appointment-history"
                         element={<AppointmentHistory />}
                       />
-                      <Route
-                        path="/dashboard"
-                        element={<h1 style={{ padding: "40px" }}>Dashboard</h1>}
-                      />
+                      <Route path="/dashboard" element={<Dashboard />} />
+                      <Route path="/calendar" element={<Calendar />} />
                       <Route path="/service" element={<Service />} />
+                      <Route
+                        path="/professional-register"
+                        element={<ProfessionalRegister />}
+                      />
                       <Route path="/professional" element={<Professional />} />
                       <Route path="/image" element={<Image />} />
                       <Route path="/store" element={<Store />} />
@@ -54,13 +88,13 @@ function App() {
                         element={<StoreConfigurar />}
                       />
                       <Route path="/payment" element={<Payment />} />
-                      <Route path="/chamada" element={<Chamada />} />
+                      <Route path="/callhelp" element={<CallHelp />} />
                     </Routes>
                   </div>
-                </>
-              }
-            />
-          )}
+                </React.Fragment>
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </Router>
     </div>

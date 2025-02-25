@@ -23,9 +23,9 @@ export const getEmployeeById = async (id: number) => {
     }
 };
 
-export const getEmployeeIdByUserId = async (id: number) => {
+export const getCorrigirIdByUserId = async (id: number) => {
     try {
-        const response = await api.get(`employee/user/${id}`);
+        const response = await api.get(`employee/employee/${id}`);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -37,7 +37,45 @@ export const getEmployeeIdByUserId = async (id: number) => {
     }
 };
 
-export const createEmployee = async (employeeData: Employee) => {
+export const getEmployeeIdByUserId = async (id: number) => {
+    try {
+        const response = await api.get(`employee/employerData/${id}`);
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            console.error("Request error:", error.response?.data || error.message);
+        } else {
+            console.error("Unknown error:", error);
+        }
+        return [];
+    }
+};
+
+export const getEmployeesByStoreId = async (storeId: number) => {
+    try {
+        const response = await api.get(`employee/store/${storeId}`);
+       
+        if (response.status === 404 || !response.data || response.data.length === 0) {
+            return [];
+        }
+        return response.data;
+        
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+           
+            console.error("Erro ao buscar funcionários:", error.message);
+            if ((error as any).response?.status === 404) {
+                return [];
+            }
+        } else {
+           
+            console.error("Erro inesperado:", error);
+        }
+        throw error;
+    }
+};
+
+export const createEmployee = async (employeeData: Employee[]) => {
     try {
         const response = await api.post('employee', employeeData);
         return response.data;
@@ -60,7 +98,7 @@ export const createEmployeeUser = async (employeeUserData: UserEmployee) => {
 export const updateEmployee = async (id: number, employeeData: Employee) => {
     try {
         const response = await api.put(`employee/${id}`, employeeData);
-        return response.data;
+        return response;
     } catch (error) {
         console.error("Error updating employee:", error);
         throw error;

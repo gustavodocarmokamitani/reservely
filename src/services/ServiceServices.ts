@@ -12,6 +12,16 @@ export const getServices = async () => {
     }
 };
 
+export const getServiceByStoreId = async (id: number) => {
+    try {
+        const response = await api.get(`store/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error getting service by ID:", error);
+        throw error;
+    }
+};
+
 export const getServiceById = async (id: number) => {
     try {
         const response = await api.get(`service/${id}`);
