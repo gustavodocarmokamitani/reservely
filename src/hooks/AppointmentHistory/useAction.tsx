@@ -25,14 +25,9 @@ export const useAction = (
     try {
       const response = await getAppointmentById(selectedAppointmentHistoryId);
       const mappedAppointment: Appointment = {
+        ...response, 
         id: selectedAppointmentHistoryId,
-        clientId: response.clientId,
-        employeeId: response.employeeId,
-        appointmentDate: response.appointmentDate,
-        appointmentTime: response.appointmentTime,
-        appointmentStatusId:
-          statusAppointment[statusAppointment.length - 1].value,
-        serviceIds: response.serviceIds,
+        appointmentStatusId: statusAppointment[statusAppointment.length - 1].value,
         storeId: Number(storeUser),
       };      
 

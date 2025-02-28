@@ -7,7 +7,11 @@ import {
 } from "../../services/AppointmentServices";
 
 export const useSubmit = (
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
+  setEmployee: React.Dispatch<React.SetStateAction<SelectOption[]>>,
+  setClient: React.Dispatch<React.SetStateAction<SelectOption[]>>,
+  setService: React.Dispatch<React.SetStateAction<SelectOption[]>>,
+  setAppointmentTime: React.Dispatch<React.SetStateAction<SelectOption[]>>
 ) => {
   const { enqueueSnackbar } = useSnackbar();
 
@@ -75,7 +79,8 @@ export const useSubmit = (
         employeeId: funcionarioId.id,
         appointmentDate: selectedDate,
         appointmentTime: selectedTime.label.toString(),
-        appointmentStatusId: 1,
+        appointmentStatusId: 1,        
+        googleEventId: "",
         serviceIds: selectedService.map((item) => item.value),
         storeId: storeUser,
       };
@@ -90,6 +95,10 @@ export const useSubmit = (
       console.error("Erro ao criar agendamento", error);
       enqueueSnackbar("Erro ao criar agendamento!", { variant: "error" });
     }
+    setEmployee([]);
+    setClient([]);
+    setService([]);
+    setAppointmentTime([]);
     setIsLoading(false);
   };
 };

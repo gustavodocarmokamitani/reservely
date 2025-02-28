@@ -1,27 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCalendarApp, ScheduleXCalendar } from "@schedule-x/react";
 import {
   createViewDay,
   createViewWeek,
   createViewMonthGrid,
   createViewMonthAgenda,
+  CalendarEvent,
 } from "@schedule-x/calendar";
 import { createEventsServicePlugin } from "@schedule-x/events-service";
+import { createCalendarControlsPlugin } from "@schedule-x/calendar-controls";
 import "@schedule-x/theme-default/dist/index.css";
 import "./ScheduleX.styles.css";
-import "@schedule-x/theme-shadcn/dist/index.css"; 
+import "@schedule-x/theme-shadcn/dist/index.css";
 
 interface ScheduleXProps {
-  events: {
-    id: string;
-    title: string;
-    start: string;
-    end: string;
-  }[];
+  events: CalendarEvent[];
 }
 
 export function ScheduleX({ events }: ScheduleXProps) {
-  const eventsService = useState(() => createEventsServicePlugin())[0]; 
+  const eventsService = useState(() => createEventsServicePlugin())[0];
+  const [calendarControls] = useState(() => createCalendarControlsPlugin());
 
   const calendar = useCalendarApp({
     views: [
@@ -31,11 +29,24 @@ export function ScheduleX({ events }: ScheduleXProps) {
       createViewMonthAgenda(),
     ],
     events: events,
-    plugins: [eventsService],
+    plugins: [eventsService, calendarControls],
     locale: "pt-BR",
     defaultView: "monthGrid",
     theme: 'shadcn',
-  }); 
+    callbacks: {
+      onEventClick: (event) => {
+        console.log("Evento clicado:", event);
+        console.log("Mudando para a visualização de dia...");
+
+        calendarControls.setDate(event.start.split(' ')[0]);
+        calendarControls.setView("day");
+      },
+    },
+  });
+
+  useEffect(() => {
+    console.log("CalendarApp inicializado:", calendar);
+  }, [calendar]);
 
   return (
     <div style={{ width: "100%", height: "100%" }}>

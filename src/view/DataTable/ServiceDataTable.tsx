@@ -11,6 +11,7 @@ import Modal from "../Modal/Modal";
 import Input from "../../components/Input/Input";
 import { Col, Row } from "react-bootstrap";
 import Select from "../../components/Select/Select";
+import { formatToBRL } from "../../services/system/globalService";
 
 interface ServiceDataTableProps {
   rows?: ServiceType[];
@@ -106,7 +107,7 @@ const ServiceDataTable: React.FC<ServiceDataTableProps> = ({
                 type="text"
                 placeholder="Valor"
                 name="value"
-                value={formValuesService.value}
+              value={formValuesService.value ? formatToBRL(formValuesService.value) : formatToBRL("0")}
                 onChange={(e) =>
                   handleInputChangeService(
                     e as React.ChangeEvent<HTMLInputElement>

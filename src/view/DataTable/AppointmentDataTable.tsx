@@ -37,7 +37,7 @@ const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
   setStatusAppointment,
   handleSubmitAppointmentHistoryStatus,
   options,
-}) => {
+}) => {    
   return (
     <div ref={containerRef} style={{ marginTop: "3rem" }}>
       <Paper
@@ -50,13 +50,13 @@ const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
       >
         <DataGrid
           rows={rows}
-          columns={columns}          
+          columns={columns}
           initialState={{
             pagination: { paginationModel: { pageSize: 13 } },
             sorting: {
               sortModel: [
-                { field: "appointmentDate", sort: "desc" }, 
-                { field: "appointmentStatus", sort: "asc" }, 
+                { field: "appointmentStatus", sort: "asc" },
+                { field: "appointmentDate", sort: "desc" },
               ],
             },
           }}
@@ -98,8 +98,8 @@ const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
 
       {showModalAppointmentHistoryStatus && (
         <Modal
-          title="Serviços do apontamento"
-          subTitle="Todos os serviços que contém esse apontamento."
+          title="Alterar Status do Apontamento"
+          subTitle="Gerencie o status associados a este apontamento."
           handleSubmit={handleSubmitAppointmentHistoryStatus}
           size="small"
           {...{ handleClose }}
@@ -114,6 +114,16 @@ const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
               />
             </Col>
           </Row>
+          {Array.isArray(statusAppointment) &&
+            statusAppointment.length > 0 &&
+            statusAppointment[0].value === 3 && (
+              <div
+                style={{ fontSize: "12px", textAlign: "center", color: "red" }}
+              >
+                Após o cancelamento, este apontamento não poderá mais ser
+                editado.
+              </div>
+            )}
         </Modal>
       )}
     </div>

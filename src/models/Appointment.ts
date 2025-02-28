@@ -5,6 +5,7 @@ export interface Appointment {
     appointmentDate: Date;
     appointmentTime: string;
     appointmentStatusId: number;
+    googleEventId: string;
     serviceIds: number[];
     storeId: number;
   }

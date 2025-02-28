@@ -45,7 +45,7 @@ export const useAction = (
           id: formValuesService.id,
           name: formValuesService.name,
           description: formValuesService.description,
-          value: parseFloat(formValuesService.value as string),
+          value: parseFloat(formValuesService.value as string) / 100,
           active: formValuesService.active === "true",
           durationMinutes: durationMinutes[0].value,
           services: [
@@ -92,7 +92,7 @@ export const useAction = (
           id: formValuesService.id,
           name: formValuesService.name,
           description: formValuesService.description,
-          value: parseFloat(formValuesService.value as string),
+          value: parseFloat(formValuesService.value as string) / 100,
           active: formValuesService.active === "true",
           durationMinutes: durationMinutes[0].value,
           services: responseServiceTypeData.services
@@ -126,14 +126,24 @@ export const useAction = (
     handleClose();
   };
 
-  const handleInputChangeService = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleInputChangeService = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, type, checked, value } = event.target;
-    setFormValuesService((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? (checked ? "true" : "false") : value,
-    }));
+
+    if (name === 'value') {
+      // Remove caracteres não numéricos
+      const cleanedValue = value.replace(/\D/g, '');
+
+      // Atualiza o estado com o valor normal
+      setFormValuesService((prev) => ({
+        ...prev,
+        [name]: cleanedValue, // Armazena o valor normal
+      }));
+    } else {
+      setFormValuesService((prev) => ({
+        ...prev,
+        [name]: type === "checkbox" ? (checked ? "true" : "false") : value,
+      }));
+    }
   };
 
   const validateFormValues = (formValues: Service): boolean => {

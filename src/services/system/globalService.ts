@@ -20,3 +20,11 @@ export const formatCurrencyBRL = (valor: number): string => {
     minimumFractionDigits: 2,
   }).format(valor);
 };
+
+export const formatToBRL = (value: string) => {
+  const numberValue = parseFloat(value) / 100;
+  return numberValue.toLocaleString('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  });
+};

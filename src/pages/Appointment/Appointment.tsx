@@ -57,7 +57,7 @@ export function Appointment() {
     );
   };
 
-  const submit = useSubmit(setIsLoading);
+  const submit = useSubmit(setIsLoading, setEmployee,setClient, setService, setAppointmentTime);
 
   return (
     <>

@@ -23,7 +23,7 @@ export const useEffectCustom = (
     window.addEventListener("resize", updateColumnWidth);
     return () => window.removeEventListener("resize", updateColumnWidth);
   }, []);
-  
+
   const columns: GridColDef[] = [
     {
       field: "clientId",
@@ -80,19 +80,25 @@ export const useEffectCustom = (
           <img
             style={{ cursor: "pointer" }}
             src={info}
+            width={22}
             onClick={() =>
               handleShowAppointmentInfoModal(true, params.row.serviceIds)
             }
             alt="Informações"
           />
-          <img
-            style={{ cursor: "pointer" }}
-            src={edit}
-            onClick={
-              () => handleShowAppointmentStatusModal(true, params.row.id) 
-            }
-            alt="Alterar status"
-          />
+          {params.row.appointmentStatusId !== 3 ? (
+            <img
+              style={{ cursor: "pointer" }}
+              src={edit}
+              width={22}
+              onClick={() =>
+                handleShowAppointmentStatusModal(true, params.row.id)
+              }
+              alt="Alterar status"
+            />
+          ) : (
+           null
+          )}
         </div>
       ),
       width: columnWidth,

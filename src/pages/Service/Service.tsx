@@ -12,6 +12,7 @@ import Input from "../../components/Input/Input";
 import Select from "../../components/Select/Select";
 import { useEffectCustom } from "../../hooks/Services/useEffectCustom";
 import Loading from "../../components/Loading/loading";
+import { formatToBRL } from "../../services/system/globalService";
 
 function Service() {
   const {
@@ -86,6 +87,7 @@ function Service() {
     setColumnWidth,
     handleShowEditServiceModal
   ); 
+console.log(formValuesService.value);
 
   return (
     <>
@@ -173,7 +175,7 @@ function Service() {
                   type="text"
                   placeholder="Valor"
                   name="value"
-                  value={formValuesService.value}
+                  value={formValuesService.value ? formatToBRL(formValuesService.value) : formatToBRL("0")}
                   onChange={(e) =>
                     handleInputChangeService(
                       e as React.ChangeEvent<HTMLInputElement>
