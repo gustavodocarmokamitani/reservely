@@ -12,6 +12,7 @@ import * as S from "./Appointment.styles";
 import Loading from "../../components/Loading/loading";
 
 export function Appointment() {
+  const storeCode = "";
   const storeUser = Number(localStorage.getItem("storeUser"));
 
   const {
@@ -38,6 +39,7 @@ export function Appointment() {
   } = useStateCustom();
 
   useFetch(
+    storeCode,
     storeUser,
     setOptionsEmployee,
     setOptionsService,
@@ -57,7 +59,13 @@ export function Appointment() {
     );
   };
 
-  const submit = useSubmit(setIsLoading, setEmployee,setClient, setService, setAppointmentTime);
+  const submit = useSubmit(
+    setIsLoading,
+    setEmployee,
+    setClient,
+    setService,
+    setAppointmentTime
+  );
 
   return (
     <>
@@ -132,7 +140,7 @@ export function Appointment() {
         </S.AppointmentContainer>
         <S.AppointmentContainer className="justify-content-center justify-content-xl-start pb-5">
           <S.AppointmentContent>
-            <SelectDataPicker setDate={setAppointmentDate} type="appointment"/>
+            <SelectDataPicker setDate={setAppointmentDate} type="appointment" />
           </S.AppointmentContent>
         </S.AppointmentContainer>
       </ContainerPage>

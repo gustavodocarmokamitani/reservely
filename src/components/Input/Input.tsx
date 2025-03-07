@@ -57,7 +57,7 @@ const Input: React.FC<InputProps> = ({
   const renderPasswordField = (inputType: string) => {
     if (inputType === "password") {
       return (
-        <S.InputWrapper width={width}>
+        <S.InputWrapper width={"450"}>
           <S.Input
             placeholder={placeholder}
             width={width}

@@ -5,7 +5,10 @@ import { ServiceType } from "../../models/ServiceType";
 import { Option } from "../../models/Option";
 import { Employee as EmployeeModel } from "../../models/Employee";
 import { getUserById, getUserTypeIdById } from "../../services/UserServices";
-import { getStoreById } from "../../services/StoreServices";
+import {
+  getStoreById,
+  getStoreByStoreCode,
+} from "../../services/StoreServices";
 import {
   getEmployeeIdByUserId,
   getEmployees,
@@ -17,6 +20,7 @@ import {
 import { capitalizeFirstLetter } from "../../services/system/globalService";
 
 export const useFetch = (
+  storeCode: string,
   storeUser: number,
   setOptionsEmployee: React.Dispatch<React.SetStateAction<SelectOption[]>>,
   setOptionsService: React.Dispatch<React.SetStateAction<SelectOption[]>>,
@@ -30,6 +34,11 @@ export const useFetch = (
     setIsLoading(true);
     const fetchEmployees = async () => {
       try {
+        const responseStoreCode = await getStoreByStoreCode(storeCode);
+        if (responseStoreCode !== false) {
+          storeUser = responseStoreCode.id;
+        }
+
         const responseEmployee = await getEmployees();
 
         const filteredEmployees = responseEmployee.filter(
@@ -133,7 +142,11 @@ export const useFetch = (
                 label: item.name,
               }));
 
-              formattedOptions.unshift({ value: 0, label: "Selecione...", isDisabled: true });
+              formattedOptions.unshift({
+                value: 0,
+                label: "Selecione...",
+                isDisabled: true,
+              });
               setOptionsService(formattedOptions);
             }
           } else {
@@ -207,7 +220,7 @@ export const useFetch = (
         setOptionsTime([
           { value: 0, label: "Selecione..." },
           ...generatedTimes.map((time, index) => ({
-            value: index + 1, 
+            value: index + 1,
             label: time,
           })),
         ]);

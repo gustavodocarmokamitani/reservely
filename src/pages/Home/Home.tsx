@@ -10,11 +10,13 @@ import { TypingText } from "../Styles/animationTyping.styles";
 const Home = () => {
   const navigate = useNavigate();
 
-  const handleButtonClick = (login: boolean, register: boolean) => {
+  const handleButtonClick = (login: boolean, registerStore: boolean, registerClient: boolean) => {
     if (login) {
       navigate("/login");
-    } else if (register) {
-      navigate("/register");
+    } else if (registerStore) {
+      navigate("/register-store");
+    } else if (registerClient) {
+      navigate("/register-client");
     }
   };
 
@@ -26,15 +28,24 @@ const Home = () => {
           <TypingText numLetters={10}>reserve.ly</TypingText>
         </div>
         <ContentButton>
+          
           <Button
             $isLogin
             type="button"
-            onClick={() => handleButtonClick(true, false)}
+            onClick={() => handleButtonClick(true, false, false)}
           />
+        </ContentButton>
+        <ContentButton>
           <Button
-            $isRegister
+            $isRegisterStore
             type="button"
-            onClick={() => handleButtonClick(false, true)}
+            onClick={() => handleButtonClick(false, true, false)}
+          />
+
+          <Button
+            $isRegisterClient
+            type="button"
+            onClick={() => handleButtonClick(false, false, true)}
           />
         </ContentButton>
       </WrapperLogin>

@@ -36,6 +36,12 @@ function AppointmentHistory() {
     setSelectedAppointmentIds,
     isLoading,
     setIsLoading,
+    appointmentTime,
+    setAppointmentTime,
+    appointmentDate,
+    setAppointmentDate,
+    optionsTime,
+    setOptionsTime,
   } = useStateCustom();
 
   const {
@@ -49,7 +55,8 @@ function AppointmentHistory() {
     setRows,
     setDecodedData,
     setStatusAppointment,
-    setIsLoading
+    setIsLoading,
+    setOptionsTime
   );
 
   const {
@@ -81,7 +88,9 @@ function AppointmentHistory() {
     fetchData,
     selectedAppointmentIds,
     setSelectedAppointmentIds,
-    setIsLoading
+    setIsLoading,
+    appointmentDate,
+    appointmentTime
   );
 
   return (
@@ -128,6 +137,10 @@ function AppointmentHistory() {
             handleRowSelect,
             rows,
             options,
+            appointmentTime,
+            setAppointmentTime,
+            optionsTime,
+            setAppointmentDate,
           }}
         />
       </ContainerPage>

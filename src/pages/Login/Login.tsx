@@ -63,7 +63,7 @@ const Login = () => {
                 <Col>
                   <Button $isLogin type="submit" disabled={isLoading} />
                   <p className="mt-5 mb-4">
-                    Não tem uma conta? <a href="/register">Inscreva-se</a>
+                    Não tem uma conta? <a href="/">Inscreva-se</a>
                   </p>
                   {/* <ParagraphThin>Or login with</ParagraphThin>
                 <Button $isGoogle type="button" />

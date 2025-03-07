@@ -8,7 +8,8 @@ interface ButtonProps {
   $isConfigure?: boolean;
   $isBack?: boolean;
   $isLogin?: boolean;
-  $isRegister?: boolean;
+  $isRegisterStore?: boolean;
+  $isRegisterClient?: boolean;
   $isGoogle?: boolean;
   $isResend?: boolean;
   disabled?: boolean;
@@ -29,12 +30,15 @@ export const Button = styled.button<ButtonProps>`
     if (props.$isConfigure || props.$isResend) return "#2B2B2B";
     if (props.$isBack) return "#2c2c2c";
     if (props.$isLogin) return "#2A2A2A";
-    if (props.$isRegister) return "#fff";
+    if (props.$isRegisterStore || props.$isRegisterClient) return "#fff";
     if (props.$isGoogle) return "#fff";
     return "#FF060B";
   }};
   color: ${(props) =>
-    props.$isRemove || props.$isRegister || props.$isGoogle
+    props.$isRemove ||
+    props.$isRegisterStore ||
+    props.$isRegisterClient ||
+    props.$isGoogle
       ? "black"
       : "white"};
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
@@ -57,12 +61,20 @@ export const Button = styled.button<ButtonProps>`
     left: -150%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(
+    background: ${(props) =>
+      props.$isRegisterStore || props.$isRegisterClient
+        ? `linear-gradient(
+      45deg,
+      transparent 0%,
+      rgba(211, 211, 211, 0.4) 50%,
+      transparent 100%
+    )`
+        : `linear-gradient(
       45deg,
       transparent 0%,
       rgba(255, 255, 255, 0.4) 50%,
       transparent 100%
-    );
+    )`};
     width: 200px;
 
     transition: left 0.5s ease-in-out;

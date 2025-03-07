@@ -15,6 +15,8 @@ import professionalRegister from "../../assets/professionalRegister.svg";
 import appointmentHistory from "../../assets/apppointmentHistory.svg";
 import exit from "../../assets/exit.svg";
 import { Link, useLocation } from "react-router-dom";
+import { DecodedToken } from "../../models/DecodedToken";
+import { decodeToken } from "../../services/AuthService";
 
 const Navigation = () => {
   const location = useLocation();
@@ -24,6 +26,9 @@ const Navigation = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [indicatorTop, setIndicatorTop] = useState(0);
   const menuItemsRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  const authToken = context?.authToken;
+  const [decodedData, setDecodedData] = useState<DecodedToken | null>(null);
 
   useEffect(() => {
     const path = location.pathname;
@@ -59,6 +64,21 @@ const Navigation = () => {
     }
   }, [location, selectedIndex]);
 
+  useEffect(() => {
+    const fetchDecodedToken = async () => {
+      if (authToken) {
+        try {
+          const decoded = await decodeToken(authToken);
+          setDecodedData(decoded);
+        } catch (error) {
+          console.error("Erro ao decodificar o token:", error);
+        }
+      }
+    };
+
+    fetchDecodedToken();
+  }, [authToken]);
+
   const logout = () => {
     localStorage.removeItem("authToken");
     if (context?.setAuthToken) context.setAuthToken(null);
@@ -68,6 +88,33 @@ const Navigation = () => {
 
     navigate("/login");
   };
+
+  const menuItems = [
+    { path: "/appointment", icon: chamada, text: "Agendamento" },
+    {
+      path: "/appointment-history",
+      icon: appointmentHistory,
+      text: "Histórico Agendamento",
+    },
+    { path: "/calendar", icon: calendar, text: "Calendário" },
+    { path: "/dashboard", icon: dashboard, text: "Dashboard" },
+    { path: "/service", icon: service, text: "Serviços" },
+    {
+      path: "/professional-register",
+      icon: professionalRegister,
+      text: "Registrar Profissionais",
+    },
+    { path: "/professional", icon: professionalCheck, text: "Profissionais" },
+    { path: "/store", icon: store, text: "Loja" },
+    // { path: "/payment", icon: payment, text: "Formas de Pagamentos" },
+  ];
+
+  const menuItemsClient = [
+    { path: "/appointment-client/1", icon: chamada, text: "Tela Client" },
+  ];
+
+  const filteredMenuItems =
+    decodedData?.userRole === "Client" ? menuItemsClient : menuItems;
 
   return (
     <S.SidebarContainer
@@ -82,33 +129,10 @@ const Navigation = () => {
           <img width={85} src={logo} alt="reserve.ly" />
         </Col>
       </Row>
-      <Row>        
-      </Row>
+      <Row></Row>
       <hr />
       <div className="flex-grow-1" style={{ position: "relative" }}>
-        {[
-          { path: "/appointment", icon: chamada, text: "Agendamento" },
-          {
-            path: "/appointment-history",
-            icon: appointmentHistory,
-            text: "Histórico Agendamento",
-          },
-          { path: "/calendar", icon: calendar, text: "Calendário" },
-          { path: "/dashboard", icon: dashboard, text: "Dashboard" },
-          { path: "/service", icon: service, text: "Serviços" },
-          {
-            path: "/professional-register",
-            icon: professionalRegister,
-            text: "Registrar Profissionais",
-          },
-          {
-            path: "/professional",
-            icon: professionalCheck,
-            text: "Profissionais",
-          },
-          { path: "/store", icon: store, text: "Loja" },
-          // { path: "/payment", icon: payment, text: "Formas de Pagamentos" },
-        ].map(({ path, icon, text }, index) => (
+        {filteredMenuItems.map(({ path, icon, text }, index) => (
           <S.MenuContainer
             key={path}
             ref={(el) => (menuItemsRef.current[index] = el)}

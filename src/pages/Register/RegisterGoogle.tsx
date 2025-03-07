@@ -8,7 +8,7 @@ import { useAction } from "../../hooks/Register/useAction";
 import Loading from "../../components/Loading/loading";
 import { TypingText } from "../Styles/animationTyping.styles";
 
-const Register = () => {
+const RegisterGoogle = () => {
   const { formData, setFormData, isLoading, setIsLoading } = useStateCustom();
 
   const handleInputChange = (e: any) => {
@@ -22,7 +22,7 @@ const Register = () => {
     <>
       {isLoading && <Loading />}
       <ContainerRegister>
-        <Row style={{ justifyContent: "center", paddingTop: "180px" }}>
+        <Row style={{ justifyContent: "center", paddingTop: "280px" }}>
           <Col
             md={6}
             style={{
@@ -36,68 +36,8 @@ const Register = () => {
             </TypingText>
 
             <p style={{ textAlign: "center" }}>
-              Cadastre-se para gerenciar seus projetos.
-            </p>
-            <S.ContainerRegister>
-              <S.WrapperRegisterInput>
-                <S.ContentRegister>
-                  <Input
-                    placeholder="Firstname"
-                    name="name"
-                    type="text"
-                    width="450"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                  />
-
-                  <Input
-                    placeholder="Lastname"
-                    name="lastname"
-                    type="text"
-                    width="450"
-                    value={formData.lastname}
-                    onChange={handleInputChange}
-                  />
-                </S.ContentRegister>
-                <S.ContentRegister>
-                  <Input
-                    placeholder="Email"
-                    name="email"
-                    type="text"
-                    width="450"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                  />
-
-                  <Input
-                    placeholder="Phone"
-                    phone
-                    name="phone"
-                    type="text"
-                    width="450"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                  />
-                </S.ContentRegister>
-                <Input
-                  placeholder="Password"
-                  name="password"
-                  type={"password"}
-                  width="450"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                />
-
-                <Input
-                  placeholder="Confirm Password"
-                  name="confirmPassword"
-                  type={"password"}
-                  width="450"
-                  value={formData.confirmPassword}
-                  onChange={handleInputChange}
-                />
-              </S.WrapperRegisterInput>
-            </S.ContainerRegister>
+              Finalize o cadastro preenchendo o nome da loja.
+            </p>           
             <S.ContainerRegister>
               <S.WrapperRegisterInput className="mt-2">
                 <Input
@@ -133,4 +73,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default RegisterGoogle;

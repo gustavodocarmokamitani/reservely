@@ -15,8 +15,10 @@ export const useAction = (
   handleClose: () => void,
   fetchData: () => void,
   selectedAppointmentIds: number[],
-  setSelectedAppointmentIds: React.Dispatch<React.SetStateAction<number[]>>,  
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
+  setSelectedAppointmentIds: React.Dispatch<React.SetStateAction<number[]>>,
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
+  appointmentDate: Date[],
+  appointmentTime: SelectOption[]
 ) => {
   const { enqueueSnackbar } = useSnackbar();
 
@@ -24,12 +26,32 @@ export const useAction = (
     setIsLoading(true);
     try {
       const response = await getAppointmentById(selectedAppointmentHistoryId);
-      const mappedAppointment: Appointment = {
-        ...response, 
-        id: selectedAppointmentHistoryId,
-        appointmentStatusId: statusAppointment[statusAppointment.length - 1].value,
-        storeId: Number(storeUser),
-      };      
+      const formattedDate =
+        appointmentDate.length > 0
+          ? new Date(appointmentDate[appointmentDate.length - 1]).toISOString()
+          : null;
+
+      const mappedAppointment: Appointment =
+        statusAppointment[statusAppointment.length - 1].value !== 4
+          ? {
+              ...response,
+              id: selectedAppointmentHistoryId,
+              appointmentStatusId:
+                statusAppointment[statusAppointment.length - 1].value,
+              storeId: Number(storeUser),
+            }
+          : {
+              ...response,
+              id: selectedAppointmentHistoryId,
+              appointmentDate: formattedDate,
+              appointmentTime:
+                appointmentTime[appointmentTime.length - 1].label,
+              appointmentStatusId:
+                statusAppointment[statusAppointment.length - 1].value,
+              storeId: Number(storeUser),
+            };
+
+      console.log(mappedAppointment);
 
       const responseAppointment = await updateAppointment(
         mappedAppointment.id,

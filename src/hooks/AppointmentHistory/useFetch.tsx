@@ -13,6 +13,7 @@ import { capitalizeFirstLetter } from "../../services/system/globalService";
 import { getUserById } from "../../services/UserServices";
 import { decodeToken } from "../../services/AuthService";
 import { DecodedToken } from "../../models/DecodedToken";
+import { getStoreById } from "../../services/StoreServices";
 
 export const useFetch = (
   storeUser: number,
@@ -21,7 +22,8 @@ export const useFetch = (
   setRows: React.Dispatch<React.SetStateAction<Appointment[]>>,
   setDecodedData: React.Dispatch<React.SetStateAction<DecodedToken | null>>,
   setStatusAppointment: React.Dispatch<React.SetStateAction<SelectOption[]>>,
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
+  setOptionsTime: React.Dispatch<React.SetStateAction<SelectOption[]>>,
 ) => {
   const fetchDataRef = useRef(false);
   const storedToken = localStorage.getItem("authToken");
@@ -141,6 +143,42 @@ export const useFetch = (
     }
     setIsLoading(false);
   };
+
+    useEffect(() => {
+      const fetchTime = async () => {
+        try {
+          const responseTime = await getStoreById(storeUser);
+  
+          const [start, end] = responseTime.operatingHours
+            .split(" - ")
+            .map((time: string) => {
+              const [hours, minutes] = time.split(":").map(Number);
+              return hours * 60 + minutes;
+            });
+  
+          const generatedTimes = [];
+          for (let time = start; time <= end; time += 30) {
+            const hours = Math.floor(time / 60)
+              .toString()
+              .padStart(2, "0");
+            const minutes = (time % 60).toString().padStart(2, "0");
+            generatedTimes.push(`${hours}:${minutes}`);
+          }
+  
+          setOptionsTime([
+            { value: 0, label: "Selecione..." },
+            ...generatedTimes.map((time, index) => ({
+              value: index + 1, 
+              label: time,
+            })),
+          ]);
+        } catch (error) {
+          console.error("Erro ao buscar dados da store:", error);
+        }
+      };
+  
+      fetchTime();
+    }, [storeUser, setOptionsTime]);
 
   return {
     fetchData,

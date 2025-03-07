@@ -9,21 +9,18 @@ export const InputWrapper = styled.div<InputProps>`
   flex-direction: row;
   justify-content: center;
   position: relative;
-  width: ${(props) => Number(props.width) / (window.innerWidth > 1680 ? 16 : 12)}rem;
-  position: relative;
 `;
 
 export const PasswordIcon = styled.div`
   position: absolute;
-  top: 25%;
-  right: 2rem;
-  
-  cursor: pointer;
-  color: #0;
+  left: 89%;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: ;
 `;
 
 export const Input = styled.input<InputProps>`
-  width: ${(props) => Number(props.width) / (window.innerWidth > 1680 ? 16 : 18)}rem;
+  width: ${(props) => Number(props.width) / 18}rem;
   height: 3.125rem;
   padding: 0 1.562rem;
   font-size: 0.875rem;
@@ -38,7 +35,7 @@ export const Input = styled.input<InputProps>`
   }
 
   &::placeholder {
-    font-size: 1rem;    
+    font-size: 1rem;
   }
 `;
 
@@ -46,7 +43,8 @@ export const ToggleWrapper = styled.div<InputProps>`
   display: flex;
   align-items: center;
   justify-content: space-between; /* Adicione esta linha */
-  width: ${(props) => Number(props.width) / (window.innerWidth > 1680 ? 16 : 12)}rem;
+  width: ${(props) =>
+    Number(props.width) / (window.innerWidth > 1680 ? 16 : 12)}rem;
   height: 3.125rem;
   padding: 0 25px;
   border: 1px solid rgba(0, 0, 0, 0.25);

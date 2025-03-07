@@ -8,6 +8,8 @@ import { Col, Row } from "react-bootstrap";
 import { Appointment } from "../../models/Appointment";
 import { Service } from "../../models/Service";
 import { SelectOption } from "../../models/SelectOptions";
+import * as S from "../../pages/Appointment/Appointment.styles";
+import SelectDataPicker from "../../components/Select/SelectDataPicker";
 
 interface AppointmentDataTableProps {
   rows: Appointment[];
@@ -22,6 +24,10 @@ interface AppointmentDataTableProps {
   setStatusAppointment: React.Dispatch<React.SetStateAction<SelectOption[]>>;
   handleSubmitAppointmentHistoryStatus: () => void;
   options: SelectOption[];
+  appointmentTime: SelectOption[];
+  setAppointmentTime: React.Dispatch<React.SetStateAction<SelectOption[]>>;
+  optionsTime: SelectOption[];
+  setAppointmentDate: React.Dispatch<React.SetStateAction<Date[]>>;
 }
 
 const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
@@ -37,7 +43,11 @@ const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
   setStatusAppointment,
   handleSubmitAppointmentHistoryStatus,
   options,
-}) => {    
+  appointmentTime,
+  setAppointmentTime,
+  optionsTime,
+  setAppointmentDate,
+}) => {
   return (
     <div ref={containerRef} style={{ marginTop: "3rem" }}>
       <Paper
@@ -105,7 +115,7 @@ const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
           {...{ handleClose }}
         >
           <Row>
-            <Col md={6} style={{ margin: "15px 0px 35px 15px" }}>
+            <Col md={6} className="pb-3" style={{ margin: "20px 0px 0px 0px" }}>
               <Select
                 setData={setStatusAppointment}
                 value={statusAppointment}
@@ -113,12 +123,40 @@ const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
                 placeholder="Selecione um status"
               />
             </Col>
+            {Array.isArray(statusAppointment) &&
+              statusAppointment.some((item) => item.value === 4) && (
+                <Col md={6}>
+                  <S.AppointmentContent>
+                    <Select
+                      setData={setAppointmentTime}
+                      options={optionsTime}
+                      placeholder="Selecione um horário"
+                      value={appointmentTime}
+                    />
+                  </S.AppointmentContent>
+                </Col>
+              )}
           </Row>
+          {Array.isArray(statusAppointment) &&
+            statusAppointment.some((item) => item.value === 4) && (
+              <Row>
+                <S.AppointmentContent style={{ marginLeft: "20%" }}>
+                  <SelectDataPicker
+                    setDate={setAppointmentDate}
+                    type="appointment"
+                  />
+                </S.AppointmentContent>
+              </Row>
+            )}
           {Array.isArray(statusAppointment) &&
             statusAppointment.length > 0 &&
             statusAppointment[0].value === 3 && (
               <div
-                style={{ fontSize: "12px", textAlign: "center", color: "red" }}
+                style={{
+                  fontSize: "12px",
+                  textAlign: "center",
+                  color: "red",                
+                }}
               >
                 Após o cancelamento, este apontamento não poderá mais ser
                 editado.

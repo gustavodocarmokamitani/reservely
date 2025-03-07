@@ -30,7 +30,7 @@ export const useAction = (
 
         if (setAuthToken) setAuthToken(token);
 
-        await decodeToken(token);
+        const responseDecodedToken = await decodeToken(token);
 
         localStorage.setItem("storeUser", loggedUser.storeId);
 
@@ -40,7 +40,11 @@ export const useAction = (
           `Seja bem vindo ${loggedUser.name} ${loggedUser.lastName}! `,
           { variant: "success" }
         );
-        navigate("/appointment");
+        if (responseDecodedToken.userRole === "Client") {
+          navigate("/appointment-client/noStoreCode");
+        } else {
+          navigate("/appointment");
+        }
       } else {
         enqueueSnackbar("E-mail não verificado.", { variant: "default" });
       }

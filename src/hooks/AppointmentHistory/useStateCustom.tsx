@@ -26,6 +26,9 @@ export const useStateCustom = () => {
     number[]
   >([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [appointmentTime, setAppointmentTime] = useState<SelectOption[]>([]);
+  const [appointmentDate, setAppointmentDate] = useState<Date[]>([]);
+  const [optionsTime, setOptionsTime] = useState<SelectOption[]>([]);
   return {
     showModalAppointmentHistoryInfo,
     setShowModalAppointmentHistoryInfo,
@@ -47,5 +50,11 @@ export const useStateCustom = () => {
     setSelectedAppointmentIds,
     isLoading,
     setIsLoading,
+    appointmentTime,
+    setAppointmentTime,
+    optionsTime,
+    setOptionsTime,
+    appointmentDate,
+    setAppointmentDate,
   };
 };
