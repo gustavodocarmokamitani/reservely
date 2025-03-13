@@ -16,7 +16,7 @@ const RegisterGoogle = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const { handleRegister } = useAction(setIsLoading, formData);
+  const { handleRegisterStore } = useAction(setIsLoading, formData);
 
   return (
     <>
@@ -54,9 +54,9 @@ const RegisterGoogle = () => {
             <Row className="text-center" style={{ padding: "15px 0 50px 0" }}>
               <Col>
                 <Button
-                  $isRegister
+                  $isRegisterStore
                   type="button"
-                  onClick={handleRegister}
+                  onClick={handleRegisterStore}
                   disabled={isLoading}
                 />
                 {/* <p className="mt-4 mb-4">

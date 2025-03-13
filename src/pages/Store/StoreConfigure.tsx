@@ -1,7 +1,5 @@
-import { Col, Row } from "react-bootstrap";
 import * as S from "./Store.styles";
-import { ContainerPage } from "../Styles/_Page.styles";
-import HeaderTitle from "../../view/HeaderTitle/HeaderTitle";
+import * as P from "../Styles/_Page.styles";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
 import SelectDataPicker from "../../components/Select/SelectDataPicker";
@@ -12,6 +10,9 @@ import { useFetch } from "../../hooks/StoreConfigure/useFetch";
 import { useAction } from "../../hooks/StoreConfigure/useAction";
 import { useEffectCustom } from "../../hooks/StoreConfigure/useEffectCustom";
 import Loading from "../../components/Loading/loading";
+
+import homeClient from "../../assets/homeClient.svg";
+import { Row } from "react-bootstrap";
 
 function StoreConfigure() {
   const storeUser = Number(localStorage.getItem("storeUser"));
@@ -85,24 +86,26 @@ function StoreConfigure() {
   return (
     <>
       {isLoading && <Loading />}
-      <ContainerPage style={{ height: "100%", width: "calc(100vw - 20.6rem)" }}>
-        <Row>
-          <Col lg={12} xl={7} style={{ padding: "0px" }}>
-            <HeaderTitle
-              title={`${store?.name}`}
-              subTitle="Área destinada para gerenciamento da loja."
-            />
-          </Col>
+      <P.ContainerPage style={{ height: "100vh" }}>
+        <P.ContainerHeader>
+          <P.ContentHeader align="start">
+            <P.Title>Configuração da Loja</P.Title>
+            <P.SubTitle>Área destinada para gerenciamento da loja.</P.SubTitle>
+          </P.ContentHeader>
+          <P.ContentHeaderImg align="end">
+            <img src={homeClient} alt="Home Cliente" width="400px" />
+          </P.ContentHeaderImg>
+        </P.ContainerHeader>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "end",
+            margin: "25px 0 0 0",
+          }}
+        >
+          <Button $isConfigure onClick={handleButtonClick} type="button" />
+        </div>
 
-          <Col
-            lg={12}
-            xl={5}
-            className="d-flex flex-row justify-content-md-center justify-content-lg-end align-items-center  mt-md-3 mt-lg-5 mt-xl-0"
-          >
-            <Button $isBack onClick={handleButtonClick} type="button" />
-            <Button $isConfirm onClick={handleSubmit} type="button" />
-          </Col>
-        </Row>
         <Row>
           <S.Store>
             <S.StoreSectionOne>
@@ -150,7 +153,11 @@ function StoreConfigure() {
                 </S.StoreContent>
                 <S.StoreContent>
                   <p>Datas de fechamento</p>
-                  <SelectDataPicker type="store" setDate={setClosingDates} isClearable />
+                  <SelectDataPicker
+                    type="store"
+                    setDate={setClosingDates}
+                    isClearable
+                  />
                 </S.StoreContent>
               </S.StoreContainer>
             </S.StoreSectionOne>
@@ -229,7 +236,7 @@ function StoreConfigure() {
             </S.StoreSectionTwo>
           </S.Store>
         </Row>
-      </ContainerPage>
+      </P.ContainerPage>
     </>
   );
 }

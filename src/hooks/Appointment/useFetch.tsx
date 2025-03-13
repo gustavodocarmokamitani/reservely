@@ -1,5 +1,5 @@
 import { useStateCustom } from "./useStateCustom";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { SelectOption } from "../../models/SelectOptions";
 import { ServiceType } from "../../models/ServiceType";
 import { Option } from "../../models/Option";
@@ -8,6 +8,7 @@ import { getUserById, getUserTypeIdById } from "../../services/UserServices";
 import {
   getStoreById,
   getStoreByStoreCode,
+  getStores,
 } from "../../services/StoreServices";
 import {
   getEmployeeIdByUserId,
@@ -18,24 +19,58 @@ import {
   getServiceTypesByStore,
 } from "../../services/ServiceTypeServices";
 import { capitalizeFirstLetter } from "../../services/system/globalService";
+import { Store } from "../../models/Store";
+import { DecodedToken } from "../../models/DecodedToken";
+import { AppContext } from "../../context/AppContext";
+import { decodeToken } from "../../services/AuthService";
 
 export const useFetch = (
   storeCode: string,
   storeUser: number,
+  store: SelectOption[],
+  setStoreData: React.Dispatch<React.SetStateAction<Store | undefined>>,
   setOptionsEmployee: React.Dispatch<React.SetStateAction<SelectOption[]>>,
   setOptionsService: React.Dispatch<React.SetStateAction<SelectOption[]>>,
   setOptionsClient: React.Dispatch<React.SetStateAction<SelectOption[]>>,
   setOptionsTime: React.Dispatch<React.SetStateAction<SelectOption[]>>,
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
+  setOptionsStore: React.Dispatch<React.SetStateAction<SelectOption[]>>,
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
+  setDecodedData: React.Dispatch<React.SetStateAction<DecodedToken | null>>
 ) => {
   const { employee } = useStateCustom();
+
+  const context = useContext(AppContext);
+  const authToken = context?.authToken;
+
+  useEffect(() => {
+    const fetchDecodedToken = async () => {
+      if (authToken) {
+        try {
+          const decoded = await decodeToken(authToken);
+          setDecodedData(decoded);
+        } catch (error) {
+          console.error("Erro ao decodificar o token:", error);
+        }
+      }
+    };
+
+    fetchDecodedToken();
+  }, [authToken]);
+
+  useEffect(() => {
+    const fetchStoreData = async () => {
+      const response = await getStoreByStoreCode(storeCode);
+      setStoreData(response);
+    };
+    fetchStoreData();
+  }, [storeCode]);
 
   useEffect(() => {
     setIsLoading(true);
     const fetchEmployees = async () => {
       try {
         const responseStoreCode = await getStoreByStoreCode(storeCode);
-        if (responseStoreCode !== false) {
+        if (responseStoreCode) {
           storeUser = responseStoreCode.id;
         }
 
@@ -43,7 +78,8 @@ export const useFetch = (
 
         const filteredEmployees = responseEmployee.filter(
           (employee: EmployeeModel) =>
-            employee.storeId === storeUser && employee.active === "true"
+            employee.storeId === storeUser ||
+            (store && employee.active === "true")
         );
 
         const filteredWithUserData = await Promise.all(
@@ -81,12 +117,19 @@ export const useFetch = (
     };
 
     fetchEmployees();
-  }, [storeUser, setIsLoading, setOptionsEmployee]);
+  }, [storeUser, store, setIsLoading, setOptionsEmployee]);
 
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await getServiceTypesByStore(storeUser);
+        const responseStoreCode = await getStoreByStoreCode(storeCode);
+        if (responseStoreCode) {
+          storeUser = responseStoreCode.id;
+        }
+
+        const response = await getServiceTypesByStore(
+          storeUser !== 0 ? storeUser : store[store.length - 1].value
+        );
 
         if (response) {
           const serviceTypesActives = response.filter(
@@ -167,7 +210,7 @@ export const useFetch = (
     };
 
     fetchServices();
-  }, [employee, storeUser, setOptionsService]);
+  }, [employee, storeUser, store, setOptionsService]);
 
   useEffect(() => {
     const fetchClientes = async () => {
@@ -197,9 +240,38 @@ export const useFetch = (
   }, [setOptionsClient]);
 
   useEffect(() => {
+    const fetchStore = async () => {
+      try {
+        const response = await getStores();
+        const formattedOptions = response.map((item: any) => ({
+          value: item.id,
+          label: item.name + " " + item.storeCode.match(/#\d+/)[0],
+        }));
+        formattedOptions.unshift({
+          value: 0,
+          label: "Selecione...",
+          isDisabled: true,
+        });
+        setOptionsStore(formattedOptions);
+      } catch (error) {
+        console.error("Error fetching client:", error);
+      }
+    };
+
+    fetchStore();
+  }, [setOptionsStore]);
+
+  useEffect(() => {
     const fetchTime = async () => {
       try {
-        const responseTime = await getStoreById(storeUser);
+        const responseStoreCode = await getStoreByStoreCode(storeCode);
+        if (responseStoreCode) {
+          storeUser = responseStoreCode.id;
+        }
+
+        const responseTime = await getStoreById(
+          storeUser !== 0 ? storeUser : store[store.length - 1].value
+        );
 
         const [start, end] = responseTime.operatingHours
           .split(" - ")
@@ -230,7 +302,7 @@ export const useFetch = (
     };
 
     fetchTime();
-  }, [storeUser, setOptionsTime]);
+  }, [storeUser, store, setOptionsTime]);
 
   return {};
 };

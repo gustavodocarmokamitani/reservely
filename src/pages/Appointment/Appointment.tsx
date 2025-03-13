@@ -7,21 +7,33 @@ import { useFetch } from "../../hooks/Appointment/useFetch";
 import { useStateCustom } from "../../hooks/Appointment/useStateCustom";
 import { useSubmit } from "../../hooks/Appointment/useSubmit";
 import { Paragraph } from "../../components/Paragraph/Paragraph";
-import { ContainerPage } from "../Styles/_Page.styles";
+import {
+  ContainerHeader,
+  ContainerPage,
+  ContentHeader,
+  ContentHeaderImg,
+  SubTitle,
+  Title,
+} from "../Styles/_Page.styles";
 import * as S from "./Appointment.styles";
 import Loading from "../../components/Loading/loading";
+import homeClient from "../../assets/homeClient.svg";
 
 export function Appointment() {
   const storeCode = "";
   const storeUser = Number(localStorage.getItem("storeUser"));
 
   const {
+    storeData,
+    setStoreData,
     employee,
     setEmployee,
     client,
     setClient,
     service,
     setService,
+    store,
+    setStore,
     appointmentTime,
     setAppointmentTime,
     appointmentDate,
@@ -36,16 +48,24 @@ export function Appointment() {
     setOptionsClient,
     optionsTime,
     setOptionsTime,
+    optionsStore,
+    setOptionsStore,
+    decodedData,
+    setDecodedData,
   } = useStateCustom();
 
   useFetch(
     storeCode,
     storeUser,
+    store,
+    setStoreData,
     setOptionsEmployee,
     setOptionsService,
     setOptionsClient,
     setOptionsTime,
-    setIsLoading
+    setOptionsStore,
+    setIsLoading,
+    setDecodedData
   );
 
   const handleSubmit = async () => {
@@ -71,7 +91,19 @@ export function Appointment() {
     <>
       {isLoading && <Loading />}
       <ContainerPage style={{ height: "100vh" }}>
-        <Row className="wrap">
+        <ContainerHeader>
+          <ContentHeader align="start">
+            <Title>
+              Agendamento <br />
+            </Title>
+            <SubTitle>Área destinada para realizar os agendamentos.</SubTitle>
+            <Button onClick={handleSubmit} $isConfirm type="button" />
+          </ContentHeader>
+          <ContentHeaderImg align="end">
+            <img src={homeClient} alt="Home Cliente" width="400px" />
+          </ContentHeaderImg>
+        </ContainerHeader>
+        {/* <Row className="wrap">
           <Col md={12} lg={7} style={{ padding: "0px" }}>
             <HeaderTitle
               title="Agendamento"
@@ -85,7 +117,7 @@ export function Appointment() {
           >
             <Button onClick={handleSubmit} $isConfirm type="button" />
           </Col>
-        </Row>
+        </Row> */}
         <S.AppointmentContainer>
           <Row
             className="justify-content-center align"

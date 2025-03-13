@@ -3,11 +3,13 @@ import { Col, Row } from "react-bootstrap";
 import HeaderTitle from "../../view/HeaderTitle/HeaderTitle";
 import Button from "../../components/Button/Button";
 import * as S from "./Store.styles";
-import { ContainerPage } from "../Styles/_Page.styles";
+import * as P from "../Styles/_Page.styles";
 import Card from "../../components/Card/Card";
 import { useStateCustom } from "../../hooks/Store/useStateCustom";
 import { useFetch } from "../../hooks/Store/useFetch";
 import Loading from "../../components/Loading/loading";
+
+import homeClient from "../../assets/homeClient.svg";
 
 function Store() {
   const navigate = useNavigate();
@@ -33,25 +35,31 @@ function Store() {
   return (
     <>
       {isLoading && <Loading />}
-      <ContainerPage style={{ height: "100vh" }}>
-        <Row>
-          <Col lg={12} xl={7} style={{ padding: "0px" }}>
-            <HeaderTitle
-              title={`${store?.name}`}
-              subTitle="Área destinada para gerenciamento da loja."
-            />
-          </Col>
-
-          <Col
-            lg={12}
-            xl={5}
-            className="d-flex flex-row justify-content-md-center justify-content-lg-end align-items-center mt-md-3 mt-lg-5 mt-xl-0"
+      <P.ContainerPage style={{ height: "100vh" }}>
+        <P.ContainerHeader>
+          <P.ContentHeader align="start">
+            <P.Title>
+              Loja
+            </P.Title>
+            <P.SubTitle>
+            Área destinada para gerenciamento da loja.
+            </P.SubTitle>
+          </P.ContentHeader>
+          <P.ContentHeaderImg align="end">
+            <img src={homeClient} alt="Home Cliente" width="400px" />
+          </P.ContentHeaderImg>
+        </P.ContainerHeader>
+        {decodedData?.userRole === "Admin" && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "end",
+              margin: "25px 0 0 0",
+            }}
           >
-            {decodedData?.userRole === "Admin" && (
-              <Button $isConfigure onClick={handleButtonClick} type="button" />
-            )}
-          </Col>         
-        </Row>
+            <Button $isConfigure onClick={handleButtonClick} type="button" />
+          </div>
+        )}
         <Row>
           <Col md={12}>
             <h3 style={{ margin: "20px 0 25px 0" }}>Dados da loja</h3>
@@ -140,7 +148,7 @@ function Store() {
             )}
           </Col>
         </Row>
-      </ContainerPage>
+      </P.ContainerPage>
     </>
   );
 }

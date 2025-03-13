@@ -1,5 +1,5 @@
-import { ContainerPage } from "../Styles/_Page.styles";
-import { Col, Row } from "react-bootstrap"; 
+import * as P from "../Styles/_Page.styles";
+import { Col, Row } from "react-bootstrap";
 import HeaderTitle from "../../view/HeaderTitle/HeaderTitle";
 import Button from "../../components/Button/Button";
 import ServiceDataTable from "../../view/DataTable/ServiceDataTable";
@@ -13,6 +13,8 @@ import Select from "../../components/Select/Select";
 import { useEffectCustom } from "../../hooks/Services/useEffectCustom";
 import Loading from "../../components/Loading/loading";
 import { formatToBRL } from "../../services/system/globalService";
+
+import homeClient from "../../assets/homeClient.svg";
 
 function Service() {
   const {
@@ -60,7 +62,7 @@ function Service() {
       fetchEditService,
       setFormValuesService,
       setDurationMinutes,
-      generateTimes,      
+      generateTimes
     );
 
   const {
@@ -86,14 +88,44 @@ function Service() {
     decodedData,
     setColumnWidth,
     handleShowEditServiceModal
-  ); 
-console.log(formValuesService.value);
+  );
 
   return (
     <>
-     {isLoading && <Loading />}
-      <ContainerPage style={{ height: "100vh" }}>
-        <Row>
+      {isLoading && <Loading />}
+      <P.ContainerPage style={{ height: "100vh" }}>
+        <P.ContainerHeader>
+          <P.ContentHeader align="start">
+            <P.Title>
+              Gerenciar Serviços <br />
+            </P.Title>
+            <P.SubTitle>
+              Área destinada para gerenciamento de serviços.
+            </P.SubTitle>
+          </P.ContentHeader>
+          <P.ContentHeaderImg align="end">
+            <img src={homeClient} alt="Home Cliente" width="400px" />
+          </P.ContentHeaderImg>
+        </P.ContainerHeader>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "end",
+            margin: "25px 0 0 0",
+          }}
+        >
+          {decodedData?.userRole === "Admin" && (
+            <>
+              <Button onClick={handleDeleteServices} $isRemove type="button" />
+              <Button
+                $isAdd
+                type="button"
+                onClick={handleShowAddServiceModal}
+              />
+            </>
+          )}
+        </div>
+        {/* <Row>
           <Col lg={12} xl={7} style={{ padding: "0px" }}>
             <HeaderTitle
               title="Serviço"
@@ -121,7 +153,7 @@ console.log(formValuesService.value);
               </>
             )}
           </Col>
-        </Row>
+        </Row> */}
         <ServiceDataTable
           {...{
             rows,
@@ -135,7 +167,7 @@ console.log(formValuesService.value);
             handleInputChangeService,
             columns,
             containerRef,
-            handleRowSelect,            
+            handleRowSelect,
           }}
         />
         {showAddModal && (
@@ -175,7 +207,11 @@ console.log(formValuesService.value);
                   type="text"
                   placeholder="Valor"
                   name="value"
-                  value={formValuesService.value ? formatToBRL(formValuesService.value) : formatToBRL("0")}
+                  value={
+                    formValuesService.value
+                      ? formatToBRL(formValuesService.value)
+                      : formatToBRL("0")
+                  }
                   onChange={(e) =>
                     handleInputChangeService(
                       e as React.ChangeEvent<HTMLInputElement>
@@ -234,7 +270,7 @@ console.log(formValuesService.value);
             </Row>
           </Modal>
         )}
-      </ContainerPage>
+      </P.ContainerPage>
     </>
   );
 }

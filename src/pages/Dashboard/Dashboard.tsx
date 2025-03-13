@@ -1,12 +1,13 @@
 import { Col, Row } from "react-bootstrap";
-import HeaderTitle from "../../view/HeaderTitle/HeaderTitle";
 import ChartDashboard from "../../view/ChartsDashBoard/ChartDashboard";
 import Card from "../../components/Card/Card";
 import { formatCurrencyBRL } from "../../services/system/globalService";
 import { useStateCustom } from "../../hooks/Dashboard/useStateCustom";
 import { useFetch } from "../../hooks/Dashboard/useFetch";
-import { ContainerPage } from "../Styles/_Page.styles";
+import * as P from "../Styles/_Page.styles";
 import * as S from "./Dashboard.styles";
+
+import homeClient from "../../assets/homeClient.svg";
 
 const Dashboard = () => {
   const storeUser = Number(localStorage.getItem("storeUser"));
@@ -27,16 +28,18 @@ const Dashboard = () => {
   );
 
   return (
-    <ContainerPage>
-      <Row>
-        <Col style={{ padding: "0px" }}>
-          <HeaderTitle
-            title="Dashboard"
-            subTitle="Área destinada para análise de dados."
-          ></HeaderTitle>
-        </Col>
-      </Row>
-
+    <P.ContainerPage style={{ height: "100vh" }}>
+      <P.ContainerHeader>
+        <P.ContentHeader align="start">
+          <P.Title>
+            Dashboard <br />
+          </P.Title>
+          <P.SubTitle>Área destinada para análise de dados.</P.SubTitle>
+        </P.ContentHeader>
+        <P.ContentHeaderImg align="end">
+          <img src={homeClient} alt="Home Cliente" width="400px" />
+        </P.ContentHeaderImg>
+      </P.ContainerHeader>
       <S.DashboardContainer>
         <Col sm={12} xl={4}>
           <Card
@@ -69,7 +72,7 @@ const Dashboard = () => {
           <ChartDashboard />
         </Col>
       </Row>
-    </ContainerPage>
+    </P.ContainerPage>
   );
 };
 

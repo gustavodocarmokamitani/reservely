@@ -1,4 +1,4 @@
-import { ContainerPage } from "../Styles/_Page.styles";
+import * as P from "../Styles/_Page.styles";
 import { Col, Row } from "react-bootstrap";
 
 import HeaderTitle from "../../view/HeaderTitle/HeaderTitle";
@@ -15,6 +15,8 @@ import { useAction } from "../../hooks/Professional/useAction";
 import { useModal } from "../../hooks/Professional/useModal";
 import { useEffectCustom } from "../../hooks/Professional/useEffectCustom";
 import Loading from "../../components/Loading/loading";
+
+import homeClient from "../../assets/homeClient.svg";
 
 function Professional() {
   const storeUser = Number(localStorage.getItem("storeUser"));
@@ -106,32 +108,37 @@ function Professional() {
   return (
     <>
       {isLoading && <Loading />}
-      <ContainerPage style={{ height: "100vh" }}>
-        <Row>
-          <Col lg={12} xl={7} style={{ padding: "0px" }}>
-            <HeaderTitle
-              title="Professional"
-              subTitle="Área destinada para gerenciamento de profissionais registrados."
-            />
-          </Col>
-
-          <Col
-            lg={12}
-            xl={5}
-            className="d-flex flex-row justify-content-md-center justify-content-lg-end align-items-center  mt-md-3 mt-lg-5 mt-xl-0"
+      <P.ContainerPage style={{ height: "100vh" }}>
+        <P.ContainerHeader>
+          <P.ContentHeader align="start">
+            <P.Title>
+              Gerenciar Profissional <br />
+            </P.Title>
+            <P.SubTitle>
+              Área destinada para gerenciamento de profissionais registrados.
+            </P.SubTitle>
+          </P.ContentHeader>
+          <P.ContentHeaderImg align="end">
+            <img src={homeClient} alt="Home Cliente" width="400px" />
+          </P.ContentHeaderImg>
+        </P.ContainerHeader>
+        {decodedData?.userRole === "Admin" && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "end",
+              margin: "25px 0 0 0",
+            }}
           >
-            {decodedData?.userRole === "Admin" && (
-              <>
-                <Button $isRemove type="button" onClick={handleDeleteUsers} />
-                <Button
-                  $isAdd
-                  type="button"
-                  onClick={handleShowAddProfessionalModal}
-                />
-              </>
-            )}
-          </Col>
-        </Row>
+            <Button $isRemove type="button" onClick={handleDeleteUsers} />
+            <Button
+              $isAdd
+              type="button"
+              onClick={handleShowAddProfessionalModal}
+            />
+          </div>
+        )}
+
         <ProfessionalDataTable
           {...{
             rows,
@@ -184,7 +191,7 @@ function Professional() {
             </Row>
           </Modal>
         )}
-      </ContainerPage>
+      </P.ContainerPage>
     </>
   );
 }

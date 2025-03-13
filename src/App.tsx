@@ -36,6 +36,7 @@ import Calendar from "./pages/Calendar/Calendar";
 import RegisterGoogle from "./pages/Register/RegisterGoogle";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { AppointmentClient } from "./pages/Appointment/AppointmentClient";
+import { HomeClient } from "./pages/HomeClient/HomeClient";
 
 function App() {
   const clientId = import.meta.env.VITE_CLIENT_ID;
@@ -46,6 +47,7 @@ function App() {
   const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
     return isAuthenticated ? children : <Navigate to="/login" />;
   };
+
 
   return (
     <GoogleOAuthProvider clientId={clientId}>
@@ -66,17 +68,9 @@ function App() {
             <Route
               path="/*"
               element={
-                <ProtectedRoute>
+                // <ProtectedRoute>
                   <React.Fragment>
-                    <div
-                      style={{
-                        display: "flex",
-                        width: "20rem",
-                        position: "relative",
-                      }}
-                    >
-                      <Navigation />
-                    </div>
+                    <Navigation />
                     <div style={{ flexGrow: 1, overflowX: "hidden" }}>
                       <Routes>
                         <Route path="/dashboard" element={<Dashboard />} />
@@ -100,17 +94,18 @@ function App() {
                         <Route path="/callhelp" element={<CallHelp />} />
                         <Route path="/appointment" element={<Appointment />} />
                         <Route
-                          path="/appointment-history"
+                          path="/history-appointment"
                           element={<AppointmentHistory />}
                         />
+                        <Route path="/home-client" element={<HomeClient />} />
                         <Route
-                          path="/appointment-client/:storeCode"
+                          path="/appointment-client/:storeCodeParams"
                           element={<AppointmentClient />}
                         />
                       </Routes>
-                    </div>
+                    </div>                   
                   </React.Fragment>
-                </ProtectedRoute>
+                // </ProtectedRoute>
               }
             />
           </Routes>

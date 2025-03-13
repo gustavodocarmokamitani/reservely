@@ -41,7 +41,7 @@ export const useAction = (
           { variant: "success" }
         );
         if (responseDecodedToken.userRole === "Client") {
-          navigate("/appointment-client/noStoreCode");
+          navigate("/home-client");
         } else {
           navigate("/appointment");
         }

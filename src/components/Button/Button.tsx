@@ -13,8 +13,11 @@ interface ButtonProps {
   $isClosed?: boolean;
   $isConfirm?: boolean;
   $isConfigure?: boolean;
+  $isRescheduling?: boolean;
+  $isRating?: boolean;
   $isBack?: boolean;
   $isLogin?: boolean;
+  $isAppointment?: boolean;
   $isRegisterStore?: boolean;
   $isRegisterClient?: boolean;
   $isResend?: boolean;
@@ -34,10 +37,13 @@ const Button: React.FC<ButtonProps> = ({
   $isClosed,
   $isConfirm,
   $isConfigure,
+  $isRescheduling,
   $isBack,
   $isLogin,
+  $isAppointment,
   $isRegisterStore,
   $isRegisterClient,
+  $isRating,
   type,
   $noIcon,
   onClick,
@@ -108,6 +114,12 @@ const Button: React.FC<ButtonProps> = ({
     buttonText = "Registrar Cliente";
   } else if ($isResend) {
     buttonText = "Reenviar e-mail";
+  } else if ($isRescheduling) {
+    buttonText = "Agendar";
+  } else if ($isRating) {
+    buttonText = "Avaliação";
+  } else if ($isAppointment) {
+    buttonText = "Agendar";
   } else if ($isGoogle) {
     icon = (
       <img
@@ -134,6 +146,9 @@ const Button: React.FC<ButtonProps> = ({
       $isRemove={$isRemove}
       $isClosed={$isClosed}
       $isConfirm={$isConfirm}
+      $isRescheduling={$isRescheduling}
+      $isRating={$isRating}
+      $isAppointment={$isAppointment}
       style={{ margin: "0 1rem" }}
       onClick={onClick}
     >

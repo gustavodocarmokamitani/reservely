@@ -1,6 +1,6 @@
 import { Col, Row } from "react-bootstrap";
 
-import { ContainerPage } from "../Styles/_Page.styles";
+import * as P from "../Styles/_Page.styles";
 import HeaderTitle from "../../view/HeaderTitle/HeaderTitle";
 import AppointmentDataTable from "../../view/DataTable/AppointmentDataTable";
 import Button from "../../components/Button/Button";
@@ -11,6 +11,8 @@ import { useFetch } from "../../hooks/AppointmentHistory/useFetch";
 import { useEffectCustom } from "../../hooks/AppointmentHistory/useEffectCustom";
 import { useAction } from "../../hooks/AppointmentHistory/useAction";
 import Loading from "../../components/Loading/loading";
+
+import homeClient from "../../assets/homeClient.svg";
 
 function AppointmentHistory() {
   const storeUser = Number(localStorage.getItem("storeUser"));
@@ -96,30 +98,31 @@ function AppointmentHistory() {
   return (
     <>
       {isLoading && <Loading />}
-      <ContainerPage style={{ height: "100vh" }}>
-        <Row>
-          <Col lg={12} xl={7} style={{ padding: "0px" }}>
-            <HeaderTitle
-              title="Histórico Agendamentos"
-              subTitle="Área destinada para gerenciamento do histórico de agendamentos."
-            />
-          </Col>
-
-          <Col
-            lg={12}
-            xl={5}
-            className="d-flex flex-row justify-content-md-center justify-content-lg-end align-items-center  mt-md-3 mt-lg-5 mt-xl-0"
+      <P.ContainerPage style={{ height: "100vh" }}>
+        <P.ContainerHeader>
+          <P.ContentHeader align="start">
+            <P.Title>
+              Histórico Agendamentos <br />
+            </P.Title>
+            <P.SubTitle>
+              Área destinada para gerenciamento do histórico de agendamentos.
+            </P.SubTitle>
+          </P.ContentHeader>
+          <P.ContentHeaderImg align="end">
+            <img src={homeClient} alt="Home Cliente" width="400px" />
+          </P.ContentHeaderImg>
+        </P.ContainerHeader>
+        {decodedData?.userRole === "Admin" && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "end",
+              margin: "25px 0 0 0",
+            }}
           >
-            {decodedData?.userRole === "Admin" && (
-              <Button
-                onClick={handleDeleteAppointment}
-                $isRemove
-                type="button"
-              />
-            )}
-          </Col>
-        </Row>
-
+            <Button onClick={handleDeleteAppointment} $isRemove type="button" />
+          </div>
+        )}
         <AppointmentDataTable
           {...{
             selectableBoxServices,
@@ -143,7 +146,7 @@ function AppointmentHistory() {
             setAppointmentDate,
           }}
         />
-      </ContainerPage>
+      </P.ContainerPage>
     </>
   );
 }
