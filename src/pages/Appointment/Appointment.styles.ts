@@ -1,28 +1,44 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 interface ContentHeaderProps {
   align?: string;
 }
 
-export const AppointmentContainer= styled.div`
-    margin-top: 50px;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;    
-`
-
-export const AppointmentContent = styled.div`
-    margin: 0 0.93rem 0 0.93rem;
-    margin-top: 20px;   
-`
-
-export const AppointmentClientContainer = styled.div`
-  width: 100vw;
-  height: 100vh;
-  padding: 2.5rem;
+export const AppointmentContainer = styled.div`
+  margin-top: 50px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 `;
 
-export const AppointmentClientContent= styled.div`
+export const AppointmentContent = styled.div`
+  width: 90%;
+  margin: 1rem 0;
+`;
+
+export const AppointmentClientSelect = styled.div`
+  display: flex;
+  align-items: start;
+  width: 100vw;
+  height: 100%;
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+`;
+
+export const AppointmentClientContainer = styled.div`
+  width: 100%;
+  padding: 2.5rem;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+`;
+
+export const AppointmentClientContent = styled.div`
   display: flex;
   justify-content: center;
   aling-items: center;

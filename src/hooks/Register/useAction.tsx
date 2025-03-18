@@ -4,7 +4,7 @@ import {
   registerUser,
   registerUserWithGoogle,
 } from "../../services/AuthService";
-import { createStore } from "../../services/StoreServices";
+import { createStore, deleteStore } from "../../services/StoreServices";
 
 export const useAction = (
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
@@ -36,6 +36,8 @@ export const useAction = (
 
   const handleRegisterStore = async () => {
     setIsLoading(true);
+    let storeCode;
+
     if (formData.password !== formData.confirmPassword) {
       enqueueSnackbar("As senhas não são iguais. Tente novamente.", {
         variant: "default",
@@ -83,6 +85,8 @@ export const useAction = (
         paymentMethods: [0],
       });
 
+      storeCode = responseStore.id;
+
       const response = await registerUser({
         name: formData.name,
         lastName: formData.lastname,
@@ -101,6 +105,7 @@ export const useAction = (
       enqueueSnackbar("Ocorreu um erro. Por favor, tente novamente.", {
         variant: "error",
       });
+      await deleteStore(storeCode);
     } finally {
       setIsLoading(false);
     }

@@ -8,7 +8,7 @@ export const ContainerPage = styled.div`
 
   @media (max-width: 768px) {
     flex-direction: column;
-    padding: 5rem 50px 0 50px;
+    padding: 5rem 10px 0 10px;
   }
 `;
 
@@ -119,7 +119,7 @@ export const ContentHeaderImg = styled.div<ContentHeaderProps>`
 `;
 
 export const Title = styled.div`
-  font-size: 4rem;
+  font-size: 3.5rem;
   font-weight: bold;
   color: white;
   span {
@@ -139,3 +139,4 @@ export const SubTitle = styled.div`
   line-height: 2;
   margin: 25px 0;
 `;
+

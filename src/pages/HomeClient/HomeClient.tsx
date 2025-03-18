@@ -12,12 +12,20 @@ import { getServiceTypeById } from "../../services/ServiceTypeServices";
 import { getStoreById } from "../../services/StoreServices";
 import { capitalizeFirstLetter } from "../../services/system/globalService";
 import Button from "../../components/Button/Button";
-import homeClient from "../../assets/homeClient.svg";
-import { ContainerHeader, ContainerPage, ContentHeader, ContentHeaderImg, SubTitle, Title } from "../Styles/_Page.styles";
-import { Carousel } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import {
+  ContainerHeader,
+  ContainerPage,
+  ContentHeader,
+  ContentHeaderImg,
+  SubTitle,
+  Title,
+} from "../Styles/_Page.styles";
+import { useNavigate, useParams } from "react-router-dom";
 
 export const HomeClient = () => {
+  const { storeCodeParams } = useParams();
+  const storeCode = storeCodeParams ? storeCodeParams.replace("_", "#") : "";
+
   const navigate = useNavigate();
   const context = useContext(AppContext);
   const authToken = context?.authToken;
@@ -42,52 +50,124 @@ export const HomeClient = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (decodedData?.userId) {
-        try {
-          const responseAppointments = await getAppointmentByClienteId(
-            parseFloat(decodedData.userId)
-          );
+      if (!decodedData?.userId) {
+        console.warn("decodedData.userId está ausente ou inválido.");
+        return;
+      }
 
-          if (!responseAppointments || responseAppointments.length === 0)
-            return;
-          const appointmentsWithDetails = await Promise.all(
-            responseAppointments.map(async (appointment: Appointment) => {
-              const responseEmployee = await getEmployeeById(
-                appointment.employeeId
-              );
-              const responseUser = await getUserById(responseEmployee.id);
-              const responseStore = await getStoreById(appointment.storeId);
-              const services = await Promise.all(
-                appointment.serviceIds.map(async (serviceId) => {
-                  return await getServiceTypeById(serviceId);
-                })
-              );
-
-              const totalPrice = services.reduce(
-                (sum, service) => sum + (service?.data.value || 0),
-                0
-              );
-
-              return {
-                storeName: responseStore.name,
-                storeCode: responseStore.storeCode,
-                appointmentDate: appointment.appointmentDate,
-                appointmentTime: appointment.appointmentTime,
-                employeeName: `${capitalizeFirstLetter(
-                  responseUser.name
-                )} ${capitalizeFirstLetter(responseUser.lastName)}`,
-                services: services.map((service) => ({
-                  name: service?.data.name,
-                })),
-                totalPrice,
-              };
-            })
-          );
-
-          setData(appointmentsWithDetails);
-        } catch (error) {
-          console.error("Erro ao buscar dados:", error);
+      try {
+        const userId = parseFloat(decodedData.userId);
+        if (isNaN(userId)) {
+          console.error("userId não é um número válido:", decodedData.userId);
+          return;
         }
+
+        const responseAppointments = await getAppointmentByClienteId(userId);
+
+        if (!responseAppointments || responseAppointments.length === 0) {
+          console.warn("Nenhum agendamento encontrado para o usuário:", userId);
+          return;
+        }
+
+        // Processamento detalhado dos agendamentos
+        const appointmentsWithDetails = (
+          await Promise.all(
+            responseAppointments.map(async (appointment: Appointment) => {
+              try {
+                if (!appointment.employeeId || !appointment.storeId) {
+                  console.error(
+                    "Dados de agendamento incompletos:",
+                    appointment
+                  );
+                  return null; // Ignora este agendamento
+                }
+
+                const responseEmployee = await getEmployeeById(
+                  appointment.employeeId
+                );
+
+                if (!responseEmployee) {
+                  console.error(
+                    "Funcionário não encontrado:",
+                    appointment.employeeId
+                  );
+                  return null;
+                }
+
+                const responseUser = await getUserById(responseEmployee.id);
+
+                if (!responseUser) {
+                  console.error(
+                    "Usuário não encontrado para o funcionário:",
+                    responseEmployee.id
+                  );
+                  return null;
+                }
+
+                const responseStore = await getStoreById(appointment.storeId);
+
+                if (!responseStore) {
+                  console.error("Loja não encontrada:", appointment.storeId);
+                  return null;
+                }
+
+                const services = await Promise.all(
+                  appointment.serviceIds.map(async (serviceId) => {
+                    try {
+                      const service = await getServiceTypeById(serviceId);
+
+                      return service;
+                    } catch (error) {
+                      console.error(
+                        "Erro ao buscar serviceId:",
+                        serviceId,
+                        error
+                      );
+                      return null;
+                    }
+                  })
+                );
+
+                const filteredServices = services.filter((service) => service);
+                const totalPrice = filteredServices.reduce(
+                  (sum, service) => sum + (service?.data.value || 0),
+                  0
+                );
+
+                return {
+                  storeName: responseStore.name,
+                  storeCode: responseStore.storeCode,
+                  appointmentDate: appointment.appointmentDate,
+                  appointmentTime: appointment.appointmentTime,
+                  employeeName: `${capitalizeFirstLetter(
+                    responseUser.name
+                  )} ${capitalizeFirstLetter(responseUser.lastName)}`,
+                  services: filteredServices.map((service) => ({
+                    name: service?.data.name,
+                  })),
+                  totalPrice,
+                };
+              } catch (error) {
+                console.error(
+                  "Erro ao processar agendamento:",
+                  appointment,
+                  error
+                );
+                return null;
+              }
+            })
+          )
+        ).filter((appointment) => appointment);
+
+        if (appointmentsWithDetails.length > 0) {
+          setData(appointmentsWithDetails);
+        } else {
+          console.warn(
+            "Nenhum agendamento válido encontrado após o processamento."
+          );
+        }
+      } catch (error) {
+        console.error("Erro geral ao buscar ou processar os dados:", error);
       }
     };
 
@@ -95,11 +175,15 @@ export const HomeClient = () => {
   }, [decodedData]);
 
   const handleNavigateAppointmentClient = () => {
-    navigate(`/appointment-client/:`);
+    if (storeCode === ":") {
+      navigate(`/appointment-client/:`);
+    } else {
+      navigate(`/appointment-client/${storeCode}`);
+    }
   };
 
   const handleNavigateAppointmentClientStoreCode = (storeCode: string) => {
-    const encodedStoreCode = encodeURIComponent(storeCode); 
+    const encodedStoreCode = encodeURIComponent(storeCode);
     navigate(`/appointment-client/${encodedStoreCode}`);
   };
 
@@ -109,104 +193,69 @@ export const HomeClient = () => {
         <ContentHeader align="start">
           <Title>
             Bem Vindo! <br />
-            Store Name <span>#001</span>
+            {data.length > 0 && (
+              <>
+                {data[0]?.storeName} <span>{data[0]?.storeCode}</span>
+              </>
+            )}
           </Title>
+
           <SubTitle>
             Gerencie seus compromissos com facilidade! Aqui, você pode acessar
             seus históricos de agendamentos e avaliações, além de realizar novas
             avaliações e agendamentos sempre que precisar.
           </SubTitle>
+        </ContentHeader>
+        <ContentHeaderImg align="end">
           <Button
             type="button"
             $noIcon
             $isAppointment
             onClick={handleNavigateAppointmentClient}
           ></Button>
-        </ContentHeader>
-         <ContentHeaderImg  align="end">
-          <img
-            src={homeClient}
-            alt="Home Cliente"
-            width="400px"
-            height="400px"
-          />
         </ContentHeaderImg>
       </ContainerHeader>
 
-      <S.ContainerCarouselHomeClient>
-        <h2 style={{ color: "#2c2c2c" }}>Histórico de Agendamentos</h2>
-        <S.StyledCarousel
-          indicators={false}
-          interval={null}
-          controls={true}
-          slide={false}
-        >
-          {data.map((_, index) => {
-            if (index % 3 === 0) {
-              return (
-                <Carousel.Item key={index}>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      gap: "60px",
-                    }}
-                  >
-                    {data.slice(index, index + 3).map((item, subIndex) => (
-                      <S.WrapperHomeClient key={subIndex}>
-                        <Card
-                          type="homeClient"
-                          history
-                          data={item}
-                          handleNavigateAppointment={() =>
-                            handleNavigateAppointmentClientStoreCode(
-                              item.storeCode
-                            )
-                          }
-                        />
-                      </S.WrapperHomeClient>
-                    ))}
-                  </div>
-                </Carousel.Item>
-              );
-            }
-            return null;
-          })}
-        </S.StyledCarousel>
-      </S.ContainerCarouselHomeClient>
+      <div style={{paddingLeft: "1.5rem"}}>
+        <h2 style={{ color: "#2c2c2c", marginTop: "6.25rem" }}>
+          Histórico de Agendamentos
+        </h2>
+        <S.ContainerClient>
+          {data.length > 0 ? (
+            data.map((item, index) => (
+              <S.WrapperHomeClient key={index}>
+                <Card
+                  type="homeClient"
+                  history
+                  data={item}
+                  handleNavigateAppointment={() =>
+                    handleNavigateAppointmentClientStoreCode(item.storeCode)
+                  }
+                />
+              </S.WrapperHomeClient>
+            ))
+          ) : (
+            <p>Sem agendamentos</p>
+          )}
+        </S.ContainerClient>
+      </div>
 
-      <S.ContainerCarouselHomeClient>
-        <h2 style={{ color: "#2c2c2c" }}>Histórico de Avaliações</h2>
-        <S.StyledCarousel
-          indicators={false}
-          interval={null}
-          controls={true}
-          slide={false}
-        >
-          {data.map((_, index) => {
-            if (index % 3 === 0) {
-              return (
-                <Carousel.Item key={index}>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      gap: "67px",
-                    }}
-                  >
-                    {data.map((item, index) => (
-                      <S.WrapperHomeClient key={index}>
-                        <Card type="homeClient" rating data={item} />
-                      </S.WrapperHomeClient>
-                    ))}
-                  </div>
-                </Carousel.Item>
-              );
-            }
-            return null;
-          })}
-        </S.StyledCarousel>
-      </S.ContainerCarouselHomeClient>
+      {/* <div style={{paddingLeft: "1.5rem"}}>
+        <h2 style={{ color: "#2c2c2c", marginTop: "2.25rem" }}>
+          Histórico de Avaliações
+        </h2>
+        <S.ContainerClient>
+          {data.length > 0 ? (
+            data.map((item, index) => (
+              <S.WrapperHomeClient key={index}>
+                <Card type="homeClient" rating data={item} />
+              </S.WrapperHomeClient>
+            ))
+          ) : (
+            <p>Sem Avaliações</p>
+          )}
+        </S.ContainerClient>
+      </div> */}
     </ContainerPage>
   );
 };

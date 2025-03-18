@@ -7,12 +7,16 @@ import { useAction } from "../../hooks/Login/useAction";
 import { ContainerRegister } from "../Styles/_Page.styles";
 import * as S from "./Login.styles";
 import { TypingText } from "../Styles/animationTyping.styles";
+import { useParams } from "react-router-dom";
 
 const Login = () => {
+  const { storeCodeParams } = useParams();
+  const storeCode = storeCodeParams ? storeCodeParams : "";
+
   const { email, setEmail, password, setPassword, isLoading, setIsLoading } =
     useStateCustom();
 
-  const { handleLogin } = useAction(setIsLoading, email, password);
+  const { handleLogin } = useAction(setIsLoading, email, password, storeCode);
 
   return (
     <>

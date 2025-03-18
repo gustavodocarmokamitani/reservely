@@ -35,10 +35,7 @@ const Dashboard = () => {
             Dashboard <br />
           </P.Title>
           <P.SubTitle>Área destinada para análise de dados.</P.SubTitle>
-        </P.ContentHeader>
-        <P.ContentHeaderImg align="end">
-          <img src={homeClient} alt="Home Cliente" width="400px" />
-        </P.ContentHeaderImg>
+        </P.ContentHeader>     
       </P.ContainerHeader>
       <S.DashboardContainer>
         <Col sm={12} xl={4}>

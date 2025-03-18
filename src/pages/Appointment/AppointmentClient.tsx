@@ -7,14 +7,20 @@ import SelectDataPicker from "../../components/Select/SelectDataPicker";
 import { useFetch } from "../../hooks/Appointment/useFetch";
 import { useStateCustom } from "../../hooks/Appointment/useStateCustom";
 import { useParams } from "react-router-dom";
-import { ContainerHeader, ContainerPage, ContentHeader, ContentHeaderImg, SubTitle, Title } from "../Styles/_Page.styles";
-import homeClient from "../../assets/homeClient.svg";
+import {
+  ContainerHeader,
+  ContainerPage,
+  ContentHeader,
+  ContentHeaderImg,
+  SubTitle,
+  Title,
+} from "../Styles/_Page.styles";
 import { useSubmitClient } from "../../hooks/Appointment/useSubmitClient";
 
 export function AppointmentClient() {
   const { storeCodeParams } = useParams();
   const storeCode = storeCodeParams ? storeCodeParams : "";
-  const storeUser = Number(localStorage.getItem("storeUser"));  
+  const storeUser = Number(localStorage.getItem("storeUser"));
 
   const {
     storeData,
@@ -45,6 +51,10 @@ export function AppointmentClient() {
     setOptionsStore,
     decodedData,
     setDecodedData,
+    closedDates,
+    setClosedDates,
+    operatingDays,
+    setOperatingDays,
   } = useStateCustom();
 
   useFetch(
@@ -58,7 +68,9 @@ export function AppointmentClient() {
     setOptionsTime,
     setOptionsStore,
     setIsLoading,
-    setDecodedData
+    setDecodedData,
+    setClosedDates,
+    setOperatingDays
   );
 
   const handleSubmit = async () => {
@@ -82,6 +94,7 @@ export function AppointmentClient() {
     storeData,
     store
   );
+
   return (
     <ContainerPage>
       <ContainerHeader>
@@ -100,92 +113,76 @@ export function AppointmentClient() {
           <SubTitle>
             Garanta seu horário com facilidade. Informe os seguintes dados.
           </SubTitle>
-          <Button onClick={handleSubmit} $isAppointment type="button" />
         </ContentHeader>
         <ContentHeaderImg align="end">
-          <img
-            src={homeClient}
-            alt="Home Cliente"
-            width="400px"
-            height="400px"
-          />
+          <Button onClick={handleSubmit} $isConfirm type="button" />
         </ContentHeaderImg>
       </ContainerHeader>
 
-      {storeCode === ":" ? (
-        <S.AppointmentContainer>
-          <Row
-            className="justify-content-start align"
-            style={{ width: "100%", flexWrap: "wrap" }}
-          >
-            <Col>
+      <S.AppointmentClientSelect>
+        {storeCode === ":" ? (
+          <S.AppointmentClientContainer>
+            <S.AppointmentContent>
+              <Paragraph text="Loja" />
+              <Select
+                setData={setStore}
+                options={optionsStore}
+                placeholder="Selecione ..."
+                value={store[store.length - 1]}
+              />
+            </S.AppointmentContent>
+          </S.AppointmentClientContainer>
+        ) : null}
+
+        {store.length > 0 || storeCode ? (
+          <>
+            <S.AppointmentClientContainer>
               <S.AppointmentContent>
-                <Paragraph text="Loja" />
+                <Paragraph text="Funcionário" />
                 <Select
-                  setData={setStore}
-                  options={optionsStore}
+                  setData={setEmployee}
+                  options={optionsEmployee}
                   placeholder="Selecione ..."
-                  value={store[store.length - 1]}
+                  value={employee[employee.length - 1]}
                 />
               </S.AppointmentContent>
-            </Col>
-          </Row>
-        </S.AppointmentContainer>
-      ) : null}
 
-      {store.length > 0 || storeCode ? (
-        <>
-          <S.AppointmentContainer>
-            <Row
-              className="justify-content-start align"
-              style={{ width: "100%", flexWrap: "wrap" }}
-            >
-              <Col>
-                <S.AppointmentContent>
-                  <Paragraph text="Funcionário" />
-                  <Select
-                    setData={setEmployee}
-                    options={optionsEmployee}
-                    placeholder="Selecione ..."
-                    value={employee[employee.length - 1]}
-                  />
-                </S.AppointmentContent>
-              </Col>
-              <Col>
-                <S.AppointmentContent>
-                  <Paragraph text="Serviço" />
-                  <Select
-                    setData={setService}
-                    options={optionsService}
-                    placeholder="Selecione ..."
-                    value={service}
-                    isMulti={true}
-                  />
-                </S.AppointmentContent>
-              </Col>
-              <Col>
-                <S.AppointmentContent>
-                  <Paragraph text="Horário" />
-                  <Select
-                    setData={setAppointmentTime}
-                    options={optionsTime}
-                    placeholder="Selecione ..."
-                    value={appointmentTime}
-                  />
-                </S.AppointmentContent>
-              </Col>
-            </Row>
-          </S.AppointmentContainer>
-          <S.AppointmentContainer className="justify-content-center justify-content-xl-start pb-5">
+              <S.AppointmentContent>
+                <Paragraph text="Serviço" />
+                <Select
+                  setData={setService}
+                  options={optionsService}
+                  placeholder="Selecione ..."
+                  value={service}
+                  isMulti={true}
+                />
+              </S.AppointmentContent>
+
+              <S.AppointmentContent>
+                <Paragraph text="Horário" />
+                <Select
+                  setData={setAppointmentTime}
+                  options={optionsTime}
+                  placeholder="Selecione ..."
+                  value={appointmentTime}
+                />
+              </S.AppointmentContent>
+            </S.AppointmentClientContainer>
+          </>
+        ) : null}
+        <S.AppointmentClientContainer>
+          {(store.length > 0 || storeCode) && (
             <S.AppointmentContent>
               <SelectDataPicker
                 setDate={setAppointmentDate}
                 type="appointment"
+                operatingDays={operatingDays}
+                closedDates={closedDates}
               />
             </S.AppointmentContent>
-          </S.AppointmentContainer>
-        </>
-      ) : null}
+          )}
+        </S.AppointmentClientContainer>
+      </S.AppointmentClientSelect>
     </ContainerPage>
   );
 }

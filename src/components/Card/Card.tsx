@@ -83,8 +83,7 @@ const Card: React.FC<CardProps> = ({
                     <img
                       src={employee}
                       alt="employee"
-                      width="21px"
-                      height="23px"
+                      width="10%"
                     />
                     <S.Paragraph style={{ width: "9.25rem" }}>
                       {data.employeeName}
@@ -95,8 +94,7 @@ const Card: React.FC<CardProps> = ({
                     <img
                       src={price}
                       alt="employee"
-                      width="23px"
-                      height="23px"
+                      width="10%"
                     />
                     <S.Paragraph style={{ width: "9.25rem" }}>
                       {formatToBRL(String(data.totalPrice * 100))}
@@ -105,13 +103,13 @@ const Card: React.FC<CardProps> = ({
                 </S.CardContent>
                 <S.CardContent>
                   <S.TextCard>
-                    <img src={date} alt="employee" width="21px" height="23px" />
+                    <img src={date} alt="employee" width="10%" />
                     <S.Paragraph style={{ width: "9.25rem" }}>
                       {moment(data.appointmentDate).format("DD/MM/YYYY")}
                     </S.Paragraph>
                   </S.TextCard>
                   <S.TextCard>
-                    <img src={time} alt="employee" width="23px" height="23px" />
+                    <img src={time} alt="employee" width="10%" />
                     <S.Paragraph style={{ width: "9.25rem" }}>
                       {data.appointmentTime}
                     </S.Paragraph>
@@ -123,8 +121,7 @@ const Card: React.FC<CardProps> = ({
                       <img
                         src={service}
                         alt="employee"
-                        width="23px"
-                        height="23px"
+                        width="5%"                       
                       />
                       {data.services?.map((service: any, index: number) => (
                         <S.Paragraph key={index}>{service.name}</S.Paragraph>

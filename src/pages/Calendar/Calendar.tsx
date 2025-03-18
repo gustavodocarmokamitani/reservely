@@ -88,7 +88,7 @@ function Calendar() {
   }, [fetchData]);
 
   const generateScheduleX = () => {
-    if (isDataLoaded) {
+    if (!isDataLoaded) {
       return <ScheduleX events={events} />;
     }
     return <LoadingLocale />;
@@ -106,9 +106,6 @@ function Calendar() {
               Área dedicada a visualização de agendamentos.
             </P.SubTitle>
           </P.ContentHeader>
-          <P.ContentHeaderImg align="end">
-            <img src={homeClient} alt="Home Cliente" width="400px" />
-          </P.ContentHeaderImg>
         </P.ContainerHeader>
         <S.CalendarContainer>
           <S.CalendarContent>{generateScheduleX()}</S.CalendarContent>

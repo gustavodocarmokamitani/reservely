@@ -104,56 +104,30 @@ function Service() {
             </P.SubTitle>
           </P.ContentHeader>
           <P.ContentHeaderImg align="end">
-            <img src={homeClient} alt="Home Cliente" width="400px" />
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "end",
+                margin: "25px 0 0 0",
+              }}
+            >
+              {decodedData?.userRole === "Admin" && (
+                <>
+                  <Button
+                    onClick={handleDeleteServices}
+                    $isRemove
+                    type="button"
+                  />
+                  <Button
+                    $isAdd
+                    type="button"
+                    onClick={handleShowAddServiceModal}
+                  />
+                </>
+              )}
+            </div>
           </P.ContentHeaderImg>
-        </P.ContainerHeader>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "end",
-            margin: "25px 0 0 0",
-          }}
-        >
-          {decodedData?.userRole === "Admin" && (
-            <>
-              <Button onClick={handleDeleteServices} $isRemove type="button" />
-              <Button
-                $isAdd
-                type="button"
-                onClick={handleShowAddServiceModal}
-              />
-            </>
-          )}
-        </div>
-        {/* <Row>
-          <Col lg={12} xl={7} style={{ padding: "0px" }}>
-            <HeaderTitle
-              title="Serviço"
-              subTitle="Área destinada para gerenciamento de serviços."
-            />
-          </Col>
-
-          <Col
-            lg={12}
-            xl={5}
-            className="d-flex flex-row justify-content-md-center justify-content-lg-end align-items-center  mt-md-3 mt-lg-5 mt-xl-0"
-          >
-            {decodedData?.userRole === "Admin" && (
-              <>
-                <Button
-                  onClick={handleDeleteServices}
-                  $isRemove
-                  type="button"
-                />
-                <Button
-                  $isAdd
-                  type="button"
-                  onClick={handleShowAddServiceModal}
-                />
-              </>
-            )}
-          </Col>
-        </Row> */}
+        </P.ContainerHeader>      
         <ServiceDataTable
           {...{
             rows,

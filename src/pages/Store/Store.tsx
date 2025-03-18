@@ -8,8 +8,7 @@ import Card from "../../components/Card/Card";
 import { useStateCustom } from "../../hooks/Store/useStateCustom";
 import { useFetch } from "../../hooks/Store/useFetch";
 import Loading from "../../components/Loading/loading";
-
-import homeClient from "../../assets/homeClient.svg";
+import { useState } from "react";
 
 function Store() {
   const navigate = useNavigate();
@@ -32,34 +31,51 @@ function Store() {
     navigate("/store-configure");
   };
 
+  const [isCopied, setIsCopied] = useState(false);
+
+  const handleCopy = () => {
+    const textToCopy = `localhost:3000/code/${store?.storeCode.replace("#", "_")}`;
+    navigator.clipboard.writeText(textToCopy);
+    setIsCopied(true);
+
+    setTimeout(() => setIsCopied(false), 2000);
+  };
+
   return (
     <>
       {isLoading && <Loading />}
       <P.ContainerPage style={{ height: "100vh" }}>
         <P.ContainerHeader>
           <P.ContentHeader align="start">
-            <P.Title>
-              Loja
-            </P.Title>
-            <P.SubTitle>
-            Área destinada para gerenciamento da loja.
-            </P.SubTitle>
+            <P.Title>Loja</P.Title>
+            <P.SubTitle>Área destinada para gerenciamento da loja.</P.SubTitle>
+            <S.Copy onClick={handleCopy}>
+              <div className="copy-text">
+                localhost:3000/code/{store?.storeCode.replace("#", "_")}
+              </div>
+              <div className="copy-button">
+                {isCopied ? "Copiado" : "Copiar"}
+              </div>
+            </S.Copy>
           </P.ContentHeader>
           <P.ContentHeaderImg align="end">
-            <img src={homeClient} alt="Home Cliente" width="400px" />
+            {decodedData?.userRole === "Admin" && (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "end",
+                  margin: "25px 0 0 0",
+                }}
+              >
+                <Button
+                  $isConfigure
+                  onClick={handleButtonClick}
+                  type="button"
+                />
+              </div>
+            )}
           </P.ContentHeaderImg>
         </P.ContainerHeader>
-        {decodedData?.userRole === "Admin" && (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "end",
-              margin: "25px 0 0 0",
-            }}
-          >
-            <Button $isConfigure onClick={handleButtonClick} type="button" />
-          </div>
-        )}
         <Row>
           <Col md={12}>
             <h3 style={{ margin: "20px 0 25px 0" }}>Dados da loja</h3>

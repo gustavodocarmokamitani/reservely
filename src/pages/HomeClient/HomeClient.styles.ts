@@ -41,11 +41,14 @@ export const SubTitle = styled.div`
   margin: 25px 0;
 `;
 
-export const ContainerCarouselHomeClient = styled.div`
+export const ContainerClient = styled.div`
+  display: flex;
+  gap: 5px;
   flex-direction: row;
   width: 100%;
   border-radius: 15px 0 0 15px;
-  margin-top: 3.125rem;
+  overflow: auto;
+  padding-right: 20px;
 `;
 
 export const ContainerHomeClient = styled.div`
@@ -57,6 +60,7 @@ export const ContainerHomeClient = styled.div`
   border-radius: 15px 0 0 15px;
   background: rgba(235, 235, 235, 0.35);
   margin-top: 3.125rem;
+  
 `;
 
 export const WrapperHomeClient = styled.div`
@@ -65,8 +69,8 @@ export const WrapperHomeClient = styled.div`
   align-items: center;
   width: 100%;
   max-width: 400px;
-  height: 350px;
-  margin: 0 2px;
+  height: 320px;
+  margin: 0 15px;
 `;
 
 export const ContainerPageHomeClient = styled.div`
@@ -89,7 +93,7 @@ export const StyledCarousel = styled(Carousel)`
 
   .carousel-control-prev-icon,
   .carousel-control-next-icon {
-    background-color:rgb(121, 121, 121);
+    background-color: rgb(121, 121, 121);
     border-radius: 5px;
   }
 `;

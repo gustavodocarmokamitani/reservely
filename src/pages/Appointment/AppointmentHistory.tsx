@@ -102,27 +102,30 @@ function AppointmentHistory() {
         <P.ContainerHeader>
           <P.ContentHeader align="start">
             <P.Title>
-              Histórico Agendamentos <br />
+              Histórico Agendamentos
             </P.Title>
             <P.SubTitle>
               Área destinada para gerenciamento do histórico de agendamentos.
             </P.SubTitle>
           </P.ContentHeader>
           <P.ContentHeaderImg align="end">
-            <img src={homeClient} alt="Home Cliente" width="400px" />
+            {decodedData?.userRole === "Admin" && (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "end",
+                  margin: "25px 0 0 0",
+                }}
+              >
+                <Button
+                  onClick={handleDeleteAppointment}
+                  $isRemove
+                  type="button"
+                />
+              </div>
+            )}
           </P.ContentHeaderImg>
         </P.ContainerHeader>
-        {decodedData?.userRole === "Admin" && (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "end",
-              margin: "25px 0 0 0",
-            }}
-          >
-            <Button onClick={handleDeleteAppointment} $isRemove type="button" />
-          </div>
-        )}
         <AppointmentDataTable
           {...{
             selectableBoxServices,

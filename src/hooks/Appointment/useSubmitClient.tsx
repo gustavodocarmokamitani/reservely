@@ -85,7 +85,7 @@ export const useSubmitClient = (
         enqueueSnackbar("Agendamento criado com sucesso!", {
           variant: "success",
         });
-        navigate("/home-client")
+        navigate("/home-client/:")
       }
     } catch (error) {
       console.error("Erro ao criar agendamento", error);

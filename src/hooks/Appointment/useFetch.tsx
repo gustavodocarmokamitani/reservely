@@ -13,6 +13,7 @@ import {
 import {
   getEmployeeIdByUserId,
   getEmployees,
+  getEmployeesByStoreId,
 } from "../../services/EmployeeServices";
 import {
   getServiceTypeById,
@@ -35,12 +36,22 @@ export const useFetch = (
   setOptionsTime: React.Dispatch<React.SetStateAction<SelectOption[]>>,
   setOptionsStore: React.Dispatch<React.SetStateAction<SelectOption[]>>,
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
-  setDecodedData: React.Dispatch<React.SetStateAction<DecodedToken | null>>
+  setDecodedData: React.Dispatch<React.SetStateAction<DecodedToken | null>>,
+  setClosedDates: React.Dispatch<React.SetStateAction<string[]>>,
+  setOperatingDays: React.Dispatch<React.SetStateAction<string[]>>
 ) => {
   const { employee } = useStateCustom();
 
   const context = useContext(AppContext);
   const authToken = context?.authToken;
+  useEffect(() => {
+    const fetchStoreData = async () => {
+      const formattedStoreCode = storeCode.toUpperCase().replace("_", "#");
+      const response = await getStoreByStoreCode(formattedStoreCode);
+      setStoreData(response);
+    };
+    fetchStoreData();
+  }, [storeCode]);
 
   useEffect(() => {
     const fetchDecodedToken = async () => {
@@ -58,28 +69,25 @@ export const useFetch = (
   }, [authToken]);
 
   useEffect(() => {
-    const fetchStoreData = async () => {
-      const response = await getStoreByStoreCode(storeCode);
-      setStoreData(response);
-    };
-    fetchStoreData();
-  }, [storeCode]);
-
-  useEffect(() => {
     setIsLoading(true);
     const fetchEmployees = async () => {
       try {
-        const responseStoreCode = await getStoreByStoreCode(storeCode);
-        if (responseStoreCode) {
-          storeUser = responseStoreCode.id;
+        if (storeCode !== ":") {
+          const formattedStoreCode = storeCode.toUpperCase().replace("_", "#");
+          const responseStoreCode = await getStoreByStoreCode(
+            formattedStoreCode
+          );
+          if (responseStoreCode) {
+            storeUser = responseStoreCode.id;
+          }
+        } else {
+          storeUser = store[0]?.value;
         }
 
-        const responseEmployee = await getEmployees();
+        const responseEmployee = await getEmployeesByStoreId(storeUser);
 
         const filteredEmployees = responseEmployee.filter(
-          (employee: EmployeeModel) =>
-            employee.storeId === storeUser ||
-            (store && employee.active === "true")
+          (employee: EmployeeModel) => employee.active === "true"
         );
 
         const filteredWithUserData = await Promise.all(
@@ -122,7 +130,8 @@ export const useFetch = (
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const responseStoreCode = await getStoreByStoreCode(storeCode);
+        const formattedStoreCode = storeCode.toUpperCase().replace("_", "#");
+        const responseStoreCode = await getStoreByStoreCode(formattedStoreCode);
         if (responseStoreCode) {
           storeUser = responseStoreCode.id;
         }
@@ -215,7 +224,7 @@ export const useFetch = (
   useEffect(() => {
     const fetchClientes = async () => {
       try {
-        const response = await getUserTypeIdById(3);
+        const response = await getUserTypeIdById(99); // fix
         const formattedOptions = response.map((item: any) => ({
           value: item.id,
           label: item.name,
@@ -260,6 +269,31 @@ export const useFetch = (
 
     fetchStore();
   }, [setOptionsStore]);
+
+  useEffect(() => {
+    const fetchWorkingDatesStore = async () => {
+      try {
+        if (storeCode === ":" || storeCode === "") {
+          const response = await getStoreById(
+            storeUser !== 0 ? storeUser : store[0].value
+          );
+          setClosedDates(response?.closingDays);
+          setOperatingDays(response?.operatingDays);
+        } else {
+          const formattedStoreCode = storeCode.toUpperCase().replace("_", "#");
+          const responseStoreCode = await getStoreByStoreCode(
+            formattedStoreCode
+          );
+          setClosedDates(responseStoreCode?.closingDays);
+          setOperatingDays(responseStoreCode?.operatingDays);
+        }
+      } catch (error) {
+        console.error("Error fetching client:", error);
+      }
+    };
+
+    fetchWorkingDatesStore();
+  }, [setClosedDates, setOperatingDays, storeUser, store]);
 
   useEffect(() => {
     const fetchTime = async () => {

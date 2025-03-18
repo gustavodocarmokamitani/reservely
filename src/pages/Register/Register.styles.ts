@@ -22,4 +22,5 @@ export const ContentRegister = styled.div`
   justify-content: center;
   aling-items: center;
   gap: 10px;
+  flex-wrap: wrap;
 `;

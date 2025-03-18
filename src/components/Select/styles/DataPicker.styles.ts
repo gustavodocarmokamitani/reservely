@@ -13,7 +13,7 @@ export const StyledDatePicker = styled.div`
   }
 
   & .react-datepicker__day--today {
-    color: black !important;
+    color: #f16855 !important;
     font-weight: normal;
   }
 

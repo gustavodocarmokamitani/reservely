@@ -93,19 +93,18 @@ function StoreConfigure() {
             <P.SubTitle>Área destinada para gerenciamento da loja.</P.SubTitle>
           </P.ContentHeader>
           <P.ContentHeaderImg align="end">
-            <img src={homeClient} alt="Home Cliente" width="400px" />
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "end",
+                margin: "25px 0 0 0",
+              }}
+            >
+              <Button $isBack onClick={handleButtonClick} type="button" />
+              <Button $isConfirm onClick={handleSubmit} type="button" />
+            </div>
           </P.ContentHeaderImg>
         </P.ContainerHeader>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "end",
-            margin: "25px 0 0 0",
-          }}
-        >
-          <Button $isConfigure onClick={handleButtonClick} type="button" />
-        </div>
-
         <Row>
           <S.Store>
             <S.StoreSectionOne>
@@ -157,6 +156,8 @@ function StoreConfigure() {
                     type="store"
                     setDate={setClosingDates}
                     isClearable
+                    operatingDays={[]}
+                    closedDates={[]}
                   />
                 </S.StoreContent>
               </S.StoreContainer>

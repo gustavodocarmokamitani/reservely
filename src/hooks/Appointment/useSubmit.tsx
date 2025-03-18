@@ -56,8 +56,6 @@ export const useSubmit = (
       const funcionarioId = await getCorrigirIdByUserId(selectedEmployee.value);
       const serviceIds = selectedService.map((item) => item.value).join(",");
 
-      console.log(selectedTime.label.toString());
-
       const isAvailable = await getValidateAppointment(
         funcionarioId.id,
         selectedDate,

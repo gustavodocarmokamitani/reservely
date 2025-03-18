@@ -18,6 +18,8 @@ export const useStateCustom = () => {
   const [optionsTime, setOptionsTime] = useState<SelectOption[]>([]);
   const [optionsStore, setOptionsStore] = useState<SelectOption[]>([]);
   const [decodedData, setDecodedData] = useState<DecodedToken | null>(null);
+  const [closedDates, setClosedDates] = useState<string[]>([]);
+  const [operatingDays, setOperatingDays] = useState<string[]>([]);
 
   return {
     storeData,
@@ -48,5 +50,9 @@ export const useStateCustom = () => {
     setOptionsStore,
     decodedData,
     setDecodedData,
+    closedDates,
+    setClosedDates,
+    operatingDays,
+    setOperatingDays,
   };
 };

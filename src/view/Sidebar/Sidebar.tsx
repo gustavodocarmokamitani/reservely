@@ -74,13 +74,13 @@ const Navigation = () => {
           // { path: "/payment", icon: payment, text: "Formas de Pagamentos" },
         ]
       : [
-          { path: "/home-client", icon: professionalCheck, text: "Home" },
+          { path: "/home-client/:", icon: professionalCheck, text: "Home" },
           {
             path: "/appointment-client/:",
             icon: chamada,
             text: "Agendamento",
           },
-          { path: "/rating", icon: calendar, text: "Avaliação" },
+          // { path: "/rating", icon: calendar, text: "Avaliação" },
         ];
 
   useEffect(() => {
@@ -152,7 +152,11 @@ const Navigation = () => {
                     ref={(el) => (menuItemsRef.current[index] = el)}
                     onClick={() => setSelectedIndex(index)}
                   >
-                    <Link to={path} style={{ textDecoration: "none" }}>
+                    <Link
+                      to={path}
+                      style={{ textDecoration: "none" }}
+                      onClick={handleSidebarCollapse}
+                    >
                       <S.StyledRow
                         isSelected={location.pathname === path}
                         className={location.pathname === path ? "selected" : ""}
@@ -217,7 +221,12 @@ const Navigation = () => {
                 borderRadius: "0 15px 15px 0",
               }}
             >
-              <img src={arrow} style={{transform: `${!sidebarCollapse ?  "rotate(180deg)" : ""}`}}/>
+              <img
+                src={arrow}
+                style={{
+                  transform: `${!sidebarCollapse ? "rotate(180deg)" : ""}`,
+                }}
+              />
             </div>
           </div>
         </div>

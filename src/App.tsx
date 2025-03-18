@@ -48,7 +48,6 @@ function App() {
     return isAuthenticated ? children : <Navigate to="/login" />;
   };
 
-
   return (
     <GoogleOAuthProvider clientId={clientId}>
       <div className="App" style={{ display: "flex" }}>
@@ -56,7 +55,9 @@ function App() {
           <Routes>
             {/* Rotas Públicas */}
             <Route path="/" element={<Home />} />
+            <Route path="/code/:storeCodeParams" element={<Home />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/login-code/:storeCodeParams" element={<Login />} />
             <Route path="/register-store" element={<RegisterStore />} />
             <Route path="/register-client" element={<RegisterClient />} />
             <Route path="/register-google" element={<RegisterGoogle />} />
@@ -68,7 +69,7 @@ function App() {
             <Route
               path="/*"
               element={
-                // <ProtectedRoute>
+                <ProtectedRoute>
                   <React.Fragment>
                     <Navigation />
                     <div style={{ flexGrow: 1, overflowX: "hidden" }}>
@@ -97,15 +98,15 @@ function App() {
                           path="/history-appointment"
                           element={<AppointmentHistory />}
                         />
-                        <Route path="/home-client" element={<HomeClient />} />
+                        <Route path="/home-client/:storeCodeParams" element={<HomeClient />} />
                         <Route
                           path="/appointment-client/:storeCodeParams"
                           element={<AppointmentClient />}
                         />
                       </Routes>
-                    </div>                   
+                    </div>
                   </React.Fragment>
-                // </ProtectedRoute>
+                </ProtectedRoute>
               }
             />
           </Routes>

@@ -96,25 +96,25 @@ function ProfessionalRegister() {
             </P.SubTitle>
           </P.ContentHeader>
           <P.ContentHeaderImg align="end">
-            <img src={homeClient} alt="Home Cliente" width="400px" />
+            {decodedData?.userRole === "Admin" && (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "end",
+                  margin: "25px 0 0 0",
+                }}
+              >
+                <Button $isRemove type="button" onClick={handleDeleteUsers} />
+                <Button
+                  $isAdd
+                  type="button"
+                  onClick={handleShowAddProfessionalModal}
+                />
+              </div>
+            )}
           </P.ContentHeaderImg>
         </P.ContainerHeader>
-        {decodedData?.userRole === "Admin" && (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "end",
-              margin: "25px 0 0 0",
-            }}
-          >
-            <Button $isRemove type="button" onClick={handleDeleteUsers} />
-            <Button
-              $isAdd
-              type="button"
-              onClick={handleShowAddProfessionalModal}
-            />
-          </div>
-        )}
+
         <ProfessionalRegisterDataTable
           {...{
             rows,

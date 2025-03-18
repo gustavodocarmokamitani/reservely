@@ -17,7 +17,6 @@ import {
 } from "../Styles/_Page.styles";
 import * as S from "./Appointment.styles";
 import Loading from "../../components/Loading/loading";
-import homeClient from "../../assets/homeClient.svg";
 
 export function Appointment() {
   const storeCode = "";
@@ -52,6 +51,10 @@ export function Appointment() {
     setOptionsStore,
     decodedData,
     setDecodedData,
+    closedDates,
+    setClosedDates,
+    operatingDays,
+    setOperatingDays,
   } = useStateCustom();
 
   useFetch(
@@ -65,7 +68,9 @@ export function Appointment() {
     setOptionsTime,
     setOptionsStore,
     setIsLoading,
-    setDecodedData
+    setDecodedData,
+    setClosedDates,
+    setOperatingDays
   );
 
   const handleSubmit = async () => {
@@ -96,28 +101,12 @@ export function Appointment() {
             <Title>
               Agendamento <br />
             </Title>
-            <SubTitle>Área destinada para realizar os agendamentos.</SubTitle>
-            <Button onClick={handleSubmit} $isConfirm type="button" />
+            <SubTitle>Área destinada para realizar agendamentos.</SubTitle>
           </ContentHeader>
           <ContentHeaderImg align="end">
-            <img src={homeClient} alt="Home Cliente" width="400px" />
+            <Button onClick={handleSubmit} $isConfirm type="button" />
           </ContentHeaderImg>
         </ContainerHeader>
-        {/* <Row className="wrap">
-          <Col md={12} lg={7} style={{ padding: "0px" }}>
-            <HeaderTitle
-              title="Agendamento"
-              subTitle="Área destinada para realizar os agendamentos."
-            />
-          </Col>
-          <Col
-            md={12}
-            lg={5}
-            className="d-flex flex-row justify-content-md-center justify-content-lg-end align-items-center mt-md-5 mt-lg-0"
-          >
-            <Button onClick={handleSubmit} $isConfirm type="button" />
-          </Col>
-        </Row> */}
         <S.AppointmentContainer>
           <Row
             className="justify-content-center align"
@@ -129,7 +118,7 @@ export function Appointment() {
                 <Select
                   setData={setEmployee}
                   options={optionsEmployee}
-                  placeholder="Selecione um funcionário"
+                  placeholder="Selecione..."
                   value={employee[employee.length - 1]}
                 />
               </S.AppointmentContent>
@@ -140,7 +129,7 @@ export function Appointment() {
                 <Select
                   setData={setClient}
                   options={optionsClient}
-                  placeholder="Selecione um cliente"
+                  placeholder="Selecione..."
                   value={client}
                 />
               </S.AppointmentContent>
@@ -151,7 +140,7 @@ export function Appointment() {
                 <Select
                   setData={setService}
                   options={optionsService}
-                  placeholder="Selecione um serviço"
+                  placeholder="Selecione..."
                   value={service}
                   isMulti={true}
                 />
@@ -163,7 +152,7 @@ export function Appointment() {
                 <Select
                   setData={setAppointmentTime}
                   options={optionsTime}
-                  placeholder="Selecione um horário"
+                  placeholder="Selecione..."
                   value={appointmentTime}
                 />
               </S.AppointmentContent>
@@ -172,7 +161,12 @@ export function Appointment() {
         </S.AppointmentContainer>
         <S.AppointmentContainer className="justify-content-center justify-content-xl-start pb-5">
           <S.AppointmentContent>
-            <SelectDataPicker setDate={setAppointmentDate} type="appointment" />
+            <SelectDataPicker
+              setDate={setAppointmentDate}
+              type="appointment"
+              operatingDays={operatingDays}
+              closedDates={closedDates}
+            />
           </S.AppointmentContent>
         </S.AppointmentContainer>
       </ContainerPage>
