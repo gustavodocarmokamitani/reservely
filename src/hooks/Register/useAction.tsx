@@ -79,6 +79,7 @@ export const useAction = (
         name: formData.storeName,
         address: "",
         status: false,
+        multipleAppointments: false,
         operatingHours: "",
         closingDays: [""],
         operatingDays: [""],
