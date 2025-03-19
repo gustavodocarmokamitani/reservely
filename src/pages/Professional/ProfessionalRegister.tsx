@@ -142,8 +142,12 @@ function ProfessionalRegister() {
             handleClose={handleClose}
             size="small"
           >
-            <Row>
-              <Col md={6} className="mt-3 mb-3 flex-column align-items-center">
+            <Row style={{ flexDirection: "row" }}>
+              <Col
+                md={12}
+                className="mt-3 mb-3"
+                style={{ display: "flex", justifyContent: "space-around" }}
+              >
                 <Input
                   width="300"
                   type="text"
@@ -158,20 +162,7 @@ function ProfessionalRegister() {
                     )
                   }
                 />
-                <Input
-                  width="300"
-                  type="text"
-                  placeholder="Email"
-                  name="email"
-                  value={formValuesProfessionalRegister.email}
-                  onChange={(e) =>
-                    handleInputChangeProfessionalRegister(
-                      e as React.ChangeEvent<HTMLInputElement>
-                    )
-                  }
-                />
-              </Col>
-              <Col md={6} className="mt-3 mb-3 flex-column align-items-center">
+
                 <Input
                   width="300"
                   type="text"
@@ -186,7 +177,24 @@ function ProfessionalRegister() {
                     )
                   }
                 />
-
+              </Col>
+              <Col
+                md={12}
+                className="mt-3 mb-3"
+                style={{ display: "flex", justifyContent: "space-around" }}
+              >
+                <Input
+                  width="300"
+                  type="text"
+                  placeholder="Email"
+                  name="email"
+                  value={formValuesProfessionalRegister.email}
+                  onChange={(e) =>
+                    handleInputChangeProfessionalRegister(
+                      e as React.ChangeEvent<HTMLInputElement>
+                    )
+                  }
+                />
                 <Input
                   width="300"
                   type="text"

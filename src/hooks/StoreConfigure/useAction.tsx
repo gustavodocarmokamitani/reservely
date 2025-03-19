@@ -10,14 +10,20 @@ export const useAction = (
   setClosingDates: React.Dispatch<React.SetStateAction<Date[] | null>>,
   openingWeekDay: string[],
   setOpeningWeekDay: React.Dispatch<React.SetStateAction<string[]>>,
-  formValuesStore: { name: string; active: boolean },
+  formValuesStore: {
+    name: string;
+    active: boolean;
+    multipleAppointments: boolean;
+  },
   setFormValuesStore: React.Dispatch<
     React.SetStateAction<{
       name: string;
       active: boolean;
+      multipleAppointments: boolean;
     }>
   >,
   setStatusStore: React.Dispatch<React.SetStateAction<boolean>>,
+  setMultipleAppointments: React.Dispatch<React.SetStateAction<boolean>>,
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   const { enqueueSnackbar } = useSnackbar();
@@ -31,6 +37,7 @@ export const useAction = (
       ...store,
       name: formValuesStore.name,
       status: formValuesStore.active,
+      multipleAppointments: formValuesStore.multipleAppointments,
       operatingHours: selectedTimes.join(" - "),
       closingDays: closingDates
         ? closingDates
@@ -65,6 +72,7 @@ export const useAction = (
       };
 
       setStatusStore(updatedValues.active);
+      setMultipleAppointments(updatedValues.multipleAppointments);
       return updatedValues;
     });
   };

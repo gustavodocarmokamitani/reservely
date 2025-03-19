@@ -5,6 +5,7 @@ import {
   createAppointment,
   getValidateAppointment,
 } from "../../services/AppointmentServices";
+import { getStoreById } from "../../services/StoreServices";
 
 export const useSubmit = (
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
@@ -39,36 +40,51 @@ export const useSubmit = (
       const selectedTime = appointmentTime[appointmentTime.length - 1];
       const selectedDate = appointmentDate[appointmentDate.length - 1];
 
-      if (
-        !employee.length ||
-        !client.length ||
-        !service.length ||
-        !appointmentTime.length ||
-        !appointmentDate.length
-      ) {
-        enqueueSnackbar("Por favor, preencha todos os campos.", {
+      if (!employee.length) {
+        enqueueSnackbar("Por favor, selecione um funcionário.", {
           variant: "warning",
         });
-        setIsLoading(false);
+      } else if (!client.length) {
+        enqueueSnackbar("Por favor, selecione um cliente.", {
+          variant: "warning",
+        });
+      } else if (!service.length) {
+        enqueueSnackbar("Por favor, selecione um serviço.", {
+          variant: "warning",
+        });
+      } else if (!appointmentTime.length) {
+        enqueueSnackbar("Por favor, selecione um horário.", {
+          variant: "warning",
+        });
+      } else if (!appointmentDate.length) {
+        enqueueSnackbar("Por favor, selecione uma data.", {
+          variant: "warning",
+        });
+      } else {
         return;
       }
+
+      setIsLoading(false);
 
       const funcionarioId = await getCorrigirIdByUserId(selectedEmployee.value);
       const serviceIds = selectedService.map((item) => item.value).join(",");
 
-      const isAvailable = await getValidateAppointment(
-        funcionarioId.id,
-        selectedDate,
-        selectedTime.label.toString(),
-        serviceIds
-      );
+      const responseStore = await getStoreById(storeUser);
+      if (responseStore.multipleAppointments === false) {
+        const isAvailable = await getValidateAppointment(
+          funcionarioId.id,
+          selectedDate,
+          selectedTime.label.toString(),
+          serviceIds
+        );
 
-      if (!isAvailable) {
-        enqueueSnackbar("Este horário já está ocupado.", {
-          variant: "warning",
-        });
-        setIsLoading(false);
-        return;
+        if (!isAvailable) {
+          enqueueSnackbar("Este horário já está ocupado.", {
+            variant: "warning",
+          });
+          setIsLoading(false);
+          return;
+        }
       }
 
       const newAppointment = {
@@ -77,7 +93,7 @@ export const useSubmit = (
         employeeId: funcionarioId.id,
         appointmentDate: selectedDate,
         appointmentTime: selectedTime.label.toString(),
-        appointmentStatusId: 1,        
+        appointmentStatusId: 1,
         googleEventId: "",
         serviceIds: selectedService.map((item) => item.value),
         storeId: storeUser,

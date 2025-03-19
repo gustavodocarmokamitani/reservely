@@ -54,7 +54,7 @@ function Store() {
                 localhost:3000/code/{store?.storeCode.replace("#", "_")}
               </div>
               <div className="copy-button">
-                {isCopied ? "Copiado" : "Copiar"}
+                {isCopied ? "copiado" : "copiar"}
               </div>
             </S.Copy>
           </P.ContentHeader>
@@ -84,6 +84,12 @@ function Store() {
                 type="status"
                 statusStore={store?.status}
                 title="Status"
+                icon="confirm"
+              />
+              <Card
+                type="status"
+                statusStore={store?.multipleAppointments}
+                title="Múltiplos Agendamentos"
                 icon="confirm"
               />
               {store?.operatingHours && store.operatingHours.length > 0 ? (

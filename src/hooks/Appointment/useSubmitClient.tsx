@@ -8,6 +8,7 @@ import {
 import { DecodedToken } from "../../models/DecodedToken";
 import { Store } from "../../models/Store";
 import { useNavigate } from "react-router-dom";
+import { getStoreById } from "../../services/StoreServices";
 
 export const useSubmitClient = (
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
@@ -30,42 +31,59 @@ export const useSubmitClient = (
     appointmentDate: Date[],
     storeUser: number
   ) => {
-    try {    
+    try {
       setIsLoading(true);
       const selectedEmployee = employee[employee.length - 1];
       const selectedService = service;
       const selectedTime = appointmentTime[appointmentTime.length - 1];
       const selectedDate = appointmentDate[appointmentDate.length - 1];
 
-      if (
-        !employee.length ||
-        !service.length ||
-        !appointmentTime.length ||
-        !appointmentDate.length
-      ) {
-        enqueueSnackbar("Por favor, preencha todos os campos.", {
+      if (!employee.length) {
+        enqueueSnackbar("Por favor, selecione um funcionário.", {
           variant: "warning",
         });
-        setIsLoading(false);
+      } else if (!client.length) {
+        enqueueSnackbar("Por favor, selecione um cliente.", {
+          variant: "warning",
+        });
+      } else if (!service.length) {
+        enqueueSnackbar("Por favor, selecione um serviço.", {
+          variant: "warning",
+        });
+      } else if (!appointmentTime.length) {
+        enqueueSnackbar("Por favor, selecione um horário.", {
+          variant: "warning",
+        });
+      } else if (!appointmentDate.length) {
+        enqueueSnackbar("Por favor, selecione uma data.", {
+          variant: "warning",
+        });
+      } else {
         return;
       }
 
       const funcionarioId = await getCorrigirIdByUserId(selectedEmployee.value);
-      const serviceIds = selectedService.map((item) => item.value).join(",");      
+      const serviceIds = selectedService.map((item) => item.value).join(",");
 
-      const isAvailable = await getValidateAppointment(
-        funcionarioId.id,
-        selectedDate,
-        selectedTime.label.toString(),
-        serviceIds
+      const responseStore = await getStoreById(
+        storeData ? storeData?.id : store?.[store.length - 1].value
       );
 
-      if (!isAvailable) {
-        enqueueSnackbar("Este horário já está ocupado.", {
-          variant: "warning",
-        });
-        setIsLoading(false);
-        return;
+      if (responseStore.multipleAppointments === false) {
+        const isAvailable = await getValidateAppointment(
+          funcionarioId.id,
+          selectedDate,
+          selectedTime.label.toString(),
+          serviceIds
+        );
+
+        if (!isAvailable) {
+          enqueueSnackbar("Este horário já está ocupado.", {
+            variant: "warning",
+          });
+          setIsLoading(false);
+          return;
+        }
       }
 
       const newAppointment = {
@@ -79,13 +97,13 @@ export const useSubmitClient = (
         serviceIds: selectedService.map((item) => item.value),
         storeId: storeData ? storeData?.id : store?.[store.length - 1].value,
       };
-      
+
       const response = await createAppointment([newAppointment]);
       if (response) {
         enqueueSnackbar("Agendamento criado com sucesso!", {
           variant: "success",
         });
-        navigate("/home-client/:")
+        navigate("/home-client/:");
       }
     } catch (error) {
       console.error("Erro ao criar agendamento", error);

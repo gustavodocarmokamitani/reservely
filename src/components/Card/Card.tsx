@@ -190,8 +190,8 @@ const Card: React.FC<CardProps> = ({
                   <p style={{ textAlign: "center" }}>
                     {statusStore !== undefined
                       ? statusStore
-                        ? "Ativo"
-                        : "Fechado"
+                        ? "Ativado"
+                        : "Desativado"
                       : "Sem Status"}
                   </p>
                 </Col>

@@ -20,7 +20,7 @@ interface ScheduleXProps {
 export function ScheduleX({ events }: ScheduleXProps) {
   const eventsService = useState(() => createEventsServicePlugin())[0];
   const [calendarControls] = useState(() => createCalendarControlsPlugin());
-
+  
   const calendar = useCalendarApp({
     views: [
       createViewMonthGrid(),
@@ -32,21 +32,19 @@ export function ScheduleX({ events }: ScheduleXProps) {
     plugins: [eventsService, calendarControls],
     locale: "pt-BR",
     defaultView: "monthGrid",
-    theme: 'shadcn',
+    theme: "shadcn",
     callbacks: {
       onEventClick: (event) => {
         console.log("Evento clicado:", event);
         console.log("Mudando para a visualização de dia...");
 
-        calendarControls.setDate(event.start.split(' ')[0]);
+        calendarControls.setDate(event.start.split(" ")[0]);
         calendarControls.setView("day");
       },
     },
   });
 
-  useEffect(() => {
-    console.log("CalendarApp inicializado:", calendar);
-  }, [calendar]);
+  useEffect(() => {}, [calendar]);
 
   return (
     <div style={{ width: "100%", height: "100%" }}>

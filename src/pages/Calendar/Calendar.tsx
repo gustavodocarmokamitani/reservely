@@ -88,7 +88,7 @@ function Calendar() {
   }, [fetchData]);
 
   const generateScheduleX = () => {
-    if (!isDataLoaded) {
+    if (isDataLoaded) {
       return <ScheduleX events={events} />;
     }
     return <LoadingLocale />;

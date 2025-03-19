@@ -34,6 +34,8 @@ function StoreConfigure() {
     setClosingDates,
     statusStore,
     setStatusStore,
+    multipleAppointments,
+    setMultipleAppointments,
     optionsTime,
     setOptionsTime,
     isLoading,
@@ -46,6 +48,7 @@ function StoreConfigure() {
     setStore,
     setFormValuesStore,
     setStatusStore,
+    setMultipleAppointments,
     selectedTimes,
     setSelectedTimes,
     openingWeekDay,
@@ -71,6 +74,7 @@ function StoreConfigure() {
     formValuesStore,
     setFormValuesStore,
     setStatusStore,
+    setMultipleAppointments,
     setIsLoading
   );
 
@@ -130,6 +134,30 @@ function StoreConfigure() {
                   />
                 </S.StoreContent>
                 <S.StoreContent>
+                  <p>Múltiplos agendamentos </p>
+                  {multipleAppointments === true && (
+                    <div style={{ padding: "0 0 15px 0" }}>
+                      <span
+                        style={{
+                          fontSize: "12px",
+                          color: "red",
+                        }}
+                      >
+                        * Habilitar "Múltiplos Agendamentos" permitirá que
+                        vários <br />
+                        agendamentos sejam feitos para o mesmo horário.
+                      </span>
+                    </div>
+                  )}
+                  <Input
+                    type="toggle"
+                    name="multipleAppointments"
+                    value={formValuesStore.multipleAppointments.toString()}
+                    onChange={handleInputChangeStore}
+                    width={`${window.innerWidth > 1680 ? "350" : "285"}`}
+                  />
+                </S.StoreContent>
+                <S.StoreContent>
                   <p>Horários de funcionamento</p>
                   <Select
                     setData={setSelectedTimesSelect}
@@ -170,6 +198,12 @@ function StoreConfigure() {
                   type="status"
                   statusStore={statusStore}
                   title="Status"
+                  icon="confirm"
+                />
+                <Card
+                  type="status"
+                  statusStore={multipleAppointments}
+                  title="Múltiplos Agendamentos"
                   icon="confirm"
                 />
                 {store?.operatingHours && store?.operatingHours.length > 0 ? (

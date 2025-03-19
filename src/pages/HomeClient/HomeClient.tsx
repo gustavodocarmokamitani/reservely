@@ -9,7 +9,10 @@ import { getAppointmentByClienteId } from "../../services/AppointmentServices";
 import { getEmployeeById } from "../../services/EmployeeServices";
 import { getUserById } from "../../services/UserServices";
 import { getServiceTypeById } from "../../services/ServiceTypeServices";
-import { getStoreById } from "../../services/StoreServices";
+import {
+  getStoreById,
+  getStoreByStoreCode,
+} from "../../services/StoreServices";
 import { capitalizeFirstLetter } from "../../services/system/globalService";
 import Button from "../../components/Button/Button";
 import {
@@ -21,6 +24,7 @@ import {
   Title,
 } from "../Styles/_Page.styles";
 import { useNavigate, useParams } from "react-router-dom";
+import { Store } from "../../models/Store";
 
 export const HomeClient = () => {
   const { storeCodeParams } = useParams();
@@ -32,6 +36,7 @@ export const HomeClient = () => {
 
   const [decodedData, setDecodedData] = useState<DecodedToken | null>(null);
   const [data, setData] = useState<any[]>([]);
+  const [storeActive, setStoreActive] = useState<Store>();
 
   useEffect(() => {
     const fetchDecodedToken = async () => {
@@ -56,6 +61,11 @@ export const HomeClient = () => {
       }
 
       try {
+        if (storeCode !== ":") {
+          const responseStoreActive = await getStoreByStoreCode(storeCode);
+          setStoreActive(responseStoreActive);
+        }
+
         const userId = parseFloat(decodedData.userId);
         if (isNaN(userId)) {
           console.error("userId não é um número válido:", decodedData.userId);
@@ -69,7 +79,6 @@ export const HomeClient = () => {
           return;
         }
 
-        // Processamento detalhado dos agendamentos
         const appointmentsWithDetails = (
           await Promise.all(
             responseAppointments.map(async (appointment: Appointment) => {
@@ -79,7 +88,7 @@ export const HomeClient = () => {
                     "Dados de agendamento incompletos:",
                     appointment
                   );
-                  return null; // Ignora este agendamento
+                  return null;
                 }
 
                 const responseEmployee = await getEmployeeById(
@@ -195,7 +204,7 @@ export const HomeClient = () => {
             Bem Vindo! <br />
             {data.length > 0 && (
               <>
-                {data[0]?.storeName} <span>{data[0]?.storeCode}</span>
+                {storeActive?.name} <span>{storeActive?.storeCode}</span>
               </>
             )}
           </Title>
@@ -216,7 +225,7 @@ export const HomeClient = () => {
         </ContentHeaderImg>
       </ContainerHeader>
 
-      <div style={{paddingLeft: "1.5rem"}}>
+      <div style={{ paddingLeft: "1.5rem" }}>
         <h2 style={{ color: "#2c2c2c", marginTop: "6.25rem" }}>
           Histórico de Agendamentos
         </h2>

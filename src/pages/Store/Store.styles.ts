@@ -53,6 +53,7 @@ export const StoreSectionTwo = styled.div`
 
 export const Copy = styled.div`
   display: flex;
+  height: 50px;
   flex-direction: row;
   align-items: center;
   justify-content: center;
@@ -76,9 +77,6 @@ export const Copy = styled.div`
     height: 100%;
     padding: 4px 16px;
     font-size: 14px;
-    border-top: 1px solid #ddd;
-    border-left: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
     border-radius: 25px 0px 0px 25px;
     background-color: #2c2c2c;
     text-align: center;
@@ -91,9 +89,7 @@ export const Copy = styled.div`
     width: 120px;
     padding: 4px 0px;
     font-size: 14px;
-    border-top: 1px solid #ddd;
     border-left: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
     border-radius: 0px 25px 25px 0px;
     background-color: #2c2c2c;
     text-align: center;
