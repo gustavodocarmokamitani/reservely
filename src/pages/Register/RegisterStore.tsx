@@ -133,13 +133,13 @@ const RegisterStore = () => {
                 <p className="mt-5 mb-4">
                   Already have an account? <a href="/login">Login</a>
                 </p>
-                <ParagraphThin>Or sign up with</ParagraphThin>
+                {/* <ParagraphThin>Or sign up with</ParagraphThin>
                 <GoogleLogin
                   onSuccess={handleRegisterWithGoogle}
                   onError={() =>
                     console.log("Erro ao fazer login com o Google")
                   }
-                />
+                /> */}
               </Col>
             </Row>
           </Col>
