@@ -1,10 +1,14 @@
 import { useState } from "react";
 import { SelectOption } from "../../models/SelectOptions";
+import { Store } from "../../models/Store";
+import { DecodedToken } from "../../models/DecodedToken";
 
 export const useStateCustom = () => {
+  const [storeData, setStoreData] = useState<Store>();
   const [employee, setEmployee] = useState<SelectOption[]>([]);
   const [client, setClient] = useState<SelectOption[]>([]);
   const [service, setService] = useState<SelectOption[]>([]);
+  const [store, setStore] = useState<SelectOption[]>([]);
   const [appointmentTime, setAppointmentTime] = useState<SelectOption[]>([]);
   const [appointmentDate, setAppointmentDate] = useState<Date[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -12,14 +16,22 @@ export const useStateCustom = () => {
   const [optionsService, setOptionsService] = useState<SelectOption[]>([]);
   const [optionsClient, setOptionsClient] = useState<SelectOption[]>([]);
   const [optionsTime, setOptionsTime] = useState<SelectOption[]>([]);
+  const [optionsStore, setOptionsStore] = useState<SelectOption[]>([]);
+  const [decodedData, setDecodedData] = useState<DecodedToken | null>(null);
+  const [closedDates, setClosedDates] = useState<string[]>([]);
+  const [operatingDays, setOperatingDays] = useState<string[]>([]);
 
   return {
+    storeData,
+    setStoreData,
     employee,
     setEmployee,
     client,
     setClient,
     service,
     setService,
+    store,
+    setStore,
     appointmentTime,
     setAppointmentTime,
     appointmentDate,
@@ -34,5 +46,13 @@ export const useStateCustom = () => {
     setOptionsClient,
     optionsTime,
     setOptionsTime,
+    optionsStore,
+    setOptionsStore,
+    decodedData,
+    setDecodedData,
+    closedDates,
+    setClosedDates,
+    operatingDays,
+    setOperatingDays,
   };
 };

@@ -52,7 +52,7 @@ const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
     <div ref={containerRef} style={{ marginTop: "3rem" }}>
       <Paper
         sx={{
-          height: 700,
+          height: 600,
           width: "100%",
           borderRadius: "15px",
           overflow: "hidden",
@@ -115,7 +115,7 @@ const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
           {...{ handleClose }}
         >
           <Row>
-            <Col md={6} className="pb-3" style={{ margin: "20px 0px 0px 0px" }}>
+            <Col md={12} className="pb-3" style={{ margin: "20px 0px 0px 0px" }}>
               <Select
                 setData={setStatusAppointment}
                 value={statusAppointment}
@@ -144,6 +144,8 @@ const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
                   <SelectDataPicker
                     setDate={setAppointmentDate}
                     type="appointment"
+                    closedDates={[]}
+                    operatingDays={[]}
                   />
                 </S.AppointmentContent>
               </Row>

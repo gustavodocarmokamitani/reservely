@@ -1,7 +1,5 @@
-import { Col, Row } from "react-bootstrap";
 import * as S from "./Store.styles";
-import { ContainerPage } from "../Styles/_Page.styles";
-import HeaderTitle from "../../view/HeaderTitle/HeaderTitle";
+import * as P from "../Styles/_Page.styles";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
 import SelectDataPicker from "../../components/Select/SelectDataPicker";
@@ -12,6 +10,9 @@ import { useFetch } from "../../hooks/StoreConfigure/useFetch";
 import { useAction } from "../../hooks/StoreConfigure/useAction";
 import { useEffectCustom } from "../../hooks/StoreConfigure/useEffectCustom";
 import Loading from "../../components/Loading/loading";
+
+import homeClient from "../../assets/homeClient.svg";
+import { Row } from "react-bootstrap";
 
 function StoreConfigure() {
   const storeUser = Number(localStorage.getItem("storeUser"));
@@ -33,6 +34,8 @@ function StoreConfigure() {
     setClosingDates,
     statusStore,
     setStatusStore,
+    multipleAppointments,
+    setMultipleAppointments,
     optionsTime,
     setOptionsTime,
     isLoading,
@@ -45,6 +48,7 @@ function StoreConfigure() {
     setStore,
     setFormValuesStore,
     setStatusStore,
+    setMultipleAppointments,
     selectedTimes,
     setSelectedTimes,
     openingWeekDay,
@@ -70,6 +74,7 @@ function StoreConfigure() {
     formValuesStore,
     setFormValuesStore,
     setStatusStore,
+    setMultipleAppointments,
     setIsLoading
   );
 
@@ -85,24 +90,25 @@ function StoreConfigure() {
   return (
     <>
       {isLoading && <Loading />}
-      <ContainerPage style={{ height: "100%", width: "calc(100vw - 20.6rem)" }}>
-        <Row>
-          <Col lg={12} xl={7} style={{ padding: "0px" }}>
-            <HeaderTitle
-              title={`${store?.name}`}
-              subTitle="Área destinada para gerenciamento da loja."
-            />
-          </Col>
-
-          <Col
-            lg={12}
-            xl={5}
-            className="d-flex flex-row justify-content-md-center justify-content-lg-end align-items-center  mt-md-3 mt-lg-5 mt-xl-0"
-          >
-            <Button $isBack onClick={handleButtonClick} type="button" />
-            <Button $isConfirm onClick={handleSubmit} type="button" />
-          </Col>
-        </Row>
+      <P.ContainerPage style={{ height: "100vh" }}>
+        <P.ContainerHeader>
+          <P.ContentHeader align="start">
+            <P.Title>Configuração da Loja</P.Title>
+            <P.SubTitle>Área destinada para gerenciamento da loja.</P.SubTitle>
+          </P.ContentHeader>
+          <P.ContentHeaderImg align="end">
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "end",
+                margin: "25px 0 0 0",
+              }}
+            >
+              <Button $isBack onClick={handleButtonClick} type="button" />
+              <Button $isConfirm onClick={handleSubmit} type="button" />
+            </div>
+          </P.ContentHeaderImg>
+        </P.ContainerHeader>
         <Row>
           <S.Store>
             <S.StoreSectionOne>
@@ -123,6 +129,30 @@ function StoreConfigure() {
                     type="toggle"
                     name="active"
                     value={formValuesStore.active.toString()}
+                    onChange={handleInputChangeStore}
+                    width={`${window.innerWidth > 1680 ? "350" : "285"}`}
+                  />
+                </S.StoreContent>
+                <S.StoreContent>
+                  <p>Múltiplos agendamentos </p>
+                  {multipleAppointments === true && (
+                    <div style={{ padding: "0 0 15px 0" }}>
+                      <span
+                        style={{
+                          fontSize: "12px",
+                          color: "red",
+                        }}
+                      >
+                        * Habilitar "Múltiplos Agendamentos" permitirá que
+                        vários <br />
+                        agendamentos sejam feitos para o mesmo horário.
+                      </span>
+                    </div>
+                  )}
+                  <Input
+                    type="toggle"
+                    name="multipleAppointments"
+                    value={formValuesStore.multipleAppointments.toString()}
                     onChange={handleInputChangeStore}
                     width={`${window.innerWidth > 1680 ? "350" : "285"}`}
                   />
@@ -150,7 +180,13 @@ function StoreConfigure() {
                 </S.StoreContent>
                 <S.StoreContent>
                   <p>Datas de fechamento</p>
-                  <SelectDataPicker type="store" setDate={setClosingDates} isClearable />
+                  <SelectDataPicker
+                    type="store"
+                    setDate={setClosingDates}
+                    isClearable
+                    operatingDays={[]}
+                    closedDates={[]}
+                  />
                 </S.StoreContent>
               </S.StoreContainer>
             </S.StoreSectionOne>
@@ -162,6 +198,12 @@ function StoreConfigure() {
                   type="status"
                   statusStore={statusStore}
                   title="Status"
+                  icon="confirm"
+                />
+                <Card
+                  type="status"
+                  statusStore={multipleAppointments}
+                  title="Múltiplos Agendamentos"
                   icon="confirm"
                 />
                 {store?.operatingHours && store?.operatingHours.length > 0 ? (
@@ -229,7 +271,7 @@ function StoreConfigure() {
             </S.StoreSectionTwo>
           </S.Store>
         </Row>
-      </ContainerPage>
+      </P.ContainerPage>
     </>
   );
 }

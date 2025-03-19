@@ -40,7 +40,7 @@ const RegisterClient = () => {
             </TypingText>
 
             <p style={{ textAlign: "center" }}>
-              Cadastre-se para gerenciar seus projetos.
+              Cadastre-se para realizar agendamentos.
             </p>
             <S.ContainerRegister>
               <S.WrapperRegisterInput>

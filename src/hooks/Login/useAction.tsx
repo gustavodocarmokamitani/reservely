@@ -8,7 +8,8 @@ import { AppContext } from "../../context/AppContext";
 export const useAction = (
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
   email: string,
-  password: string
+  password: string,
+  storeCode: string
 ) => {
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
@@ -41,7 +42,13 @@ export const useAction = (
           { variant: "success" }
         );
         if (responseDecodedToken.userRole === "Client") {
-          navigate("/appointment-client/noStoreCode");
+          console.log(storeCode === "");
+
+          if (storeCode === "") {
+            navigate(`/home-client/:`);
+          } else {
+            navigate(`/home-client/${storeCode}`);
+          }
         } else {
           navigate("/appointment");
         }

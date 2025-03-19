@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../components/Button/Button";
 import {
   ContainerLogin,
@@ -8,11 +8,22 @@ import {
 import { TypingText } from "../Styles/animationTyping.styles";
 
 const Home = () => {
+  const { storeCodeParams } = useParams();
+  const storeCode = storeCodeParams ? storeCodeParams : "";
+
   const navigate = useNavigate();
 
-  const handleButtonClick = (login: boolean, registerStore: boolean, registerClient: boolean) => {
+  const handleButtonClick = (
+    login: boolean,
+    registerStore: boolean,
+    registerClient: boolean
+  ) => {
     if (login) {
-      navigate("/login");
+      if (storeCode !== "" && storeCode.includes("_")) {
+        navigate(`/login-code/${storeCode}`);
+      } else {
+        navigate("/login");
+      }
     } else if (registerStore) {
       navigate("/register-store");
     } else if (registerClient) {
@@ -28,7 +39,6 @@ const Home = () => {
           <TypingText numLetters={10}>reserve.ly</TypingText>
         </div>
         <ContentButton>
-          
           <Button
             $isLogin
             type="button"

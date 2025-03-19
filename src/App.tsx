@@ -36,6 +36,7 @@ import Calendar from "./pages/Calendar/Calendar";
 import RegisterGoogle from "./pages/Register/RegisterGoogle";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { AppointmentClient } from "./pages/Appointment/AppointmentClient";
+import { HomeClient } from "./pages/HomeClient/HomeClient";
 
 function App() {
   const clientId = import.meta.env.VITE_CLIENT_ID;
@@ -54,7 +55,9 @@ function App() {
           <Routes>
             {/* Rotas Públicas */}
             <Route path="/" element={<Home />} />
+            <Route path="/code/:storeCodeParams" element={<Home />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/login-code/:storeCodeParams" element={<Login />} />
             <Route path="/register-store" element={<RegisterStore />} />
             <Route path="/register-client" element={<RegisterClient />} />
             <Route path="/register-google" element={<RegisterGoogle />} />
@@ -68,15 +71,7 @@ function App() {
               element={
                 <ProtectedRoute>
                   <React.Fragment>
-                    <div
-                      style={{
-                        display: "flex",
-                        width: "20rem",
-                        position: "relative",
-                      }}
-                    >
-                      <Navigation />
-                    </div>
+                    <Navigation />
                     <div style={{ flexGrow: 1, overflowX: "hidden" }}>
                       <Routes>
                         <Route path="/dashboard" element={<Dashboard />} />
@@ -100,11 +95,12 @@ function App() {
                         <Route path="/callhelp" element={<CallHelp />} />
                         <Route path="/appointment" element={<Appointment />} />
                         <Route
-                          path="/appointment-history"
+                          path="/history-appointment"
                           element={<AppointmentHistory />}
                         />
+                        <Route path="/home-client/:storeCodeParams" element={<HomeClient />} />
                         <Route
-                          path="/appointment-client/:storeCode"
+                          path="/appointment-client/:storeCodeParams"
                           element={<AppointmentClient />}
                         />
                       </Routes>

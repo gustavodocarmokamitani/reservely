@@ -11,7 +11,9 @@ createRoot(document.getElementById('root')!).render(
       anchorOrigin={{
         vertical: "top",
         horizontal: "left",
-      }}>
+      }}
+        style={{zIndex: "9999999"}}
+      >
       <App />
     </SnackbarProvider>
   </AppProvider>

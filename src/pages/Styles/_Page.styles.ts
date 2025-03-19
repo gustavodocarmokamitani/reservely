@@ -1,13 +1,14 @@
 import styled from "styled-components";
 
 export const ContainerPage = styled.div`
-  width: calc(100vw - 19.5rem);
+  width: 100%;
   height: 100%;
   padding: 5rem;
   background: #fafafa;
 
-  @media (max-width: 1680px) {
-    width: calc(100vw - 18rem);
+  @media (max-width: 768px) {
+    flex-direction: column;
+    padding: 5rem 10px 0 10px;
   }
 `;
 
@@ -76,3 +77,66 @@ export const ContainerReSendEmail = styled.div`
   flex-direction: column;
   height: 100vh;
 `;
+
+export const ContainerHeader = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  width: 100%;
+  border-radius: 15px 0 0 15px;
+  padding: 25px 75px;
+  background: #f16855;
+
+  @media (max-width: 768px) {
+    padding: 25px 55px;
+  }
+`;
+
+interface ContentHeaderProps {
+  align?: string;
+}
+
+export const ContentHeader = styled.div<ContentHeaderProps>`
+  display: flex;
+  align-items: ${(props) => props.align || "start"};
+  flex-direction: column;
+  width: 100%;
+  border-radius: 15px 0 0 15px;  
+}
+`;
+
+export const ContentHeaderImg = styled.div<ContentHeaderProps>`
+  display: flex;
+  align-items: ${(props) => props.align || "start"};
+  flex-direction: column;
+  width: 100%;
+  border-radius: 15px 0 0 15px;  
+  
+  @media (max-width: 1110px) {   
+      display: none;    
+  }
+}
+`;
+
+export const Title = styled.div`
+  font-size: 3.5rem;
+  font-weight: bold;
+  color: white;
+  span {
+    font-size: 1.5rem;
+    color: #2c2c2c;
+  }
+  @media (max-width: 768px) {
+    font-size: 3rem;
+  }
+}
+`;
+
+export const SubTitle = styled.div`
+  font-size: 1rem;
+  color: white;
+  font-weight: 400;
+  line-height: 2;
+  margin: 25px 0;
+`;
+

@@ -4,6 +4,7 @@ export interface Store {
     name: string;
     address: string;
     status: boolean;
+    multipleAppointments: boolean;
     operatingHours: string;
     closingDays: string[];
     operatingDays: string[];

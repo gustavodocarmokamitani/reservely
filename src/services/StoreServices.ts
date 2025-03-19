@@ -23,9 +23,11 @@ export const getStoreById = async (id: number) => {
 
 export const getStoreByStoreCode = async (storeCode: string) => {
   try {
-    const response = await api.get(`store/storeCode/${storeCode}`);
+    const encodedStoreCode = encodeURIComponent(storeCode);
+    const response = await api.get(`store/storeCode/${encodedStoreCode}`);
     return response.data;
   } catch (error) {
+    console.error("Erro ao buscar store:", error);
     return false;
   }
 };

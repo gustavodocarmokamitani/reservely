@@ -5,7 +5,7 @@ const customStyles = {
     maxWidth: "23.875rem",    
     minHeight: " 3.125rem",
     padding: window.innerWidth < 1680 ? ".15rem 1.56rem" : "0.2rem 1.56rem",
-    fontSize: "0.875rem",
+    fontSize: "16px",
     border: "1px solid rgba(0, 0, 0, 0.25)",
     borderRadius: "0.93rem",
     boxShadow: "4px 4px 15px 0px rgba(0, 0, 0, 0.25)",
@@ -29,7 +29,7 @@ const customStyles = {
     backgroundColor: state.isSelected ? "#2c2c2c" : "#fff",
     padding: "0.3rem 1rem",
     minHeight: "2.125rem",
-    fontSize: "1rem",
+    fontSize: "16px",
     color: state.isSelected ? "#fff" : "#333",
     "&:hover": {
       backgroundColor: "#e0e0e0",

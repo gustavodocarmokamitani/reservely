@@ -107,7 +107,11 @@ const ServiceDataTable: React.FC<ServiceDataTableProps> = ({
                 type="text"
                 placeholder="Valor"
                 name="value"
-              value={formValuesService.value ? formatToBRL(formValuesService.value) : formatToBRL("0")}
+                value={
+                  formValuesService.value
+                    ? formatToBRL(formValuesService.value)
+                    : formatToBRL("0")
+                }
                 onChange={(e) =>
                   handleInputChangeService(
                     e as React.ChangeEvent<HTMLInputElement>

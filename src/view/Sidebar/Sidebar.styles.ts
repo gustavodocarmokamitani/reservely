@@ -10,8 +10,7 @@ export const SidebarContainer = styled.div`
   position: fixed;
   box-shadow: 8px 0px 7px rgba(0, 0, 0, 0.25);
   border-radius: 0px 25px 25px 0px;
-
-
+  background: white;
 `;
 
 export const MenuContainer = styled.div`

@@ -50,3 +50,50 @@ export const StoreSectionTwo = styled.div`
     width: 100%;
   }
 `;
+
+export const Copy = styled.div`
+  display: flex;
+  height: 50px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 15px;
+  box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    box-shadow: 6px 6px 20px 0px rgba(0, 0, 0, 0.6);
+  }
+
+  &:active {
+    background-color: rgb(77, 76, 76);
+    box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, 0.5);
+  }
+
+  .copy-text {
+    width: 100%;
+    height: 100%;
+    padding: 4px 16px;
+    font-size: 14px;
+    border-radius: 25px 0px 0px 25px;
+    background-color: #2c2c2c;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+  }
+
+  .copy-button {
+    height: 100%;
+    width: 120px;
+    padding: 4px 0px;
+    font-size: 14px;
+    border-left: 1px solid #ddd;
+    border-radius: 0px 25px 25px 0px;
+    background-color: #2c2c2c;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+  }
+`;

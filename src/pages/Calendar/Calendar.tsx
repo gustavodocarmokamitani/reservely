@@ -1,14 +1,16 @@
-import { ContainerPage } from "../Styles/_Page.styles";
+import * as P from "../Styles/_Page.styles";
 import HeaderTitle from "../../view/HeaderTitle/HeaderTitle";
 import { Col, Row } from "react-bootstrap";
 import * as S from "./Calendar.styles";
-import { ScheduleX } from "../../view/ScheduleX/ScheduleX"; 
+import { ScheduleX } from "../../view/ScheduleX/ScheduleX";
 import { useCallback, useEffect, useState } from "react";
 import { getAppointmentByStoreId } from "../../services/AppointmentServices";
 import { getServiceTypeById } from "../../services/ServiceTypeServices";
 import { Appointment } from "../../models/Appointment";
 import moment from "moment";
 import LoadingLocale from "../../components/Loading/loadingLocale";
+
+import homeClient from "../../assets/homeClient.svg";
 
 interface Event {
   id: string;
@@ -26,7 +28,7 @@ function Calendar() {
   const fetchData = useCallback(async () => {
     try {
       const response = await getAppointmentByStoreId(storeUser);
-      
+
       const fetchedEvents: Event[] = await Promise.all(
         response.map(async (appointment: Appointment) => {
           const serviceNames = await Promise.all(
@@ -35,28 +37,31 @@ function Calendar() {
               if (servicesName && servicesName.data) {
                 return servicesName.data.name;
               }
-              return `Serviço Removido Id:${id} `;  
+              return `Serviço Removido Id:${id} `;
             })
           );
 
           const serviceDurationMinute = await Promise.all(
             appointment.serviceIds.map(async (id) => {
               const serviceDurationMinutes = await getServiceTypeById(id);
-              return serviceDurationMinutes?.data?.durationMinutes || 0; 
+              return serviceDurationMinutes?.data?.durationMinutes || 0;
             })
           );
-           
-          const totalDuration = serviceDurationMinute.reduce((acc, curr) => acc + curr, 0);
-          
+
+          const totalDuration = serviceDurationMinute.reduce(
+            (acc, curr) => acc + curr,
+            0
+          );
+
           const startDateTime =
             moment(appointment.appointmentDate).format("YYYY-MM-DD") +
             " " +
             appointment.appointmentTime;
-          
+
           const endDateTimeFull = moment(appointment.appointmentTime, "HH:mm")
-            .add(totalDuration, "minutes")  
+            .add(totalDuration, "minutes")
             .format("HH:mm");
-              
+
           const endDateTime =
             moment(appointment.appointmentDate).format("YYYY-MM-DD") +
             " " +
@@ -70,8 +75,7 @@ function Calendar() {
           };
         })
       );
-     
-      
+
       setEvents(fetchedEvents);
       setIsDataLoaded(true);
     } catch (error) {
@@ -87,24 +91,26 @@ function Calendar() {
     if (isDataLoaded) {
       return <ScheduleX events={events} />;
     }
-    return <LoadingLocale/>;
+    return <LoadingLocale />;
   };
 
   return (
     <>
-      <ContainerPage style={{ height: "100vh" }}>
-        <Row className="wrap">
-          <Col md={12} lg={7} style={{ padding: "0px" }}>
-            <HeaderTitle
-              title="Calendário"
-              subTitle="Área dedicada a visualização de agendamentos."
-            ></HeaderTitle>
-          </Col>
-        </Row>
+      <P.ContainerPage style={{ height: "100vh" }}>
+        <P.ContainerHeader>
+          <P.ContentHeader align="start">
+            <P.Title>
+              Calendário <br />
+            </P.Title>
+            <P.SubTitle>
+              Área dedicada a visualização de agendamentos.
+            </P.SubTitle>
+          </P.ContentHeader>
+        </P.ContainerHeader>
         <S.CalendarContainer>
           <S.CalendarContent>{generateScheduleX()}</S.CalendarContent>
         </S.CalendarContainer>
-      </ContainerPage>
+      </P.ContainerPage>
     </>
   );
 }

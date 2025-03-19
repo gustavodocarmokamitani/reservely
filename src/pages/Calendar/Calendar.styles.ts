@@ -11,6 +11,6 @@ export const CalendarContainer = styled.div`
 export const CalendarContent = styled.div`
   width: 100%;
   height: 100%;
-  margin: 0 15px 0 15px;
-  margin-top: 20px;
+  margin: 0 15px 50px 15px;
+  
 `;

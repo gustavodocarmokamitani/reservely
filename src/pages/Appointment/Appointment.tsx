@@ -7,7 +7,14 @@ import { useFetch } from "../../hooks/Appointment/useFetch";
 import { useStateCustom } from "../../hooks/Appointment/useStateCustom";
 import { useSubmit } from "../../hooks/Appointment/useSubmit";
 import { Paragraph } from "../../components/Paragraph/Paragraph";
-import { ContainerPage } from "../Styles/_Page.styles";
+import {
+  ContainerHeader,
+  ContainerPage,
+  ContentHeader,
+  ContentHeaderImg,
+  SubTitle,
+  Title,
+} from "../Styles/_Page.styles";
 import * as S from "./Appointment.styles";
 import Loading from "../../components/Loading/loading";
 
@@ -16,12 +23,16 @@ export function Appointment() {
   const storeUser = Number(localStorage.getItem("storeUser"));
 
   const {
+    storeData,
+    setStoreData,
     employee,
     setEmployee,
     client,
     setClient,
     service,
     setService,
+    store,
+    setStore,
     appointmentTime,
     setAppointmentTime,
     appointmentDate,
@@ -36,16 +47,30 @@ export function Appointment() {
     setOptionsClient,
     optionsTime,
     setOptionsTime,
+    optionsStore,
+    setOptionsStore,
+    decodedData,
+    setDecodedData,
+    closedDates,
+    setClosedDates,
+    operatingDays,
+    setOperatingDays,
   } = useStateCustom();
 
   useFetch(
     storeCode,
     storeUser,
+    store,
+    setStoreData,
     setOptionsEmployee,
     setOptionsService,
     setOptionsClient,
     setOptionsTime,
-    setIsLoading
+    setOptionsStore,
+    setIsLoading,
+    setDecodedData,
+    setClosedDates,
+    setOperatingDays
   );
 
   const handleSubmit = async () => {
@@ -71,21 +96,17 @@ export function Appointment() {
     <>
       {isLoading && <Loading />}
       <ContainerPage style={{ height: "100vh" }}>
-        <Row className="wrap">
-          <Col md={12} lg={7} style={{ padding: "0px" }}>
-            <HeaderTitle
-              title="Agendamento"
-              subTitle="Área destinada para realizar os agendamentos."
-            />
-          </Col>
-          <Col
-            md={12}
-            lg={5}
-            className="d-flex flex-row justify-content-md-center justify-content-lg-end align-items-center mt-md-5 mt-lg-0"
-          >
+        <ContainerHeader>
+          <ContentHeader align="start">
+            <Title>
+              Agendamento <br />
+            </Title>
+            <SubTitle>Área destinada para realizar agendamentos.</SubTitle>
+          </ContentHeader>
+          <ContentHeaderImg align="end">
             <Button onClick={handleSubmit} $isConfirm type="button" />
-          </Col>
-        </Row>
+          </ContentHeaderImg>
+        </ContainerHeader>
         <S.AppointmentContainer>
           <Row
             className="justify-content-center align"
@@ -97,7 +118,7 @@ export function Appointment() {
                 <Select
                   setData={setEmployee}
                   options={optionsEmployee}
-                  placeholder="Selecione um funcionário"
+                  placeholder="Selecione..."
                   value={employee[employee.length - 1]}
                 />
               </S.AppointmentContent>
@@ -108,7 +129,7 @@ export function Appointment() {
                 <Select
                   setData={setClient}
                   options={optionsClient}
-                  placeholder="Selecione um cliente"
+                  placeholder="Selecione..."
                   value={client}
                 />
               </S.AppointmentContent>
@@ -119,7 +140,7 @@ export function Appointment() {
                 <Select
                   setData={setService}
                   options={optionsService}
-                  placeholder="Selecione um serviço"
+                  placeholder="Selecione..."
                   value={service}
                   isMulti={true}
                 />
@@ -131,7 +152,7 @@ export function Appointment() {
                 <Select
                   setData={setAppointmentTime}
                   options={optionsTime}
-                  placeholder="Selecione um horário"
+                  placeholder="Selecione..."
                   value={appointmentTime}
                 />
               </S.AppointmentContent>
@@ -140,7 +161,12 @@ export function Appointment() {
         </S.AppointmentContainer>
         <S.AppointmentContainer className="justify-content-center justify-content-xl-start pb-5">
           <S.AppointmentContent>
-            <SelectDataPicker setDate={setAppointmentDate} type="appointment" />
+            <SelectDataPicker
+              setDate={setAppointmentDate}
+              type="appointment"
+              operatingDays={operatingDays}
+              closedDates={closedDates}
+            />
           </S.AppointmentContent>
         </S.AppointmentContainer>
       </ContainerPage>

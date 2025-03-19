@@ -10,6 +10,9 @@ interface ButtonProps {
   $isLogin?: boolean;
   $isRegisterStore?: boolean;
   $isRegisterClient?: boolean;
+  $isRescheduling?: boolean;
+  $isAppointment?: boolean;
+  $isRating?: boolean;
   $isGoogle?: boolean;
   $isResend?: boolean;
   disabled?: boolean;
@@ -28,7 +31,7 @@ export const Button = styled.button<ButtonProps>`
     if (props.$isClosed) return "#FF3535";
     if (props.$isConfirm) return "#1A8439";
     if (props.$isConfigure || props.$isResend) return "#2B2B2B";
-    if (props.$isBack) return "#2c2c2c";
+    if (props.$isBack || props.$isRescheduling || props.$isRating || props.$isAppointment) return "#2c2c2c";
     if (props.$isLogin) return "#2A2A2A";
     if (props.$isRegisterStore || props.$isRegisterClient) return "#fff";
     if (props.$isGoogle) return "#fff";
@@ -58,7 +61,7 @@ export const Button = styled.button<ButtonProps>`
     content: "";
     position: absolute;
     top: 0;
-    left: -150%;
+    left: -200%;
     width: 100%;
     height: 100%;
     background: ${(props) =>

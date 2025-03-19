@@ -5,16 +5,23 @@ import {
   createAppointment,
   getValidateAppointment,
 } from "../../services/AppointmentServices";
+import { DecodedToken } from "../../models/DecodedToken";
+import { Store } from "../../models/Store";
+import { useNavigate } from "react-router-dom";
 import { getStoreById } from "../../services/StoreServices";
 
-export const useSubmit = (
+export const useSubmitClient = (
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
   setEmployee: React.Dispatch<React.SetStateAction<SelectOption[]>>,
   setClient: React.Dispatch<React.SetStateAction<SelectOption[]>>,
   setService: React.Dispatch<React.SetStateAction<SelectOption[]>>,
-  setAppointmentTime: React.Dispatch<React.SetStateAction<SelectOption[]>>
+  setAppointmentTime: React.Dispatch<React.SetStateAction<SelectOption[]>>,
+  decodedData: DecodedToken | null,
+  storeData: Store | undefined,
+  store: SelectOption[]
 ) => {
   const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
 
   return async (
     employee: SelectOption[],
@@ -25,17 +32,8 @@ export const useSubmit = (
     storeUser: number
   ) => {
     try {
-      console.log(
-        employee,
-        client,
-        service,
-        appointmentTime,
-        appointmentDate,
-        storeUser
-      );
       setIsLoading(true);
       const selectedEmployee = employee[employee.length - 1];
-      const selectedClient = client[client.length - 1];
       const selectedService = service;
       const selectedTime = appointmentTime[appointmentTime.length - 1];
       const selectedDate = appointmentDate[appointmentDate.length - 1];
@@ -64,12 +62,13 @@ export const useSubmit = (
         return;
       }
 
-      setIsLoading(false);
-
       const funcionarioId = await getCorrigirIdByUserId(selectedEmployee.value);
       const serviceIds = selectedService.map((item) => item.value).join(",");
 
-      const responseStore = await getStoreById(storeUser);
+      const responseStore = await getStoreById(
+        storeData ? storeData?.id : store?.[store.length - 1].value
+      );
+
       if (responseStore.multipleAppointments === false) {
         const isAvailable = await getValidateAppointment(
           funcionarioId.id,
@@ -89,14 +88,14 @@ export const useSubmit = (
 
       const newAppointment = {
         id: 0,
-        clientId: selectedClient.value,
+        clientId: Number(decodedData?.userId),
         employeeId: funcionarioId.id,
         appointmentDate: selectedDate,
         appointmentTime: selectedTime.label.toString(),
         appointmentStatusId: 1,
         googleEventId: "",
         serviceIds: selectedService.map((item) => item.value),
-        storeId: storeUser,
+        storeId: storeData ? storeData?.id : store?.[store.length - 1].value,
       };
 
       const response = await createAppointment([newAppointment]);
@@ -104,6 +103,7 @@ export const useSubmit = (
         enqueueSnackbar("Agendamento criado com sucesso!", {
           variant: "success",
         });
+        navigate("/home-client/:");
       }
     } catch (error) {
       console.error("Erro ao criar agendamento", error);

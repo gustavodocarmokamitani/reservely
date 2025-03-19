@@ -6,15 +6,19 @@ export const useStateCustom = () => {
   const [formValuesStore, setFormValuesStore] = useState<{
     name: string;
     active: boolean;
+    multipleAppointments: boolean;
   }>({
     name: "",
     active: false,
+    multipleAppointments: false,
   });
   const [store, setStore] = useState<Store | null>(null);
   const [selectedTimes, setSelectedTimes] = useState<string[]>([]);
   const [openingWeekDay, setOpeningWeekDay] = useState<string[]>([]);
   const [closingDates, setClosingDates] = useState<Date[] | null>([]);
   const [statusStore, setStatusStore] = useState<boolean>(false);
+  const [multipleAppointments, setMultipleAppointments] =
+    useState<boolean>(false);
   const [optionsTime, setOptionsTime] = useState<SelectOption[]>([]);
   const [selectedTimesSelect, setSelectedTimesSelect] = useState<
     SelectOption[]
@@ -71,6 +75,8 @@ export const useStateCustom = () => {
     setClosingDates,
     statusStore,
     setStatusStore,
+    multipleAppointments,
+    setMultipleAppointments,
     optionsTime,
     setOptionsTime,
     isLoading,

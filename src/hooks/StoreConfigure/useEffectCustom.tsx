@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { SelectOption } from "../../models/SelectOptions";
 
 export const useEffectCustom = (
@@ -9,21 +9,42 @@ export const useEffectCustom = (
   setOptionsTime: React.Dispatch<React.SetStateAction<SelectOption[]>>,
   setSelectedTimes: React.Dispatch<React.SetStateAction<string[]>>
 ) => {
+
+  const memoizedGenerateTimeOptions = useCallback(generateTimeOptions, []);
+
   useEffect(() => {
     if (openingWeekDaySelect.length > 0) {
-      setOpeningWeekDay(openingWeekDaySelect.map((item) => item.label));
+      setOpeningWeekDay((prev) => {
+        const newWeekDays = openingWeekDaySelect.map((item) => item.label);
+        if (JSON.stringify(prev) !== JSON.stringify(newWeekDays)) {
+          return newWeekDays;
+        }
+        return prev;
+      });
     }
   }, [openingWeekDaySelect, setOpeningWeekDay]);
 
   useEffect(() => {
-    const times = generateTimeOptions();
-    setOptionsTime(times);
-  }, [generateTimeOptions, setOptionsTime]);
+    const times = memoizedGenerateTimeOptions();
+    setOptionsTime((prev) => {
+      if (JSON.stringify(prev) !== JSON.stringify(times)) {
+        return times;
+      }
+      return prev;
+    });
+  }, [memoizedGenerateTimeOptions, setOptionsTime]);
 
   useEffect(() => {
     if (selectedTimesSelect.length > 0) {
-      setSelectedTimes(selectedTimesSelect.map((item) => item.label));
+      setSelectedTimes((prev) => {
+        const newTimes = selectedTimesSelect.map((item) => item.label);
+        if (JSON.stringify(prev) !== JSON.stringify(newTimes)) {
+          return newTimes;
+        }
+        return prev;
+      });
     }
   }, [selectedTimesSelect, setSelectedTimes]);
+
   return {};
 };

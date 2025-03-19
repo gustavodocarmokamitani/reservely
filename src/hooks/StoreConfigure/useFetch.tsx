@@ -9,9 +9,11 @@ export const useFetch = (
     React.SetStateAction<{
       name: string;
       active: boolean;
+      multipleAppointments: boolean;
     }>
   >,
   setStatusStore: React.Dispatch<React.SetStateAction<boolean>>,
+  setMultipleAppointments: React.Dispatch<React.SetStateAction<boolean>>,
   selectedTimes: string[],
   setSelectedTimes: React.Dispatch<React.SetStateAction<string[]>>,
   openingWeekDay: string[],
@@ -28,14 +30,16 @@ export const useFetch = (
       const response = await getStoreById(storeUser);
       if (response) {
         setStore(response);
-
+        
         setFormValuesStore((prev) => ({
           ...prev,
           name: response.name,
           active: response.status,
+          multipleAppointments: response.multipleAppointments,
         }));
 
         setStatusStore(response.status);
+        setMultipleAppointments(response.multipleAppointments);
 
         if (selectedTimes.length === 0 && response.operatingHours) {
           const timeArray = response.operatingHours.split(" - ");
@@ -75,6 +79,7 @@ export const useFetch = (
     setStore,
     setFormValuesStore,
     setStatusStore,
+    setMultipleAppointments,
     selectedTimes,
     setSelectedTimes,
     openingWeekDay,
