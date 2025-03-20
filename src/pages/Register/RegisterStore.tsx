@@ -27,9 +27,14 @@ const RegisterStore = () => {
     <>
       {isLoading && <Loading />}
       <ContainerRegister>
-        <Row style={{ justifyContent: "center", paddingTop: "80px" }}>
+        <Row
+          style={{
+            justifyContent: "center",
+            paddingTop: `${window.innerWidth < 1281 ? 50 : 180}px`,
+          }}
+        >
           <Col
-            md={6}
+            md={8}
             style={{
               display: "flex",
               alignItems: "center",
@@ -118,7 +123,7 @@ const RegisterStore = () => {
 
             <Row className="text-center" style={{ padding: "15px 0 50px 0" }}>
               <Col style={{ margin: "25px 0" }}>
-                <div style={{marginBottom: "1rem"}}>
+                <div style={{ marginBottom: "1rem" }}>
                   <Button
                     $isBack
                     $noIcon

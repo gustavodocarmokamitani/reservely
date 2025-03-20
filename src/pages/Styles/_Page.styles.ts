@@ -25,7 +25,7 @@ export const ContainerLogin = styled.div`
 export const ContainerRegister = styled.div`
   width: 100vw;
   height: 100vh;
-  padding: 2.5rem;
+  padding: 1rem;
 `;
 
 export const WrapperLogin = styled.div`

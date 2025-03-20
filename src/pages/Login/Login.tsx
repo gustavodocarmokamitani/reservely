@@ -22,7 +22,12 @@ const Login = () => {
     <>
       {isLoading && <Loading />}
       <ContainerRegister>
-        <Row style={{ justifyContent: "center", paddingTop: "180px" }}>
+        <Row
+          style={{
+            justifyContent: "center",
+            paddingTop: `${window.innerWidth < 600 ? 100 : 180}px`,
+          }}
+        >
           <Col
             md={6}
             style={{
@@ -32,7 +37,7 @@ const Login = () => {
             }}
           >
             <div className="text-center">
-              <TypingText numLetters={26}>Bem vindo de volta 👋</TypingText>
+              <TypingText numLetters={26}>Bem vindo 👋</TypingText>
             </div>
             <div className="text-center">
               <p className="pt-2">

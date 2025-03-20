@@ -29,7 +29,7 @@ const RegisterClient = () => {
       <ContainerRegister>
         <Row style={{ justifyContent: "center", paddingTop: "100px" }}>
           <Col
-            md={6}
+            md={8}
             style={{
               display: "flex",
               alignItems: "center",
