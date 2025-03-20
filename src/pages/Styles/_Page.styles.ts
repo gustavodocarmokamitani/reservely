@@ -121,7 +121,7 @@ export const ContentHeaderImg = styled.div<ContentHeaderProps>`
 `;
 
 export const Title = styled.div`
-  font-size: 3.5rem;
+  font-size: 3rem;
   font-weight: bold;
   color: white;
   span {

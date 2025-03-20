@@ -229,9 +229,9 @@ export const HomeClient = () => {
       </ContainerHeader>
 
       <div style={{ paddingLeft: "1.5rem" }}>
-        <h2 style={{ color: "#2c2c2c", marginTop: "6.25rem" }}>
+        <h3 style={{ color: "#2c2c2c", marginTop: "6.25rem" }}>
           Histórico de Agendamentos
-        </h2>
+        </h3>
         <S.ContainerClient>
           {data.length > 0 ? (
             data.map((item, index) => (
