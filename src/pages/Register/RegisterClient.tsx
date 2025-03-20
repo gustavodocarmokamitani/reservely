@@ -27,7 +27,12 @@ const RegisterClient = () => {
     <>
       {isLoading && <Loading />}
       <ContainerRegister>
-        <Row style={{ justifyContent: "center", paddingTop: "100px" }}>
+        <Row
+          style={{
+            justifyContent: "center",
+            paddingTop: `${window.innerWidth < 1281 ? 50 : 180}px`,
+          }}
+        >
           <Col
             md={8}
             style={{
