@@ -35,12 +35,12 @@ export const StyledDatePicker = styled.div`
     border-radius: 15px;
     padding-top: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 23.8rem;
+    width: 21.7rem;
     font-size: 1.125rem;
   }
 
   & .react-datepicker__day-name {
-    margin: 0.625rem 0.5rem;
+    margin: 0.625rem 0.6rem;
     font-size: 0.9rem;
   }
 
@@ -50,7 +50,7 @@ export const StyledDatePicker = styled.div`
     border-bottom: 1px solid #ddd;
     border-top-left-radius: 0.3125rem;
     border-top-right-radius: 0.3125rem;
-    width: 23.4rem;
+    width: 21.3rem;
     text-transform: uppercase;
   }
 

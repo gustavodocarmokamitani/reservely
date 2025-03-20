@@ -20,18 +20,16 @@ export const AppointmentClientSelect = styled.div`
   display: flex;
   align-items: start;
   width: 100vw;
-  height: 100%;
+  height: 100%;  
   @media (max-width: 768px) {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    flex-direction: column;    
     align-items: center;
   }
 `;
 
 export const AppointmentClientContainer = styled.div`
-  width: 100%;
-  padding: 2.5rem;
+  width: 100%;  
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -52,7 +50,7 @@ export const ContainerHeader = styled.div`
   width: 100%;
   border-radius: 15px 0 0 15px;
   padding: 25px 75px;
-  background: #f16855;
+  background: #f16855;  
 `;
 
 export const ContentHeader = styled.div<ContentHeaderProps>`

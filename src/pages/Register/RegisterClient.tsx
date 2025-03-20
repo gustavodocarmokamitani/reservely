@@ -17,10 +17,11 @@ const RegisterClient = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const { handleRegisterWithGoogle, handleRegisterClient, handleNavigationHome } = useAction(
-    setIsLoading,
-    formData
-  );
+  const {
+    handleRegisterWithGoogle,
+    handleRegisterClient,
+    handleNavigationHome,
+  } = useAction(setIsLoading, formData);
 
   return (
     <>
@@ -36,7 +37,7 @@ const RegisterClient = () => {
             }}
           >
             <TypingText style={{ maxWidth: "480px" }} numLetters={21}>
-              Junte-se a nós hoje 🚀
+              Junte-se a nós 🚀
             </TypingText>
 
             <p style={{ textAlign: "center" }}>
@@ -49,7 +50,7 @@ const RegisterClient = () => {
                     placeholder="Firstname"
                     name="name"
                     type="text"
-                    width="450"
+                    width="400"
                     value={formData.name}
                     onChange={handleInputChange}
                   />
@@ -58,7 +59,7 @@ const RegisterClient = () => {
                     placeholder="Lastname"
                     name="lastname"
                     type="text"
-                    width="450"
+                    width="400"
                     value={formData.lastname}
                     onChange={handleInputChange}
                   />
@@ -68,7 +69,7 @@ const RegisterClient = () => {
                     placeholder="Email"
                     name="email"
                     type="text"
-                    width="450"
+                    width="400"
                     value={formData.email}
                     onChange={handleInputChange}
                   />
@@ -78,7 +79,7 @@ const RegisterClient = () => {
                     phone
                     name="phone"
                     type="text"
-                    width="450"
+                    width="400"
                     value={formData.phone}
                     onChange={handleInputChange}
                   />
@@ -87,7 +88,7 @@ const RegisterClient = () => {
                   placeholder="Password"
                   name="password"
                   type={"password"}
-                  width="450"
+                  width="400"
                   value={formData.password}
                   onChange={handleInputChange}
                 />
@@ -96,7 +97,7 @@ const RegisterClient = () => {
                   placeholder="Confirm Password"
                   name="confirmPassword"
                   type={"password"}
-                  width="450"
+                  width="400"
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
                 />
@@ -104,14 +105,16 @@ const RegisterClient = () => {
             </S.ContainerRegister>
 
             <Row className="text-center" style={{ padding: "15px 0 50px 0" }}>
-              <Col style={{margin: "25px 0"}}>
-                <Button
-                  $isBack
-                  $noIcon                  
-                  type="button"
-                  onClick={handleNavigationHome}
-                  disabled={isLoading}
-                />
+              <Col style={{ margin: "25px 0" }}>
+                <div style={{ marginBottom: "1rem" }}>
+                  <Button
+                    $isBack
+                    $noIcon
+                    type="button"
+                    onClick={handleNavigationHome}
+                    disabled={isLoading}
+                  />
+                </div>
                 <Button
                   $isRegisterClient
                   type="button"

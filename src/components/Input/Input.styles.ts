@@ -23,7 +23,7 @@ export const Input = styled.input<InputProps>`
   width: ${(props) => Number(props.width) / 18}rem;
   height: 3.125rem;
   padding: 0 1.562rem;
-  font-size: 0.875rem;
+  font-size: 1rem;
   border: 1px solid rgba(0, 0, 0, 0.25);
   border-radius: 0.93rem;
   box-shadow: 4px 4px 15px 0px rgba(0, 0, 0, 0.25);

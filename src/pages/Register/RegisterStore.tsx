@@ -17,10 +17,11 @@ const RegisterStore = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const { handleRegisterWithGoogle, handleRegisterStore, handleNavigationHome } = useAction(
-    setIsLoading,
-    formData
-  );
+  const {
+    handleRegisterWithGoogle,
+    handleRegisterStore,
+    handleNavigationHome,
+  } = useAction(setIsLoading, formData);
 
   return (
     <>
@@ -36,7 +37,7 @@ const RegisterStore = () => {
             }}
           >
             <TypingText style={{ maxWidth: "480px" }} numLetters={21}>
-              Junte-se a nós hoje 🚀
+              Junte-se a nós 🚀
             </TypingText>
 
             <p style={{ textAlign: "center" }}>
@@ -49,7 +50,7 @@ const RegisterStore = () => {
                     placeholder="Firstname"
                     name="name"
                     type="text"
-                    width="450"
+                    width="400"
                     value={formData.name}
                     onChange={handleInputChange}
                   />
@@ -58,7 +59,7 @@ const RegisterStore = () => {
                     placeholder="Lastname"
                     name="lastname"
                     type="text"
-                    width="450"
+                    width="400"
                     value={formData.lastname}
                     onChange={handleInputChange}
                   />
@@ -68,7 +69,7 @@ const RegisterStore = () => {
                     placeholder="Email"
                     name="email"
                     type="text"
-                    width="450"
+                    width="400"
                     value={formData.email}
                     onChange={handleInputChange}
                   />
@@ -78,7 +79,7 @@ const RegisterStore = () => {
                     phone
                     name="phone"
                     type="text"
-                    width="450"
+                    width="400"
                     value={formData.phone}
                     onChange={handleInputChange}
                   />
@@ -87,7 +88,7 @@ const RegisterStore = () => {
                   placeholder="Password"
                   name="password"
                   type={"password"}
-                  width="450"
+                  width="400"
                   value={formData.password}
                   onChange={handleInputChange}
                 />
@@ -96,7 +97,7 @@ const RegisterStore = () => {
                   placeholder="Confirm Password"
                   name="confirmPassword"
                   type={"password"}
-                  width="450"
+                  width="400"
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
                 />
@@ -108,7 +109,7 @@ const RegisterStore = () => {
                   placeholder="Store Name"
                   name="storeName"
                   type="text"
-                  width="450"
+                  width="400"
                   value={formData.storeName}
                   onChange={handleInputChange}
                 />
@@ -117,13 +118,15 @@ const RegisterStore = () => {
 
             <Row className="text-center" style={{ padding: "15px 0 50px 0" }}>
               <Col style={{ margin: "25px 0" }}>
-                <Button
-                  $isBack
-                  $noIcon
-                  type="button"
-                  onClick={handleNavigationHome}
-                  disabled={isLoading}
-                />
+                <div style={{marginBottom: "1rem"}}>
+                  <Button
+                    $isBack
+                    $noIcon
+                    type="button"
+                    onClick={handleNavigationHome}
+                    disabled={isLoading}
+                  />
+                </div>
                 <Button
                   $isRegisterStore
                   type="button"

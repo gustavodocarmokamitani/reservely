@@ -42,6 +42,7 @@ export const useAction = (
       enqueueSnackbar("As senhas não são iguais. Tente novamente.", {
         variant: "default",
       });
+      setIsLoading(false);
       return;
     }
 
@@ -50,6 +51,7 @@ export const useAction = (
       enqueueSnackbar("Por favor, insira um endereço de e-mail válido.", {
         variant: "default",
       });
+      setIsLoading(false);
       return;
     }
 
@@ -60,6 +62,7 @@ export const useAction = (
         "A senha deve ter pelo menos 8 caracteres, incluir uma letra maiúscula, um número e um caractere especial.",
         { variant: "default" }
       );
+      setIsLoading(false);
       return;
     }
 
@@ -118,6 +121,7 @@ export const useAction = (
       enqueueSnackbar("As senhas não são iguais. Tente novamente.", {
         variant: "default",
       });
+      setIsLoading(false);
       return;
     }
 
@@ -126,6 +130,7 @@ export const useAction = (
       enqueueSnackbar("Por favor, insira um endereço de e-mail válido.", {
         variant: "default",
       });
+      setIsLoading(false);
       return;
     }
 
@@ -136,6 +141,7 @@ export const useAction = (
         "A senha deve ter pelo menos 8 caracteres, incluir uma letra maiúscula, um número e um caractere especial.",
         { variant: "default" }
       );
+      setIsLoading(false);
       return;
     }
 

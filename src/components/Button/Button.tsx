@@ -115,7 +115,7 @@ const Button: React.FC<ButtonProps> = ({
   } else if ($isResend) {
     buttonText = "Reenviar e-mail";
   } else if ($isRescheduling) {
-    buttonText = "Agendar";
+    buttonText = "Novo Agendamento";
   } else if ($isRating) {
     buttonText = "Avaliação";
   } else if ($isAppointment) {

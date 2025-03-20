@@ -86,9 +86,11 @@ export const ContainerHeader = styled.div`
   border-radius: 15px 0 0 15px;
   padding: 25px 75px;
   background: #f16855;
+  margin: 0 0 50px 0;
 
   @media (max-width: 768px) {
     padding: 25px 55px;
+    flex-direction: column;    
   }
 `;
 
@@ -113,7 +115,7 @@ export const ContentHeaderImg = styled.div<ContentHeaderProps>`
   border-radius: 15px 0 0 15px;  
   
   @media (max-width: 1110px) {   
-      display: none;    
+  align-items: center;
   }
 }
 `;
@@ -127,7 +129,7 @@ export const Title = styled.div`
     color: #2c2c2c;
   }
   @media (max-width: 768px) {
-    font-size: 3rem;
+    font-size: 2rem;
   }
 }
 `;
@@ -139,4 +141,3 @@ export const SubTitle = styled.div`
   line-height: 2;
   margin: 25px 0;
 `;
-

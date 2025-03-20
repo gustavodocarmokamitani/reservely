@@ -42,10 +42,6 @@ export const useSubmitClient = (
         enqueueSnackbar("Por favor, selecione um funcionário.", {
           variant: "warning",
         });
-      } else if (!client.length) {
-        enqueueSnackbar("Por favor, selecione um cliente.", {
-          variant: "warning",
-        });
       } else if (!service.length) {
         enqueueSnackbar("Por favor, selecione um serviço.", {
           variant: "warning",
@@ -58,8 +54,6 @@ export const useSubmitClient = (
         enqueueSnackbar("Por favor, selecione uma data.", {
           variant: "warning",
         });
-      } else {
-        return;
       }
 
       const funcionarioId = await getCorrigirIdByUserId(selectedEmployee.value);

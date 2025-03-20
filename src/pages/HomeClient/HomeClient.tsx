@@ -141,13 +141,14 @@ export const HomeClient = () => {
                 const totalPrice = filteredServices.reduce(
                   (sum, service) => sum + (service?.data.value || 0),
                   0
-                );
-
+                );                
+                
                 return {
                   storeName: responseStore.name,
                   storeCode: responseStore.storeCode,
                   appointmentDate: appointment.appointmentDate,
                   appointmentTime: appointment.appointmentTime,
+                  appointmentStatus: appointment.appointmentStatusId,
                   employeeName: `${capitalizeFirstLetter(
                     responseUser.name
                   )} ${capitalizeFirstLetter(responseUser.lastName)}`,
@@ -187,10 +188,12 @@ export const HomeClient = () => {
     if (storeCode === ":") {
       navigate(`/appointment-client/:`);
     } else {
-      navigate(`/appointment-client/${storeCode}`);
+      navigate(
+        `/appointment-client/${storeCode.toUpperCase().replace("#", "_")}`
+      );
     }
   };
-
+  
   const handleNavigateAppointmentClientStoreCode = (storeCode: string) => {
     const encodedStoreCode = encodeURIComponent(storeCode);
     navigate(`/appointment-client/${encodedStoreCode}`);

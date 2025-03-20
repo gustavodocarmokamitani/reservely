@@ -63,6 +63,14 @@ const Card: React.FC<CardProps> = ({
 }) => {
   const selectedIcon = statusStore ? confirm : remove;
 
+  const appointmentStatusMap = {
+    1: "Aguardando Aprovação",
+    2: "Aprovado",
+    3: "Cancelado",
+    4: "Remarcado",
+    5: "Finalizado",
+  };
+
   return (
     <>
       {type === "homeClient" ? (
@@ -80,22 +88,14 @@ const Card: React.FC<CardProps> = ({
               <>
                 <S.CardContent>
                   <S.TextCard>
-                    <img
-                      src={employee}
-                      alt="employee"
-                      width="10%"
-                    />
+                    <img src={employee} alt="employee" width="10%" />
                     <S.Paragraph style={{ width: "9.25rem" }}>
                       {data.employeeName}
                     </S.Paragraph>
                   </S.TextCard>
 
                   <S.TextCard>
-                    <img
-                      src={price}
-                      alt="employee"
-                      width="10%"
-                    />
+                    <img src={price} alt="employee" width="10%" />
                     <S.Paragraph style={{ width: "9.25rem" }}>
                       {formatToBRL(String(data.totalPrice * 100))}
                     </S.Paragraph>
@@ -116,13 +116,20 @@ const Card: React.FC<CardProps> = ({
                   </S.TextCard>
                 </S.CardContent>
                 <S.CardContent>
+                  <S.TextCard>
+                    <S.Paragraph
+                      style={{ width: "12.25rem", height: "2.25rem", fontWeight: "500" }}
+                    >
+                      {appointmentStatusMap[
+                        data.appointmentStatus as keyof typeof appointmentStatusMap
+                      ] || "Status Desconhecido"}
+                    </S.Paragraph>
+                  </S.TextCard>
+                </S.CardContent>
+                <S.CardContent>
                   <S.CardScroll>
                     <S.TextCard>
-                      <img
-                        src={service}
-                        alt="employee"
-                        width="5%"                       
-                      />
+                      <img src={service} alt="employee" width="5%" />
                       {data.services?.map((service: any, index: number) => (
                         <S.Paragraph key={index}>{service.name}</S.Paragraph>
                       ))}
@@ -149,11 +156,11 @@ const Card: React.FC<CardProps> = ({
           <S.CardFooterHomeClientContainer>
             {history && (
               <>
-                <Button
+                {/* <Button
                   $isRating
                   type="button"
                   onClick={handleNavigateRating}
-                />
+                /> */}
                 <Button
                   $isRescheduling
                   type="button"
