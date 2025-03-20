@@ -46,6 +46,7 @@ export const ContainerClient = styled.div`
   gap: 5px;
   flex-direction: row;
   width: 100%;
+  height: 100%;
   border-radius: 15px 0 0 15px;
   overflow: auto;
   padding-right: 20px;
@@ -69,7 +70,7 @@ export const WrapperHomeClient = styled.div`
   align-items: center;
   width: 100%;
   max-width: 400px;
-  height: 320px;
+  height: 350px;
   margin: 0 15px;
 `;
 

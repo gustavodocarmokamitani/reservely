@@ -47,7 +47,7 @@ export const CardDashboardContent = styled.div`
 `;
 
 export const CardTitleHomeClientContainer = styled.div`
-  width: 23rem;
+  width: 20rem;
   height: 3rem;
   display: flex;
   justify-content: center;
@@ -65,7 +65,7 @@ export const CardTitleHomeClientContainer = styled.div`
 `;
 
 export const CardBodyHomeClientContainer = styled.div`
-  width: 23rem;
+  width: 20rem;
   height: 100%;
   padding: 1.5625rem 0;
   display: flex;
@@ -77,7 +77,7 @@ export const CardBodyHomeClientContainer = styled.div`
 `;
 
 export const CardFooterHomeClientContainer = styled.div`
-  width: 23rem;
+  width: 20rem;
   height: 4.125rem;
   display: flex;
   justify-content: center;
@@ -108,7 +108,7 @@ export const CardScroll = styled.div`
 
 export const Paragraph = styled.div`
   font-size: 0.875rem;
-  padding: 0.5rem 0.25rem;
+  padding: 0.5rem 0.15rem;
   text-align: center;
 `;
 
