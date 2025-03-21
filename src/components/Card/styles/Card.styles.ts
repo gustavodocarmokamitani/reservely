@@ -48,7 +48,7 @@ export const CardDashboardContent = styled.div`
 
 export const CardTitleHomeClientContainer = styled.div`
   width: 20rem;
-  height: 3rem;
+  height: 3.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -56,7 +56,7 @@ export const CardTitleHomeClientContainer = styled.div`
   border-left: 1px solid #9c9c9c;
   border-top: 1px solid #9c9c9c;
   border-right: 1px solid #9c9c9c;
-  border-radius: 15px 15px 0px 0px;
+  border-radius: 15px 15px 0px 0px;  
 
   h4 {
     color: white !important;
@@ -93,7 +93,7 @@ export const CardContent = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: row;
+  flex-direction: column;
   width: 100%;
 `;
 
@@ -116,9 +116,5 @@ export const TextCard = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
-
-  img {
-    margin-left: 25px;    
-  }
+  align-items: center; 
 `;

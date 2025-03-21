@@ -8,7 +8,7 @@ import arrowUp from "../../assets/arrowUp.svg";
 import arrowDown from "../../assets/arrowDown.svg";
 import Button from "../Button/Button";
 import star from "../../assets/star.png";
-import employee from "../../assets/employee.png";
+import employeeDefault from "../../assets/employeeDefault.png";
 import price from "../../assets/price.png";
 import time from "../../assets/time.png";
 import date from "../../assets/date.png";
@@ -78,7 +78,8 @@ const Card: React.FC<CardProps> = ({
           style={{
             borderRadius: "15px",
             boxShadow: "4px 4px 15px 0px rgba(0, 0, 0, 0.5)",
-            overflow: "hidden"
+            overflow: "hidden",
+            margin: "50px 0px 150px 0",
           }}
         >
           <S.CardTitleHomeClientContainer>
@@ -89,13 +90,73 @@ const Card: React.FC<CardProps> = ({
               <>
                 <S.CardContent>
                   <S.TextCard>
-                    <img src={employee} alt="employee" width="10%" />
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                      }}
+                    >
+                      <img src={employeeDefault} alt="employee" width="75px" />
+                      <S.Paragraph style={{ width: "9.25rem" }}>
+                        {data.employeeName}
+                      </S.Paragraph>
+                    </div>
+                  </S.TextCard>
+                  <S.TextCard>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                      }}
+                    >
+                      <S.Paragraph style={{ width: "5.25rem" }}>
+                        {formatToBRL(String(data.totalPrice * 100))}
+                      </S.Paragraph>
+
+                      <S.Paragraph style={{ width: "5.25rem" }}>
+                        {moment(data.appointmentDate).format("DD/MM/YYYY")}
+                      </S.Paragraph>
+
+                      <S.Paragraph style={{ width: "5.25rem" }}>
+                        {data.appointmentTime}
+                      </S.Paragraph>
+                    </div>
+                  </S.TextCard>
+                  <S.TextCard>
+                    <S.Paragraph
+                      style={{
+                        width: "12.25rem",
+                        height: "2.25rem",
+                        fontWeight: "500",
+                      }}
+                    >
+                      {appointmentStatusMap[
+                        data.appointmentStatus as keyof typeof appointmentStatusMap
+                      ] || "Status Desconhecido"}
+                    </S.Paragraph>
+                  </S.TextCard>
+                  <S.TextCard>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                      }}
+                    >
+                      {data.services?.map((service: any, index: number) => (
+                        <S.Paragraph key={index}>{service.name}</S.Paragraph>
+                      ))}
+                    </div>
+                  </S.TextCard>
+                  {/*<S.TextCard>
                     <S.Paragraph style={{ width: "9.25rem" }}>
                       {data.employeeName}
                     </S.Paragraph>
                   </S.TextCard>
 
-                  <S.TextCard>
+                   <S.TextCard>
                     <img src={price} alt="employee" width="10%" />
                     <S.Paragraph style={{ width: "9.25rem" }}>
                       {formatToBRL(String(data.totalPrice * 100))}
@@ -135,7 +196,7 @@ const Card: React.FC<CardProps> = ({
                         <S.Paragraph key={index}>{service.name}</S.Paragraph>
                       ))}
                     </S.TextCard>
-                  </S.CardScroll>
+                  </S.CardScroll> */}
                 </S.CardContent>
               </>
             )}

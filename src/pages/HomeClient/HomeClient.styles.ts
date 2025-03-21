@@ -46,9 +46,7 @@ export const ContainerClient = styled.div`
   gap: 5px;
   flex-direction: row;
   width: 100%;
-  height: 100%;
   border-radius: 15px 0 0 15px;
-  overflow: auto;
   padding-right: 20px;
 `;
 
@@ -61,7 +59,6 @@ export const ContainerHomeClient = styled.div`
   border-radius: 15px 0 0 15px;
   background: rgba(235, 235, 235, 0.35);
   margin-top: 3.125rem;
-  
 `;
 
 export const WrapperHomeClient = styled.div`
@@ -70,8 +67,7 @@ export const WrapperHomeClient = styled.div`
   align-items: center;
   width: 100%;
   max-width: 400px;
-  height: 350px;
-  margin: 0 15px;
+  margin: 0 15px 0 0;
 `;
 
 export const ContainerPageHomeClient = styled.div`

@@ -141,8 +141,8 @@ export const HomeClient = () => {
                 const totalPrice = filteredServices.reduce(
                   (sum, service) => sum + (service?.data.value || 0),
                   0
-                );                
-                
+                );
+
                 return {
                   storeName: responseStore.name,
                   storeCode: responseStore.storeCode,
@@ -193,7 +193,7 @@ export const HomeClient = () => {
       );
     }
   };
-  
+
   const handleNavigateAppointmentClientStoreCode = (storeCode: string) => {
     const encodedStoreCode = encodeURIComponent(storeCode);
     navigate(`/appointment-client/${encodedStoreCode}`);
@@ -228,7 +228,7 @@ export const HomeClient = () => {
         </ContentHeaderImg>
       </ContainerHeader>
 
-      <div style={{ paddingLeft: "1.5rem", height: "450px" }}>
+      <div style={{ paddingLeft: "1.5rem" }}>
         <h3 style={{ color: "#2c2c2c", marginTop: "6.25rem" }}>
           Histórico de Agendamentos
         </h3>
