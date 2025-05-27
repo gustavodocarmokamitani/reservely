@@ -101,15 +101,43 @@ function ProfessionalRegister() {
                 style={{
                   display: "flex",
                   justifyContent: "end",
+                  flexDirection: `${
+                    window.innerWidth < 768 ? "column" : "row"
+                  }`,
                   margin: "25px 0 0 0",
                 }}
               >
-                <Button $isRemove type="button" onClick={handleDeleteUsers} />
-                <Button
-                  $isAdd
-                  type="button"
-                  onClick={handleShowAddProfessionalModal}
-                />
+                {window.innerWidth <= 768 ? (
+                  <>
+                    <div style={{ marginBottom: "15px" }}>
+                      <Button
+                        $isAdd
+                        type="button"
+                        onClick={handleShowAddProfessionalModal}
+                      />
+                    </div>
+                    <Button
+                      $isRemove
+                      type="button"
+                      onClick={handleDeleteUsers}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <div style={{ marginBottom: "15px" }}>
+                      <Button
+                        $isRemove
+                        type="button"
+                        onClick={handleDeleteUsers}
+                      />
+                    </div>
+                    <Button
+                      $isAdd
+                      type="button"
+                      onClick={handleShowAddProfessionalModal}
+                    />
+                  </>
+                )}
               </div>
             )}
           </P.ContentHeaderImg>
@@ -136,20 +164,22 @@ function ProfessionalRegister() {
         />
         {show && (
           <Modal
-            title="Editar profissional"
-            subTitle="Preencha as informações abaixo para editar o profissional."
+            title="Registrar profissional"
+            subTitle="Preencha as informações abaixo para registrar o profissional."
             handleSubmit={handleRegisterProfessionalRegister}
             handleClose={handleClose}
             size="small"
           >
             <Row style={{ flexDirection: "row" }}>
               <Col
-                md={12}
-                className="mt-3 mb-3"
+                md={6}
+                xs={12}
+                className={`${
+                  window.innerWidth > 375 ? "mt-3 mb-3" : "mt-0 mb-0"
+                } `}
                 style={{ display: "flex", justifyContent: "space-around" }}
               >
                 <Input
-                  width="300"
                   type="text"
                   placeholder="Nome"
                   name="name"
@@ -162,9 +192,16 @@ function ProfessionalRegister() {
                     )
                   }
                 />
-
+              </Col>
+              <Col
+                md={6}
+                xs={12}
+                className={`${
+                  window.innerWidth > 375 ? "mt-3 mb-3" : "mt-0 mb-0"
+                } `}
+                style={{ display: "flex", justifyContent: "space-around" }}
+              >
                 <Input
-                  width="300"
                   type="text"
                   placeholder="Sobrenome"
                   name="lastName"
@@ -179,12 +216,14 @@ function ProfessionalRegister() {
                 />
               </Col>
               <Col
-                md={12}
-                className="mt-3 mb-3"
+                md={6}
+                xs={12}
+                className={`${
+                  window.innerWidth > 375 ? "mt-3 mb-3" : "mt-0 mb-0"
+                } `}
                 style={{ display: "flex", justifyContent: "space-around" }}
               >
                 <Input
-                  width="300"
                   type="text"
                   placeholder="Email"
                   name="email"
@@ -195,8 +234,16 @@ function ProfessionalRegister() {
                     )
                   }
                 />
+              </Col>
+              <Col
+                md={6}
+                xs={12}
+                className={`${
+                  window.innerWidth > 375 ? "mt-3 mb-3" : "mt-0 mb-0"
+                } `}
+                style={{ display: "flex", justifyContent: "space-around" }}
+              >
                 <Input
-                  width="300"
                   type="text"
                   placeholder="Telefone"
                   phone

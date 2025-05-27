@@ -22,6 +22,7 @@ interface ButtonProps {
   $isRegisterClient?: boolean;
   $isResend?: boolean;
   $isGoogle?: boolean;
+  $isSelected?: boolean;
   type: "button" | "submit" | "reset";
   onClick?: () => void;
   disabled?: boolean;
@@ -32,6 +33,7 @@ const Button: React.FC<ButtonProps> = ({
   $isResend,
   disabled,
   $isGoogle,
+  $isSelected,
   $isAdd,
   $isRemove,
   $isClosed,
@@ -118,6 +120,8 @@ const Button: React.FC<ButtonProps> = ({
     buttonText = "Novo Agendamento";
   } else if ($isRating) {
     buttonText = "Avaliação";
+  } else if ($isSelected) {
+    buttonText = "Escolher";
   } else if ($isAppointment) {
     buttonText = "Agendar";
   } else if ($isGoogle) {
@@ -146,6 +150,7 @@ const Button: React.FC<ButtonProps> = ({
       $isRemove={$isRemove}
       $isClosed={$isClosed}
       $isConfirm={$isConfirm}
+      $isSelected={$isSelected}
       $isRescheduling={$isRescheduling}
       $isRating={$isRating}
       $isAppointment={$isAppointment}

@@ -15,6 +15,7 @@ interface ButtonProps {
   $isRating?: boolean;
   $isGoogle?: boolean;
   $isResend?: boolean;
+  $isSelected?: boolean;
   disabled?: boolean;
 }
 
@@ -31,7 +32,7 @@ export const Button = styled.button<ButtonProps>`
     if (props.$isClosed) return "#FF3535";
     if (props.$isConfirm) return "#1A8439";
     if (props.$isConfigure || props.$isResend) return "#2B2B2B";
-    if (props.$isBack || props.$isRescheduling || props.$isRating || props.$isAppointment) return "#2c2c2c";
+    if (props.$isBack || props.$isRescheduling || props.$isRating || props.$isAppointment || props.$isSelected) return "#2c2c2c";
     if (props.$isLogin) return "#2A2A2A";
     if (props.$isRegisterStore || props.$isRegisterClient) return "#fff";
     if (props.$isGoogle) return "#fff";

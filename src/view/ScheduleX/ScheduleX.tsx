@@ -35,9 +35,6 @@ export function ScheduleX({ events }: ScheduleXProps) {
     theme: "shadcn",
     callbacks: {
       onEventClick: (event) => {
-        console.log("Evento clicado:", event);
-        console.log("Mudando para a visualização de dia...");
-
         calendarControls.setDate(event.start.split(" ")[0]);
         calendarControls.setView("day");
       },

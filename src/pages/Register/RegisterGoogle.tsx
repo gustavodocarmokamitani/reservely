@@ -43,8 +43,7 @@ const RegisterGoogle = () => {
                 <Input
                   placeholder="Store Name"
                   name="storeName"
-                  type="text"
-                  width="450"
+                  type="text"                  
                   value={formData.storeName}
                   onChange={handleInputChange}
                 />

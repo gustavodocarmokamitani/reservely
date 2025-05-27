@@ -124,15 +124,43 @@ function Professional() {
                 style={{
                   display: "flex",
                   justifyContent: "end",
+                  flexDirection: `${
+                    window.innerWidth < 768 ? "column" : "row"
+                  }`,
                   margin: "25px 0 0 0",
                 }}
               >
-                <Button $isRemove type="button" onClick={handleDeleteUsers} />
-                <Button
-                  $isAdd
-                  type="button"
-                  onClick={handleShowAddProfessionalModal}
-                />
+                {window.innerWidth <= 768 ? (
+                  <>
+                    <div style={{ marginBottom: "15px" }}>
+                      <Button
+                        $isAdd
+                        type="button"
+                        onClick={handleShowAddProfessionalModal}
+                      />
+                    </div>
+                    <Button
+                      $isRemove
+                      type="button"
+                      onClick={handleDeleteUsers}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <div style={{ marginBottom: "15px" }}>
+                      <Button
+                        $isRemove
+                        type="button"
+                        onClick={handleDeleteUsers}
+                      />
+                    </div>
+                    <Button
+                      $isAdd
+                      type="button"
+                      onClick={handleShowAddProfessionalModal}
+                    />
+                  </>
+                )}
               </div>
             )}
           </P.ContentHeaderImg>

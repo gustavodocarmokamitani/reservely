@@ -41,7 +41,6 @@ export const useFetch = (
           ? (canceledAppointments.length / totalAppointments) * 100
           : 0;
   
-      console.log(percentageCanceled);
       setAppointmentPercentageCanceled(percentageCanceled);
     } catch (error) {
       console.error("Erro ao buscar dados de receita:", error);

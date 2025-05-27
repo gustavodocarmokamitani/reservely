@@ -51,73 +51,107 @@ const RegisterStore = () => {
             <S.ContainerRegister>
               <S.WrapperRegisterInput>
                 <S.ContentRegister>
-                  <Input
-                    placeholder="Firstname"
-                    name="name"
-                    type="text"
-                    width="400"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                  />
-
-                  <Input
-                    placeholder="Lastname"
-                    name="lastname"
-                    type="text"
-                    width="400"
-                    value={formData.lastname}
-                    onChange={handleInputChange}
-                  />
+                  <div
+                    style={{
+                      width: `${window.innerWidth < 768 ? "100%" : "35%"}`,
+                    }}
+                  >
+                    <Input
+                      placeholder="Firstname"
+                      name="name"
+                      type="text"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div
+                    style={{
+                      width: `${window.innerWidth < 768 ? "100%" : "35%"}`,
+                    }}
+                  >
+                    <Input
+                      placeholder="Lastname"
+                      name="lastname"
+                      type="text"
+                      value={formData.lastname}
+                      onChange={handleInputChange}
+                    />
+                  </div>
                 </S.ContentRegister>
                 <S.ContentRegister>
-                  <Input
-                    placeholder="Email"
-                    name="email"
-                    type="text"
-                    width="400"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                  />
-
-                  <Input
-                    placeholder="Phone"
-                    phone
-                    name="phone"
-                    type="text"
-                    width="400"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                  />
+                  <div
+                    style={{
+                      width: `${window.innerWidth < 768 ? "100%" : "35%"}`,
+                    }}
+                  >
+                    <Input
+                      placeholder="Email"
+                      name="email"
+                      type="text"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div
+                    style={{
+                      width: `${window.innerWidth < 768 ? "100%" : "35%"}`,
+                    }}
+                  >
+                    <Input
+                      placeholder="Phone"
+                      phone
+                      name="phone"
+                      type="text"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                    />
+                  </div>
                 </S.ContentRegister>
-                <Input
-                  placeholder="Password"
-                  name="password"
-                  type={"password"}
-                  width="400"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                />
-
-                <Input
-                  placeholder="Confirm Password"
-                  name="confirmPassword"
-                  type={"password"}
-                  width="400"
-                  value={formData.confirmPassword}
-                  onChange={handleInputChange}
-                />
+                <S.ContentRegister>
+                  <div
+                    style={{
+                      width: `${window.innerWidth < 768 ? "100%" : "35%"}`,
+                    }}
+                  >
+                    <Input
+                      placeholder="Password"
+                      name="password"
+                      type={"password"}
+                      value={formData.password}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div
+                    style={{
+                      width: `${window.innerWidth < 768 ? "100%" : "35%"}`,
+                    }}
+                  >
+                    <Input
+                      placeholder="Confirm Password"
+                      name="confirmPassword"
+                      type={"password"}
+                      value={formData.confirmPassword}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </S.ContentRegister>
               </S.WrapperRegisterInput>
             </S.ContainerRegister>
             <S.ContainerRegister>
               <S.WrapperRegisterInput className="mt-2">
-                <Input
-                  placeholder="Store Name"
-                  name="storeName"
-                  type="text"
-                  width="400"
-                  value={formData.storeName}
-                  onChange={handleInputChange}
-                />
+                <div
+                  style={{
+                    width: `${window.innerWidth < 768 ? "100%" : "35%"}`,
+                  }}
+                >
+                  <Input
+                    placeholder="Store Name"
+                    name="storeName"
+                    type="text"
+                    value={formData.storeName}
+                    onChange={handleInputChange}
+                  />
+                </div>
               </S.WrapperRegisterInput>
             </S.ContainerRegister>
 
@@ -125,17 +159,17 @@ const RegisterStore = () => {
               <Col style={{ margin: "25px 0" }}>
                 <div style={{ marginBottom: "1rem" }}>
                   <Button
-                    $isBack
-                    $noIcon
+                    $isRegisterStore
                     type="button"
-                    onClick={handleNavigationHome}
+                    onClick={handleRegisterStore}
                     disabled={isLoading}
                   />
                 </div>
                 <Button
-                  $isRegisterStore
+                  $isBack
+                  $noIcon
                   type="button"
-                  onClick={handleRegisterStore}
+                  onClick={handleNavigationHome}
                   disabled={isLoading}
                 />
                 <p className="mt-5 mb-4">
@@ -144,9 +178,7 @@ const RegisterStore = () => {
                 {/* <ParagraphThin>Or sign up with</ParagraphThin>
                 <GoogleLogin
                   onSuccess={handleRegisterWithGoogle}
-                  onError={() =>
-                    console.log("Erro ao fazer login com o Google")
-                  }
+                  
                 /> */}
               </Col>
             </Row>

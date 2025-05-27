@@ -29,8 +29,6 @@ export const useAction = (
       if (response) {
         window.location.href = "/register-google";
       }
-    } else {
-      console.log("Erro: Nenhuma credencial foi recebida.");
     }
   };
 

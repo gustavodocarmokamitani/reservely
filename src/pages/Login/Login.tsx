@@ -41,8 +41,8 @@ const Login = () => {
             </div>
             <div className="text-center">
               <p className="pt-2">
-                Hoje é um novo começo. A oportunidade de fazer a diferença está
-                em suas mãos.
+                Hoje é um novo começo. <br /> A oportunidade de fazer a
+                diferença está em suas mãos.
               </p>
               <p>Faça o login para começar a gerenciar seus projetos.</p>
             </div>
@@ -55,19 +55,18 @@ const Login = () => {
                 placeholder="Email"
                 name="email"
                 type="email"
-                width="400"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-
-              <Input
-                placeholder="Password"
-                name="password"
-                type="password"
-                width="400"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
+              <div style={{ width: "100%" }}>
+                <Input
+                  placeholder="Password"
+                  name="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
               <Row className="text-center pt-4">
                 <Col>
                   <Button $isLogin type="submit" disabled={isLoading} />

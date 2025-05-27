@@ -77,6 +77,21 @@ export const useAction = (
     });
   };
 
+  const handleSetDatesFromPicker = (newDates: Date[]) => {
+    setClosingDates((prevDates) => {
+      const safePrev = prevDates ?? [];
+
+      const allDates = [...safePrev, ...newDates];
+
+      const uniqueDates = allDates.filter(
+        (date, index, self) =>
+          index === self.findIndex((d) => d.getTime() === date.getTime())
+      );
+
+      return uniqueDates;
+    });
+  };
+
   const handleRemoveDataClosed = (dateToRemove: Date) => {
     setClosingDates((closingDates) => {
       if (closingDates) {
@@ -102,6 +117,7 @@ export const useAction = (
   return {
     handleSubmit,
     handleInputChangeStore,
+    handleSetDatesFromPicker,
     handleRemoveDataClosed,
     handleRemoveDateClosed,
     handleButtonClick,

@@ -34,7 +34,10 @@ function Store() {
   const [isCopied, setIsCopied] = useState(false);
 
   const handleCopy = () => {
-    const textToCopy = `localhost:3000/code/${store?.storeCode.replace("#", "_")}`;
+    const textToCopy = `localhost:3000/code/${store?.storeCode.replace(
+      "#",
+      "_"
+    )}`;
     navigator.clipboard.writeText(textToCopy);
     setIsCopied(true);
 
@@ -44,16 +47,14 @@ function Store() {
   return (
     <>
       {isLoading && <Loading />}
-      <P.ContainerPage style={{ height: "100vh" }}>
+      <P.ContainerPage style={{ height: "100%" }}>
         <P.ContainerHeader>
           <P.ContentHeader align="start">
             <P.Title>Loja</P.Title>
             <P.SubTitle>Área destinada para gerenciamento da loja.</P.SubTitle>
             <S.Copy onClick={handleCopy}>
-              <div className="copy-text">
-                localhost:3000/code/{store?.storeCode.replace("#", "_")}
-              </div>
-              <div className="copy-button">
+              <div className="copy-text pt-2">Site da loja</div>
+              <div className="copy-button pt-2 ">
                 {isCopied ? "copiado" : "copiar"}
               </div>
             </S.Copy>
@@ -79,33 +80,45 @@ function Store() {
         <Row>
           <Col md={12}>
             <h3 style={{ margin: "20px 0 25px 0" }}>Dados da loja</h3>
-            <S.CardStoreWrapper className="d-flex justify-content-start align-items-center">
-              <Card
-                type="status"
-                statusStore={store?.status}
-                title="Status"
-                icon="confirm"
-              />
-              <Card
-                type="status"
-                statusStore={store?.multipleAppointments}
-                title="Múltiplos Agendamentos"
-                icon="confirm"
-              />
+            <S.CardStoreWrapper
+              className={`d-flex justify-content-start align-items-center ${
+                window.innerWidth <= 768 ? "row" : "column"
+              } `}
+            >
+              <div style={{ marginRight: "1rem" }}>
+                <Card
+                  type="status"
+                  statusStore={store?.status}
+                  title="Status"
+                  icon="confirm"
+                />
+              </div>
+              <div style={{ marginRight: "1rem" }}>
+                <Card
+                  type="status"
+                  statusStore={store?.multipleAppointments}
+                  title="Múlt. Agendamentos"
+                  icon="confirm"
+                />
+              </div>
               {store?.operatingHours && store.operatingHours.length > 0 ? (
                 <>
-                  <Card
-                    type="time"
-                    selectedTimes={selectedTimes}
-                    title="Hora de abertura"
-                    icon="calendar"
-                  />
-                  <Card
-                    type="time"
-                    selectedTimes={selectedTimes}
-                    title="Hora de fechamento"
-                    icon="calendar"
-                  />
+                  <div style={{ marginRight: "1rem" }}>
+                    <Card
+                      type="time"
+                      selectedTimes={selectedTimes}
+                      title="Hora de abertura"
+                      icon="calendar"
+                    />
+                  </div>
+                  <div style={{ marginRight: "1rem" }}>
+                    <Card
+                      type="time"
+                      selectedTimes={selectedTimes}
+                      title="Hora de fechamento"
+                      icon="calendar"
+                    />
+                  </div>
                 </>
               ) : (
                 <p></p>
@@ -121,12 +134,14 @@ function Store() {
                 </h3>
                 <S.CardStoreWrapper className="d-flex justify-content-start align-items-center flex-wrap">
                   {store.operatingDays.map((day, index) => (
-                    <Card
-                      type="weekDay"
-                      key={index}
-                      text={day}
-                      icon="confirm"
-                    />
+                    <div style={{ marginRight: "1rem" }}>
+                      <Card
+                        type="weekDay"
+                        key={index}
+                        text={day}
+                        icon="confirm"
+                      />
+                    </div>
                   ))}
                 </S.CardStoreWrapper>
               </>
@@ -155,12 +170,14 @@ function Store() {
                         }
                       );
                       return (
-                        <Card
-                          type="closingDate"
-                          key={index}
-                          text={formattedData}
-                          icon="confirm"
-                        />
+                        <div style={{ marginRight: "15px" }}>
+                          <Card
+                            type="closingDate"
+                            key={index}
+                            text={formattedData}
+                            icon="confirm"
+                          />
+                        </div>
                       );
                     })}
                 </S.CardStoreWrapper>

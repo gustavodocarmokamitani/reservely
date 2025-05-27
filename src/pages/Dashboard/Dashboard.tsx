@@ -38,7 +38,7 @@ const Dashboard = () => {
         </P.ContentHeader>     
       </P.ContainerHeader>
       <S.DashboardContainer>
-        <Col sm={12} xl={4}>
+        <Col xs={12} xl={4}>
           <Card
             type="dashboard"
             title="Valor Recebido"
@@ -46,18 +46,18 @@ const Dashboard = () => {
             icon="arrowUp"
           />
         </Col>
-        <Col sm={12} xl={4}>
+        <Col xs={12} xl={4}>
           <Card
             type="dashboard"
-            title="Agendamentos"
+            title="Agendamentos Finalizados"
             value={appointmentCount.toString()}
             icon="arrowUp"
           />
         </Col>
-        <Col sm={12} xl={4}>
+        <Col xs={12} xl={4}>
           <Card
             type="dashboard"
-            title="Cancelamento"
+            title="Taxa de Cancelamento"
             value={`${Number(appointmentPercentageCanceled).toFixed(2)}%`}
             icon="arrowDown"
           />

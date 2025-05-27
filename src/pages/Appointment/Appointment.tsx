@@ -61,6 +61,7 @@ export function Appointment() {
     storeCode,
     storeUser,
     store,
+    employee,
     setStoreData,
     setOptionsEmployee,
     setOptionsService,
@@ -112,7 +113,7 @@ export function Appointment() {
             className="justify-content-center align"
             style={{ width: "100%", flexWrap: "wrap" }}
           >
-            <Col>
+            <Col sx={12} md={6} lg={6} xl={3}>
               <S.AppointmentContent>
                 <Paragraph text="Funcionário" />
                 <Select
@@ -123,7 +124,7 @@ export function Appointment() {
                 />
               </S.AppointmentContent>
             </Col>
-            <Col>
+            <Col sx={12} md={6} lg={6} xl={3}>
               <S.AppointmentContent>
                 <Paragraph text="Cliente" />
                 <Select
@@ -134,7 +135,7 @@ export function Appointment() {
                 />
               </S.AppointmentContent>
             </Col>
-            <Col>
+            <Col sx={12} md={6} lg={6} xl={3}>
               <S.AppointmentContent>
                 <Paragraph text="Serviço" />
                 <Select
@@ -146,7 +147,7 @@ export function Appointment() {
                 />
               </S.AppointmentContent>
             </Col>
-            <Col>
+            <Col sx={12} md={6} lg={6} xl={3}>
               <S.AppointmentContent>
                 <Paragraph text="Horário" />
                 <Select
@@ -160,7 +161,7 @@ export function Appointment() {
           </Row>
         </S.AppointmentContainer>
         <S.AppointmentContainer className="justify-content-center justify-content-xl-start pb-5">
-          <S.AppointmentContent>
+          <S.AppointmentContent className="mb-5">
             <SelectDataPicker
               setDate={setAppointmentDate}
               type="appointment"

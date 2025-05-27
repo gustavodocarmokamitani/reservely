@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
-import * as S from "./styles/DataPicker.styles"; 
+import * as S from "./styles/DataPicker.styles";
 import "react-datepicker/dist/react-datepicker.css";
 import { ptBR } from "date-fns/locale";
 
@@ -9,10 +9,16 @@ interface SelectDataPickerProps {
   isClearable?: boolean;
   type: "appointment" | "store";
   operatingDays: string[];
-  closedDates: string[]; 
+  closedDates: string[];
 }
 
-const SelectDataPicker: React.FC<SelectDataPickerProps> = ({ setDate, isClearable, type, operatingDays, closedDates }) => {
+const SelectDataPicker: React.FC<SelectDataPickerProps> = ({
+  setDate,
+  isClearable,
+  type,
+  operatingDays,
+  closedDates,
+}) => {
   const [selected, setSelected] = useState<Date[]>([]);
 
   const dayMap: { [key: string]: number } = {
@@ -25,13 +31,18 @@ const SelectDataPicker: React.FC<SelectDataPickerProps> = ({ setDate, isClearabl
     Sábado: 6,
   };
 
-  const workingDays = operatingDays.length > 0 
-    ? operatingDays.map((day) => dayMap[day]) 
-    : [0, 1, 2, 3, 4, 5, 6];
+  const workingDays =
+    operatingDays.length > 0
+      ? operatingDays.map((day) => dayMap[day])
+      : [0, 1, 2, 3, 4, 5, 6];
 
-  const parsedClosedDates = closedDates.length > 0 
-    ? closedDates.map((dateString) => new Date(dateString)) 
-    : [];
+  const parseDateLocal = (dateString: string) => {
+    const [year, month, day] = dateString.split("-").map(Number);
+    return new Date(year, month - 1, day);
+  };
+
+  const parsedClosedDates =
+    closedDates.length > 0 ? closedDates.map(parseDateLocal) : [];
 
   const filterWeekDays = (date: Date) => {
     const dayOfWeek = date.getDay();
@@ -40,25 +51,15 @@ const SelectDataPicker: React.FC<SelectDataPickerProps> = ({ setDate, isClearabl
 
   const handleDateChange = (date: Date | null) => {
     if (date) {
-      setSelected((prevDates) => {
-        const isDuplicate = prevDates.some(
-          (existingDate) => existingDate.toDateString() === date.toDateString()
-        );
-
-        if (!isDuplicate) {
-          const updatedDates = [...prevDates, date];
-          setDate(updatedDates);
-          return updatedDates;
-        }
-        return prevDates;
-      });
+      setSelected([date]);
+      setDate([date]);
     }
   };
 
   const handleDateChangeAppointment = (date: Date | null) => {
     if (date) {
-      setSelected([date]); 
-      setDate([date]); 
+      setSelected([date]);
+      setDate([date]);
     }
   };
 
@@ -66,7 +67,11 @@ const SelectDataPicker: React.FC<SelectDataPickerProps> = ({ setDate, isClearabl
     <S.StyledDatePicker style={{ width: "100%" }}>
       <DatePicker
         selected={selected.length > 0 ? selected[selected.length - 1] : null}
-        onChange={type === "appointment" ? handleDateChangeAppointment : handleDateChange}
+        onChange={
+          type === "appointment"
+            ? handleDateChangeAppointment
+            : handleDateChange
+        }
         dateFormat="dd/MM/yyyy"
         minDate={new Date()}
         className="custom-datepicker"
@@ -75,7 +80,9 @@ const SelectDataPicker: React.FC<SelectDataPickerProps> = ({ setDate, isClearabl
         isClearable={isClearable}
         filterDate={(date) =>
           filterWeekDays(date) &&
-          !parsedClosedDates.some((closed) => closed.toDateString() === date.toDateString())
+          !parsedClosedDates.some(
+            (closed) => closed.toDateString() === date.toDateString()
+          )
         }
       />
     </S.StyledDatePicker>

@@ -29,6 +29,7 @@ export const useFetch = (
   storeCode: string,
   storeUser: number,
   store: SelectOption[],
+  employee: SelectOption[],
   setStoreData: React.Dispatch<React.SetStateAction<Store | undefined>>,
   setOptionsEmployee: React.Dispatch<React.SetStateAction<SelectOption[]>>,
   setOptionsService: React.Dispatch<React.SetStateAction<SelectOption[]>>,
@@ -40,8 +41,6 @@ export const useFetch = (
   setClosedDates: React.Dispatch<React.SetStateAction<string[]>>,
   setOperatingDays: React.Dispatch<React.SetStateAction<string[]>>
 ) => {
-  const { employee } = useStateCustom();
-
   const context = useContext(AppContext);
   const authToken = context?.authToken;
   useEffect(() => {
@@ -135,7 +134,6 @@ export const useFetch = (
         if (responseStoreCode) {
           storeUser = responseStoreCode.id;
         }
-
         const response = await getServiceTypesByStore(
           storeUser !== 0 ? storeUser : store[store.length - 1].value
         );

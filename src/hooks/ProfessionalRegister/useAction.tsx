@@ -123,8 +123,6 @@ export const useAction = (
       formValuesProfessionalRegister.email.includes("@") &&
       formValuesProfessionalRegister.email.endsWith(".com");
 
-    console.log(formValuesProfessionalRegister);
-
     if (!isValidEmail) {
       enqueueSnackbar(
         "Email inválido. Certifique-se de que o email está correto.",
@@ -182,14 +180,12 @@ export const useAction = (
   const handleInputChangeProfessionalRegister = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    console.log(event.target.value);
 
     const { name, type, checked, value } = event.target;
     setFormValuesProfessionalRegister((prevState) => ({
       ...prevState,
       [name]: type === "checkbox" ? (checked ? "true" : "false") : value,
     }));
-    console.log(formValuesProfessionalRegister);
   };
 
   return {

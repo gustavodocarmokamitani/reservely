@@ -6,9 +6,9 @@ export const ContainerPage = styled.div`
   padding: 5rem;
   background: #fafafa;
 
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
     flex-direction: column;
-    padding: 5rem 10px 0 10px;
+    padding: 1rem 10px 0 5px;
   }
 `;
 
@@ -89,8 +89,9 @@ export const ContainerHeader = styled.div`
   margin: 0 0 50px 0;
 
   @media (max-width: 768px) {
+    margin: 0 0 50px 5px;
     padding: 25px 55px;
-    flex-direction: column;    
+    flex-direction: column;
   }
 `;
 
@@ -104,7 +105,6 @@ export const ContentHeader = styled.div<ContentHeaderProps>`
   flex-direction: column;
   width: 100%;
   border-radius: 15px 0 0 15px;  
-}
 `;
 
 export const ContentHeaderImg = styled.div<ContentHeaderProps>`
@@ -117,7 +117,6 @@ export const ContentHeaderImg = styled.div<ContentHeaderProps>`
   @media (max-width: 1110px) {   
   align-items: center;
   }
-}
 `;
 
 export const Title = styled.div`
@@ -129,9 +128,9 @@ export const Title = styled.div`
     color: #2c2c2c;
   }
   @media (max-width: 768px) {
-    font-size: 2rem;
+    font-size: 1.4rem;
   }
-}
+
 `;
 
 export const SubTitle = styled.div`

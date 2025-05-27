@@ -104,30 +104,50 @@ function Service() {
             </P.SubTitle>
           </P.ContentHeader>
           <P.ContentHeaderImg align="end">
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "end",
-                margin: "25px 0 0 0",
-              }}
-            >
-              {decodedData?.userRole === "Admin" && (
-                <>
-                  <Button
-                    onClick={handleDeleteServices}
-                    $isRemove
-                    type="button"
-                  />
-                  <Button
-                    $isAdd
-                    type="button"
-                    onClick={handleShowAddServiceModal}
-                  />
-                </>
-              )}
-            </div>
+            {decodedData?.userRole === "Admin" && (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "end",
+                  flexDirection: window.innerWidth < 768 ? "column" : "row",
+                  margin: "25px 0 0 0",
+                }}
+              >
+                {window.innerWidth <= 768 ? (
+                  <>
+                    <div style={{ marginBottom: "15px" }}>
+                      <Button
+                        $isAdd
+                        type="button"
+                        onClick={handleShowAddServiceModal}
+                      />
+                    </div>
+                    <Button
+                      onClick={handleDeleteServices}
+                      $isRemove
+                      type="button"
+                    />
+                  </>
+                ) : (
+                  <>
+                    <div style={{ marginBottom: "15px" }}>
+                      <Button
+                        onClick={handleDeleteServices}
+                        $isRemove
+                        type="button"
+                      />
+                    </div>
+                    <Button
+                      $isAdd
+                      type="button"
+                      onClick={handleShowAddServiceModal}
+                    />
+                  </>
+                )}
+              </div>
+            )}
           </P.ContentHeaderImg>
-        </P.ContainerHeader>      
+        </P.ContainerHeader>
         <ServiceDataTable
           {...{
             rows,
@@ -157,10 +177,11 @@ function Service() {
             <Row>
               <Col
                 md={6}
-                className="mt-3 mb-3 d-flex justify-content-center align-items-center"
+                className={`${
+                  window.innerWidth > 375 ? "mt-2 mb-2" : "mt-0 mb-0"
+                } d-flex justify-content-center align-items-center`}
               >
                 <Input
-                  width="300"
                   type="text"
                   placeholder="Nome"
                   name="name"
@@ -174,10 +195,11 @@ function Service() {
               </Col>
               <Col
                 md={6}
-                className="mt-3 mb-3 d-flex justify-content-center align-items-center"
+                className={`${
+                  window.innerWidth > 375 ? "mt-2 mb-2" : "mt-0 mb-0"
+                } d-flex justify-content-center align-items-center`}
               >
                 <Input
-                  width="300"
                   type="text"
                   placeholder="Valor"
                   name="value"
@@ -197,21 +219,27 @@ function Service() {
             <Row>
               <Col
                 md={6}
-                className="mt-3 mb-3 d-flex justify-content-center align-items-center"
+                xs={12}
+                className={`${
+                  window.innerWidth > 375 ? "mt-3 mb-4" : "mt-0 mb-2"
+                } d-flex justify-content-center align-items-center`}
               >
-                <Select
-                  setData={setDurationMinutes}
-                  value={durationMinutes[0]}
-                  options={options}
-                  placeholder="Selecione a duração"
-                />
+                <div style={{ width: "100%" }}>
+                  <Select
+                    setData={setDurationMinutes}
+                    value={durationMinutes[0]}
+                    options={options}
+                    placeholder="Selecione a duração"
+                  />
+                </div>
               </Col>
               <Col
                 md={6}
-                className="mt-3 mb-3 d-flex justify-content-center align-items-center"
+                className={`${
+                  window.innerWidth > 375 ? "mt-2 mb-3" : "mt-0 mb-0"
+                } d-flex justify-content-center align-items-center`}
               >
                 <Input
-                  width="300"
                   type="toggle"
                   name="active"
                   value={formValuesService.active}
@@ -226,10 +254,11 @@ function Service() {
             <Row>
               <Col
                 md={12}
-                className="mt-3 mb-3 d-flex justify-content-center align-items-center"
+                className={`${
+                  window.innerWidth > 375 ? "mt-2 mb-3" : "mt-0 mb-0"
+                } d-flex justify-content-center align-items-center`}
               >
                 <Input
-                  width="600"
                   type="text"
                   placeholder="Descrição"
                   name="description"

@@ -109,8 +109,7 @@ const ProfessionalDataTable: React.FC<ProfessionalDataTableProps> = ({
         >
           <Row>
             <Col md={4} className="mt-3 mb-3">
-              <Input
-                width="300"
+              <Input                
                 type="toggle"
                 placeholder="Ativo"
                 name="active"

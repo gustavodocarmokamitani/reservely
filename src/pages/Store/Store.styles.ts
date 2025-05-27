@@ -10,7 +10,7 @@ export const StoreContent = styled.div`
   margin-bottom: 30px;
 
   & input {
-    margin: 0; !important
+    margin: 0 !important; 
   }
 `;
 
@@ -27,10 +27,14 @@ export const Store = styled.div`
   @media (max-width: 1200px) {
     flex-direction: column;
   }
+
+  @media (max-width: 768px) {
+    padding-left: 3rem;
+  }
 `;
 
 export const StoreSectionOne = styled.div`
-    width: 350px
+    max-width: 350px;
     flex-shrink: 0;
 
     @media (max-width: 1200px) {

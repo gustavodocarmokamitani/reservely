@@ -61,6 +61,7 @@ export function AppointmentClient() {
     storeCode,
     storeUser,
     store,
+    employee,
     setStoreData,
     setOptionsEmployee,
     setOptionsService,
@@ -159,13 +160,15 @@ export function AppointmentClient() {
               </S.AppointmentContent>
 
               <S.AppointmentContent>
-                <Paragraph text="Horário" />
-                <Select
-                  setData={setAppointmentTime}
-                  options={optionsTime}
-                  placeholder="Selecione ..."
-                  value={appointmentTime}
-                />
+                <div style={{marginBottom: "25px"}}>
+                  <Paragraph text="Horário" />
+                  <Select
+                    setData={setAppointmentTime}
+                    options={optionsTime}
+                    placeholder="Selecione ..."
+                    value={appointmentTime}
+                  />
+                </div>
               </S.AppointmentContent>
             </S.AppointmentClientContainer>
           </>

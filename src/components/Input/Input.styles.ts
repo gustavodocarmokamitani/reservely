@@ -1,14 +1,12 @@
 import styled from "styled-components";
 
-interface InputProps {
-  width: string;
-}
-
-export const InputWrapper = styled.div<InputProps>`
+export const InputWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
   position: relative;
+  width: 100%;
+  height: 70px;
 `;
 
 export const PasswordIcon = styled.div`
@@ -16,11 +14,12 @@ export const PasswordIcon = styled.div`
   left: 89%;
   top: 50%;
   transform: translateY(-50%);
-  cursor: ;
+  cursor: pointer;
+  color: #000;
 `;
 
-export const Input = styled.input<InputProps>`
-  width: ${(props) => Number(props.width) / 18}rem;
+export const Input = styled.input`
+  width: 100%;
   height: 3.125rem;
   padding: 0 1.562rem;
   font-size: 1rem;
@@ -39,12 +38,11 @@ export const Input = styled.input<InputProps>`
   }
 `;
 
-export const ToggleWrapper = styled.div<InputProps>`
+export const ToggleWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between; /* Adicione esta linha */
-  width: ${(props) =>
-    Number(props.width) / (window.innerWidth > 1680 ? 16 : 12)}rem;
+  width: 100%;    
   height: 3.125rem;
   padding: 0 25px;
   border: 1px solid rgba(0, 0, 0, 0.25);
@@ -55,6 +53,7 @@ export const ToggleWrapper = styled.div<InputProps>`
     outline: none;
     border: 2px solid rgba(0, 0, 0, 0.5);
   }
+  width: 100%;
 `;
 
 export const ToggleLabel = styled.label`

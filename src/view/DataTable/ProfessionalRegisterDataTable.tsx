@@ -77,8 +77,7 @@ const ProfessionalRegisterDataTable: React.FC<
         >
           <Row>
             <Col md={4} className="mt-3 mb-3">
-              <Input
-                width="300"
+              <Input                
                 type="text"
                 placeholder="Nome"
                 name="name"
@@ -93,8 +92,7 @@ const ProfessionalRegisterDataTable: React.FC<
               />
             </Col>
             <Col md={4} className="mt-3 mb-3">
-              <Input
-                width="300"
+              <Input                
                 type="text"
                 placeholder="Sobrename"
                 name="lastName"
@@ -109,8 +107,7 @@ const ProfessionalRegisterDataTable: React.FC<
               />
             </Col>
             <Col md={4} className="mt-3 mb-3">
-              <Input
-                width="300"
+              <Input                
                 type="text"
                 placeholder="Telefone"
                 name="phone"

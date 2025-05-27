@@ -42,7 +42,6 @@ export const useAction = (
           { variant: "success" }
         );
         if (responseDecodedToken.userRole === "Client") {
-          console.log(storeCode === "");
 
           if (storeCode === "") {
             navigate(`/home-client/:`);

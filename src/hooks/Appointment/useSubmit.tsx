@@ -25,14 +25,6 @@ export const useSubmit = (
     storeUser: number
   ) => {
     try {
-      console.log(
-        employee,
-        client,
-        service,
-        appointmentTime,
-        appointmentDate,
-        storeUser
-      );
       setIsLoading(true);
       const selectedEmployee = employee[employee.length - 1];
       const selectedClient = client[client.length - 1];

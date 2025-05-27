@@ -41,8 +41,7 @@ const RegisterReSendEmail = () => {
           <Input
             placeholder="Email"
             name="email"
-            type="text"
-            width="350"
+            type="text"            
             value={email}
             onChange={handleEmailChange}
           />

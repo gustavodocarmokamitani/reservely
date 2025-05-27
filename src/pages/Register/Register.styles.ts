@@ -9,6 +9,7 @@ export const ContainerRegister = styled.div`
 `;
 
 export const WrapperRegisterInput = styled.div`
+  width: 100%;  
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -18,9 +19,10 @@ export const WrapperRegisterInput = styled.div`
 `;
 
 export const ContentRegister = styled.div`
+  width: 100%;
   display: flex;
   justify-content: center;
-  aling-items: center;
+  flex-direction: row;
   gap: 10px;
   flex-wrap: wrap;
 `;

@@ -51,8 +51,6 @@ export const useAction = (
               storeId: Number(storeUser),
             };
 
-      console.log(mappedAppointment);
-
       const responseAppointment = await updateAppointment(
         mappedAppointment.id,
         mappedAppointment

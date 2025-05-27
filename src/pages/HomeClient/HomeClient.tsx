@@ -234,18 +234,24 @@ export const HomeClient = () => {
         </h3>
         <S.ContainerClient>
           {data.length > 0 ? (
-            data.map((item, index) => (
-              <S.WrapperHomeClient key={index}>
-                <Card
-                  type="homeClient"
-                  history
-                  data={item}
-                  handleNavigateAppointment={() =>
-                    handleNavigateAppointmentClientStoreCode(item.storeCode)
-                  }
-                />
-              </S.WrapperHomeClient>
-            ))
+            data
+              .sort(
+                (a, b) =>
+                  new Date(b.appointmentDate).getTime() -
+                  new Date(a.appointmentDate).getTime()
+              )
+              .map((item, index) => (
+                <S.WrapperHomeClient key={index}>
+                  <Card
+                    type="homeClient"
+                    history
+                    data={item}
+                    handleNavigateAppointment={() =>
+                      handleNavigateAppointmentClientStoreCode(item.storeCode)
+                    }
+                  />
+                </S.WrapperHomeClient>
+              ))
           ) : (
             <p>Sem agendamentos</p>
           )}

@@ -37,6 +37,7 @@ import RegisterGoogle from "./pages/Register/RegisterGoogle";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { AppointmentClient } from "./pages/Appointment/AppointmentClient";
 import { HomeClient } from "./pages/HomeClient/HomeClient";
+import { AppointmentTeste } from "./pages/AppointmentTeste/AppointmentTeste";
 
 function App() {
   const clientId = import.meta.env.VITE_CLIENT_ID;
@@ -98,11 +99,15 @@ function App() {
                           path="/history-appointment"
                           element={<AppointmentHistory />}
                         />
-                        <Route path="/home-client/:storeCodeParams" element={<HomeClient />} />
+                        <Route
+                          path="/home-client/:storeCodeParams"
+                          element={<HomeClient />}
+                        />
                         <Route
                           path="/appointment-client/:storeCodeParams"
                           element={<AppointmentClient />}
                         />
+                        <Route path="/teste/:storeCodeParams" element={<AppointmentTeste />} />
                       </Routes>
                     </div>
                   </React.Fragment>

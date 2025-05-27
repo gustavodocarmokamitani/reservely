@@ -99,11 +99,9 @@ const Navigation = () => {
     if (itemRef) {
       const offsetTop = itemRef.offsetTop;
       const itemHeight = itemRef.offsetHeight;
-      setIndicatorTop(
-        window.innerWidth <= 1680
-          ? (offsetTop + itemHeight / 2 - itemHeight + 22) / 12
-          : (offsetTop + itemHeight / 2 - itemHeight + 22) / 16
-      );
+      window.innerWidth <= 768
+        ? setIndicatorTop((offsetTop + itemHeight / 2 - itemHeight + 28) / 16)
+        : setIndicatorTop((offsetTop + itemHeight / 2 - itemHeight + 22) / 16);
     }
   }, [location, menuOptions]);
 
@@ -128,7 +126,7 @@ const Navigation = () => {
           <div
             style={{
               display: `${!sidebarCollapse ? "flex" : "none"}`,
-              width: "20rem",
+              width: "20rem",              
             }}
           >
             <S.SidebarContainer
@@ -176,22 +174,23 @@ const Navigation = () => {
                     </Link>
                   </S.MenuContainer>
                 ))}
-              </div>
-
-              <S.MenuContainer style={{ borderTop: "1px solid gray" }}>
-                <Row
-                  className="d-flex align-items-center justify-content-center"
-                  style={{ height: "100%", paddingLeft: "20px" }}
-                  onClick={logout}
+                <S.MenuContainer
+                  style={{ borderTop: "1px solid gray", marginTop: "50px" }}
                 >
-                  <OptionNavigation
-                    icon={
-                      <img src={exit} alt="exit" style={{ width: "25px" }} />
-                    }
-                    text="Sair"
-                  />
-                </Row>
-              </S.MenuContainer>
+                  <Row
+                    className="d-flex align-items-center justify-content-center"
+                    style={{ height: "100%", paddingLeft: "20px" }}
+                    onClick={logout}
+                  >
+                    <OptionNavigation
+                      icon={
+                        <img src={exit} alt="exit" style={{ width: "25px" }} />
+                      }
+                      text="Sair"
+                    />
+                  </Row>
+                </S.MenuContainer>
+              </div>
             </S.SidebarContainer>
           </div>
           <div

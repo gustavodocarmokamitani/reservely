@@ -86,7 +86,6 @@ export const useAction = (
 
       if (responseServiceType && responseServiceType.data) {
         const responseServiceTypeData = responseServiceType.data;
-        console.log(12312313132);
 
         const typeService: ServiceServiceType = {
           id: formValuesService.id,
@@ -99,7 +98,6 @@ export const useAction = (
             ? responseServiceTypeData.services
             : null,
         };
-        console.log(typeService);
 
         const responseUpdate = await updateServiceType(
           formValuesService.id,

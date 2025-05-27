@@ -9,31 +9,48 @@ export const AppointmentContainer = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  @media (max-width: 900px) {
+    padding-left: 50px;
+  }
 `;
 
 export const AppointmentContent = styled.div`
   width: 90%;
-  margin: 1rem 0;
+  margin: 1rem 30px 15px 0px;
+`;
+
+export const AppointmentClientStoreSelect = styled.div`
+  display: flex;
+  align-items: start;
+  width: 25%;
+  height: 200px;  
+  @media (max-width: 768px) {
+  width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 export const AppointmentClientSelect = styled.div`
   display: flex;
   align-items: start;
-  width: 100vw;
-  height: 100%;  
+  width: 100%;
+  
   @media (max-width: 768px) {
     display: flex;
-    flex-direction: column;    
+    flex-direction: column;
     align-items: center;
   }
 `;
 
 export const AppointmentClientContainer = styled.div`
-  width: 100%;  
+  width: 100%;
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  padding-left: 50px;
 `;
 
 export const AppointmentClientContent = styled.div`
@@ -50,7 +67,7 @@ export const ContainerHeader = styled.div`
   width: 100%;
   border-radius: 15px 0 0 15px;
   padding: 25px 75px;
-  background: #f16855;  
+  background: #f16855;
 `;
 
 export const ContentHeader = styled.div<ContentHeaderProps>`

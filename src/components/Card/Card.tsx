@@ -150,53 +150,6 @@ const Card: React.FC<CardProps> = ({
                       ))}
                     </div>
                   </S.TextCard>
-                  {/*<S.TextCard>
-                    <S.Paragraph style={{ width: "9.25rem" }}>
-                      {data.employeeName}
-                    </S.Paragraph>
-                  </S.TextCard>
-
-                   <S.TextCard>
-                    <img src={price} alt="employee" width="10%" />
-                    <S.Paragraph style={{ width: "9.25rem" }}>
-                      {formatToBRL(String(data.totalPrice * 100))}
-                    </S.Paragraph>
-                  </S.TextCard>
-                </S.CardContent>
-                <S.CardContent>
-                  <S.TextCard>
-                    <img src={date} alt="employee" width="10%" />
-                    <S.Paragraph style={{ width: "9.25rem" }}>
-                      {moment(data.appointmentDate).format("DD/MM/YYYY")}
-                    </S.Paragraph>
-                  </S.TextCard>
-                  <S.TextCard>
-                    <img src={time} alt="employee" width="10%" />
-                    <S.Paragraph style={{ width: "9.25rem" }}>
-                      {data.appointmentTime}
-                    </S.Paragraph>
-                  </S.TextCard>
-                </S.CardContent>
-                <S.CardContent>
-                  <S.TextCard>
-                    <S.Paragraph
-                      style={{ width: "12.25rem", height: "2.25rem", fontWeight: "500" }}
-                    >
-                      {appointmentStatusMap[
-                        data.appointmentStatus as keyof typeof appointmentStatusMap
-                      ] || "Status Desconhecido"}
-                    </S.Paragraph>
-                  </S.TextCard>
-                </S.CardContent>
-                <S.CardContent>
-                  <S.CardScroll>
-                    <S.TextCard>
-                      <img src={service} alt="employee" width="5%" />
-                      {data.services?.map((service: any, index: number) => (
-                        <S.Paragraph key={index}>{service.name}</S.Paragraph>
-                      ))}
-                    </S.TextCard>
-                  </S.CardScroll> */}
                 </S.CardContent>
               </>
             )}
@@ -255,8 +208,8 @@ const Card: React.FC<CardProps> = ({
             </h4>
             {type === "status" && (
               <Row>
-                <Col md={8}>
-                  <p style={{ textAlign: "center" }}>
+                <Col sx={8}>
+                  <p style={{ textAlign: "center", paddingRight: "1rem" }}>
                     {statusStore !== undefined
                       ? statusStore
                         ? "Ativado"
@@ -264,7 +217,7 @@ const Card: React.FC<CardProps> = ({
                       : "Sem Status"}
                   </p>
                 </Col>
-                <Col md={4}>
+                <Col sx={4}>
                   <img
                     src={selectedIcon}
                     alt={statusStore ? "confirm" : "remove"}
@@ -278,10 +231,12 @@ const Card: React.FC<CardProps> = ({
               icon &&
               iconMap[icon] && (
                 <Row>
-                  <Col md={8}>
-                    <p style={{ textAlign: "center" }}>{text}</p>
+                  <Col sx={8}>
+                    <p style={{ textAlign: "center", paddingRight: "1rem" }}>
+                      {text}
+                    </p>
                   </Col>
-                  <Col md={4}>
+                  <Col sx={4}>
                     <img
                       src={iconMap[icon]}
                       alt={icon}

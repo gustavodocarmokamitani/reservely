@@ -11,8 +11,6 @@ export const useValidate = () => {
     appointmentTime: SelectOption[],
     appointmentDate: Date[]
   ) => {
-    console.log(client[client.length - 1]);
-    
     const validationRules = [
       { condition: !employee[employee.length - 1]?.value, message: "Por favor, selecione um funcionário." },
       { condition: !client[client.length - 1]?.label, message: "Por favor, selecione um cliente." },

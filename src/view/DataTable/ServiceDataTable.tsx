@@ -86,7 +86,6 @@ const ServiceDataTable: React.FC<ServiceDataTableProps> = ({
               className="mt-3 mb-3 d-flex justify-content-center align-items-center"
             >
               <Input
-                width="300"
                 type="text"
                 placeholder="Nome"
                 name="name"
@@ -103,7 +102,6 @@ const ServiceDataTable: React.FC<ServiceDataTableProps> = ({
               className="mt-3 mb-3 d-flex justify-content-center align-items-center"
             >
               <Input
-                width="300"
                 type="text"
                 placeholder="Valor"
                 name="value"
@@ -125,19 +123,20 @@ const ServiceDataTable: React.FC<ServiceDataTableProps> = ({
               md={6}
               className="mt-3 mb-3 d-flex justify-content-center align-items-center"
             >
-              <Select
-                setData={setDurationMinutes}
-                value={durationMinutes[0]}
-                options={options}
-                placeholder="Selecione a duração"
-              />
+              <div style={{ width: "100%" }}>
+                <Select
+                  setData={setDurationMinutes}
+                  value={durationMinutes[0]}
+                  options={options}
+                  placeholder="Selecione a duração"
+                />
+              </div>
             </Col>
             <Col
               md={6}
               className="mt-3 mb-3 d-flex justify-content-center align-items-center"
             >
               <Input
-                width="300"
                 type="toggle"
                 name="active"
                 value={formValuesService.active}
@@ -155,7 +154,6 @@ const ServiceDataTable: React.FC<ServiceDataTableProps> = ({
               className="mt-3 mb-3 d-flex justify-content-center align-items-center"
             >
               <Input
-                width="600"
                 type="text"
                 placeholder="Descrição"
                 name="description"
