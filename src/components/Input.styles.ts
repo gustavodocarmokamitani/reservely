@@ -1,12 +1,11 @@
 import styled from "styled-components";
 
-interface InputProps {
-  width: string;
-}
-
-export const InputWrapper = styled.div<InputProps>`
+export const InputWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
   position: relative;
-  width: ${(props: { width: string }) => props.width}px;
+  width: 100%;
   height: 70px;
 `;
 
@@ -16,15 +15,15 @@ export const PasswordIcon = styled.div`
   left: 300px;
   transform: translateY(-50%);
   cursor: pointer;
-  color: #0;
+  color: #000;
 `;
 
 
-export const Input = styled.input<InputProps>`
-  width: ${(props) => props.width}px; 
-  height: 50px;
-  padding: 0 25px;
-  font-size: 14px;
+export const Input = styled.input`
+  width: 100%;
+  height: 3.125rem;
+  padding: 0 1.562rem;
+  font-size: 1rem;
   border: 1px solid rgba(0, 0, 0, 0.25);
   border-radius: 15px;  
   box-shadow: 4px 4px 15px 0px rgba(0, 0, 0, 0.25);
@@ -35,12 +34,12 @@ export const Input = styled.input<InputProps>`
   }
 `;
 
-export const ToggleWrapper = styled.div<InputProps>`
-   display: flex;
+export const ToggleWrapper = styled.div`
+  display: flex;
   align-items: center;
   justify-content: space-between; /* Adicione esta linha */
-  width: ${(props) => props.width}px; 
-  height: 50px;
+  width: 100%;    
+  height: 3.125rem;
   padding: 0 25px;
   font-size: 14px;
   border: 1px solid rgba(0, 0, 0, 0.25);
@@ -51,7 +50,7 @@ export const ToggleWrapper = styled.div<InputProps>`
     outline: none;
     border: 2px solid  rgba(0, 0, 0, 0.5);
   }
-  width: ${(props) => props.width}px;
+  width: 100%;
 `;
 
 export const ToggleLabel = styled.label`

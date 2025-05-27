@@ -3,8 +3,7 @@ import * as S from "./Input.styles";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 interface InputProps {
-  placeholder?: string;
-  width: string;
+  placeholder?: string;  
   name?: string;
   value?: string;
   type: "text" | "toggle" | "number" | "password" | "email";
@@ -13,8 +12,7 @@ interface InputProps {
 }
 
 const Input: React.FC<InputProps> = ({
-  placeholder,
-  width,
+  placeholder,  
   name,
   value,
   type,
@@ -57,10 +55,9 @@ const Input: React.FC<InputProps> = ({
   const renderPasswordField = (inputType: string) => {
     if (inputType === "password") {
       return (
-        <S.InputWrapper width={width}>
+        <S.InputWrapper>
           <S.Input
-            placeholder={placeholder}
-            width={width}
+            placeholder={placeholder}            
             name={name}
             value={value}
             type={showPassword ? "text" : "password"}
@@ -75,8 +72,7 @@ const Input: React.FC<InputProps> = ({
 
     return (
       <S.Input
-        placeholder={placeholder}
-        width={width}
+        placeholder={placeholder}        
         name={name}
         value={value}
         type={inputType}
@@ -87,7 +83,7 @@ const Input: React.FC<InputProps> = ({
 
   if (type === "toggle") {
     return (
-      <S.ToggleWrapper width={width}>
+      <S.ToggleWrapper>
         <S.ToggleLabel>Ativo</S.ToggleLabel>
         <S.ToggleInput
           type="checkbox"

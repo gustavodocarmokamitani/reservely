@@ -188,9 +188,97 @@ const ServiceDataTable: React.FC<ServiceDataTableProps> = ({
           subTitle="Preencha as informações abaixo para editar o serviço."
           handleClose={handleClose}
           size="small"
-          rowId={selectedEmployeeId}
-          editService
-        />
+          {...{
+            handleClose,
+          }}
+        >
+          <Row>
+            <Col
+              md={6}
+              className="mt-3 mb-3 d-flex justify-content-center align-items-center"
+            >
+              <Input
+                type="text"
+                placeholder="Nome"
+                name="name"
+                value={formValuesService.name}
+                onChange={(e) =>
+                  handleInputChangeService(
+                    e as React.ChangeEvent<HTMLInputElement>
+                  )
+                }
+              />
+            </Col>
+            <Col
+              md={6}
+              className="mt-3 mb-3 d-flex justify-content-center align-items-center"
+            >
+              <Input
+                type="text"
+                placeholder="Valor"
+                name="value"
+                value={
+                  formValuesService.value
+                    ? formatToBRL(formValuesService.value)
+                    : formatToBRL("0")
+                }
+                onChange={(e) =>
+                  handleInputChangeService(
+                    e as React.ChangeEvent<HTMLInputElement>
+                  )
+                }
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col
+              md={6}
+              className="mt-3 mb-3 d-flex justify-content-center align-items-center"
+            >
+              <div style={{ width: "100%" }}>
+                <Select
+                  setData={setDurationMinutes}
+                  value={durationMinutes[0]}
+                  options={options}
+                  placeholder="Selecione a duração"
+                />
+              </div>
+            </Col>
+            <Col
+              md={6}
+              className="mt-3 mb-3 d-flex justify-content-center align-items-center"
+            >
+              <Input
+                type="toggle"
+                name="active"
+                value={formValuesService.active}
+                onChange={(e) =>
+                  handleInputChangeService(
+                    e as React.ChangeEvent<HTMLInputElement>
+                  )
+                }
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col
+              md={12}
+              className="mt-3 mb-3 d-flex justify-content-center align-items-center"
+            >
+              <Input
+                type="text"
+                placeholder="Descrição"
+                name="description"
+                value={formValuesService.description}
+                onChange={(e) =>
+                  handleInputChangeService(
+                    e as React.ChangeEvent<HTMLInputElement>
+                  )
+                }
+              />
+            </Col>
+          </Row>
+        </Modal>
       )}
     </div>
   );

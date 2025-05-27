@@ -196,9 +196,37 @@ const ProfessionalDataTable: React.FC<ProfessionalDataTableProps> = ({
           edit
           handleClose={handleClose}
           size="large"
-          rowId={selectedEmployeeId}
-          fetchData={fetchData}
-        />
+          {...{
+            handleClose,
+          }}
+        >
+          <Row>
+            <Col md={4} className="mt-3 mb-3">
+              <Input                
+                type="toggle"
+                placeholder="Ativo"
+                name="active"
+                value={formValuesProfessional.active}
+                onChange={(e) =>
+                  handleInputChangeProfessional(
+                    e as React.ChangeEvent<HTMLInputElement>
+                  )
+                }
+              />
+            </Col>
+
+            <Col md={8}>
+              <SelectableBox
+                onChange={handleServiceSelection}
+                data={selectableBoxServices}
+                {...{
+                  setSelectedServices,
+                  selectedServices,
+                }}
+              />
+            </Col>
+          </Row>
+        </Modal>
       )}
     </div>
   );

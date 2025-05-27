@@ -50,8 +50,7 @@ const RegisterHelp = () => {
                   <Input
                     placeholder="Email"
                     name="email"
-                    type="text"
-                    width="400"
+                    type="text"                    
                     value={email}
                     onChange={handleEmailChange}
                   />

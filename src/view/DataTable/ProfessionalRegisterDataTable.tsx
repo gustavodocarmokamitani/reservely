@@ -186,9 +186,55 @@ const ProfessionalRegisterDataTable: React.FC<
           subTitle="Preencha as informações abaixo para editar o profissional."
           handleClose={handleClose}
           size="large"
-          rowId={selectedEmployeeId}
-          fetchData={fetchData}
-        />
+        >
+          <Row>
+            <Col md={4} className="mt-3 mb-3">
+              <Input                
+                type="text"
+                placeholder="Nome"
+                name="name"
+                value={capitalizeFirstLetter(
+                  formValuesProfessionalRegister.name
+                )}
+                onChange={(e) =>
+                  handleInputChangeProfessionalRegister(
+                    e as React.ChangeEvent<HTMLInputElement>
+                  )
+                }
+              />
+            </Col>
+            <Col md={4} className="mt-3 mb-3">
+              <Input                
+                type="text"
+                placeholder="Sobrename"
+                name="lastName"
+                value={capitalizeFirstLetter(
+                  formValuesProfessionalRegister.lastName
+                )}
+                onChange={(e) =>
+                  handleInputChangeProfessionalRegister(
+                    e as React.ChangeEvent<HTMLInputElement>
+                  )
+                }
+              />
+            </Col>
+            <Col md={4} className="mt-3 mb-3">
+              <Input                
+                type="text"
+                placeholder="Telefone"
+                name="phone"
+                value={capitalizeFirstLetter(
+                  formValuesProfessionalRegister.phone
+                )}
+                onChange={(e) =>
+                  handleInputChangeProfessionalRegister(
+                    e as React.ChangeEvent<HTMLInputElement>
+                  )
+                }
+              />
+            </Col>
+          </Row>
+        </Modal>
       )}
     </div>
   );

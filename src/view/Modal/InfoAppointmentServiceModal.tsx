@@ -10,8 +10,7 @@ interface InfoAppointmentServiceModalProps {
   subTitle?: string;  
   handleShow: () => void;
   handleClose: () => void;
-  fetchData: () => void;
-  size: "pequeno" | "medio" | "grande";
+  size: "small" | "medium" | "large";
   rowId?: number;
 }
 
@@ -35,31 +34,47 @@ const InfoAppointmentServiceModal: React.FC<InfoAppointmentServiceModalProps> = 
   return (
     <S.Overlay>
       <div
-        style={{
-          background: "white",
-          padding: "20px",
-          borderRadius: "8px",
-          maxWidth: sizeMap[size],
-          width: "100%",
-        }}
+        style={
+          window.innerWidth >= 768
+            ? {
+                background: "white",
+                padding: "20px",
+                borderRadius: "8px",
+                maxWidth: sizeMap[size],
+                width: "100%",
+              }
+            : {
+                background: "white",
+                padding: "20px",
+                borderRadius: "0px",
+                maxWidth: sizeMap[size],
+                width: "100%",
+                position: "absolute",
+                top: "0",
+                left: "0",
+                bottom: "0",
+              }
+        }
       >
         <Row>
           <Col md={10}>
             <h3>{title}</h3>
             <p>{subTitle}</p>
           </Col>
-          <Col
-            md={2}
-            style={{ textAlign: "right", cursor: "pointer" }}
-            onClick={handleClose}
-          >
-            <img
-              src={closeIcon}
-              alt="Close Icon"
-              style={{ marginRight: "8px", verticalAlign: "middle" }}
-              width={25}
-            />
-          </Col>
+          {window.innerWidth >= 768 ? (
+            <Col
+              md={2}
+              style={{ textAlign: "right", cursor: "pointer" }}
+              onClick={handleClose}
+            >
+              <img
+                src={closeIcon}
+                alt="Close Icon"
+                style={{ marginRight: "8px", verticalAlign: "middle" }}
+                width={25}
+              />
+            </Col>
+          ) : null}
           <hr />
         </Row>
 

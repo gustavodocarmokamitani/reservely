@@ -9,11 +9,20 @@ export const ContainerRegister = styled.div`
 `;
 
 export const WrapperRegisterInput = styled.div`
+  width: 100%;  
   display: flex;
-  flex-direction: row;  
-  flex-wrap: wrap; 
-  justify-content: center; 
-  gap: 10px; 
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+`;
+
+export const ContentRegister = styled.div`
   width: 100%;
-  max-width: 800px;   
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  gap: 10px;
+  flex-wrap: wrap;
 `;

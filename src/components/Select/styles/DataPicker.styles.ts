@@ -2,8 +2,21 @@ import styled from "styled-components";
 
 export const StyledDatePicker = styled.div`
   display: flex;
+  justify-content: start;
   flex-direction: row;
   max-height: 500px;
+  margin-bottom: 50px;
+
+  & .react-datepicker__day {
+    height: 1.875rem;
+    width: 1.875rem;
+    text-align: center;
+    line-height: 1.8625rem;
+
+    @media (max-width: 1200px) {
+      width: 1.275rem;
+    }
+  }
 
   & .react-datepicker__day--today {
     background-color: transparent !important;
@@ -25,37 +38,35 @@ export const StyledDatePicker = styled.div`
     border-radius: 15px;
     padding-top: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 350px;
-    height: 390px;
-    font-size: 18px;
+    width: 21.7rem;
+    font-size: 1.125rem;
+
+    @media (max-width: 1200px) {
+      width: 18.7rem;
+    }
   }
 
   & .react-datepicker__day-name {
-    margin: 10px 10px;
+    margin: 0.625rem 0.6rem;
+    font-size: 0.9rem;
+
+    @media (max-width: 1200px) {
+      margin: 0.325rem 0.35rem;
+    }
   }
 
   & .react-datepicker__header {
     background-color: #f8f8f8;
     color: white;
     border-bottom: 1px solid #ddd;
-    margin-left: 10px;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    width: 325px;
-  }
+    border-top-left-radius: 0.3125rem;
+    border-top-right-radius: 0.3125rem;
+    width: 21.3rem;
+    text-transform: uppercase;
 
-  & .react-datepicker__day--selected,
-  & .react-datepicker__day--keyboard-selected {
-    background-color: #007bff;
-    color: white;
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-  }
-
-  & .react-datepicker__day:hover {
-    background-color: #d0e7ff;
-    border-radius: 50%;
+    @media (max-width: 1200px) {
+      width: 18.3rem;
+    }
   }
 
   & .react-datepicker__day {

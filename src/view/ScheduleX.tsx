@@ -34,8 +34,16 @@ export function ScheduleX({ events }: ScheduleXProps) {
     plugins: [eventsService],
     locale: "pt-BR",
     defaultView: "monthGrid",
-    theme: 'shadcn',
-  }); 
+    theme: "shadcn",
+    callbacks: {
+      onEventClick: (event) => {
+        calendarControls.setDate(event.start.split(" ")[0]);
+        calendarControls.setView("day");
+      },
+    },
+  });
+
+  useEffect(() => {}, [calendar]);
 
   return (
     <div style={{ width: "100%", height: "100%" }}>

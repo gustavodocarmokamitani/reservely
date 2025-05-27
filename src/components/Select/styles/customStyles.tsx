@@ -1,10 +1,10 @@
 const customStyles = {
   control: (provided: any) => ({
     ...provided,
-    minWidth: "280px",
-    minHeight: "40px",
-    padding: "5px 25px",
-    fontSize: "14px",
+    width: "100%",    
+    minHeight: " 3.125rem",
+    padding: window.innerWidth < 1680 ? ".15rem 1.56rem" : "0.2rem 1.56rem",
+    fontSize: "16px",
     border: "1px solid rgba(0, 0, 0, 0.25)",
     borderRadius: "15px",
     boxShadow: "4px 4px 15px 0px rgba(0, 0, 0, 0.25)",
@@ -17,6 +17,7 @@ const customStyles = {
   menu: (provided: any) => ({
     ...provided,
     zIndex: 5,
+    width: "24rem",    
   }),
   menuPortal: (provided: any) => ({
     ...provided,
