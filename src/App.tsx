@@ -35,9 +35,11 @@ import AppointmentHistory from "./pages/Appointment/AppointmentHistory";
 import Calendar from "./pages/Calendar/Calendar";
 import RegisterGoogle from "./pages/Register/RegisterGoogle";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import { AppointmentClient } from "./pages/Appointment/AppointmentClient";
+import { AppointmentClientLEGACY } from "./pages/AppointmentClient/AppointmentClient-LEGACY";
 import { HomeClient } from "./pages/HomeClient/HomeClient";
-import { AppointmentTeste } from "./pages/AppointmentTeste/AppointmentTeste";
+import { AppointmentClient } from "./pages/AppointmentClient/AppointmentClient";
+import UserMenu from "./components/UserMenu/UserMenu";
+import UserConfig from "./pages/User/UserConfig";
 
 function App() {
   const clientId = import.meta.env.VITE_CLIENT_ID;
@@ -72,6 +74,7 @@ function App() {
               element={
                 <ProtectedRoute>
                   <React.Fragment>
+                    <UserMenu />
                     <Navigation />
                     <div style={{ flexGrow: 1, overflowX: "hidden" }}>
                       <Routes>
@@ -100,14 +103,21 @@ function App() {
                           element={<AppointmentHistory />}
                         />
                         <Route
+                          path="/user-config"
+                          element={<UserConfig />}
+                        />
+                        <Route
                           path="/home-client/:storeCodeParams"
                           element={<HomeClient />}
                         />
+                        {/* <Route
+                          path="/appointment-client/:storeCodeParams"
+                          element={<AppointmentClientLEGACY />}
+                        /> */}
                         <Route
                           path="/appointment-client/:storeCodeParams"
                           element={<AppointmentClient />}
                         />
-                        <Route path="/teste/:storeCodeParams" element={<AppointmentTeste />} />
                       </Routes>
                     </div>
                   </React.Fragment>

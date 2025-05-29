@@ -75,33 +75,40 @@ const Navigation = () => {
         ]
       : [
           { path: "/home-client/:", icon: professionalCheck, text: "Home" },
-          {
-            path: "/appointment-client/:",
-            icon: chamada,
-            text: "Agendamento",
-          },
+          // {
+          //   path: "/appointment-client/:",
+          //   icon: chamada,
+          //   text: "Agendamento",
+          // },
           // { path: "/rating", icon: calendar, text: "Avaliação" },
         ];
 
   useEffect(() => {
     const path = location.pathname;
 
-    const normalizedPath = menuOptions.find((option) =>
+    const matchedOption = menuOptions.find((option) =>
       path.startsWith(option.path)
-    )?.path;
-
-    const newIndex = menuOptions.findIndex(
-      (option) => option.path === normalizedPath
     );
-    setSelectedIndex(newIndex >= 0 ? newIndex : 0);
 
-    const itemRef = menuItemsRef.current[newIndex];
-    if (itemRef) {
-      const offsetTop = itemRef.offsetTop;
-      const itemHeight = itemRef.offsetHeight;
-      window.innerWidth <= 768
-        ? setIndicatorTop((offsetTop + itemHeight / 2 - itemHeight + 28) / 16)
-        : setIndicatorTop((offsetTop + itemHeight / 2 - itemHeight + 22) / 16);
+    if (matchedOption) {
+      const newIndex = menuOptions.findIndex(
+        (option) => option.path === matchedOption.path
+      );
+      setSelectedIndex(newIndex);
+
+      const itemRef = menuItemsRef.current[newIndex];
+      if (itemRef) {
+        const offsetTop = itemRef.offsetTop;
+        const itemHeight = itemRef.offsetHeight;
+        window.innerWidth <= 768
+          ? setIndicatorTop((offsetTop + itemHeight / 2 - itemHeight + 28) / 16)
+          : setIndicatorTop(
+              (offsetTop + itemHeight / 2 - itemHeight + 22) / 16
+            );
+      }
+    } else {
+      setSelectedIndex(-1);
+      setIndicatorTop(50);
     }
   }, [location, menuOptions]);
 
@@ -126,7 +133,7 @@ const Navigation = () => {
           <div
             style={{
               display: `${!sidebarCollapse ? "flex" : "none"}`,
-              width: "20rem",              
+              width: "20rem",
             }}
           >
             <S.SidebarContainer
@@ -150,11 +157,7 @@ const Navigation = () => {
                     ref={(el) => (menuItemsRef.current[index] = el)}
                     onClick={() => setSelectedIndex(index)}
                   >
-                    <Link
-                      to={path}
-                      style={{ textDecoration: "none" }}
-                      onClick={handleSidebarCollapse}
-                    >
+                    <Link to={path} style={{ textDecoration: "none" }}>
                       <S.StyledRow
                         isSelected={location.pathname === path}
                         className={location.pathname === path ? "selected" : ""}
@@ -174,20 +177,18 @@ const Navigation = () => {
                     </Link>
                   </S.MenuContainer>
                 ))}
-                <S.MenuContainer
-                  style={{ borderTop: "1px solid gray", marginTop: "50px" }}
-                >
+                <S.MenuContainer>
                   <Row
                     className="d-flex align-items-center justify-content-center"
                     style={{ height: "100%", paddingLeft: "20px" }}
                     onClick={logout}
                   >
-                    <OptionNavigation
+                    {/* <OptionNavigation
                       icon={
                         <img src={exit} alt="exit" style={{ width: "25px" }} />
                       }
                       text="Sair"
-                    />
+                    /> */}
                   </Row>
                 </S.MenuContainer>
               </div>

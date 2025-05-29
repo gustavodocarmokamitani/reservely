@@ -79,7 +79,7 @@ const Card: React.FC<CardProps> = ({
             borderRadius: "15px",
             boxShadow: "4px 4px 15px 0px rgba(0, 0, 0, 0.5)",
             overflow: "hidden",
-            margin: "50px 0px 150px 0",
+            margin: "25px 0px 150px 0",
           }}
         >
           <S.CardTitleHomeClientContainer>
@@ -98,7 +98,9 @@ const Card: React.FC<CardProps> = ({
                       }}
                     >
                       <img src={employeeDefault} alt="employee" width="75px" />
-                      <S.Paragraph style={{ width: "9.25rem" }}>
+                      <S.Paragraph
+                        style={{ width: "9.25rem", fontWeight: "500" }}
+                      >
                         {data.employeeName}
                       </S.Paragraph>
                     </div>
@@ -111,43 +113,112 @@ const Card: React.FC<CardProps> = ({
                         alignItems: "center",
                       }}
                     >
-                      <S.Paragraph style={{ width: "5.25rem" }}>
-                        {formatToBRL(String(data.totalPrice * 100))}
-                      </S.Paragraph>
+                      <div style={{ display: "flex", flexDirection: "column" }}>
+                        <S.Paragraph
+                          style={{
+                            color: "#f16855",
+                            fontWeight: "500",
+                            padding: "0px",
+                            fontSize: "1rem",
+                          }}
+                        >
+                          Valor
+                        </S.Paragraph>
+                        <S.Paragraph style={{ width: "5.25rem" }}>
+                          {formatToBRL(String(data.totalPrice * 100))}
+                        </S.Paragraph>
+                      </div>
 
-                      <S.Paragraph style={{ width: "5.25rem" }}>
-                        {moment(data.appointmentDate).format("DD/MM/YYYY")}
-                      </S.Paragraph>
+                      <div style={{ display: "flex", flexDirection: "column" }}>
+                        <S.Paragraph
+                          style={{
+                            color: "#f16855",
+                            fontWeight: "500",
+                            padding: "0px",
+                            fontSize: "1rem",
+                          }}
+                        >
+                          Data
+                        </S.Paragraph>
+                        <S.Paragraph style={{ width: "5.25rem" }}>
+                          {moment(data.appointmentDate).format("DD/MM/YYYY")}
+                        </S.Paragraph>
+                      </div>
 
-                      <S.Paragraph style={{ width: "5.25rem" }}>
-                        {data.appointmentTime}
-                      </S.Paragraph>
+                      <div style={{ display: "flex", flexDirection: "column" }}>
+                        <S.Paragraph
+                          style={{
+                            color: "#f16855",
+                            fontWeight: "500",
+                            padding: "0px",
+                            fontSize: "1rem",
+                          }}
+                        >
+                          Horário
+                        </S.Paragraph>
+                        <S.Paragraph style={{ width: "5.25rem" }}>
+                          {data.appointmentTime}
+                        </S.Paragraph>
+                      </div>
                     </div>
-                  </S.TextCard>
-                  <S.TextCard>
-                    <S.Paragraph
-                      style={{
-                        width: "12.25rem",
-                        height: "2.25rem",
-                        fontWeight: "500",
-                      }}
-                    >
-                      {appointmentStatusMap[
-                        data.appointmentStatus as keyof typeof appointmentStatusMap
-                      ] || "Status Desconhecido"}
-                    </S.Paragraph>
                   </S.TextCard>
                   <S.TextCard>
                     <div
                       style={{
                         display: "flex",
-                        flexDirection: "column",
+                        flexDirection: "row",
                         alignItems: "center",
+                        justifyContent: "center",
+                        width: "100%",
+                        margin: ".5rem 0",
                       }}
                     >
-                      {data.services?.map((service: any, index: number) => (
-                        <S.Paragraph key={index}>{service.name}</S.Paragraph>
-                      ))}
+                      <S.TextCard>
+                        <div
+                          style={{ display: "flex", flexDirection: "column" }}
+                        >
+                          <S.Paragraph
+                            style={{
+                              color: "#f16855",
+                              fontWeight: "500",
+                              padding: "0px",
+                              fontSize: "1rem",
+                            }}
+                          >
+                            Serviço
+                          </S.Paragraph>
+                          {data.services?.map((service: any, index: number) => (
+                            <S.Paragraph key={index}>
+                              {service.name}
+                            </S.Paragraph>
+                          ))}
+                        </div>
+                      </S.TextCard>
+                      <S.TextCard>
+                        <div
+                          style={{ display: "flex", flexDirection: "column" }}
+                        >
+                          <S.Paragraph
+                            style={{
+                              color: "#f16855",
+                              fontWeight: "500",
+                              padding: "0px",
+                              fontSize: "1rem",
+                            }}
+                          >
+                            Status
+                          </S.Paragraph>
+                          <S.Paragraph
+                            style={{
+                              height: "2.25rem",
+                            }}
+                          >
+                            {appointmentStatusMap[
+                              data.appointmentStatus as keyof typeof appointmentStatusMap
+                            ] || "Status Desconhecido"}
+                          </S.Paragraph>
+                        </div>
+                      </S.TextCard>
                     </div>
                   </S.TextCard>
                 </S.CardContent>

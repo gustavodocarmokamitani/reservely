@@ -8,7 +8,7 @@ export const ContainerPage = styled.div`
 
   @media (max-width: 900px) {
     flex-direction: column;
-    padding: 1rem 10px 0 5px;
+    padding: 5rem 10px 0 5px;
   }
 `;
 

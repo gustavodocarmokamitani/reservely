@@ -8,7 +8,7 @@ import {
   Title,
 } from "../Styles/_Page.styles";
 
-import * as S from "./AppointmentTeste.styles";
+import * as S from "./AppointmentClient.styles";
 import { getStoreByStoreCode } from "../../services/StoreServices";
 import { useEffect, useState } from "react";
 import { Store } from "../../models/Store";
@@ -26,7 +26,7 @@ import { useFetch } from "../../hooks/AppointmentClient/useFetch";
 import Button from "../../components/Button/Button";
 import { useSubmit } from "../../hooks/AppointmentClient/useSubmit";
 
-export const AppointmentTeste = () => {
+export const AppointmentClient = () => {
   const { storeCodeParams } = useParams();
   const storeCode = storeCodeParams ? storeCodeParams : "";
   const storeUser = Number(localStorage.getItem("storeUser"));

@@ -219,12 +219,14 @@ export const HomeClient = () => {
           </SubTitle>
         </ContentHeader>
         <ContentHeaderImg align="end">
-          <Button
-            type="button"
-            $noIcon
-            $isAppointment
-            onClick={handleNavigateAppointmentClient}
-          ></Button>
+          {storeCode.length > 6 ? (
+            <Button
+              type="button"
+              $noIcon
+              $isAppointment
+              onClick={handleNavigateAppointmentClient}
+            ></Button>
+          ) : null}
         </ContentHeaderImg>
       </ContainerHeader>
 

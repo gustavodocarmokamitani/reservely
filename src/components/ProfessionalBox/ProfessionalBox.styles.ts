@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const SelectedWrap = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: start;
   flex-wrap: wrap;
   max-width: 40.5rem;
   max-height: 22rem;

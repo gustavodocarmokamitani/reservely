@@ -1,5 +1,5 @@
 import { Col, Row } from "react-bootstrap";
-import * as S from "./Appointment.styles";
+import * as S from "../Appointment/Appointment.styles";
 import Button from "../../components/Button/Button";
 import { Paragraph } from "../../components/Paragraph/Paragraph";
 import Select from "../../components/Select/Select";
@@ -17,7 +17,7 @@ import {
 } from "../Styles/_Page.styles";
 import { useSubmitClient } from "../../hooks/Appointment/useSubmitClient";
 
-export function AppointmentClient() {
+export function AppointmentClientLEGACY() {
   const { storeCodeParams } = useParams();
   const storeCode = storeCodeParams ? storeCodeParams : "";
   const storeUser = Number(localStorage.getItem("storeUser"));

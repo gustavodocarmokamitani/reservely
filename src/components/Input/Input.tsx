@@ -3,7 +3,7 @@ import * as S from "./Input.styles";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 interface InputProps {
-  placeholder?: string;  
+  placeholder?: string;
   name?: string;
   value?: string;
   type: "text" | "toggle" | "number" | "password" | "email";
@@ -12,33 +12,39 @@ interface InputProps {
 }
 
 const Input: React.FC<InputProps> = ({
-  placeholder,  
+  placeholder,
   name,
   value,
   type,
   phone,
-  onChange
+  onChange,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const formatPhoneNumber = (input: string) => {
-    const digits = input.replace(/\D/g, ""); 
+    const digits = input.replace(/\D/g, "");
 
     if (digits.length <= 2) {
       return `(${digits}`;
     } else if (digits.length <= 7) {
       return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
     } else if (digits.length <= 11) {
-      return `(${digits.slice(0, 2)}) ${digits.slice(2, 3)} ${digits.slice(3, 7)}-${digits.slice(7)}`;
+      return `(${digits.slice(0, 2)}) ${digits.slice(2, 3)} ${digits.slice(
+        3,
+        7
+      )}-${digits.slice(7)}`;
     } else {
-      return `(${digits.slice(0, 2)}) ${digits.slice(2, 3)} ${digits.slice(3, 7)}-${digits.slice(7, 11)}`;
+      return `(${digits.slice(0, 2)}) ${digits.slice(2, 3)} ${digits.slice(
+        3,
+        7
+      )}-${digits.slice(7, 11)}`;
     }
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     let newValue = event.target.value;
 
-    if (phone) {
+    if (phone && newValue.trim() !== "") {
       newValue = formatPhoneNumber(newValue);
     }
 
@@ -57,14 +63,18 @@ const Input: React.FC<InputProps> = ({
       return (
         <S.InputWrapper>
           <S.Input
-            placeholder={placeholder}            
+            placeholder={placeholder}
             name={name}
             value={value}
             type={showPassword ? "text" : "password"}
             onChange={handleInputChange}
           />
           <S.PasswordIcon onClick={handleTogglePasswordVisibility}>
-            {showPassword ? <FaEyeSlash size={"1.125rem"} /> : <FaEye size={"1.125rem"}/>}
+            {showPassword ? (
+              <FaEyeSlash size={"1.125rem"} />
+            ) : (
+              <FaEye size={"1.125rem"} />
+            )}
           </S.PasswordIcon>
         </S.InputWrapper>
       );
@@ -72,7 +82,7 @@ const Input: React.FC<InputProps> = ({
 
     return (
       <S.Input
-        placeholder={placeholder}        
+        placeholder={placeholder}
         name={name}
         value={value}
         type={inputType}
