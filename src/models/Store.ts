@@ -6,7 +6,6 @@ export interface Store {
     status: boolean;
     multipleAppointments: boolean;
     operatingHours: string;
-    multipleAppointments: boolean;
     closingDays: string[];
     operatingDays: string[];
     paymentMethods: number[];
