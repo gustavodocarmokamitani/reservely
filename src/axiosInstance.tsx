@@ -3,7 +3,7 @@ import axios from "axios";
 const api = axios.create({
 
   // baseURL: "http://localhost:7040/api",
-  baseURL: "https://api.reservely.com.br:7040/api",
+  baseURL: "http://api.reservely.com.br:7040/api",
   headers: {
     "Content-Type": "application/json",
   },
