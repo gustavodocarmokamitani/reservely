@@ -17,6 +17,7 @@ import {
 } from "../Styles/_Page.styles";
 import * as S from "./Appointment.styles";
 import Loading from "../../components/Loading/loading";
+import UserMenu from "../../components/UserMenu/UserMenu";
 
 export function Appointment() {
   const storeCode = "";
@@ -96,7 +97,8 @@ export function Appointment() {
   return (
     <>
       {isLoading && <Loading />}
-      <ContainerPage style={{ height: "100vh" }}>
+      <ContainerPage style={{ height: "100%" }}>
+        <UserMenu />
         <ContainerHeader>
           <ContentHeader align="start">
             <Title>

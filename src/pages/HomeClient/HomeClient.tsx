@@ -25,6 +25,7 @@ import {
 } from "../Styles/_Page.styles";
 import { useNavigate, useParams } from "react-router-dom";
 import { Store } from "../../models/Store";
+import UserMenu from "../../components/UserMenu/UserMenu";
 
 export const HomeClient = () => {
   const { storeCodeParams } = useParams();
@@ -201,6 +202,7 @@ export const HomeClient = () => {
 
   return (
     <ContainerPage>
+      <UserMenu />
       <ContainerHeader>
         <ContentHeader align="start">
           <Title>

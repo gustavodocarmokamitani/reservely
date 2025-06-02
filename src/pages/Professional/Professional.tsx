@@ -17,6 +17,7 @@ import { useEffectCustom } from "../../hooks/Professional/useEffectCustom";
 import Loading from "../../components/Loading/loading";
 
 import homeClient from "../../assets/homeClient.svg";
+import UserMenu from "../../components/UserMenu/UserMenu";
 
 function Professional() {
   const storeUser = Number(localStorage.getItem("storeUser"));
@@ -108,7 +109,8 @@ function Professional() {
   return (
     <>
       {isLoading && <Loading />}
-      <P.ContainerPage style={{ height: "100vh" }}>
+      <P.ContainerPage style={{ height: "100%" }}>
+        <UserMenu />
         <P.ContainerHeader>
           <P.ContentHeader align="start">
             <P.Title>

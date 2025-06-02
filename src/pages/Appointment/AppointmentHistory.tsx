@@ -13,6 +13,7 @@ import { useAction } from "../../hooks/AppointmentHistory/useAction";
 import Loading from "../../components/Loading/loading";
 
 import homeClient from "../../assets/homeClient.svg";
+import UserMenu from "../../components/UserMenu/UserMenu";
 
 function AppointmentHistory() {
   const storeUser = Number(localStorage.getItem("storeUser"));
@@ -98,7 +99,8 @@ function AppointmentHistory() {
   return (
     <>
       {isLoading && <Loading />}
-      <P.ContainerPage style={{ height: "100vh" }}>
+      <P.ContainerPage style={{ height: "100%" }}>
+        <UserMenu />
         <P.ContainerHeader>
           <P.ContentHeader align="start">
             <P.Title>

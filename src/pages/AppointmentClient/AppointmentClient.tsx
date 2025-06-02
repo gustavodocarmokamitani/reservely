@@ -25,6 +25,7 @@ import { useStateCustom } from "../../hooks/AppointmentClient/useStateCustom";
 import { useFetch } from "../../hooks/AppointmentClient/useFetch";
 import Button from "../../components/Button/Button";
 import { useSubmit } from "../../hooks/AppointmentClient/useSubmit";
+import UserMenu from "../../components/UserMenu/UserMenu";
 
 export const AppointmentClient = () => {
   const { storeCodeParams } = useParams();
@@ -104,7 +105,8 @@ export const AppointmentClient = () => {
   }, []);
 
   return (
-    <ContainerPage style={{minHeight: "250vh"}}>
+    <ContainerPage style={{minHeight: "100%"}}>
+      <UserMenu />
       <ContainerHeader>
         <ContentHeader align="start">
           <Title>Agendamento</Title>

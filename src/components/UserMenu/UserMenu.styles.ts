@@ -12,12 +12,11 @@ const fadeIn = keyframes`
 `;
 
 export const Container = styled.div`
-  position: fixed;
+  position: absolute;
   top: 20px;
   right: 5rem;
-  z-index: 999;
+  z-index: 887;
   padding-right: 1rem;
-  position: absolute;
 
   @media (max-width: 900px) {
     right: 0;

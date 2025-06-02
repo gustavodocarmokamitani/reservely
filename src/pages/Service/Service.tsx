@@ -15,6 +15,7 @@ import Loading from "../../components/Loading/loading";
 import { formatToBRL } from "../../services/system/globalService";
 
 import homeClient from "../../assets/homeClient.svg";
+import UserMenu from "../../components/UserMenu/UserMenu";
 
 function Service() {
   const {
@@ -93,7 +94,8 @@ function Service() {
   return (
     <>
       {isLoading && <Loading />}
-      <P.ContainerPage style={{ height: "100vh" }}>
+      <P.ContainerPage style={{ height: "100%" }}>
+        <UserMenu />
         <P.ContainerHeader>
           <P.ContentHeader align="start">
             <P.Title>

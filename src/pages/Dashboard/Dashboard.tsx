@@ -8,6 +8,7 @@ import * as P from "../Styles/_Page.styles";
 import * as S from "./Dashboard.styles";
 
 import homeClient from "../../assets/homeClient.svg";
+import UserMenu from "../../components/UserMenu/UserMenu";
 
 const Dashboard = () => {
   const storeUser = Number(localStorage.getItem("storeUser"));
@@ -28,14 +29,15 @@ const Dashboard = () => {
   );
 
   return (
-    <P.ContainerPage style={{ height: "100vh" }}>
+    <P.ContainerPage style={{ height: "100%" }}>
+      <UserMenu />
       <P.ContainerHeader>
         <P.ContentHeader align="start">
           <P.Title>
             Dashboard <br />
           </P.Title>
           <P.SubTitle>Área destinada para análise de dados.</P.SubTitle>
-        </P.ContentHeader>     
+        </P.ContentHeader>
       </P.ContainerHeader>
       <S.DashboardContainer>
         <Col xs={12} xl={4}>

@@ -13,6 +13,7 @@ import Loading from "../../components/Loading/loading";
 
 import homeClient from "../../assets/homeClient.svg";
 import { Row } from "react-bootstrap";
+import UserMenu from "../../components/UserMenu/UserMenu";
 
 function StoreConfigure() {
   const storeUser = Number(localStorage.getItem("storeUser"));
@@ -92,6 +93,7 @@ function StoreConfigure() {
     <>
       {isLoading && <Loading />}
       <P.ContainerPage style={{ height: "100%" }}>
+        <UserMenu />
         <P.ContainerHeader>
           <P.ContentHeader align="start">
             <P.Title>Configuração da Loja</P.Title>

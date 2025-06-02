@@ -27,7 +27,7 @@ import Professional from "./pages/Professional/Professional";
 import ProfessionalRegister from "./pages/Professional/ProfessionalRegister";
 import Image from "./pages/Image/Image";
 import Store from "./pages/Store/Store";
-import StoreConfigurar from "./pages/Store/StoreConfigure";
+import StoreConfigure from "./pages/Store/StoreConfigure";
 import Payment from "./pages/Payment/Payment";
 import CallHelp from "./pages/CallHelp/CallHelp";
 import { Appointment } from "./pages/Appointment/Appointment";
@@ -38,7 +38,6 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { AppointmentClientLEGACY } from "./pages/AppointmentClient/AppointmentClient-LEGACY";
 import { HomeClient } from "./pages/HomeClient/HomeClient";
 import { AppointmentClient } from "./pages/AppointmentClient/AppointmentClient";
-import UserMenu from "./components/UserMenu/UserMenu";
 import UserConfig from "./pages/User/UserConfig";
 
 function App() {
@@ -74,7 +73,6 @@ function App() {
               element={
                 <ProtectedRoute>
                   <React.Fragment>
-                    <UserMenu />
                     <Navigation />
                     <div style={{ flexGrow: 1, overflowX: "hidden" }}>
                       <Routes>
@@ -93,7 +91,7 @@ function App() {
                         <Route path="/store" element={<Store />} />
                         <Route
                           path="/store-configure"
-                          element={<StoreConfigurar />}
+                          element={<StoreConfigure />}
                         />
                         <Route path="/payment" element={<Payment />} />
                         <Route path="/callhelp" element={<CallHelp />} />

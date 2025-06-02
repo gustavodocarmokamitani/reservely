@@ -22,6 +22,7 @@ import { decodeToken } from "../../services/AuthService";
 import { useSnackbar } from "notistack";
 import Loading from "../../components/Loading/loading";
 import { ChangePasswordRequest } from "../../models/ChangePasswordRequest";
+import UserMenu from "../../components/UserMenu/UserMenu";
 
 export default function UserConfig() {
   const { enqueueSnackbar } = useSnackbar();
@@ -142,9 +143,9 @@ export default function UserConfig() {
 
         await changePassword(Number(decodedData?.userId), passwordRequest);
       }
-      // await updateUser(Number(decodedData?.userId), updatedUser);
+      await updateUser(Number(decodedData?.userId), updatedUser);
       enqueueSnackbar("Dados atualizados com sucesso.", { variant: "success" });
-      // window.location.reload();
+      window.location.reload();
       setIsLoading(false);
     } catch (error: any) {
       if (error.response) {
@@ -173,6 +174,7 @@ export default function UserConfig() {
     <>
       {isLoading && <Loading />}
       <ContainerPage style={{ height: "100%" }}>
+        <UserMenu />
         <ContainerHeader>
           <ContentHeader align="start">
             <Title>

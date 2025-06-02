@@ -11,6 +11,7 @@ import moment from "moment";
 import LoadingLocale from "../../components/Loading/loadingLocale";
 
 import homeClient from "../../assets/homeClient.svg";
+import UserMenu from "../../components/UserMenu/UserMenu";
 
 interface Event {
   id: string;
@@ -96,7 +97,8 @@ function Calendar() {
 
   return (
     <>
-      <P.ContainerPage style={{ height: "100vh" }}>
+      <P.ContainerPage style={{ height: "100%" }}>
+        <UserMenu />
         <P.ContainerHeader>
           <P.ContentHeader align="start">
             <P.Title>

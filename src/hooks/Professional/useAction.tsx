@@ -34,7 +34,7 @@ export const useAction = (
       const responseEmployee = await getUserById(employee.value);
 
       const employeeData = {
-        id: 0,
+        id: responseEmployee.id,
         userId: responseEmployee.id,
         active: "true",
         storeId: Number(storeUser),
