@@ -26,6 +26,7 @@ import { useFetch } from "../../hooks/AppointmentClient/useFetch";
 import Button from "../../components/Button/Button";
 import { useSubmit } from "../../hooks/AppointmentClient/useSubmit";
 import UserMenu from "../../components/UserMenu/UserMenu";
+import Loading from "../../components/Loading/loading";
 
 export const AppointmentClient = () => {
   const { storeCodeParams } = useParams();
@@ -105,85 +106,88 @@ export const AppointmentClient = () => {
   }, []);
 
   return (
-    <ContainerPage style={{minHeight: "100%"}}>
-      <UserMenu />
-      <ContainerHeader>
-        <ContentHeader align="start">
-          <Title>Agendamento</Title>
-          <SubTitle>
-            Garanta seu horário com facilidade. Informe os seguintes dados.
-          </SubTitle>
-        </ContentHeader>
-        <ContentHeaderImg align="end">
-          <Button onClick={() => handleSubmit()} $isConfirm type="button" />
-        </ContentHeaderImg>
-      </ContainerHeader>
+    <>
+      {isLoading && <Loading />}
+      <ContainerPage style={{ minHeight: "100%" }}>
+        <UserMenu />
+        <ContainerHeader>
+          <ContentHeader align="start">
+            <Title>Agendamento</Title>
+            <SubTitle>
+              Garanta seu horário com facilidade. Informe os seguintes dados.
+            </SubTitle>
+          </ContentHeader>
+          <ContentHeaderImg align="end">
+            <Button onClick={() => handleSubmit()} $isConfirm type="button" />
+          </ContentHeaderImg>
+        </ContainerHeader>
 
-      <S.AppointmentContainer>
-        <div style={{ height: "100%", width: "100%" }}>
-          <ServiceAppointment
-            {...{
-              serviceData,
-              selectedService,
-              setSelectedService,
-              setSelectedProfessional,
-              setFilteredEmployees,
-              visibleServiceCount,
-              setVisibleServiceCount,
-              professionalData,
-            }}
-          />
+        <S.AppointmentContainer>
+          <div style={{ height: "100%", width: "100%" }}>
+            <ServiceAppointment
+              {...{
+                serviceData,
+                selectedService,
+                setSelectedService,
+                setSelectedProfessional,
+                setFilteredEmployees,
+                visibleServiceCount,
+                setVisibleServiceCount,
+                professionalData,
+              }}
+            />
 
-          {selectedService ? (
+            {selectedService ? (
+              <S.AnimatedContainer>
+                <ProfessionalAppointment
+                  {...{
+                    filteredEmployees,
+                    selectedProfessional,
+                    setSelectedProfessional,
+                  }}
+                />
+              </S.AnimatedContainer>
+            ) : null}
+          </div>
+          {windowWidth > 1500 ? (
+            <div style={{ height: "100%", width: "40%" }}>
+              <h2 className="mb-3">Horário de Funcionamento</h2>
+              <S.OpeningHoursContainer>
+                {Array.isArray(storeData?.operatingDays) &&
+                storeData.operatingDays.length > 0 ? (
+                  storeData.operatingDays.map((day, index) => (
+                    <S.OpeningHoursContent key={index}>
+                      <h4 className="py-2 my-2">{day}</h4>
+                      <h4>{storeData?.operatingHours}</h4>
+                    </S.OpeningHoursContent>
+                  ))
+                ) : (
+                  <S.OpeningHoursContent>
+                    <h4>Nenhum horário disponível</h4>
+                  </S.OpeningHoursContent>
+                )}
+              </S.OpeningHoursContainer>
+            </div>
+          ) : null}
+        </S.AppointmentContainer>
+
+        <div style={{ position: "relative" }}>
+          {selectedProfessional.length !== 0 ? (
             <S.AnimatedContainer>
-              <ProfessionalAppointment
+              <TimeAppointment
                 {...{
-                  filteredEmployees,
-                  selectedProfessional,
-                  setSelectedProfessional,
+                  storeData,
+                  appointmentData,
+                  selectedDate,
+                  selectedTime,
+                  setSelectedDate,
+                  setSelectedTime,
                 }}
               />
             </S.AnimatedContainer>
           ) : null}
         </div>
-        {windowWidth > 1500 ? (
-          <div style={{ height: "100%", width: "40%" }}>
-            <h2 className="mb-3">Horário de Funcionamento</h2>
-            <S.OpeningHoursContainer>
-              {Array.isArray(storeData?.operatingDays) &&
-              storeData.operatingDays.length > 0 ? (
-                storeData.operatingDays.map((day, index) => (
-                  <S.OpeningHoursContent key={index}>
-                    <h4 className="py-2 my-2">{day}</h4>
-                    <h4>{storeData?.operatingHours}</h4>
-                  </S.OpeningHoursContent>
-                ))
-              ) : (
-                <S.OpeningHoursContent>
-                  <h4>Nenhum horário disponível</h4>
-                </S.OpeningHoursContent>
-              )}
-            </S.OpeningHoursContainer>
-          </div>
-        ) : null}
-      </S.AppointmentContainer>
-
-      <div style={{ position: "relative" }}>
-        {selectedProfessional.length !== 0 ? (
-          <S.AnimatedContainer>
-            <TimeAppointment
-              {...{
-                storeData,
-                appointmentData,
-                selectedDate,
-                selectedTime,
-                setSelectedDate,
-                setSelectedTime,
-              }}
-            />
-          </S.AnimatedContainer>
-        ) : null}
-      </div>
-    </ContainerPage>
+      </ContainerPage>
+    </>
   );
 };

@@ -44,6 +44,8 @@ const ServiceDataTable: React.FC<ServiceDataTableProps> = ({
   containerRef,
   columns,
 }) => {
+  
+console.log(formValuesService.value);
   return (
     <div ref={containerRef} style={{ marginTop: "3rem" }}>
       <Paper

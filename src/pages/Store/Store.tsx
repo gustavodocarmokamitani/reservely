@@ -35,7 +35,7 @@ function Store() {
   const [isCopied, setIsCopied] = useState(false);
 
   const handleCopy = () => {
-    const textToCopy = `localhost:3000/code/${store?.storeCode.replace(
+    const textToCopy = `https://reservely.com.br/code/${store?.storeCode.replace(
       "#",
       "_"
     )}`;

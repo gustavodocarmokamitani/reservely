@@ -85,7 +85,7 @@ export const ContainerHeader = styled.div`
   width: 100%;
   border-radius: 15px 0 0 15px;
   padding: 25px 75px;
-  background: #f16855;
+  background: #2c2c2c;
   margin: 0 0 50px 0;
 
   @media (max-width: 768px) {

@@ -46,8 +46,7 @@ export const ServiceContent = styled.div`
   display: flex;
   align-items: center;
   flex-direction: row;
-  width: 100%;
-  height: 4rem;
+  width: 100%; 
   padding-bottom: 1.5rem;
 
   &:not(:last-child) {

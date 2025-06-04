@@ -86,12 +86,12 @@ export const useFetch = (
       if (response) {
         const data = response.data;
         setServiceType(data);
-  
+        
         setFormValuesService({
           id: data.id,
           name: data.name,
           description: data.description,
-          value: data.value,
+          value: String(data.value * 100),
           durationMinutes: data.durationMinutes.toString(),
           active: data.active ? "true" : "false",
           storeId: data.storeId,

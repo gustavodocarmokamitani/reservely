@@ -9,7 +9,7 @@ export const SidebarContainer = styled.div`
   min-width: 18rem;
   position: fixed;
   box-shadow: 8px 0px 7px rgba(0, 0, 0, 0.25);
-  border-radius: 0px 25px 25px 0px;
+  border-radius: 0px 15px 15px 0px;
   background: white;
 `;
 
@@ -31,7 +31,6 @@ export const StyledRow = styled(Row)`
     &:hover {
       border: 1px solid #eaeaea;
       box-shadow: 8px 0px 7px rgba(0, 0, 0, 0.05);
-    }
   }
 `;
 
@@ -48,9 +47,7 @@ export const Indicator = styled.div<IndicatorProps>`
   z-index: -1;
 
   @media (max-width: 1680px) {
-    h4 {
-    font
-    }
+    
     & {
       top: ${(props) => props.top - 0.4}rem !important;
     }

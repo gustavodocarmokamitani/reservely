@@ -95,11 +95,12 @@ const Card: React.FC<CardProps> = ({
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
+                        width: "100%"
                       }}
                     >
-                      <img src={employeeDefault} alt="employee" width="75px" />
+                      {/* <img src={employeeDefault} alt="employee" width="75px" /> */}
                       <S.Paragraph
-                        style={{ width: "9.25rem", fontWeight: "500" }}
+                        style={{ width: "9.25rem", fontWeight: "500", fontSize: "1.2rem", marginBottom: "1rem" }}
                       >
                         {data.employeeName}
                       </S.Paragraph>

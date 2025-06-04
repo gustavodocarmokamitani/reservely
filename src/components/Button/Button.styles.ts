@@ -27,12 +27,12 @@ export const Button = styled.button<ButtonProps>`
   border-radius: 50px;
   box-shadow: 4px 4px 15px 0px rgba(0, 0, 0, 0.5);
   background-color: ${(props) => {
-    if (props.$isAdd) return "#2B2B2B";
+    if (props.$isAdd) return "#000";
     if (props.$isRemove) return "#CDCDCD";
     if (props.$isClosed) return "#FF3535";
     if (props.$isConfirm) return "#1A8439";
-    if (props.$isConfigure || props.$isResend) return "#2B2B2B";
-    if (props.$isBack || props.$isRescheduling || props.$isRating || props.$isAppointment || props.$isSelected) return "#2c2c2c";
+    if (props.$isConfigure || props.$isResend) return "#000";
+    if (props.$isBack || props.$isRescheduling || props.$isRating || props.$isAppointment || props.$isSelected) return "#000";
     if (props.$isLogin) return "#2A2A2A";
     if (props.$isRegisterStore || props.$isRegisterClient) return "#fff";
     if (props.$isGoogle) return "#fff";

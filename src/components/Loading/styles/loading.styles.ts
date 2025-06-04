@@ -3,18 +3,18 @@ import styled, { keyframes } from "styled-components";
 const movementLeft = keyframes`
   0% {
    transform: translateX(0);
-   fill: #f16855;
+   fill: #2c2c2c;
     stroke: transparent;
    
   }
   50% {
   transform: translateX(-18px);
    fill: white;
-    stroke: #f16855;
+    stroke: #2c2c2c;
   }
     100% {
    transform: translateX(0);
-   fill: #f16855;
+   fill: #2c2c2c;
     stroke: transparent;
    
   }
@@ -23,18 +23,18 @@ const movementLeft = keyframes`
 const movementRight = keyframes`
   0% {
    transform: translateX(0);
-    fill: #f16855;
+    fill: #2c2c2c;
     stroke: transparent;
     
   }
   50% {
   transform: translateX(18px);
   fill: white;
-    stroke: #f16855;
+    stroke: #2c2c2c;
   }
     100% {
    transform: translateX(0);
-    fill: #f16855;
+    fill: #2c2c2c;
     stroke: transparent;
     
   }

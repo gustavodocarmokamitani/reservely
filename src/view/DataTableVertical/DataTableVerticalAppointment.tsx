@@ -209,7 +209,7 @@ const DataTableVerticalAppointment: React.FC<
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
-                        background: "#f16855",
+                        background: "#2c2c2c",
                         borderRadius: "15px",
                         cursor: "pointer",
                       }}

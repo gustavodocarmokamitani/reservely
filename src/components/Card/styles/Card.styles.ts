@@ -52,7 +52,7 @@ export const CardTitleHomeClientContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f16855;
+  background: #2c2c2c;
   border-left: 1px solid #9c9c9c;
   border-top: 1px solid #9c9c9c;
   border-right: 1px solid #9c9c9c;
