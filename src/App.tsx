@@ -39,6 +39,8 @@ import { AppointmentClientLEGACY } from "./pages/AppointmentClient/AppointmentCl
 import { HomeClient } from "./pages/HomeClient/HomeClient";
 import { AppointmentClient } from "./pages/AppointmentClient/AppointmentClient";
 import UserConfig from "./pages/User/UserConfig";
+import ResetPassword from "./pages/Register/ResetPassword";
+import ResetChangePassword from "./pages/Register/ResetChangePassword";
 
 function App() {
   const clientId = import.meta.env.VITE_CLIENT_ID;
@@ -66,6 +68,8 @@ function App() {
             <Route path="/confirm-email" element={<RegisterConfirmEmail />} />
             <Route path="/resend-email" element={<RegisterReSendEmail />} />
             <Route path="/help-login" element={<RegisterHelp />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/reset-change-password" element={<ResetChangePassword />} />
 
             {/* Rotas Protegidas */}
             <Route

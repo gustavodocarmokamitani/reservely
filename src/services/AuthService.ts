@@ -82,3 +82,27 @@ export const decodeToken = async (token: string) => {
     throw error;
   }
 };
+
+export const requestResetPassword = async (email: string) => {
+  try {
+    const response = await api.post("/auth/reset-password", { email });
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao solicitar redefinição de senha:", error);
+    throw error;
+  }
+};
+
+export const confirmResetPassword = async (userId: string, token: string, newPassword: string) => {
+  try {
+    const response = await api.post("/auth/confirm-reset-password", {
+      userId,
+      token,
+      newPassword,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao confirmar redefinição de senha:", error);
+    throw error;
+  }
+};
