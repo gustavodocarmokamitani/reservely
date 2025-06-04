@@ -10,7 +10,7 @@ export const CardStoreContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0 25px 25px 0;
+  margin: 0 15px 25px 0;
 
   & img {
     margin-bottom: 10px;

@@ -69,10 +69,14 @@ const Login = () => {
               </div>
               <Row className="text-center pt-4">
                 <Col>
+                  <p className="mb-4">
+                    <a href="/reset-password">Esqueci minha senha</a>
+                  </p>
                   <Button $isLogin type="submit" disabled={isLoading} />
-                  <p className="mt-5 mb-4">
+                  <p className="mt-5">
                     Não tem uma conta? <a href="/">Inscreva-se</a>
                   </p>
+
                   {/* <ParagraphThin>Or login with</ParagraphThin>
                 <Button $isGoogle type="button" />
                 <ParagraphThin className="mt-4 mb-4">

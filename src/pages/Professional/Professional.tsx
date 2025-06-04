@@ -18,6 +18,7 @@ import Loading from "../../components/Loading/loading";
 
 import homeClient from "../../assets/homeClient.svg";
 import UserMenu from "../../components/UserMenu/UserMenu";
+import DataTableVerticalProfessional from "../../view/DataTableVertical/DataTableVerticalProfessional";
 
 function Professional() {
   const storeUser = Number(localStorage.getItem("storeUser"));
@@ -167,26 +168,46 @@ function Professional() {
             )}
           </P.ContentHeaderImg>
         </P.ContainerHeader>
-        <ProfessionalDataTable
-          {...{
-            rows,
-            handleRowSelect,
-            columns,
-            containerRef,
-            showModal,
-            handleClose,
-            setFormValuesProfessional,
-            formValuesProfessional,
-            handleInputChangeProfessional,
-            combinedData,
-            handleSubmitEmployeeEdit,
-            selectableBoxServices,
-            selectedServices,
-            setSelectedServices,
-            fetchLoadEditFormValues,
-            handleServiceSelection,
-          }}
-        />
+        <div className="d-none d-md-block">
+          <ProfessionalDataTable
+            {...{
+              rows,
+              handleRowSelect,
+              columns,
+              containerRef,
+              showModal,
+              handleClose,
+              setFormValuesProfessional,
+              formValuesProfessional,
+              handleInputChangeProfessional,
+              combinedData,
+              handleSubmitEmployeeEdit,
+              selectableBoxServices,
+              selectedServices,
+              setSelectedServices,
+              fetchLoadEditFormValues,
+              handleServiceSelection,
+            }}
+          />
+        </div>
+        <div className="d-block d-md-none">
+          <DataTableVerticalProfessional
+            data={rows}
+            {...{
+              handleRowSelect,
+              handleShowEditProfessionalModal,
+              showModal,
+              formValuesProfessional,
+              handleSubmitEmployeeEdit,
+              handleClose,
+              handleInputChangeProfessional,
+              handleServiceSelection,
+              selectedServices,
+              setSelectedServices,
+              selectableBoxServices,
+            }}
+          />
+        </div>
         {show && (
           <Modal
             title="Adicionar profissional"

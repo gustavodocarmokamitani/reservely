@@ -72,7 +72,7 @@ export const useEffectCustom = (
     },
     {
       field: "active",
-      headerName: "Ativo",
+      headerName: "Status",
       type: "boolean",
       width: columnWidth,
       flex: 1,

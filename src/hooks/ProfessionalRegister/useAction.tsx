@@ -59,6 +59,8 @@ export const useAction = (
 
   const handleDeleteUsers = async () => {
     setIsLoading(true);
+    console.log(selectedUserIds, 123213);
+    
     if (selectedUserIds.length === 0) {
       return alert("Nenhum usuário selecionado!");
     }
@@ -76,7 +78,7 @@ export const useAction = (
             );
             return;
           }
-
+          
           const getEmployeeResponse = await getEmployeeIdByUserId(user.id);
 
           if (getEmployeeResponse.length !== 0) {
@@ -84,6 +86,7 @@ export const useAction = (
               `Antes de apagar o profissional registrado, é necessário removê-lo da aba "Profissional", incluindo seus serviços e status de agendamento.`,
               { variant: "warning" }
             );
+            
           }
 
           if (getEmployeeResponse.length === 0) {
@@ -175,6 +178,8 @@ export const useAction = (
 
   const handleRowSelect = (ids: number[]) => {
     setSelectedUserIds(ids);
+    console.log(ids);
+    
   };
 
   const handleInputChangeProfessionalRegister = (

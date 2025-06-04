@@ -81,6 +81,7 @@ export const useAction = (
 
   const handleDeleteAppointment = async () => {
     setIsLoading(true);
+
     try {
       await Promise.all(
         selectedAppointmentIds.map(async (appointmentId) => {

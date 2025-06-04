@@ -4,6 +4,7 @@ import * as P from "../Styles/_Page.styles";
 import HeaderTitle from "../../view/HeaderTitle/HeaderTitle";
 import AppointmentDataTable from "../../view/DataTable/AppointmentDataTable";
 import Button from "../../components/Button/Button";
+import DataTableVerticalAppointment from "../../view/DataTableVertical/DataTableVerticalAppointment";
 
 import { useStateCustom } from "../../hooks/AppointmentHistory/useStateCustom";
 import { useModal } from "../../hooks/AppointmentHistory/useModal";
@@ -103,9 +104,7 @@ function AppointmentHistory() {
         <UserMenu />
         <P.ContainerHeader>
           <P.ContentHeader align="start">
-            <P.Title>
-              Histórico Agendamentos
-            </P.Title>
+            <P.Title>Histórico Agendamentos</P.Title>
             <P.SubTitle>
               Área destinada para gerenciamento do histórico de agendamentos.
             </P.SubTitle>
@@ -128,29 +127,50 @@ function AppointmentHistory() {
             )}
           </P.ContentHeaderImg>
         </P.ContainerHeader>
-        <AppointmentDataTable
-          {...{
-            selectableBoxServices,
-            setSelectableBoxServices,
-            handleShowAppointmentInfoModal,
-            showModalAppointmentHistoryInfo,
-            showModalAppointmentHistoryStatus,
-            handleClose,
-            columnWidth,
-            containerRef,
-            columns,
-            statusAppointment,
-            setStatusAppointment,
-            handleSubmitAppointmentHistoryStatus,
-            handleRowSelect,
-            rows,
-            options,
-            appointmentTime,
-            setAppointmentTime,
-            optionsTime,
-            setAppointmentDate,
-          }}
-        />
+        <div className="d-none d-md-block">
+          <AppointmentDataTable
+            {...{
+              selectableBoxServices,
+              setSelectableBoxServices,
+              handleShowAppointmentInfoModal,
+              showModalAppointmentHistoryInfo,
+              showModalAppointmentHistoryStatus,
+              handleClose,
+              columnWidth,
+              containerRef,
+              columns,
+              statusAppointment,
+              setStatusAppointment,
+              handleSubmitAppointmentHistoryStatus,
+              handleRowSelect,
+              rows,
+              options,
+              appointmentTime,
+              setAppointmentTime,
+              optionsTime,
+              setAppointmentDate,
+            }}
+          />
+        </div>
+        <div className="d-block d-md-none">
+          <DataTableVerticalAppointment
+            data={rows}
+            {...{
+              setSelectedAppointmentIds,
+              showModalAppointmentHistoryStatus,
+              handleShowAppointmentStatusModal,
+              handleSubmitAppointmentHistoryStatus,
+              handleClose,
+              statusAppointment,
+              setStatusAppointment,
+              options,
+              appointmentTime,
+              setAppointmentTime,
+              optionsTime,
+              setAppointmentDate,
+            }}
+          />
+        </div>
       </P.ContainerPage>
     </>
   );

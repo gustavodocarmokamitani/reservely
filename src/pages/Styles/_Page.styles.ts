@@ -104,7 +104,7 @@ export const ContentHeader = styled.div<ContentHeaderProps>`
   align-items: ${(props) => props.align || "start"};
   flex-direction: column;
   width: 100%;
-  border-radius: 15px 0 0 15px;  
+  border-radius: 15px 0 0 15px;
 `;
 
 export const ContentHeaderImg = styled.div<ContentHeaderProps>`
@@ -112,10 +112,10 @@ export const ContentHeaderImg = styled.div<ContentHeaderProps>`
   align-items: ${(props) => props.align || "start"};
   flex-direction: column;
   width: 100%;
-  border-radius: 15px 0 0 15px;  
-  
-  @media (max-width: 1110px) {   
-  align-items: center;
+  border-radius: 15px 0 0 15px;
+
+  @media (max-width: 1110px) {
+    align-items: center;
   }
 `;
 
@@ -130,7 +130,6 @@ export const Title = styled.div`
   @media (max-width: 768px) {
     font-size: 1.4rem;
   }
-
 `;
 
 export const SubTitle = styled.div`
@@ -139,4 +138,47 @@ export const SubTitle = styled.div`
   font-weight: 400;
   line-height: 2;
   margin: 25px 0;
+`;
+
+export const CheckboxContainer = styled.label`
+  display: inline-block;
+  position: relative;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+`;
+
+export const HiddenCheckbox = styled.input.attrs({ type: "checkbox" })`
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+`;
+
+export const StyledCheckbox = styled.span`
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border: 2px solid #2c2c2c;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+
+  ${CheckboxContainer}:hover & {
+    border-color: #1a1a1a;
+  }
+
+  ${HiddenCheckbox}:checked + & {
+    background-color: #2c2c2c;
+    border-color: #2c2c2c;
+  }
+
+  ${HiddenCheckbox}:checked + &::after {
+    content: "x";
+    position: absolute;
+    color: white;
+    font-size: 16px;
+  }
 `;

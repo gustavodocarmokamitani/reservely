@@ -16,6 +16,7 @@ import Loading from "../../components/Loading/loading";
 
 import homeClient from "../../assets/homeClient.svg";
 import UserMenu from "../../components/UserMenu/UserMenu";
+import DataTableVerticalProfessionalRegister from "../../view/DataTableVertical/DataTableVerticalProfessionalRegister";
 
 function ProfessionalRegister() {
   const storeUser = Number(localStorage.getItem("storeUser"));
@@ -144,26 +145,40 @@ function ProfessionalRegister() {
             )}
           </P.ContentHeaderImg>
         </P.ContainerHeader>
-
-        <ProfessionalRegisterDataTable
-          {...{
-            rows,
-            handleRowSelect,
-            fetchData,
-            formValuesProfessionalRegister,
-            setFormValuesProfessionalRegister,
-            combinedData,
-            setCombinedData,
-            fetchLoadEditFormValues,
-            handleInputChangeProfessionalRegister,
-            handleSubmitEditProfessionalRegister,
-            handleShowEditProfessionalModal,
-            showEditModal,
-            handleClose,
-            containerRef,
-            columns,
-          }}
-        />
+        <div className="d-none d-md-block">
+          <ProfessionalRegisterDataTable
+            {...{
+              rows,
+              handleRowSelect,
+              fetchData,
+              formValuesProfessionalRegister,
+              setFormValuesProfessionalRegister,
+              combinedData,
+              setCombinedData,
+              fetchLoadEditFormValues,
+              handleInputChangeProfessionalRegister,
+              handleSubmitEditProfessionalRegister,
+              showEditModal,
+              handleClose,
+              containerRef,
+              columns,
+            }}
+          />
+        </div>
+        <div className="d-block d-md-none">
+          <DataTableVerticalProfessionalRegister
+            data={rows}
+            {...{
+              handleRowSelect,
+              handleShowEditProfessionalModal,
+              handleInputChangeProfessionalRegister,
+              handleSubmitEditProfessionalRegister,
+              formValuesProfessionalRegister,
+              handleClose,
+              showEditModal,
+            }}
+          />
+        </div>
         {show && (
           <Modal
             title="Registrar profissional"

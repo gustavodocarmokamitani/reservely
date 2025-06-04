@@ -88,6 +88,7 @@ export const useSubmit = (
     setSelectedService(null);
     setSelectedProfessional([]);
     setSelectedTime({ date: "", time: "" });
+    window.location.reload();
 
     setIsLoading(false);
   };

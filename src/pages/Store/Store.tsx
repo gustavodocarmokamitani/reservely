@@ -9,6 +9,7 @@ import { useStateCustom } from "../../hooks/Store/useStateCustom";
 import { useFetch } from "../../hooks/Store/useFetch";
 import Loading from "../../components/Loading/loading";
 import { useState } from "react";
+import UserMenu from "../../components/UserMenu/UserMenu";
 
 function Store() {
   const navigate = useNavigate();
@@ -48,12 +49,13 @@ function Store() {
     <>
       {isLoading && <Loading />}
       <P.ContainerPage style={{ height: "100%" }}>
+        <UserMenu />
         <P.ContainerHeader>
           <P.ContentHeader align="start">
             <P.Title>Loja</P.Title>
             <P.SubTitle>Área destinada para gerenciamento da loja.</P.SubTitle>
             <S.Copy onClick={handleCopy}>
-              <div className="copy-text pt-2">Site da loja</div>
+              <div className="copy-text pt-2">Agendamento</div>
               <div className="copy-button pt-2 ">
                 {isCopied ? "copiado" : "copiar"}
               </div>

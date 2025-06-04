@@ -29,68 +29,68 @@ const Modal: React.FC<ModalProps> = ({
   };
 
   return (
-    <S.Overlay>
-      <div
-        style={
-          window.innerWidth >= 768
-            ? {
-                background: "white",
-                padding: "20px",
-                borderRadius: "8px",
-                maxWidth: sizeMap[size],
-                width: "100%",
-              }
-            : {
-                background: "white",
-                padding: "20px",
-                borderRadius: "0px",
-                maxWidth: sizeMap[size],
-                width: "100%",
-                position: "absolute",
-                top: "0",
-                left: "0",
-                bottom: "0",
-              }
-        }
-      >
-        <Row>
-          <Col md={10}>
-            <h3>{title}</h3>
-            <p>{subTitle}</p>
-          </Col>
-          {window.innerWidth >= 768 ? (
-            <Col
-              md={2}
-              style={{ textAlign: "right", cursor: "pointer" }}
-              onClick={handleClose}
-            >
-              <img
-                src={closeIcon}
-                alt="Close Icon"
-                style={{ marginRight: "8px", verticalAlign: "middle" }}
-                width={25}
-              />
-            </Col>
-          ) : null}
-          <hr />
-        </Row>
-        {children}
-        <hr />
-        <Row>
+   <S.Overlay>
+  <div
+    style={{
+      background: "white",
+      padding: "20px",
+      borderRadius: window.innerWidth >= 768 ? "8px" : "0px",
+      maxWidth: sizeMap[size],
+      width: "100%",
+      height: window.innerWidth < 768 ? "100vh" : "auto",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: window.innerWidth < 768 ? "space-between" : "initial",
+      position: window.innerWidth < 768 ? "fixed" : "relative",
+      top: 0,
+      left: 0,
+      bottom: 0,
+    }}
+  >
+    {/* Cabeçalho */}
+    <div>
+      <Row>
+        <Col xs={10}>
+          <h3>{title}</h3>
+          <p>{subTitle}</p>
+        </Col>
+        {window.innerWidth >= 768 ? (
           <Col
-            md={12}
-            className="d-flex flex-row justify-content-center align-items-center"
+            xs={2}
+            style={{ textAlign: "right", cursor: "pointer" }}
+            onClick={handleClose}
           >
-            <Button $isClosed type="button" onClick={handleClose} />
-            <Button
-              $isConfirm
-              type="button"
-              onClick={handleSubmit}
+            <img
+              src={closeIcon}
+              alt="Close Icon"
+              style={{ marginRight: "8px", verticalAlign: "middle" }}
+              width={25}
             />
           </Col>
-        </Row>
-      </div>
-    </S.Overlay>
+        ) : null}
+      </Row>
+      <hr />
+    </div>
+
+    {/* Conteúdo */}
+    <div style={{ flex: 1 }}>{children}</div>
+
+    {/* Rodapé */}
+    <div>
+      <hr />
+      <Row>
+        <Col
+          md={12}
+          className="d-flex flex-row justify-content-center align-items-center"
+        >
+          <Button $isClosed type="button" onClick={handleClose} />
+          <Button $isConfirm type="button" onClick={handleSubmit} />
+        </Col>
+      </Row>
+    </div>
+  </div>
+</S.Overlay>
+
   );
 };
 

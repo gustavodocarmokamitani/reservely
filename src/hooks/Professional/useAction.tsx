@@ -152,10 +152,10 @@ export const useAction = (
   const handleInputChangeProfessional = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const { name, value } = event.target;
-    setFormValuesProfessionalRegister((prev) => ({
-      ...prev,
-      [name]: value,
+    const { name, type, checked, value } = event.target;
+    setFormValuesProfessionalRegister((prevState) => ({
+      ...prevState,
+      [name]: type === "checkbox" ? (checked ? "true" : "false") : value,
     }));
   };
 

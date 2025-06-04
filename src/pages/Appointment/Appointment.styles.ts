@@ -56,7 +56,7 @@ export const AppointmentClientContainer = styled.div`
 export const AppointmentClientContent = styled.div`
   display: flex;
   justify-content: center;
-  aling-items: center;
+  align-items: center;
   gap: 10px;
 `;
 
