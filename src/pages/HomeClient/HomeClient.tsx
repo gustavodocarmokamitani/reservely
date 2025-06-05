@@ -232,7 +232,7 @@ export const HomeClient = () => {
         </ContentHeaderImg>
       </ContainerHeader>
 
-      <div style={{ paddingLeft: "1.5rem" }}>
+      <div style={{ paddingLeft: "1.5rem", marginBottom: "5rem" }}>
         <h3 style={{ color: "#2c2c2c", marginTop: "6.25rem" }}>
           Histórico de Agendamentos
         </h3>

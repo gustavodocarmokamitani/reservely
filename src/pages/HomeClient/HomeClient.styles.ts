@@ -1,19 +1,9 @@
-import { Carousel } from "react-bootstrap";
 import styled from "styled-components";
 
 interface ContentHeaderProps {
   align?: string;
 }
 
-export const ContainerHeader = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  width: 100%;
-  border-radius: 15px 0 0 15px;
-  padding: 25px 75px;
-  background: #f16855;
-`;
 
 export const ContentHeader = styled.div<ContentHeaderProps>`
   display: flex;
@@ -48,49 +38,16 @@ export const ContainerClient = styled.div`
   width: 100%;
   border-radius: 15px 0 0 15px;
   padding-right: 20px;
+  overflow-x: scroll;  
 `;
-
-export const ContainerHomeClient = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  width: 100%;
-  overflow: auto;
-  border-radius: 15px 0 0 15px;
-  background: rgba(235, 235, 235, 0.35);
-  margin-top: 3.125rem;
-`;
-
+ 
 export const WrapperHomeClient = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  max-width: 400px;
-  margin: 0 15px 0 0;
+  max-width: 300px;
+  margin: 0 15px 0 0; 
+  position: relative;
 `;
 
-export const ContainerPageHomeClient = styled.div`
- max-width: 100%;
-  height: 100vh;
-  overflow; hidden;
-  overflow-x; hidden;
-  padding-left: 1.5625rem; 
-`;
-
-export const StyledCarousel = styled(Carousel)`
-  .carousel-control-prev-icon {
-    position: absolute;
-    left: 15px;
-  }
-  .carousel-control-next-icon {
-    position: absolute;
-    right: 15px;
-  }
-
-  .carousel-control-prev-icon,
-  .carousel-control-next-icon {
-    background-color: rgb(121, 121, 121);
-    border-radius: 5px;
-  }
-`;

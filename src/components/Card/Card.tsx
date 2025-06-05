@@ -79,7 +79,7 @@ const Card: React.FC<CardProps> = ({
             borderRadius: "15px",
             boxShadow: "4px 4px 15px 0px rgba(0, 0, 0, 0.5)",
             overflow: "hidden",
-            margin: "25px 0px 150px 0",
+            margin: "25px 0px 25px 0",
           }}
         >
           <S.CardTitleHomeClientContainer>
