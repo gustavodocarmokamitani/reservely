@@ -35,11 +35,11 @@ const ResetPassword = () => {
     } finally {
       setLoading(false);
     }
-  };
-
+  }; 
+  
   return (
     <>
-      {Loading && <Loading />}
+      {loading && <Loading />}
       <ContainerRegister>
         <ContainerReSendEmail>
           <h2>Esqueceu sua senha? 🎈</h2>
