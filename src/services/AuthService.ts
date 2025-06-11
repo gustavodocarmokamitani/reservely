@@ -29,9 +29,9 @@ export const registerProfessional = async (registerData: RegisterEmployee) => {
   }
 };
 
-export const registerUser = async (registerData: RegisterData) => {
+export const registerUser = async (storeCode: string, registerData: RegisterData) => {
   try {
-    const response = await api.post("/auth/register", registerData);
+    const response = await api.post(`/auth/register/${storeCode}`, registerData);
     return response.data;
   } catch (error) {
     console.error("Error registering user:", error);
@@ -49,9 +49,9 @@ export const loginUser = async (login: LoginData) => {
   }
 };
 
-export const resendConfirmationEmail = async (email: string) => {
+export const resendConfirmationEmail = async (storeCode: string, email: string) => {
   try {
-    const response = await api.post("/auth/resend-confirmation-email", {
+    const response = await api.post(`/auth/resend-confirmation-email/${storeCode}`, {
       Email: email,
     });
     return response.data;

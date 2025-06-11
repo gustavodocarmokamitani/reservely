@@ -16,7 +16,7 @@ const RegisterConfirmEmail = () => {
 
           <Row className="text-center pt-2">
             <Col>
-              <Button $isConfirm type="button" onClick={redirectToLoginPage} />
+              {/* <Button $isConfirm type="button" onClick={redirectToLoginPage} /> */}
               <p className="mt-4 mb-2">
                 Não recebeu o e-mail?{" "}
                 <a href="/resend-email">

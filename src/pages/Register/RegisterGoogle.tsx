@@ -16,7 +16,7 @@ const RegisterGoogle = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const { handleRegisterStore } = useAction(setIsLoading, formData);
+  const { handleRegisterStore } = useAction(setIsLoading, formData, ":");
 
   return (
     <>

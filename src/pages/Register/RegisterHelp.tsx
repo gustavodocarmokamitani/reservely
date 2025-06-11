@@ -4,8 +4,11 @@ import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
 import { useState } from "react";
 import { resendConfirmationEmail } from "../../services/AuthService";
+import { useParams } from "react-router-dom";
 
 const RegisterHelp = () => {
+  const { storeCodeParams } = useParams();
+  const storeCode = storeCodeParams ? storeCodeParams : "";
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
@@ -22,7 +25,7 @@ const RegisterHelp = () => {
     }
     setLoading(true);
     try {
-      await resendConfirmationEmail(email);
+      await resendConfirmationEmail(storeCode, email);
       setMessage("E-mail de confirmação reenviado com sucesso!");
       setError("");
     } catch (error) {
@@ -50,14 +53,14 @@ const RegisterHelp = () => {
                   <Input
                     placeholder="Email"
                     name="email"
-                    type="text"                    
+                    type="text"
                     value={email}
                     onChange={handleEmailChange}
                   />
                 </Col>
               </Row>
-              {error && <p style={{ color: "red" }}>{error}</p>}
-              {message && <p style={{ color: "green" }}>{message}</p>}
+              {error && <p style={{ color: "red", marginBottom: "1rem" }}>{error}</p>}
+              {message && <p style={{ color: "green", marginBottom: "1rem" }}>{message}</p>}
               <Button
                 $isResend
                 type="button"

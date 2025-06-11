@@ -21,7 +21,7 @@ const RegisterStore = () => {
     handleRegisterWithGoogle,
     handleRegisterStore,
     handleNavigationHome,
-  } = useAction(setIsLoading, formData);
+  } = useAction(setIsLoading, formData, ":");
 
   return (
     <>

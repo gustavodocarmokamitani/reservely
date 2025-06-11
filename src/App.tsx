@@ -63,7 +63,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/login-code/:storeCodeParams" element={<Login />} />
             <Route path="/register-store" element={<RegisterStore />} />
-            <Route path="/register-client" element={<RegisterClient />} />
+            <Route path="/register-client/:storeCodeParams" element={<RegisterClient />} />
             <Route path="/register-google" element={<RegisterGoogle />} />
             <Route path="/confirm-email" element={<RegisterConfirmEmail />} />
             <Route path="/resend-email" element={<RegisterReSendEmail />} />

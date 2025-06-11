@@ -133,6 +133,7 @@ export default function UserConfig() {
       phone: formData.phone,
       password: "",
     };
+    await updateUser(Number(decodedData?.userId), updatedUser);
 
     try {
       if (formData.password.length !== 0) {
@@ -143,7 +144,7 @@ export default function UserConfig() {
 
         await changePassword(Number(decodedData?.userId), passwordRequest);
       }
-      await updateUser(Number(decodedData?.userId), updatedUser);
+
       enqueueSnackbar("Dados atualizados com sucesso.", { variant: "success" });
       window.location.reload();
       setIsLoading(false);

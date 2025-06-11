@@ -8,8 +8,11 @@ import { useAction } from "../../hooks/Register/useAction";
 import Loading from "../../components/Loading/loading";
 import { TypingText } from "../Styles/animationTyping.styles";
 import { GoogleLogin } from "@react-oauth/google";
+import { useParams } from "react-router-dom";
 
 const RegisterClient = () => {
+  const { storeCodeParams } = useParams();
+  const storeCode = storeCodeParams ? storeCodeParams : "";
   const { formData, setFormData, isLoading, setIsLoading } = useStateCustom();
 
   const handleInputChange = (e: any) => {
@@ -21,7 +24,7 @@ const RegisterClient = () => {
     handleRegisterWithGoogle,
     handleRegisterClient,
     handleNavigationHome,
-  } = useAction(setIsLoading, formData);
+  } = useAction(setIsLoading, formData, storeCode);
 
   return (
     <>
@@ -156,10 +159,10 @@ const RegisterClient = () => {
                 <p className="mt-5 mb-4">
                   Already have an account? <a href="/login">Login</a>
                 </p>
-                <ParagraphThin>Or sign up with</ParagraphThin>
+                {/* <ParagraphThin>Or sign up with</ParagraphThin>
                 <GoogleLogin
                   onSuccess={handleRegisterWithGoogle}
-                />
+                /> */}
               </Col>
             </Row>
           </Col>

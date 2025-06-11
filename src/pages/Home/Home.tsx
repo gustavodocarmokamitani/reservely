@@ -27,7 +27,11 @@ const Home = () => {
     } else if (registerStore) {
       navigate("/register-store");
     } else if (registerClient) {
-      navigate("/register-client");
+        if (storeCode !== "" && storeCode.includes("_")) {
+        navigate(`/register-client/${storeCode}`);
+      } else {
+        navigate("/register-client/:");
+      }
     }
   };
 

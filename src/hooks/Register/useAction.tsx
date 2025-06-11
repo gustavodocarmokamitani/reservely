@@ -16,7 +16,8 @@ export const useAction = (
     password: string;
     confirmPassword: string;
     storeName: string;
-  }
+  },
+  storeCode: string
 ) => {
   const { enqueueSnackbar } = useSnackbar();
 
@@ -34,7 +35,7 @@ export const useAction = (
 
   const handleRegisterStore = async () => {
     setIsLoading(true);
-    let storeCode;
+    let storeCodeGeneric;
 
     if (formData.password !== formData.confirmPassword) {
       enqueueSnackbar("As senhas não são iguais. Tente novamente.", {
@@ -87,9 +88,9 @@ export const useAction = (
         paymentMethods: [0],
       });
 
-      storeCode = responseStore.id;
+      storeCodeGeneric = responseStore.id;
 
-      const response = await registerUser({
+      const response = await registerUser(":", {
         name: formData.name,
         lastName: formData.lastname,
         email: formData.email,
@@ -107,7 +108,7 @@ export const useAction = (
       enqueueSnackbar("Ocorreu um erro. Por favor, tente novamente.", {
         variant: "error",
       });
-      await deleteStore(storeCode);
+      await deleteStore(storeCodeGeneric);
     } finally {
       setIsLoading(false);
     }
@@ -153,7 +154,7 @@ export const useAction = (
     }
 
     try {
-      const response = await registerUser({
+      const response = await registerUser(storeCode, {
         name: formData.name,
         lastName: formData.lastname,
         email: formData.email,

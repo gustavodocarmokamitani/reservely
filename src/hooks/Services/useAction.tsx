@@ -73,7 +73,7 @@ export const useAction = (
         variant: "error",
       });
     }
-    setIsLoading(false);            
+    setIsLoading(false);
     handleClose();
   };
 
@@ -124,12 +124,14 @@ export const useAction = (
     handleClose();
   };
 
-  const handleInputChangeService = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChangeService = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const { name, type, checked, value } = event.target;
 
-    if (name === 'value') {
+    if (name === "value") {
       // Remove caracteres não numéricos
-      const cleanedValue = value.replace(/\D/g, '');
+      const cleanedValue = value.replace(/\D/g, "");
 
       // Atualiza o estado com o valor normal
       setFormValuesService((prev) => ({
@@ -203,6 +205,7 @@ export const useAction = (
         });
       }
       fetchData();
+      window.location.reload();
     } else {
       enqueueSnackbar(`Nenhum serviço selecionado`, { variant: "error" });
     }
@@ -219,6 +222,6 @@ export const useAction = (
     handleInputChangeService,
     validateFormValues,
     handleDeleteServices,
-    handleRowSelect
+    handleRowSelect,
   };
 };

@@ -16,6 +16,7 @@ import { formatToBRL } from "../../services/system/globalService";
 
 import homeClient from "../../assets/homeClient.svg";
 import UserMenu from "../../components/UserMenu/UserMenu";
+import DataTableVerticalService from "../../view/DataTableVertical/DataTableVerticalService";
 
 function Service() {
   const {
@@ -150,22 +151,41 @@ function Service() {
             )}
           </P.ContentHeaderImg>
         </P.ContainerHeader>
-        <ServiceDataTable
-          {...{
-            rows,
-            options,
-            durationMinutes,
-            setDurationMinutes,
-            handleSubmitEditService,
-            showEditModal,
-            handleClose,
-            formValuesService,
-            handleInputChangeService,
-            columns,
-            containerRef,
-            handleRowSelect,
-          }}
-        />
+        <div className="d-none d-md-block">
+          <ServiceDataTable
+            {...{
+              rows,
+              options,
+              durationMinutes,
+              setDurationMinutes,
+              handleSubmitEditService,
+              showEditModal,
+              handleClose,
+              formValuesService,
+              handleInputChangeService,
+              columns,
+              containerRef,
+              handleRowSelect,
+            }}
+          />
+        </div>
+        <div className="d-block d-md-none">
+          <DataTableVerticalService
+            data={rows}
+            {...{
+              handleRowSelect,
+              showEditModal,
+              formValuesService,
+              handleShowEditServiceModal,
+              handleInputChangeService,
+              handleSubmitEditService,
+              handleClose,
+              options,
+              durationMinutes,
+              setDurationMinutes,
+            }}
+          />
+        </div>
         {showAddModal && (
           <Modal
             title="Adicionar serviço"
