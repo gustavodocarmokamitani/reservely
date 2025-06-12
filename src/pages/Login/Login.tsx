@@ -60,7 +60,7 @@ const Login = () => {
               />
               <div style={{ width: "100%" }}>
                 <Input
-                  placeholder="Password"
+                  placeholder="Senha"
                   name="password"
                   type="password"
                   value={password}

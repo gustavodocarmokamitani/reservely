@@ -50,7 +50,9 @@ export const useFetch = (
           getServiceTypeById(id)
         );
         const responseServices = await Promise.all(servicePromises);
-        const allServiceData = responseServices.map((res) => res?.data);
+        const allServiceData = responseServices
+          .map((res) => res?.data)
+          .filter((service) => service?.active === true);
 
         setServiceData(allServiceData);
 

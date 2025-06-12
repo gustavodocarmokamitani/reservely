@@ -60,7 +60,7 @@ const RegisterClient = () => {
                     }}
                   >
                     <Input
-                      placeholder="Firstname"
+                      placeholder="Nome"
                       name="name"
                       type="text"
                       value={formData.name}
@@ -73,7 +73,7 @@ const RegisterClient = () => {
                     }}
                   >
                     <Input
-                      placeholder="Lastname"
+                      placeholder="Sobrenome"
                       name="lastname"
                       type="text"
                       value={formData.lastname}
@@ -101,7 +101,7 @@ const RegisterClient = () => {
                     }}
                   >
                     <Input
-                      placeholder="Phone"
+                      placeholder="Celular"
                       phone
                       name="phone"
                       type="text"
@@ -116,7 +116,7 @@ const RegisterClient = () => {
                   }}
                 >
                   <Input
-                    placeholder="Password"
+                    placeholder="Senha"
                     name="password"
                     type={"password"}
                     value={formData.password}
@@ -129,7 +129,7 @@ const RegisterClient = () => {
                   }}
                 >
                   <Input
-                    placeholder="Confirm Password"
+                    placeholder="Confirmar Senha"
                     name="confirmPassword"
                     type={"password"}
                     value={formData.confirmPassword}
@@ -157,7 +157,7 @@ const RegisterClient = () => {
                   disabled={isLoading}
                 />
                 <p className="mt-5 mb-4">
-                  Already have an account? <a href="/login">Login</a>
+                  Você já possui uma conta? <a href="/login">Login</a>
                 </p>
                 {/* <ParagraphThin>Or sign up with</ParagraphThin>
                 <GoogleLogin

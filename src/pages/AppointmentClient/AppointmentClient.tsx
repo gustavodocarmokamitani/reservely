@@ -123,7 +123,14 @@ export const AppointmentClient = () => {
         </ContainerHeader>
 
         <S.AppointmentContainer>
-          <div style={{ height: "100%", width: "100%" }}>
+          <div
+            style={{
+              height: "100%",
+              width: "100%",
+              marginBottom: selectedProfessional.length > 0 ? "15px" : "150px",
+              marginLeft: "10px",
+            }}
+          >
             <ServiceAppointment
               {...{
                 serviceData,
@@ -150,7 +157,7 @@ export const AppointmentClient = () => {
             ) : null}
           </div>
           {windowWidth > 1500 ? (
-            <div style={{ height: "100%", width: "40%" }}>
+            <div style={{ height: "100%", width: "40%", marginLeft: "10px" }}>
               <h2 className="mb-3">Horário de Funcionamento</h2>
               <S.OpeningHoursContainer>
                 {Array.isArray(storeData?.operatingDays) &&
@@ -171,7 +178,7 @@ export const AppointmentClient = () => {
           ) : null}
         </S.AppointmentContainer>
 
-        <div style={{ position: "relative" }}>
+        <div style={{ position: "relative", marginLeft: "10px" }}>
           {selectedProfessional.length !== 0 ? (
             <S.AnimatedContainer>
               <TimeAppointment

@@ -68,6 +68,8 @@ export default function ServiceAppointment({
   const handleShowLessServices = () => {
     setVisibleServiceCount(5);
   };
+  console.log(serviceData);
+  
   return (
     <>
       <h2 className="mb-3 px-3">Serviços</h2>

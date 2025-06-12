@@ -52,12 +52,8 @@ export const useSubmit = (
         enqueueSnackbar("Por favor, selecione uma data.", {
           variant: "warning",
         });
-      } else {
-        return;
-      }
-
-      setIsLoading(false);
-
+      } 
+ 
       const funcionarioId = await getCorrigirIdByUserId(selectedEmployee.value);
       const serviceIds = selectedService.map((item) => item.value).join(",");
 
@@ -89,8 +85,8 @@ export const useSubmit = (
         googleEventId: "",
         serviceIds: selectedService.map((item) => item.value),
         storeId: storeUser,
-      };
-
+      }; 
+      
       const response = await createAppointment([newAppointment]);
       if (response) {
         enqueueSnackbar("Agendamento criado com sucesso!", {
@@ -100,10 +96,7 @@ export const useSubmit = (
     } catch (error) {
       console.error("Erro ao criar agendamento", error);
       enqueueSnackbar("Erro ao criar agendamento!", { variant: "error" });
-    }
-    setEmployee([]);
-    setClient([]);
-    setService([]);
+    } 
     setAppointmentTime([]);
     setIsLoading(false);
   };

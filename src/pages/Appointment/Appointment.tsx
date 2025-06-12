@@ -144,8 +144,7 @@ export function Appointment() {
                   setData={setService}
                   options={optionsService}
                   placeholder="Selecione..."
-                  value={service}
-                  isMulti={true}
+                  value={service} 
                 />
               </S.AppointmentContent>
             </Col>

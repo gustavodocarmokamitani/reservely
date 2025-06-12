@@ -57,7 +57,7 @@ const RegisterStore = () => {
                     }}
                   >
                     <Input
-                      placeholder="Firstname"
+                      placeholder="Nome"
                       name="name"
                       type="text"
                       value={formData.name}
@@ -70,7 +70,7 @@ const RegisterStore = () => {
                     }}
                   >
                     <Input
-                      placeholder="Lastname"
+                      placeholder="Sobrenome"
                       name="lastname"
                       type="text"
                       value={formData.lastname}
@@ -98,7 +98,7 @@ const RegisterStore = () => {
                     }}
                   >
                     <Input
-                      placeholder="Phone"
+                      placeholder="Celular"
                       phone
                       name="phone"
                       type="text"
@@ -114,7 +114,7 @@ const RegisterStore = () => {
                     }}
                   >
                     <Input
-                      placeholder="Password"
+                      placeholder="Senha"
                       name="password"
                       type={"password"}
                       value={formData.password}
@@ -127,7 +127,7 @@ const RegisterStore = () => {
                     }}
                   >
                     <Input
-                      placeholder="Confirm Password"
+                      placeholder="Confirmar Senha"
                       name="confirmPassword"
                       type={"password"}
                       value={formData.confirmPassword}
@@ -145,7 +145,7 @@ const RegisterStore = () => {
                   }}
                 >
                   <Input
-                    placeholder="Store Name"
+                    placeholder="Nome da Loja"
                     name="storeName"
                     type="text"
                     value={formData.storeName}
@@ -173,7 +173,7 @@ const RegisterStore = () => {
                   disabled={isLoading}
                 />
                 <p className="mt-5 mb-4">
-                  Already have an account? <a href="/login">Login</a>
+                  Você já possui uma conta? <a href="/login">Login</a>
                 </p>
                 {/* <ParagraphThin>Or sign up with</ParagraphThin>
                 <GoogleLogin

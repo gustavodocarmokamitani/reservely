@@ -5,7 +5,7 @@ export const AppointmentContainer = styled.div`
   align-items: start;
   flex-direction: row;
   width: 100%;
-  gap: 5rem;
+  gap: 5rem; 
 `;
 
 export const SelectServiceContainer = styled.div`

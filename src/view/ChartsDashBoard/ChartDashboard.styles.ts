@@ -2,14 +2,15 @@ import { styled } from "styled-components";
 
 export const ChartDashboardContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   flex-wrap: wrap;
+  gap: 10px;
 `;
 
 export const ChartDashboardWrapper = styled.div`
   width: 49.5%;
-  min-width: 300px;
+  width: 400px;
   padding: 25px;
   margin: 15px 0px;
   border: 1px solid rgba(0, 0, 0, 0.25);

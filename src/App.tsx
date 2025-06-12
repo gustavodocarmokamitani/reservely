@@ -4,7 +4,7 @@ import {
   Route,
   Routes,
   Navigate,
-  useParams,
+  useLocation,
 } from "react-router-dom";
 
 import { AppContext } from "./context/AppContext";
@@ -41,6 +41,7 @@ import { AppointmentClient } from "./pages/AppointmentClient/AppointmentClient";
 import UserConfig from "./pages/User/UserConfig";
 import ResetPassword from "./pages/Register/ResetPassword";
 import ResetChangePassword from "./pages/Register/ResetChangePassword";
+import { ProtectedLayout } from "./ProtectedLayout";
 
 function App() {
   const clientId = import.meta.env.VITE_CLIENT_ID;
@@ -63,13 +64,19 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/login-code/:storeCodeParams" element={<Login />} />
             <Route path="/register-store" element={<RegisterStore />} />
-            <Route path="/register-client/:storeCodeParams" element={<RegisterClient />} />
+            <Route
+              path="/register-client/:storeCodeParams"
+              element={<RegisterClient />}
+            />
             <Route path="/register-google" element={<RegisterGoogle />} />
             <Route path="/confirm-email" element={<RegisterConfirmEmail />} />
             <Route path="/resend-email" element={<RegisterReSendEmail />} />
             <Route path="/help-login" element={<RegisterHelp />} />
             <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/reset-change-password" element={<ResetChangePassword />} />
+            <Route
+              path="/reset-change-password"
+              element={<ResetChangePassword />}
+            />
 
             {/* Rotas Protegidas */}
             <Route
@@ -77,50 +84,51 @@ function App() {
               element={
                 <ProtectedRoute>
                   <React.Fragment>
-                    <Navigation />
                     <div style={{ flexGrow: 1, overflowX: "hidden" }}>
-                      <Routes>
-                        <Route path="/dashboard" element={<Dashboard />} />
-                        <Route path="/calendar" element={<Calendar />} />
-                        <Route path="/service" element={<Service />} />
-                        <Route
-                          path="/professional-register"
-                          element={<ProfessionalRegister />}
-                        />
-                        <Route
-                          path="/professional"
-                          element={<Professional />}
-                        />
-                        <Route path="/image" element={<Image />} />
-                        <Route path="/store" element={<Store />} />
-                        <Route
-                          path="/store-configure"
-                          element={<StoreConfigure />}
-                        />
-                        <Route path="/payment" element={<Payment />} />
-                        <Route path="/callhelp" element={<CallHelp />} />
-                        <Route path="/appointment" element={<Appointment />} />
-                        <Route
-                          path="/history-appointment"
-                          element={<AppointmentHistory />}
-                        />
-                        <Route
-                          path="/user-config"
-                          element={<UserConfig />}
-                        />
-                        <Route
-                          path="/home-client/:storeCodeParams"
-                          element={<HomeClient />}
-                        />
-                        {/* <Route
+                      <ProtectedLayout>
+                        <Routes>
+                          <Route path="/dashboard" element={<Dashboard />} />
+                          <Route path="/calendar" element={<Calendar />} />
+                          <Route path="/service" element={<Service />} />
+                          <Route
+                            path="/professional-register"
+                            element={<ProfessionalRegister />}
+                          />
+                          <Route
+                            path="/professional"
+                            element={<Professional />}
+                          />
+                          <Route path="/image" element={<Image />} />
+                          <Route path="/store" element={<Store />} />
+                          <Route
+                            path="/store-configure"
+                            element={<StoreConfigure />}
+                          />
+                          <Route path="/payment" element={<Payment />} />
+                          <Route path="/callhelp" element={<CallHelp />} />
+                          <Route
+                            path="/appointment"
+                            element={<Appointment />}
+                          />
+                          <Route
+                            path="/history-appointment"
+                            element={<AppointmentHistory />}
+                          />
+                          <Route path="/user-config" element={<UserConfig />} />
+                          <Route
+                            path="/home-client/:storeCodeParams"
+                            element={<HomeClient />}
+                          />
+                          {/* <Route
                           path="/appointment-client/:storeCodeParams"
                           element={<AppointmentClientLEGACY />}
                         /> */}
-                        <Route
-                          path="/appointment-client/:storeCodeParams"
-                          element={<AppointmentClient />}
-                        />
-                      </Routes>
+                          <Route
+                            path="/appointment-client/:storeCodeParams"
+                            element={<AppointmentClient />}
+                          />
+                        </Routes>
+                      </ProtectedLayout>
                     </div>
                   </React.Fragment>
                 </ProtectedRoute>

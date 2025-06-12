@@ -6,6 +6,7 @@ import BarChartHorizontal from "../../components/Charts/BarChartHorizontal";
 import BarChart from "../../components/Charts/BarChart";
 import {
   getAppointmentByDay,
+  getAppointmentByStoreId,
   getAppointmentMostRequestedServices,
   getAppointmentRevenue,
   getAppointmentStatusCount,
@@ -30,12 +31,16 @@ const ChartDashboard: React.FC = () => {
     serviceName: string[];
     count: number[];
   }>();
+  const [busyTimes, setBusyTimes] = useState<{
+    labels: string[];
+    data: number[];
+  }>();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const responseRevenue = await getAppointmentRevenue(storeUser);
-  
+
         if (responseRevenue) {
           setRevenue({
             revenueData: responseRevenue.map((item: any) => item.totalRevenue),
@@ -44,12 +49,12 @@ const ChartDashboard: React.FC = () => {
             ),
           });
         }
-  
+
         const responseStatusCount = await getAppointmentStatusCount(storeUser);
         if (responseStatusCount) {
           setAppointmentStatus(responseStatusCount);
         }
-  
+
         const responseMostRequestedServices =
           await getAppointmentMostRequestedServices(storeUser);
         if (responseMostRequestedServices) {
@@ -60,24 +65,42 @@ const ChartDashboard: React.FC = () => {
             count: responseMostRequestedServices.map((item: any) => item.count),
           });
         }
-  
+
         const responseAppointmentByDay = await getAppointmentByDay(storeUser);
         if (responseAppointmentByDay) {
           setAppointmentByDay({
             dayOfWeek: responseAppointmentByDay.map(
               (item: any) => item.dayOfWeek
-            ), 
+            ),
             count: responseAppointmentByDay.map((item: any) => item.count),
           });
+        }
+
+        const responseAppointments = await getAppointmentByStoreId(storeUser);
+
+        if (Array.isArray(responseAppointments)) {
+          const filteredTimes = responseAppointments
+            .filter((appointment: any) => appointment.appointmentStatusId === 5)
+            .map((appointment: any) => appointment.appointmentTime);
+
+          const frequencyMap: { [key: string]: number } = {};
+          filteredTimes.forEach((time) => {
+            frequencyMap[time] = (frequencyMap[time] || 0) + 1;
+          });
+
+          const labels = Object.keys(frequencyMap);
+          const data = Object.values(frequencyMap);
+
+          setBusyTimes({ labels, data });
         }
       } catch (error) {
         console.error("Erro ao buscar dados de receita:", error);
       }
     };
-  
+
     fetchData();
   }, [storeUser]);
-   
+
   return (
     <>
       <S.ChartDashboardContainer>
@@ -117,6 +140,16 @@ const ChartDashboard: React.FC = () => {
             <BarChartHorizontal
               data={appointmentByDay?.count || []}
               labels={appointmentByDay?.dayOfWeek || []}
+            />
+          </S.ChartDashboardContent>
+        </S.ChartDashboardWrapper>
+
+        <S.ChartDashboardWrapper>
+          <h4>Horários mais movimentados</h4>
+          <S.ChartDashboardContent>
+            <BarChartHorizontal
+              data={busyTimes?.data || []}
+              labels={busyTimes?.labels || []}
             />
           </S.ChartDashboardContent>
         </S.ChartDashboardWrapper>

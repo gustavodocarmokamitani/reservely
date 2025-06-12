@@ -45,10 +45,13 @@ const ResetChangePassword = () => {
 
     if (!userId || !token) {
       setError("Parâmetros inválidos na URL.");
+
+      setIsLoading(false);
       return;
     }
 
     if (!validatePassword(newPassword, confirmPassword)) {
+      setIsLoading(false);
       return;
     }
 
@@ -107,7 +110,7 @@ const ResetChangePassword = () => {
                 </Row>
               </div>
               {error && (
-                <p style={{ color: "red", marginBottom: "1rem" }}>{error}</p>
+                <p style={{ color: "red", marginBottom: "1rem", width: "580px", textAlign: "center"}}>{error}</p>
               )}
               {message && (
                 <p style={{ color: "green", marginBottom: "1rem" }}>

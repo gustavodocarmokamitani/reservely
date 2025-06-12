@@ -154,7 +154,10 @@ export const useFetch = (
                   responseEmployee.serviceIds.map(async (item: any) => {
                     try {
                       const resp = await getServiceTypeById(item);
-                      return resp && resp.data ? resp.data : null;
+                      if (resp && resp.data && resp.data.active === true) {
+                        return resp.data;
+                      }
+                      return null;
                     } catch (error) {
                       console.error(
                         "Erro ao buscar serviço específico:",
