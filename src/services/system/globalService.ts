@@ -28,3 +28,13 @@ export const formatToBRL = (value: string) => {
     currency: 'BRL',
   });
 };
+
+export const formatToHourMinute = (value: number): string => {
+  const hours = Math.floor(value / 60);
+  const minutes = value % 60;
+  
+  const formattedHours = hours.toString().padStart(2, '0');
+  const formattedMinutes = minutes.toString().padStart(2, '0');
+
+  return `${formattedHours}:${formattedMinutes}`;
+};

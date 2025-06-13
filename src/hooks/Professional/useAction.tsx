@@ -39,8 +39,8 @@ export const useAction = (
         active: "true",
         storeId: Number(storeUser),
         serviceIds: formValuesProfessionalRegister.serviceIds,
-      };
-
+      }; 
+      
       handleEmployeeAdd([employeeData]);
     }
 

@@ -28,7 +28,8 @@ export const useFetch = (
     const fetchDecodedToken = async () => {
       if (authToken) {
         try {
-          const decoded = await decodeToken(authToken);
+          const decoded = await decodeToken(authToken); 
+          
           setDecodedData(decoded);
         } catch (error) {
           console.error("Erro ao decodificar o token:", error);
@@ -37,15 +38,15 @@ export const useFetch = (
     };
 
     fetchDecodedToken();
-  }, [authToken]);
+  }, [authToken]); 
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const formattedStoreCode = storeCode.toUpperCase().replace("_", "#");
         const responseStore = await getStoreByStoreCode(formattedStoreCode);
-        setStoreData(responseStore);
-
+        setStoreData(responseStore); 
+        
         const servicePromises = responseStore.ServiceIds.map((id: any) =>
           getServiceTypeById(id)
         );
@@ -56,7 +57,7 @@ export const useFetch = (
 
         setServiceData(allServiceData);
 
-        const responseProfessional = await getUserByUseTypeStore(2, 1);
+        const responseProfessional = await getUserByUseTypeStore(2, responseStore.id);
 
         setProfessionalData(responseProfessional);
 

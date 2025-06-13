@@ -44,11 +44,13 @@ export const TimeContent = styled.div`
   display: flex;
   gap: 1rem;
   overflow-x: hidden;
-  margin: 0 auto;
+  margin: 0 100px;
   padding: 2rem 0rem;
 
   @media (max-width: 768px) {
     flex-direction: column;
+    
+  margin: 0 auto;
   }
 `;
 

@@ -58,8 +58,7 @@ export const useAction = (
   };
 
   const handleDeleteUsers = async () => {
-    setIsLoading(true);
-    console.log(selectedUserIds, 123213);
+    setIsLoading(true); 
     
     if (selectedUserIds.length === 0) {
       return alert("Nenhum usuário selecionado!");
@@ -177,9 +176,7 @@ export const useAction = (
   };
 
   const handleRowSelect = (ids: number[]) => {
-    setSelectedUserIds(ids);
-    console.log(ids);
-    
+    setSelectedUserIds(ids); 
   };
 
   const handleInputChangeProfessionalRegister = (

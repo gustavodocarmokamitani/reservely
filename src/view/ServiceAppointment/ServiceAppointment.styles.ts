@@ -33,12 +33,11 @@ export const SelectServiceContainer = styled.div`
   padding: 25px 75px;
   border: 1px solid rgba(0, 0, 0, 0.25);
   box-shadow: 4px 4px 15px 0px rgba(0, 0, 0, 0.25);
-  gap: 2rem;
-  background: white;
+  gap: 2rem; 
 
   @media (max-width: 768px) {
     padding: 25px 2.5rem;
-    width: 100%;
+    width: 100%; 
   }
 `;
 
@@ -61,7 +60,7 @@ export const ServiceContent = styled.div`
   }
 
   @media (max-width: 768px) {
-    height: 16rem;
+    height: 100%;
     text-align: center;
   }
 `;

@@ -45,8 +45,7 @@ const DataTableVerticalProfessionalRegister: React.FC<
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("pt-BR");
-  };
-  console.log(data);
+  }; 
 
   return (
     <>

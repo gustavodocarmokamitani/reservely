@@ -39,8 +39,8 @@ export default function TimeAppointment({
 
   function generateNextDays(weeks = 4): Date[] {
     const days: Date[] = [];
-    const today = new Date();
-
+    const today = new Date(); 
+    
     const mappedOperatingDays =
       operatingDays?.map((d) => normalizeDayName(d)) || [];
 
@@ -100,9 +100,13 @@ export default function TimeAppointment({
     operatingHours: string,
     appointments: Appointment[]
   ): Promise<string[]> {
-    const [start, end] = operatingHours.split(" - ");
+    const [start, end] = operatingHours.split(" - "); 
+    
     const startHour = parseTimeToDate(start);
-    const endHour = parseTimeToDate(end);
+    var endHour = startHour;
+    if(end !== undefined) {
+      endHour = parseTimeToDate(end);
+    }
 
     const slots: string[] = [];
     const current = new Date(startHour);
@@ -112,7 +116,7 @@ export default function TimeAppointment({
         ? await getOccupiedTimeSlots(appointments)
         : new Set<string>();
 
-    while (current < endHour) {
+    while (current <= endHour) {
       const timeString = formatTime(current);
       if (!occupiedSlots.has(timeString)) {
         slots.push(timeString);
@@ -173,8 +177,7 @@ export default function TimeAppointment({
     }
 
     calculateAllSlots();
-  }, [appointmentData]);
-  console.log(storeData);
+  }, [appointmentData]); 
 
   return (
     <>
@@ -188,7 +191,8 @@ export default function TimeAppointment({
           {days.map((day) => {
             const formattedDate = day.toISOString().split("T")[0];
             const timeSlots = slotsByDate[formattedDate] || [];
-
+       
+            
             return (
               <S.HeaderColumns
                 key={formattedDate}

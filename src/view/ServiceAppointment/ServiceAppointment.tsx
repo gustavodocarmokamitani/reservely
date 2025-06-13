@@ -1,7 +1,10 @@
 import React from "react";
 import { ServiceType } from "../../models/ServiceType";
 import { Service } from "../../models/Service";
-import { formatToBRL } from "../../services/system/globalService";
+import {
+  formatToBRL,
+  formatToHourMinute,
+} from "../../services/system/globalService";
 import Button from "../../components/Button/Button";
 import { User } from "../../models/User";
 import { getEmployeeIdByUserId } from "../../services/EmployeeServices";
@@ -54,7 +57,6 @@ export default function ServiceAppointment({
       const matchedUsers = userEmployeePairs
         .filter(({ employee }) => employee.serviceIds.includes(id))
         .map(({ user }) => user);
-
       setFilteredEmployees(matchedUsers);
     } catch (error) {
       console.error("Erro ao buscar empregados:", error);
@@ -68,8 +70,7 @@ export default function ServiceAppointment({
   const handleShowLessServices = () => {
     setVisibleServiceCount(5);
   };
-  console.log(serviceData);
-  
+
   return (
     <>
       <h2 className="mb-3 px-3">Serviços</h2>
@@ -86,7 +87,7 @@ export default function ServiceAppointment({
                   <p>{service.description}</p>
                 </S.ServiceNameDescription>
                 <S.ServiceDurationPrice>
-                  <p>{service.durationMinutes} minutos</p>
+                  <p>{formatToHourMinute(service.durationMinutes)}</p>
                   <p>●</p>
                   <p>
                     {formatToBRL(
