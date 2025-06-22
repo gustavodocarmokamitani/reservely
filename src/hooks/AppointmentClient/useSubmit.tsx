@@ -61,12 +61,12 @@ export const useSubmit = (
         storeUser = responseStoreCode.id;
       }
       setIsLoading(false);
-
+      
       const newAppointment = {
         id: 0,
         clientId: Number(decodedData.userId),
         employeeId: selectedProfessional[0],
-        appointmentDate: new Date(selectedTime.date),
+        appointmentDate: new Date(`${selectedTime.date}T03:00:00Z`),
         appointmentTime: selectedTime.time,
         appointmentStatusId: 1,
         googleEventId: "",

@@ -2,7 +2,10 @@ import { useCallback, useEffect, useRef } from "react";
 import { Appointment } from "../../models/Appointment";
 import { SelectOption } from "../../models/SelectOptions";
 import { Service } from "../../models/Service";
-import { getAppointmentById, getAppointmentByStoreId } from "../../services/AppointmentServices";
+import {
+  getAppointmentById,
+  getAppointmentByStoreId,
+} from "../../services/AppointmentServices";
 import {
   getAppointmentStatus,
   getAppointmentStatusById,
@@ -13,9 +16,13 @@ import { capitalizeFirstLetter } from "../../services/system/globalService";
 import { getUserById } from "../../services/UserServices";
 import { decodeToken } from "../../services/AuthService";
 import { DecodedToken } from "../../models/DecodedToken";
-import { getStoreById } from "../../services/StoreServices";
+import {
+  getStoreById,
+  getStoreByStoreCode,
+} from "../../services/StoreServices";
 
 export const useFetch = (
+  storeCode: string,
   storeUser: number,
   setSelectableBoxServices: React.Dispatch<React.SetStateAction<Service[]>>,
   setOptions: React.Dispatch<React.SetStateAction<SelectOption[]>>,
@@ -24,6 +31,8 @@ export const useFetch = (
   setStatusAppointment: React.Dispatch<React.SetStateAction<SelectOption[]>>,
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
   setOptionsTime: React.Dispatch<React.SetStateAction<SelectOption[]>>,
+  setClosedDates: React.Dispatch<React.SetStateAction<string[]>>,
+  setOperatingDays: React.Dispatch<React.SetStateAction<string[]>>
 ) => {
   const fetchDataRef = useRef(false);
   const storedToken = localStorage.getItem("authToken");
@@ -68,7 +77,7 @@ export const useFetch = (
             appointmentStatus: appointmentStatusData.name,
           };
         })
-      );      
+      );
 
       setRows(mappedAppointments);
     } catch (error) {
@@ -83,6 +92,29 @@ export const useFetch = (
       fetchDataRef.current = true;
     }
   }, [fetchData]);
+
+  useEffect(() => {
+    const fetchWorkingDatesStore = async () => {
+      try {
+        if (storeCode === ":" || storeCode === "") {
+          const response = await getStoreById(storeUser);
+          setClosedDates(response?.closingDays);
+          setOperatingDays(response?.operatingDays);
+        } else {
+          const formattedStoreCode = storeCode.toUpperCase().replace("_", "#");
+          const responseStoreCode = await getStoreByStoreCode(
+            formattedStoreCode
+          );
+          setClosedDates(responseStoreCode?.closingDays);
+          setOperatingDays(responseStoreCode?.operatingDays);
+        }
+      } catch (error) {
+        console.error("Error fetching client:", error);
+      }
+    };
+
+    fetchWorkingDatesStore();
+  }, [setClosedDates, setOperatingDays, storeUser]);
 
   const fetchAppointmentInfoSelectableBoxServices = async (
     appointmentHistoryId: number
@@ -109,8 +141,8 @@ export const useFetch = (
         new Map(
           fetchedServices.map((service) => [service.id, service])
         ).values()
-      );      
-      
+      );
+
       setSelectableBoxServices(uniqueServices);
     } catch (error) {
       console.error(
@@ -120,17 +152,25 @@ export const useFetch = (
     }
   };
 
-  const fetchAppointmentHistoryStatus = async (appointmentHistoryId: number) => {
+  const fetchAppointmentHistoryStatus = async (
+    appointmentHistoryId: number
+  ) => {
     setIsLoading(true);
     try {
-        const responseAppointmentSelectedStatus = await getAppointmentById(appointmentHistoryId);
-        setStatusAppointment(responseAppointmentSelectedStatus.appointmentStatusId)        
-        
+      const responseAppointmentSelectedStatus = await getAppointmentById(
+        appointmentHistoryId
+      );
+      setStatusAppointment(
+        responseAppointmentSelectedStatus.appointmentStatusId
+      );
+
       const responseAppointmenAlltStatus = await getAppointmentStatus();
-      const formattedOptions = responseAppointmenAlltStatus.map((item: any) => ({
-        value: item.id,
-        label: item.name,
-      }));
+      const formattedOptions = responseAppointmenAlltStatus.map(
+        (item: any) => ({
+          value: item.id,
+          label: item.name,
+        })
+      );
 
       formattedOptions.unshift({
         value: 0,
@@ -144,41 +184,50 @@ export const useFetch = (
     setIsLoading(false);
   };
 
-    useEffect(() => {
-      const fetchTime = async () => {
-        try {
-          const responseTime = await getStoreById(storeUser);
-  
-          const [start, end] = responseTime.operatingHours
-            .split(" - ")
-            .map((time: string) => {
-              const [hours, minutes] = time.split(":").map(Number);
-              return hours * 60 + minutes;
-            });
-  
-          const generatedTimes = [];
-          for (let time = start; time <= end; time += 30) {
-            const hours = Math.floor(time / 60)
-              .toString()
-              .padStart(2, "0");
-            const minutes = (time % 60).toString().padStart(2, "0");
-            generatedTimes.push(`${hours}:${minutes}`);
-          }
-  
-          setOptionsTime([
-            { value: 0, label: "Selecione..." },
-            ...generatedTimes.map((time, index) => ({
-              value: index + 1, 
-              label: time,
-            })),
-          ]);
-        } catch (error) {
-          console.error("Erro ao buscar dados da store:", error);
+  useEffect(() => {
+    const fetchTime = async () => {
+      try {
+        const responseTime = await getStoreById(storeUser);
+        console.log(responseTime.operatingHours);
+
+        const times = responseTime.operatingHours.includes(" - ")
+          ? responseTime.operatingHours.split(" - ")
+          : [responseTime.operatingHours, responseTime.operatingHours];
+
+        const [start, end] = times.map((time: string) => {
+          const [hours, minutes] = time.split(":").map(Number);
+          return hours * 60 + minutes;
+        });
+
+        let adjustedEnd = end;
+        if (end < start) {
+          adjustedEnd += 1440; // 24h em minutos
         }
-      };
-  
-      fetchTime();
-    }, [storeUser, setOptionsTime]);
+
+        const generatedTimes = [];
+        for (let time = start; time <= adjustedEnd; time += 30) {
+          const normalizedTime = time % 1440; // volta para 00:00 após meia-noite
+          const hours = Math.floor(normalizedTime / 60)
+            .toString()
+            .padStart(2, "0");
+          const minutes = (normalizedTime % 60).toString().padStart(2, "0");
+          generatedTimes.push(`${hours}:${minutes}`);
+        }
+
+        setOptionsTime([
+          { value: 0, label: "Selecione..." },
+          ...generatedTimes.map((time, index) => ({
+            value: index + 1,
+            label: time,
+          })),
+        ]);
+      } catch (error) {
+        console.error("Erro ao buscar dados da store:", error);
+      }
+    };
+
+    fetchTime();
+  }, [storeUser, setOptionsTime]);
 
   return {
     fetchData,

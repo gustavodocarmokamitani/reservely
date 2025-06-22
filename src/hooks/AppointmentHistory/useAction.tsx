@@ -4,9 +4,11 @@ import {
   deleteAppointment,
   getAppointmentById,
   getAppointments,
+  getValidateAppointment,
   updateAppointment,
 } from "../../services/AppointmentServices";
 import { SelectOption } from "../../models/SelectOptions";
+import { getStoreById } from "../../services/StoreServices";
 
 export const useAction = (
   storeUser: number,
@@ -30,6 +32,26 @@ export const useAction = (
         appointmentDate.length > 0
           ? new Date(appointmentDate[appointmentDate.length - 1]).toISOString()
           : null;
+
+      const selectedDate = appointmentDate[appointmentDate.length - 1];
+
+      const responseStore = await getStoreById(storeUser);
+      if (responseStore.multipleAppointments === false) {
+        const isAvailable = await getValidateAppointment(
+          response.employeeId,
+          selectedDate,
+          appointmentTime[appointmentTime.length - 1].label,
+          response.serviceIds[0]
+        );
+
+        if (!isAvailable) {
+          enqueueSnackbar("Este horário já está ocupado.", {
+            variant: "warning",
+          });
+          setIsLoading(false);
+          return;
+        }
+      }
 
       const mappedAppointment: Appointment =
         statusAppointment[statusAppointment.length - 1].value !== 4

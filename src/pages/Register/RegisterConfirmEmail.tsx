@@ -13,6 +13,7 @@ const RegisterConfirmEmail = () => {
         <Col md={6} className="text-center">
           <h2>Bem-vindo(a) à nossa plataforma! 🚀</h2>
           <p>Quase lá! Para começar, confirme seu e-mail e ative sua conta.</p>
+          <p>Não encontrou? Confira também sua caixa de spam ou lixo eletrônico.</p>
 
           <Row className="text-center pt-2">
             <Col>

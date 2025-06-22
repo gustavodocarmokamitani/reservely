@@ -28,6 +28,8 @@ interface AppointmentDataTableProps {
   setAppointmentTime: React.Dispatch<React.SetStateAction<SelectOption[]>>;
   optionsTime: SelectOption[];
   setAppointmentDate: React.Dispatch<React.SetStateAction<Date[]>>;
+  closedDates: string[],
+  operatingDays: string[],
 }
 
 const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
@@ -47,6 +49,8 @@ const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
   setAppointmentTime,
   optionsTime,
   setAppointmentDate,
+  closedDates,
+  operatingDays,
 }) => {
   return (
     <div ref={containerRef} style={{ marginTop: "3rem" }}>
@@ -115,7 +119,11 @@ const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
           {...{ handleClose }}
         >
           <Row>
-            <Col md={12} className="pb-3" style={{ margin: "20px 0px 0px 0px" }}>
+            <Col
+              md={12}
+              className="pb-3"
+              style={{ margin: "20px 0px 0px 0px" }}
+            >
               <Select
                 setData={setStatusAppointment}
                 value={statusAppointment}
@@ -125,7 +133,7 @@ const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
             </Col>
             {Array.isArray(statusAppointment) &&
               statusAppointment.some((item) => item.value === 4) && (
-                <Col md={6}>
+                <Col md={8}>
                   <S.AppointmentContent>
                     <Select
                       setData={setAppointmentTime}
@@ -144,8 +152,8 @@ const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
                   <SelectDataPicker
                     setDate={setAppointmentDate}
                     type="appointment"
-                    closedDates={[]}
-                    operatingDays={[]}
+                    operatingDays={operatingDays}
+                    closedDates={closedDates}
                   />
                 </S.AppointmentContent>
               </Row>
@@ -157,7 +165,7 @@ const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
                 style={{
                   fontSize: "12px",
                   textAlign: "center",
-                  color: "red",                
+                  color: "red",
                 }}
               >
                 Após o cancelamento, este apontamento não poderá mais ser

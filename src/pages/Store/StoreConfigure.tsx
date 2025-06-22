@@ -233,12 +233,14 @@ function StoreConfigure() {
                           title="Hora de abertura"
                           icon="confirm"
                         />
-                        <Card
-                          type="time"
-                          selectedTimes={selectedTimes}
-                          title="Hora de fechamento"
-                          icon="confirm"
-                        />
+                        {selectedTimes[1] !== undefined && (
+                          <Card
+                            type="time"
+                            selectedTimes={selectedTimes}
+                            title="Hora de fechamento"
+                            icon="confirm"
+                          />
+                        )}
                       </>
                     ) : (
                       <p></p>

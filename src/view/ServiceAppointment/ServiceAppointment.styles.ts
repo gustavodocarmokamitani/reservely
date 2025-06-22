@@ -34,7 +34,8 @@ export const SelectServiceContainer = styled.div`
   border: 1px solid rgba(0, 0, 0, 0.25);
   box-shadow: 4px 4px 15px 0px rgba(0, 0, 0, 0.25);
   gap: 2rem; 
-
+  background: white; 
+  
   @media (max-width: 768px) {
     padding: 25px 2.5rem;
     width: 100%; 

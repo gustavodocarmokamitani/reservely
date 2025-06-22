@@ -142,7 +142,7 @@ export default function TimeAppointment({
     });
   }
 
-  const days = generateNextDays(2);
+  const days = generateNextDays(4);
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 

@@ -82,7 +82,7 @@ export const useAction = (
 
           if (getEmployeeResponse.length !== 0) {
             enqueueSnackbar(
-              `Antes de apagar o profissional registrado, é necessário removê-lo da aba "Profissional", incluindo seus serviços e status de agendamento.`,
+              `Antes de apagar o profissional registrado, é necessário removê-lo da aba "Profissional".`,
               { variant: "warning" }
             );
             

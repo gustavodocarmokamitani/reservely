@@ -43,6 +43,7 @@ export const useFetch = (
 ) => {
   const context = useContext(AppContext);
   const authToken = context?.authToken;
+  
   useEffect(() => {
     const fetchStoreData = async () => {
       const formattedStoreCode = storeCode.toUpperCase().replace("_", "#");
@@ -308,12 +309,14 @@ export const useFetch = (
           storeUser !== 0 ? storeUser : store[store.length - 1].value
         );
 
-        const [start, end] = responseTime.operatingHours
-          .split(" - ")
-          .map((time: string) => {
-            const [hours, minutes] = time.split(":").map(Number);
-            return hours * 60 + minutes;
-          });
+        const times = responseTime.operatingHours.includes(" - ")
+          ? responseTime.operatingHours.split(" - ")
+          : [responseTime.operatingHours, responseTime.operatingHours];
+
+        const [start, end] = times.map((time: string) => {
+          const [hours, minutes] = time.split(":").map(Number);
+          return hours * 60 + minutes;
+        });
 
         const generatedTimes = [];
         for (let time = start; time <= end; time += 30) {

@@ -43,7 +43,7 @@ function Store() {
     setIsCopied(true);
 
     setTimeout(() => setIsCopied(false), 2000);
-  };
+  }; 
 
   return (
     <>
@@ -113,14 +113,16 @@ function Store() {
                       icon="calendar"
                     />
                   </div>
-                  <div style={{ marginRight: "1rem" }}>
-                    <Card
-                      type="time"
-                      selectedTimes={selectedTimes}
-                      title="Hora de fechamento"
-                      icon="calendar"
-                    />
-                  </div>
+                  {selectedTimes[1] !== undefined && (
+                    <div style={{ marginRight: "1rem" }}>
+                      <Card
+                        type="time"
+                        selectedTimes={selectedTimes}
+                        title="Hora de fechamento"
+                        icon="calendar"
+                      />
+                    </div>
+                  )}
                 </>
               ) : (
                 <p></p>

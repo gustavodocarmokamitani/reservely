@@ -164,6 +164,7 @@ export const AppointmentClient = () => {
                   storeData.operatingDays.map((day, index) => (
                     <S.OpeningHoursContent key={index}>
                       <h4 className="py-2 my-2">{day}</h4>
+                      <h4>-</h4>
                       <h4>{storeData?.operatingHours}</h4>
                     </S.OpeningHoursContent>
                   ))

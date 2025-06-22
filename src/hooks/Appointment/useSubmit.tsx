@@ -31,7 +31,7 @@ export const useSubmit = (
       const selectedService = service;
       const selectedTime = appointmentTime[appointmentTime.length - 1];
       const selectedDate = appointmentDate[appointmentDate.length - 1];
-
+      
       if (!employee.length) {
         enqueueSnackbar("Por favor, selecione um funcionário.", {
           variant: "warning",

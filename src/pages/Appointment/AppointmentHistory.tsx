@@ -17,6 +17,7 @@ import homeClient from "../../assets/homeClient.svg";
 import UserMenu from "../../components/UserMenu/UserMenu";
 
 function AppointmentHistory() {
+  const storeCode = "";
   const storeUser = Number(localStorage.getItem("storeUser"));
 
   const {
@@ -46,6 +47,10 @@ function AppointmentHistory() {
     setAppointmentDate,
     optionsTime,
     setOptionsTime,
+    closedDates,
+    setClosedDates,
+    operatingDays,
+    setOperatingDays,
   } = useStateCustom();
 
   const {
@@ -53,6 +58,7 @@ function AppointmentHistory() {
     fetchAppointmentInfoSelectableBoxServices,
     fetchAppointmentHistoryStatus,
   } = useFetch(
+    storeCode,
     storeUser,
     setSelectableBoxServices,
     setOptions,
@@ -60,7 +66,9 @@ function AppointmentHistory() {
     setDecodedData,
     setStatusAppointment,
     setIsLoading,
-    setOptionsTime
+    setOptionsTime,
+    setClosedDates,
+    setOperatingDays
   );
 
   const {
@@ -149,6 +157,8 @@ function AppointmentHistory() {
               setAppointmentTime,
               optionsTime,
               setAppointmentDate,
+              closedDates,
+              operatingDays,
             }}
           />
         </div>
