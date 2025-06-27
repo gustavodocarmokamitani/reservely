@@ -3,7 +3,7 @@
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "allowSyntheticDefaultImports": true,
     "target": "ES2022",
-    "lib": ["ES2022"],  // Altere para ES2022 se ES2023 não for suportado
+    "lib": ["ES2022"],
     "module": "ESNext",
     "skipLibCheck": true,
 
