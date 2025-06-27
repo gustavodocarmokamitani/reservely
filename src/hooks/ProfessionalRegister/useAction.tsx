@@ -58,11 +58,13 @@ export const useAction = (
   };
 
   const handleDeleteUsers = async () => {
-    setIsLoading(true); 
-    
+    setIsLoading(true);
+
     if (selectedUserIds.length === 0) {
-      return alert("Nenhum usuário selecionado!");
-    }
+      return enqueueSnackbar(`Nenhum usuário selecionado`, {
+        variant: "error",
+      });
+    };
 
     try {
       const deleteUserById = async (userId: number) => {
@@ -77,7 +79,7 @@ export const useAction = (
             );
             return;
           }
-          
+
           const getEmployeeResponse = await getEmployeeIdByUserId(user.id);
 
           if (getEmployeeResponse.length !== 0) {
@@ -85,7 +87,6 @@ export const useAction = (
               `Antes de apagar o profissional registrado, é necessário removê-lo da aba "Profissional".`,
               { variant: "warning" }
             );
-            
           }
 
           if (getEmployeeResponse.length === 0) {
@@ -156,7 +157,7 @@ export const useAction = (
         return;
       }
 
-      const response = await registerProfessional(professionalData);
+      const response = await registerProfessional(storeUser.toString(), professionalData);
 
       if (response) {
         enqueueSnackbar("Profissional registrado com sucesso.", {
@@ -176,13 +177,12 @@ export const useAction = (
   };
 
   const handleRowSelect = (ids: number[]) => {
-    setSelectedUserIds(ids); 
+    setSelectedUserIds(ids);
   };
 
   const handleInputChangeProfessionalRegister = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-
     const { name, type, checked, value } = event.target;
     setFormValuesProfessionalRegister((prevState) => ({
       ...prevState,

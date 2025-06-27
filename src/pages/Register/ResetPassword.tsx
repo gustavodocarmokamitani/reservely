@@ -58,7 +58,7 @@ const ResetPassword = () => {
                   placeholder="Email"
                   name="email"
                   type="text"
-                  value={email}
+                  value={email.toLocaleLowerCase()}
                   onChange={handleEmailChange}
                 />
               </div>

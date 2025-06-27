@@ -244,7 +244,7 @@ function ProfessionalRegister() {
                   type="text"
                   placeholder="Email"
                   name="email"
-                  value={formValuesProfessionalRegister.email}
+                  value={formValuesProfessionalRegister.email.toLocaleLowerCase()}
                   onChange={(e) =>
                     handleInputChangeProfessionalRegister(
                       e as React.ChangeEvent<HTMLInputElement>

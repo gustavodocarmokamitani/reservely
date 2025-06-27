@@ -59,8 +59,7 @@ export const useSubmit = (
       const responseStoreCode = await getStoreByStoreCode(formattedStoreCode);
       if (responseStoreCode) {
         storeUser = responseStoreCode.id;
-      }
-      setIsLoading(false);
+      };
       
       const newAppointment = {
         id: 0,

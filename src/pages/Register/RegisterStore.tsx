@@ -8,6 +8,7 @@ import { useAction } from "../../hooks/Register/useAction";
 import Loading from "../../components/Loading/loading";
 import { TypingText } from "../Styles/animationTyping.styles";
 import { GoogleLogin } from "@react-oauth/google";
+import { capitalizeFirstLetter } from "../../services/system/globalService";
 
 const RegisterStore = () => {
   const { formData, setFormData, isLoading, setIsLoading } = useStateCustom();
@@ -60,7 +61,7 @@ const RegisterStore = () => {
                       placeholder="Nome"
                       name="name"
                       type="text"
-                      value={formData.name}
+                      value={capitalizeFirstLetter(formData.name)}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -73,7 +74,7 @@ const RegisterStore = () => {
                       placeholder="Sobrenome"
                       name="lastname"
                       type="text"
-                      value={formData.lastname}
+                      value={capitalizeFirstLetter(formData.lastname)}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -88,7 +89,7 @@ const RegisterStore = () => {
                       placeholder="Email"
                       name="email"
                       type="text"
-                      value={formData.email}
+                      value={formData.email.toLocaleLowerCase()}
                       onChange={handleInputChange}
                     />
                   </div>

@@ -202,23 +202,25 @@ const DataTableVerticalAppointment: React.FC<
                       width: "100%",
                     }}
                   >
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "50px",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        background: "#2c2c2c",
-                        borderRadius: "15px",
-                        cursor: "pointer",
-                      }}
-                      onClick={() =>
-                        handleShowAppointmentStatusModal(true, item.id)
-                      }
-                    >
-                      <span style={{ color: "white" }}>Alterar Status</span>
-                    </div>
+                    {item.employeeFullName !== "Removido" ? (
+                      <div
+                        style={{
+                          width: "100%",
+                          height: "50px",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          background: "#2c2c2c",
+                          borderRadius: "15px",
+                          cursor: "pointer",
+                        }}
+                        onClick={() =>
+                          handleShowAppointmentStatusModal(true, item.id)
+                        }
+                      >
+                        <span style={{ color: "white" }}>Alterar Status</span>
+                      </div>
+                    ) : null}
                   </Col>
                 </Row>
               </Col>

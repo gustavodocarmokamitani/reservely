@@ -79,9 +79,10 @@ export const ServiceButton = styled.div`
 export const OpeningHoursContainer = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-direction: column;
   width: 100%;
-  min-height: 9rem;
+  min-height: 5rem;
   border-radius: 15px;
   padding: 10px 45px;
   border: 1px solid rgba(0, 0, 0, 0.25);

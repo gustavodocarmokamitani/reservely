@@ -16,10 +16,10 @@ export const registerUserWithGoogle = async (
   }
 };
 
-export const registerProfessional = async (registerData: RegisterEmployee) => {
+export const registerProfessional = async (storeCode: string, registerData: RegisterEmployee) => {
   try {
     const response = await api.post(
-      "/auth/register-professional",
+      `/auth/register-professional/${storeCode}`,
       registerData
     );
     return response;

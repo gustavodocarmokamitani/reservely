@@ -68,39 +68,43 @@ export const useEffectCustom = (
       field: "acoes",
       headerName: "Ações",
       flex: 1,
-      renderCell: (params) => (
-        <div
-          style={{
-            display: "flex",
-            gap: "50px",
-            justifyContent: "center",
-            margin: "12.5px 0px 0px 5px",
-          }}
-        >
-          <img
-            style={{ cursor: "pointer" }}
-            src={info}
-            width={22}
-            onClick={() =>
-              handleShowAppointmentInfoModal(true, params.row.serviceIds)
-            }
-            alt="Informações"
-          />
-          {params.row.appointmentStatusId !== 3 ? (
+      renderCell: (params) => {
+        const hasEmployee = params.row.employeeFullName;
+
+        if (hasEmployee === "Removido") return null;
+
+        return (
+          <div
+            style={{
+              display: "flex",
+              gap: "50px",
+              justifyContent: "center",
+              margin: "12.5px 0px 0px 5px",
+            }}
+          >
             <img
               style={{ cursor: "pointer" }}
-              src={edit}
+              src={info}
               width={22}
               onClick={() =>
-                handleShowAppointmentStatusModal(true, params.row.id)
+                handleShowAppointmentInfoModal(true, params.row.serviceIds)
               }
-              alt="Alterar status"
+              alt="Informações"
             />
-          ) : (
-           null
-          )}
-        </div>
-      ),
+            {params.row.appointmentStatusId !== 3 ? (
+              <img
+                style={{ cursor: "pointer" }}
+                src={edit}
+                width={22}
+                onClick={() =>
+                  handleShowAppointmentStatusModal(true, params.row.id)
+                }
+                alt="Alterar status"
+              />
+            ) : null}
+          </div>
+        );
+      },
       width: columnWidth,
       align: "center",
       headerAlign: "center",

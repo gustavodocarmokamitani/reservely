@@ -23,6 +23,7 @@ import { useSnackbar } from "notistack";
 import Loading from "../../components/Loading/loading";
 import { ChangePasswordRequest } from "../../models/ChangePasswordRequest";
 import UserMenu from "../../components/UserMenu/UserMenu";
+import { capitalizeFirstLetter } from "../../services/system/globalService";
 
 export default function UserConfig() {
   const { enqueueSnackbar } = useSnackbar();
@@ -204,7 +205,7 @@ export default function UserConfig() {
               onChange={handleInputChange}
               type="text"
               placeholder="Fistname"
-              value={formData?.name}
+              value={capitalizeFirstLetter(formData?.name)}
             />
           </Col>
           <Col sx={12} md={6} lg={6} xl={3} className="my-2">
@@ -214,7 +215,7 @@ export default function UserConfig() {
               onChange={handleInputChange}
               type="text"
               placeholder="Lastname"
-              value={formData?.lastName}
+              value={capitalizeFirstLetter(formData?.lastName)}
             />
           </Col>
           <Col sx={12} md={6} lg={6} xl={3} className="my-2">
@@ -224,7 +225,7 @@ export default function UserConfig() {
               onChange={handleInputChange}
               type="email"
               placeholder="Email"
-              value={formData?.email}
+              value={formData?.email.toLocaleLowerCase()}
             />
           </Col>
           <Col sx={12} md={6} lg={6} xl={3} className="my-2">

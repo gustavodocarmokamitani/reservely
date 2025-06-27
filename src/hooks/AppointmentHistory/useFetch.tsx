@@ -71,7 +71,7 @@ export const useFetch = (
               ? `${capitalizeFirstLetter(
                   userData.name
                 )} ${capitalizeFirstLetter(userData.lastName)}`
-              : "N/A",
+              : "Removido",
             clientId: userClientData ? userClientData.name : "Visitante",
             appointmentDate: new Date(appointment.appointmentDate),
             appointmentStatus: appointmentStatusData.name,
@@ -187,8 +187,7 @@ export const useFetch = (
   useEffect(() => {
     const fetchTime = async () => {
       try {
-        const responseTime = await getStoreById(storeUser);
-        console.log(responseTime.operatingHours);
+        const responseTime = await getStoreById(storeUser); 
 
         const times = responseTime.operatingHours.includes(" - ")
           ? responseTime.operatingHours.split(" - ")

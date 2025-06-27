@@ -9,6 +9,7 @@ import Loading from "../../components/Loading/loading";
 import { TypingText } from "../Styles/animationTyping.styles";
 import { GoogleLogin } from "@react-oauth/google";
 import { useParams } from "react-router-dom";
+import { capitalizeFirstLetter } from "../../services/system/globalService";
 
 const RegisterClient = () => {
   const { storeCodeParams } = useParams();
@@ -63,7 +64,7 @@ const RegisterClient = () => {
                       placeholder="Nome"
                       name="name"
                       type="text"
-                      value={formData.name}
+                      value={capitalizeFirstLetter(formData.name)}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -76,7 +77,7 @@ const RegisterClient = () => {
                       placeholder="Sobrenome"
                       name="lastname"
                       type="text"
-                      value={formData.lastname}
+                      value={capitalizeFirstLetter(formData.lastname)}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -91,7 +92,7 @@ const RegisterClient = () => {
                       placeholder="Email"
                       name="email"
                       type="text"
-                      value={formData.email}
+                      value={formData.email.toLocaleLowerCase()}
                       onChange={handleInputChange}
                     />
                   </div>

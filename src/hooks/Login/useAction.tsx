@@ -23,10 +23,11 @@ export const useAction = (
     setIsLoading(true);
 
     try {
-      const loggedUser = await getUserByEmail(email);
+      const lowerEmail = email.toLowerCase();
+      const loggedUser = await getUserByEmail(lowerEmail);
 
       if (loggedUser.emailConfirmed === true) {
-        const responseLogin = await loginUser({ email, password });
+        const responseLogin = await loginUser({ email: lowerEmail, password });
         const token = responseLogin.token;
 
         if (setAuthToken) setAuthToken(token);
@@ -42,7 +43,6 @@ export const useAction = (
           { variant: "success" }
         );
         if (responseDecodedToken.userRole === "Client") {
-
           if (storeCode === "") {
             navigate(`/home-client/:`);
           } else {

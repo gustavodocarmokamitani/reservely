@@ -39,8 +39,8 @@ export const useAction = (
         active: "true",
         storeId: Number(storeUser),
         serviceIds: formValuesProfessionalRegister.serviceIds,
-      }; 
-      
+      };
+
       handleEmployeeAdd([employeeData]);
     }
 
@@ -145,7 +145,9 @@ export const useAction = (
         console.error("Erro ao remover os usuários:", error);
       }
     } else {
-      alert("Nenhum usuário selecionado!");
+      enqueueSnackbar(`Nenhum usuário selecionado`, {
+        variant: "error",
+      });
     }
   };
 
