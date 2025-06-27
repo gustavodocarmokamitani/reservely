@@ -132,7 +132,7 @@ Integração com **SendGrid** para envio automático de e-mails nos seguintes ev
 
 Clone o repositório:
 ```bash
-git clone https://github.com/gustavodocarmokamitani/agendai.git
-cd agendai
+git clone https://github.com/gustavodocarmokamitani/reservely.git
+cd reservely
 npm install
 npm run start
