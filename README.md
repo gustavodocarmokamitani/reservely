@@ -1,81 +1,4 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
-=======
-## Como Rodar o Projeto
-
-### Frontend
-
-Clone o repositório do front-end:
-```bash
-git clone https://github.com/gustavodocarmokamitani/agendai.git
-
-```
-Entre na pasta do repositório:
-```bash
-cd <diretório do repositório>
-```
-
-Instale as dependências:
-```bash
-npm install
-```
-
-Inicie o servidor de desenvolvimento:
-```bash
-npm run start
-```
-### 
-O front-end estará disponível em http://localhost:3000
-
----
 
 # Projeto de Agendamento de Serviço
 ## Visão Geral
@@ -190,3 +113,33 @@ Este projeto permite a administração de serviços, funcionários e agendamento
 - **React-datepicker**: Para escolha de datas no front-end.
 - **React Icons**: Para ícones no front-end.
 - **Notistack**: Para exibição de notificações rápidas.
+
+
+## Como Rodar o Projeto
+
+### Frontend
+
+Clone o repositório do front-end:
+```bash
+git clone https://github.com/gustavodocarmokamitani/agendai.git
+
+```
+Entre na pasta do repositório:
+```bash
+cd <diretório do repositório>
+```
+
+Instale as dependências:
+```bash
+npm install
+```
+
+Inicie o servidor de desenvolvimento:
+```bash
+npm run start
+```
+### 
+O front-end estará disponível em http://localhost:3000
+
+---
+
