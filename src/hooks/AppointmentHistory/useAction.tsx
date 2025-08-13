@@ -25,7 +25,8 @@ export const useAction = (
   const { enqueueSnackbar } = useSnackbar();
 
   const handleSubmitAppointmentHistoryStatus = async () => {
-    setIsLoading(true);
+    setIsLoading(true); 
+    
     try {
       const response = await getAppointmentById(selectedAppointmentHistoryId);
       const formattedDate =
@@ -72,7 +73,8 @@ export const useAction = (
                 statusAppointment[statusAppointment.length - 1].value,
               storeId: Number(storeUser),
             };
-
+            console.log(mappedAppointment);
+            
       const responseAppointment = await updateAppointment(
         mappedAppointment.id,
         mappedAppointment

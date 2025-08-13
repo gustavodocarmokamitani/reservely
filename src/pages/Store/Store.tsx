@@ -10,6 +10,7 @@ import { useFetch } from "../../hooks/Store/useFetch";
 import Loading from "../../components/Loading/loading";
 import { useState } from "react";
 import UserMenu from "../../components/UserMenu/UserMenu";
+import { Paragraph } from "../../components/Paragraph/Paragraph";
 
 function Store() {
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ function Store() {
     setIsCopied(true);
 
     setTimeout(() => setIsCopied(false), 2000);
-  }; 
+  };
 
   return (
     <>
@@ -54,8 +55,14 @@ function Store() {
           <P.ContentHeader align="start">
             <P.Title>Loja</P.Title>
             <P.SubTitle>Área destinada para gerenciamento da loja.</P.SubTitle>
+            <P.ParagraphThin className="mb-2">
+              Este é o link de acesso ao site oficial da barbearia,
+            </P.ParagraphThin>
+            <P.ParagraphThin className="mb-2">
+              onde os clientes podem realizar seus agendamentos online.
+            </P.ParagraphThin>
             <S.Copy onClick={handleCopy}>
-              <div className="copy-text pt-2">Agendamento</div>
+              <div className="copy-text pt-2">Link de Acesso</div>
               <div className="copy-button pt-2 ">
                 {isCopied ? "copiado" : "copiar"}
               </div>

@@ -76,8 +76,7 @@ const Modal: React.FC<ModalProps> = ({
         {/* Conteúdo com scroll interno */}
         <div
           style={{
-            flex: 1,
-            overflowY: "auto",
+            flex: 1, 
           }}
         >
           <div>

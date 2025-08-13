@@ -275,7 +275,7 @@ export default function UserConfig() {
               placeholder="New Password"
             />
           </Col>
-          <Col sx={12} md={6} lg={6} xl={3} className="my-2">
+          <Col sx={12} md={6} lg={6} xl={3} className="mt-2 mb-5 pb-5">
             <Paragraph text="Confirm Password" />
             <Input
               name="confirmPassword"

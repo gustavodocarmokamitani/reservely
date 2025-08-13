@@ -19,6 +19,7 @@ import Loading from "../../components/Loading/loading";
 import homeClient from "../../assets/homeClient.svg";
 import UserMenu from "../../components/UserMenu/UserMenu";
 import DataTableVerticalProfessional from "../../view/DataTableVertical/DataTableVerticalProfessional";
+import { SelectOption } from "../../models/SelectOptions";
 
 function Professional() {
   const storeUser = Number(localStorage.getItem("storeUser"));
@@ -106,7 +107,18 @@ function Professional() {
     decodedData,
     handleShowEditProfessionalModal
   );
-
+const options1: SelectOption[] = [
+  { value: 1, label: "Opção 1" },
+  { value: 2, label: "Opção 2" },
+  { value: 3, label: "Opção 3" },
+  { value: 4, label: "Opção 4" },
+  { value: 5, label: "Opção 5" },
+  { value: 6, label: "Opção 6" },
+  { value: 7, label: "Opção 7" },
+  { value: 8, label: "Opção 8" },
+  { value: 9, label: "Opção 9" },
+  { value: 10, label: "Opção 10" },
+];
   return (
     <>
       {isLoading && <Loading />}
@@ -223,7 +235,7 @@ function Professional() {
                 <Select
                   setData={setEmployeeSelect}
                   value={employeeSelect}
-                  options={options}
+                  options={options1}
                   placeholder="Selecione um funcionário"
                 />
               </Col>

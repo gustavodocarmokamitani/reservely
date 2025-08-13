@@ -15,8 +15,10 @@
   "dependencies": {
     "@react-oauth/google": "^0.12.1",
     "@schedule-x/calendar-controls": "^2.21.0",
+    "file-saver": "^2.0.5",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@emotion/react": "^11.14.0",
@@ -35,6 +37,7 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@types/file-saver": "^2.0.7",
     "@types/jest": "^27.5.2",
     "@types/node": "^18.0.0",
     "@types/react": "^18.0.0",
