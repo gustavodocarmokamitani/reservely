@@ -96,27 +96,7 @@ export default function UserConfig() {
 
   const handleUpdateUser = async () => {
     setIsLoading(true);
-
-    if (formData.password.length !== 0) {
-      const passwordRegex =
-        /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
-      if (!passwordRegex.test(formData.password)) {
-        enqueueSnackbar(
-          "A senha deve ter pelo menos 8 caracteres, incluir uma letra maiúscula, um número e um caractere especial.",
-          { variant: "default" }
-        );
-        setIsLoading(false);
-        return;
-      }
-      if (formData.newPassword !== formData.confirmPassword) {
-        enqueueSnackbar("As senhas não são iguais. Tente novamente.", {
-          variant: "default",
-        });
-        setIsLoading(false);
-        return;
-      }
-    }
-
+ 
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     if (!emailRegex.test(formData.email)) {
       enqueueSnackbar("Por favor, insira um endereço de e-mail válido.", {
@@ -124,6 +104,42 @@ export default function UserConfig() {
       });
       setIsLoading(false);
       return;
+    }
+ 
+    if (
+      formData.newPassword.length !== 0 ||
+      formData.confirmPassword.length !== 0
+    ) {
+      const passwordRegex =
+        /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+
+      if (!passwordRegex.test(formData.newPassword)) {
+        enqueueSnackbar(
+          "A nova senha deve ter pelo menos 8 caracteres, incluir uma letra maiúscula, um número e um caractere especial.",
+          { variant: "default" }
+        );
+        setIsLoading(false);
+        return;
+      }
+
+      if (formData.newPassword !== formData.confirmPassword) {
+        enqueueSnackbar("As novas senhas não são iguais. Tente novamente.", {
+          variant: "default",
+        });
+        setIsLoading(false);
+        return;
+      }
+
+      if (formData.password.length === 0) {
+        enqueueSnackbar(
+          "Por favor, insira a senha atual para alterar a senha.",
+          {
+            variant: "default",
+          }
+        );
+        setIsLoading(false);
+        return;
+      }
     }
 
     const updatedUser = {
@@ -134,13 +150,14 @@ export default function UserConfig() {
       phone: formData.phone,
       password: "",
     };
+
     await updateUser(Number(decodedData?.userId), updatedUser);
 
     try {
-      if (formData.password.length !== 0) {
+      if (formData.newPassword.length !== 0) {
         const passwordRequest: ChangePasswordRequest = {
-          CurrentPassword: formData.password,
-          NewPassword: formData.newPassword,
+          CurrentPassword: formData.password, 
+          NewPassword: formData.newPassword, 
         };
 
         await changePassword(Number(decodedData?.userId), passwordRequest);
@@ -159,7 +176,7 @@ export default function UserConfig() {
             typeof data === "string" &&
             data.includes("Current password is incorrect")
           ) {
-            enqueueSnackbar("Senha antiga incorreta.", { variant: "error" });
+            enqueueSnackbar("Senha atual incorreta.", { variant: "error" });
           } else {
             enqueueSnackbar("Erro ao atualizar os dados.", {
               variant: "error",
@@ -167,7 +184,6 @@ export default function UserConfig() {
           }
         }
       }
-
       setIsLoading(false);
     }
   };

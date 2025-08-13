@@ -64,7 +64,7 @@ export const useAction = (
       return enqueueSnackbar(`Nenhum usuário selecionado`, {
         variant: "error",
       });
-    };
+    }
 
     try {
       const deleteUserById = async (userId: number) => {
@@ -146,6 +146,16 @@ export const useAction = (
       storeId: storeUser,
     };
 
+    if (
+      !validateFormValues({
+        name: professionalData.name,
+        lastName: professionalData.lastName,
+      })
+    ) {
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const emailExists = await checkEmail(professionalData.email);
 
@@ -157,7 +167,10 @@ export const useAction = (
         return;
       }
 
-      const response = await registerProfessional(storeUser.toString(), professionalData);
+      const response = await registerProfessional(
+        storeUser.toString(),
+        professionalData
+      );
 
       if (response) {
         enqueueSnackbar("Profissional registrado com sucesso.", {
@@ -188,6 +201,22 @@ export const useAction = (
       ...prevState,
       [name]: type === "checkbox" ? (checked ? "true" : "false") : value,
     }));
+  };
+
+  const validateFormValues = (formValues: Partial<User>): boolean => {
+    const fieldValidations = [
+      { field: "name", message: "O campo 'Nome' é obrigatório." },
+      { field: "lastName", message: "O campo 'Sobrenome' é obrigatório." },
+    ];
+
+    for (const { field, message } of fieldValidations) {
+      if (!formValues[field as keyof User]) {
+        enqueueSnackbar(message, { variant: "error" });
+        return false;
+      }
+    }
+
+    return true;
   };
 
   return {

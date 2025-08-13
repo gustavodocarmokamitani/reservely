@@ -8,11 +8,6 @@ import arrowUp from "../../assets/arrowUp.svg";
 import arrowDown from "../../assets/arrowDown.svg";
 import Button from "../Button/Button";
 import star from "../../assets/star.png";
-import employeeDefault from "../../assets/employeeDefault.png";
-import price from "../../assets/price.png";
-import time from "../../assets/time.png";
-import date from "../../assets/date.png";
-import service from "../../assets/service.png";
 import moment from "moment";
 import { formatToBRL } from "../../services/system/globalService";
 
@@ -95,12 +90,17 @@ const Card: React.FC<CardProps> = ({
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
-                        width: "100%"
+                        width: "100%",
                       }}
                     >
                       {/* <img src={employeeDefault} alt="employee" width="75px" /> */}
                       <S.Paragraph
-                        style={{ width: "9.25rem", fontWeight: "500", fontSize: "1.2rem", marginBottom: "1rem" }}
+                        style={{
+                          width: "9.25rem",
+                          fontWeight: "500",
+                          fontSize: "1.2rem",
+                          marginBottom: "1rem",
+                        }}
                       >
                         {data.employeeName}
                       </S.Paragraph>
@@ -340,24 +340,30 @@ const Card: React.FC<CardProps> = ({
 
             {type === "time" && icon && iconMap[icon] && (
               <Row>
-                <Col md={8}>
-                  {title === "Hora de abertura" ? (
-                    <p style={{ textAlign: "center" }}>
-                      {selectedTimes && selectedTimes[0] !== "string"
-                        ? selectedTimes[0]
-                        : null}
-                    </p>
+                <Col sx={8}>
+                  {title === "Abertura" ? (
+                    <>
+                      <p style={{ textAlign: "center", margin: 0 }}>
+                        {selectedTimes && selectedTimes[0] !== "string"
+                          ? selectedTimes[0]
+                          : null}
+                      </p>
+                    </>
                   ) : (
-                    <p style={{ textAlign: "center" }}>
+                    <p style={{ textAlign: "center", margin: 0 }}>
                       {selectedTimes ? selectedTimes[1] : null}
                     </p>
                   )}
                 </Col>
-                <Col md={4}>
+                <Col sx={4}>
                   <img
                     src={iconMap[icon]}
                     alt={icon}
-                    style={{ cursor: "pointer", width: "1.375rem" }}
+                    style={{
+                      cursor: "pointer",
+                      width: "1.375rem",
+                      marginLeft: ".5rem",
+                    }}
                   />
                 </Col>
               </Row>

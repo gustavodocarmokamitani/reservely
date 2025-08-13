@@ -9,7 +9,7 @@ const RegisterConfirmEmail = () => {
 
   return (
     <ContainerRegister>
-      <Row style={{ justifyContent: "center", paddingTop: "280px" }}>
+      <Row style={{ justifyContent: "center", paddingTop: "180px" }}>
         <Col md={6} className="text-center">
           <h2>Bem-vindo(a) à nossa plataforma! 🚀</h2>
           <p>Quase lá! Para começar, confirme seu e-mail e ative sua conta.</p>

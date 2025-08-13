@@ -82,7 +82,7 @@ function App() {
             <Route
               path="/*"
               element={
-                <ProtectedRoute>
+                // <ProtectedRoute>
                   <React.Fragment>
                     <div style={{ flexGrow: 1, overflowX: "hidden" }}>
                       <ProtectedLayout>
@@ -131,7 +131,7 @@ function App() {
                       </ProtectedLayout>
                     </div>
                   </React.Fragment>
-                </ProtectedRoute>
+                // </ProtectedRoute>
               }
             />
           </Routes>

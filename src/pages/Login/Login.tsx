@@ -76,6 +76,9 @@ const Login = () => {
                   <p className="mt-5">
                     Não tem uma conta? <a href="/">Inscreva-se</a>
                   </p>
+                      <p className="mt-2">
+                    Não recebeu e-mail de confirmação ou token expirou? <a href="/resend-email">Clique aqui para reenviar o e-mail.</a>
+                  </p>
 
                   {/* <ParagraphThin>Or login with</ParagraphThin>
                 <Button $isGoogle type="button" />

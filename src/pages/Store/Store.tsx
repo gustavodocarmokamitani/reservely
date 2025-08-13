@@ -99,7 +99,7 @@ function Store() {
                 <Card
                   type="status"
                   statusStore={store?.multipleAppointments}
-                  title="Múlt. Agendamentos"
+                  title="Múlt. Agend."
                   icon="confirm"
                 />
               </div>
@@ -109,7 +109,7 @@ function Store() {
                     <Card
                       type="time"
                       selectedTimes={selectedTimes}
-                      title="Hora de abertura"
+                      title="Abertura"
                       icon="calendar"
                     />
                   </div>
@@ -118,7 +118,7 @@ function Store() {
                       <Card
                         type="time"
                         selectedTimes={selectedTimes}
-                        title="Hora de fechamento"
+                        title="Fechamento"
                         icon="calendar"
                       />
                     </div>

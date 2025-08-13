@@ -37,6 +37,7 @@ export const useAction = (
       };
 
       if (!validateFormValues(newService)) {
+        setIsLoading(false);
         return;
       }
 
@@ -68,6 +69,7 @@ export const useAction = (
         fetchData();
       }
     } catch (error) {
+      setIsLoading(false);
       console.error("Erro durante o request:", error);
       enqueueSnackbar("Erro inesperado! Verifique os dados.", {
         variant: "error",

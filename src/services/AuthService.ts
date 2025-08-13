@@ -16,7 +16,10 @@ export const registerUserWithGoogle = async (
   }
 };
 
-export const registerProfessional = async (storeCode: string, registerData: RegisterEmployee) => {
+export const registerProfessional = async (
+  storeCode: string,
+  registerData: RegisterEmployee
+) => {
   try {
     const response = await api.post(
       `/auth/register-professional/${storeCode}`,
@@ -29,9 +32,15 @@ export const registerProfessional = async (storeCode: string, registerData: Regi
   }
 };
 
-export const registerUser = async (storeCode: string, registerData: RegisterData) => {
+export const registerUser = async (
+  storeCode: string,
+  registerData: RegisterData
+) => {
   try {
-    const response = await api.post(`/auth/register/${storeCode}`, registerData);
+    const response = await api.post(
+      `/auth/register/${storeCode}`,
+      registerData
+    );
     return response.data;
   } catch (error) {
     console.error("Error registering user:", error);
@@ -49,11 +58,17 @@ export const loginUser = async (login: LoginData) => {
   }
 };
 
-export const resendConfirmationEmail = async (storeCode: string, email: string) => {
+export const resendConfirmationEmail = async (
+  storeCode: string,
+  email: string
+) => {
   try {
-    const response = await api.post(`/auth/resend-confirmation-email/${storeCode}`, {
-      Email: email,
-    });
+    const response = await api.post(
+      `/auth/resend-confirmation-email/${storeCode}`,
+      {
+        Email: email,
+      }
+    );
     return response.data;
   } catch (error) {
     console.error("Error resending confirmation email:", error);
@@ -93,7 +108,11 @@ export const requestResetPassword = async (email: string) => {
   }
 };
 
-export const confirmResetPassword = async (userId: string, token: string, newPassword: string) => {
+export const confirmResetPassword = async (
+  userId: string,
+  token: string,
+  newPassword: string
+) => {
   try {
     const response = await api.post("/auth/confirm-reset-password", {
       userId,

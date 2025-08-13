@@ -4,6 +4,8 @@ export const TimeContainer = styled.div`
   background: white;
   border-radius: 15px;
   box-shadow: 4px 4px 15px 0px rgba(0, 0, 0, 0.25);
+
+  overflow: hidden;
 `;
 
 export const LeftButton = styled.div`
@@ -12,16 +14,18 @@ export const LeftButton = styled.div`
   left: 18px;
   transform: translateY(-50%);
   z-index: 1;
-  background: white;
-  border: 1px solid white;
-  border-radius: 50%;
+  background: transparent;
   width: 30px;
   height: 30px;
   cursor: pointer;
   transition: all 0.3s ease;
 
   &:hover {
-    color: #f16855;
+    color: #0f31f3;
+  }
+
+  @media (max-width: 768px) {
+    display: none;
   }
 `;
 
@@ -31,12 +35,18 @@ export const RightButton = styled.div`
   right: 10px;
   transform: translateY(-50%);
   z-index: 1;
-  background: white;
-  border: 1px solid white;
-  border-radius: 50%;
+  background: transparent;
   width: 30px;
   height: 30px;
   cursor: pointer;
+
+  &:hover {
+    color: #0f31f3;
+  }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 export const TimeContent = styled.div`
@@ -44,13 +54,13 @@ export const TimeContent = styled.div`
   display: flex;
   gap: 1rem;
   overflow-x: hidden;
-  margin: 0 100px;
+  margin: 0 3rem;
   padding: 2rem 0rem;
 
   @media (max-width: 768px) {
     flex-direction: column;
-    
-  margin: 0 auto;
+
+    margin: 0 auto;
   }
 `;
 
@@ -67,7 +77,6 @@ export const HeaderColumns = styled.div<{ selected?: boolean }>`
   }
 
   @media (max-width: 768px) {
-    height: 25rem;
     overflow: auto;
     margin-bottom: 2rem;
   }
