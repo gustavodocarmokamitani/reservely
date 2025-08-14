@@ -1,0 +1,58 @@
+name: Deploy Frontend
+
+on:
+  push:
+    branches:
+      - main  # Roda quando fizer push na branch main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Baixa o código do repositório
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      # 2️⃣ Configura Node.js
+      - name: Configura Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      # 3️⃣ Instala dependências e build do frontend
+      - name: Instalar dependências e buildar
+        run: |
+          cd frontend
+          npm ci
+          npm run build
+          # Copia build para o contexto do Docker
+          cp -r build ../docker-context/
+
+      # 4️⃣ Login no Docker Hub
+      - name: Login no Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # 5️⃣ Build e Push da imagem Docker
+      - name: Build e Push da imagem Docker
+        run: |
+          cd docker-context
+          docker build -t gustavokamitani/reservely-frontend:latest .
+          docker push gustavokamitani/reservely-frontend:latest
+
+      # 6️⃣ Deploy no servidor via SSH
+      - name: Deploy no servidor
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            docker pull gustavokamitani/reservely-frontend:latest
+            docker stop frontend || true
+            docker rm frontend || true
+            docker run -d --name frontend -p 3000:80 gustavokamitani/reservely-frontend:latest
+            docker network connect reservely-net frontend

@@ -10,7 +10,6 @@ import { useFetch } from "../../hooks/Store/useFetch";
 import Loading from "../../components/Loading/loading";
 import { useState } from "react";
 import UserMenu from "../../components/UserMenu/UserMenu";
-import { Paragraph } from "../../components/Paragraph/Paragraph";
 
 function Store() {
   const navigate = useNavigate();
