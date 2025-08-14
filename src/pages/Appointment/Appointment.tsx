@@ -72,7 +72,8 @@ export function Appointment() {
     setIsLoading,
     setDecodedData,
     setClosedDates,
-    setOperatingDays
+    setOperatingDays,
+    appointmentDate
   );
 
   const handleSubmit = async () => {

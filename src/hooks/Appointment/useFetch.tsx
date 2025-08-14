@@ -39,11 +39,12 @@ export const useFetch = (
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
   setDecodedData: React.Dispatch<React.SetStateAction<DecodedToken | null>>,
   setClosedDates: React.Dispatch<React.SetStateAction<string[]>>,
-  setOperatingDays: React.Dispatch<React.SetStateAction<string[]>>
+  setOperatingDays: React.Dispatch<React.SetStateAction<string[]>>,
+  appointmentDate: Date[]
 ) => {
   const context = useContext(AppContext);
   const authToken = context?.authToken;
-  
+
   useEffect(() => {
     const fetchStoreData = async () => {
       const formattedStoreCode = storeCode.toUpperCase().replace("_", "#");
@@ -297,50 +298,70 @@ export const useFetch = (
     fetchWorkingDatesStore();
   }, [setClosedDates, setOperatingDays, storeUser, store]);
 
-  useEffect(() => {
-    const fetchTime = async () => {
-      try {
-        const responseStoreCode = await getStoreByStoreCode(storeCode);
-        if (responseStoreCode) {
-          storeUser = responseStoreCode.id;
-        }
-
-        const responseTime = await getStoreById(
-          storeUser !== 0 ? storeUser : store[store.length - 1].value
-        );
-
-        const times = responseTime.operatingHours.includes(" - ")
-          ? responseTime.operatingHours.split(" - ")
-          : [responseTime.operatingHours, responseTime.operatingHours];
-
-        const [start, end] = times.map((time: string) => {
-          const [hours, minutes] = time.split(":").map(Number);
-          return hours * 60 + minutes;
-        });
-
-        const generatedTimes = [];
-        for (let time = start; time <= end; time += 30) {
-          const hours = Math.floor(time / 60)
-            .toString()
-            .padStart(2, "0");
-          const minutes = (time % 60).toString().padStart(2, "0");
-          generatedTimes.push(`${hours}:${minutes}`);
-        }
-
-        setOptionsTime([
-          { value: 0, label: "Selecione..." },
-          ...generatedTimes.map((time, index) => ({
-            value: index + 1,
-            label: time,
-          })),
-        ]);
-      } catch (error) {
-        console.error("Erro ao buscar dados da store:", error);
+useEffect(() => {
+  const fetchTime = async () => {
+    try {
+      const responseStoreCode = await getStoreByStoreCode(storeCode);
+      if (responseStoreCode) {
+        storeUser = responseStoreCode.id;
       }
-    };
 
-    fetchTime();
-  }, [storeUser, store, setOptionsTime]);
+      const responseTime = await getStoreById(
+        storeUser !== 0 ? storeUser : store[store.length - 1].value
+      );
+
+      const times = responseTime.operatingHours.includes(" - ")
+        ? responseTime.operatingHours.split(" - ")
+        : [responseTime.operatingHours, responseTime.operatingHours];
+
+      const [start, end] = times.map((time: string) => {
+        const [hours, minutes] = time.split(":").map(Number);
+        return hours * 60 + minutes;
+      });
+
+      let generatedTimes: string[] = [];
+      for (let time = start; time <= end; time += 30) {
+        const hours = Math.floor(time / 60)
+          .toString()
+          .padStart(2, "0");
+        const minutes = (time % 60).toString().padStart(2, "0");
+        generatedTimes.push(`${hours}:${minutes}`);
+      }
+      
+      const now = new Date();
+      const selectedDate = appointmentDate?.[0] ?? null;
+
+      if (selectedDate) {
+        const isToday =
+          selectedDate.getDate() === now.getDate() &&
+          selectedDate.getMonth() === now.getMonth() &&
+          selectedDate.getFullYear() === now.getFullYear();
+
+        if (isToday) {
+          const currentMinutes = now.getHours() * 60 + now.getMinutes();
+          generatedTimes = generatedTimes.filter((time) => {
+            const [h, m] = time.split(":").map(Number);
+            return h * 60 + m > currentMinutes;
+          });
+        }
+      }
+
+      setOptionsTime([
+        { value: 0, label: "Selecione..." },
+        ...generatedTimes.map((time, index) => ({
+          value: index + 1,
+          label: time,
+        })),
+      ]);
+    } catch (error) {
+      console.error("Erro ao buscar dados da store:", error);
+    }
+  };
+
+  fetchTime();
+}, [storeUser, store, setOptionsTime, appointmentDate]);
+
+
 
   return {};
 };

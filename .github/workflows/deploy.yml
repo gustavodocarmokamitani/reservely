@@ -15,7 +15,7 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: ./  # ajuste se necessário
+        working-directory: ./  
 
       - name: Build React app
         run: npm run build
