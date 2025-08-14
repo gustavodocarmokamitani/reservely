@@ -20,7 +20,7 @@ const SelectDataPicker: React.FC<SelectDataPickerProps> = ({
   closedDates,
 }) => {
   const [selected, setSelected] = useState<Date[]>([]);
-
+ 
   const dayMap: { [key: string]: number } = {
     Domingo: 0,
     Segunda: 1,
@@ -37,8 +37,9 @@ const SelectDataPicker: React.FC<SelectDataPickerProps> = ({
       : [0, 1, 2, 3, 4, 5, 6];
 
   const parseDateLocal = (dateString: string) => {
-    const [year, month, day] = dateString.split("-").map(Number);
-    return new Date(year, month - 1, day);
+    const date = new Date(dateString);
+    date.setHours(0, 0, 0, 0);
+    return date;
   };
 
   const parsedClosedDates =

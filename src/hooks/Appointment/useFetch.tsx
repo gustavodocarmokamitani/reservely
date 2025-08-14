@@ -40,7 +40,8 @@ export const useFetch = (
   setDecodedData: React.Dispatch<React.SetStateAction<DecodedToken | null>>,
   setClosedDates: React.Dispatch<React.SetStateAction<string[]>>,
   setOperatingDays: React.Dispatch<React.SetStateAction<string[]>>,
-  appointmentDate: Date[]
+  appointmentDate: Date[],
+  appointmentTime: SelectOption[]
 ) => {
   const context = useContext(AppContext);
   const authToken = context?.authToken;
@@ -276,18 +277,69 @@ export const useFetch = (
   useEffect(() => {
     const fetchWorkingDatesStore = async () => {
       try {
+        const now = new Date();
+        const todayISOString = now.toISOString();
+
+        const appointmentTimeExists = appointmentTime?.length > 0;
+        let selectedTimeHasPassed = false;
+
+        if (appointmentTimeExists) {
+          const selectedTimeLabel = appointmentTime[0].label;
+          const [hours, minutes] = selectedTimeLabel.split(":").map(Number);
+
+          const appointmentDateTime = new Date();
+          appointmentDateTime.setHours(hours);
+          appointmentDateTime.setMinutes(minutes);
+          appointmentDateTime.setSeconds(0);
+          appointmentDateTime.setMilliseconds(0);
+
+          selectedTimeHasPassed = appointmentDateTime < now;
+        }
+
         if (storeCode === ":" || storeCode === "") {
           const response = await getStoreById(
             storeUser !== 0 ? storeUser : store[0].value
           );
-          setClosedDates(response?.closingDays);
+
+          let newClosedDates = [...(response?.closingDays || [])];
+
+          if (appointmentTimeExists && selectedTimeHasPassed) {
+            const isTodayAlreadyClosed = newClosedDates.some((date) =>
+              date.startsWith(todayISOString.split("T")[0])
+            );
+            if (!isTodayAlreadyClosed) {
+              newClosedDates.push(todayISOString);
+            }
+          } else {
+            newClosedDates = newClosedDates.filter(
+              (date) => !date.startsWith(todayISOString.split("T")[0])
+            );
+          }
+
+          setClosedDates(newClosedDates);
           setOperatingDays(response?.operatingDays);
         } else {
           const formattedStoreCode = storeCode.toUpperCase().replace("_", "#");
           const responseStoreCode = await getStoreByStoreCode(
             formattedStoreCode
           );
-          setClosedDates(responseStoreCode?.closingDays);
+
+          let newClosedDates = [...(responseStoreCode?.closingDays || [])];
+
+          if (appointmentTimeExists && selectedTimeHasPassed) {
+            const isTodayAlreadyClosed = newClosedDates.some((date) =>
+              date.startsWith(todayISOString.split("T")[0])
+            );
+            if (!isTodayAlreadyClosed) {
+              newClosedDates.push(todayISOString);
+            }
+          } else {
+            newClosedDates = newClosedDates.filter(
+              (date) => !date.startsWith(todayISOString.split("T")[0])
+            );
+          }
+
+          setClosedDates(newClosedDates);
           setOperatingDays(responseStoreCode?.operatingDays);
         }
       } catch (error) {
@@ -296,72 +348,70 @@ export const useFetch = (
     };
 
     fetchWorkingDatesStore();
-  }, [setClosedDates, setOperatingDays, storeUser, store]);
+  }, [setClosedDates, setOperatingDays, storeUser, store, appointmentTime]);
 
-useEffect(() => {
-  const fetchTime = async () => {
-    try {
-      const responseStoreCode = await getStoreByStoreCode(storeCode);
-      if (responseStoreCode) {
-        storeUser = responseStoreCode.id;
-      }
-
-      const responseTime = await getStoreById(
-        storeUser !== 0 ? storeUser : store[store.length - 1].value
-      );
-
-      const times = responseTime.operatingHours.includes(" - ")
-        ? responseTime.operatingHours.split(" - ")
-        : [responseTime.operatingHours, responseTime.operatingHours];
-
-      const [start, end] = times.map((time: string) => {
-        const [hours, minutes] = time.split(":").map(Number);
-        return hours * 60 + minutes;
-      });
-
-      let generatedTimes: string[] = [];
-      for (let time = start; time <= end; time += 30) {
-        const hours = Math.floor(time / 60)
-          .toString()
-          .padStart(2, "0");
-        const minutes = (time % 60).toString().padStart(2, "0");
-        generatedTimes.push(`${hours}:${minutes}`);
-      }
-      
-      const now = new Date();
-      const selectedDate = appointmentDate?.[0] ?? null;
-
-      if (selectedDate) {
-        const isToday =
-          selectedDate.getDate() === now.getDate() &&
-          selectedDate.getMonth() === now.getMonth() &&
-          selectedDate.getFullYear() === now.getFullYear();
-
-        if (isToday) {
-          const currentMinutes = now.getHours() * 60 + now.getMinutes();
-          generatedTimes = generatedTimes.filter((time) => {
-            const [h, m] = time.split(":").map(Number);
-            return h * 60 + m > currentMinutes;
-          });
+  useEffect(() => {
+    const fetchTime = async () => {
+      try {
+        const responseStoreCode = await getStoreByStoreCode(storeCode);
+        if (responseStoreCode) {
+          storeUser = responseStoreCode.id;
         }
+
+        const responseTime = await getStoreById(
+          storeUser !== 0 ? storeUser : store[store.length - 1].value
+        );
+
+        const times = responseTime.operatingHours.includes(" - ")
+          ? responseTime.operatingHours.split(" - ")
+          : [responseTime.operatingHours, responseTime.operatingHours];
+
+        const [start, end] = times.map((time: string) => {
+          const [hours, minutes] = time.split(":").map(Number);
+          return hours * 60 + minutes;
+        });
+
+        let generatedTimes: string[] = [];
+        for (let time = start; time <= end; time += 30) {
+          const hours = Math.floor(time / 60)
+            .toString()
+            .padStart(2, "0");
+          const minutes = (time % 60).toString().padStart(2, "0");
+          generatedTimes.push(`${hours}:${minutes}`);
+        }
+
+        const now = new Date();
+        const selectedDate = appointmentDate?.[0] ?? null;
+
+        if (selectedDate) {
+          const isToday =
+            selectedDate.getDate() === now.getDate() &&
+            selectedDate.getMonth() === now.getMonth() &&
+            selectedDate.getFullYear() === now.getFullYear();
+
+          if (isToday) {
+            const currentMinutes = now.getHours() * 60 + now.getMinutes();
+            generatedTimes = generatedTimes.filter((time) => {
+              const [h, m] = time.split(":").map(Number);
+              return h * 60 + m > currentMinutes;
+            });
+          }
+        }
+
+        setOptionsTime([
+          { value: 0, label: "Selecione..." },
+          ...generatedTimes.map((time, index) => ({
+            value: index + 1,
+            label: time,
+          })),
+        ]);
+      } catch (error) {
+        console.error("Erro ao buscar dados da store:", error);
       }
+    };
 
-      setOptionsTime([
-        { value: 0, label: "Selecione..." },
-        ...generatedTimes.map((time, index) => ({
-          value: index + 1,
-          label: time,
-        })),
-      ]);
-    } catch (error) {
-      console.error("Erro ao buscar dados da store:", error);
-    }
-  };
-
-  fetchTime();
-}, [storeUser, store, setOptionsTime, appointmentDate]);
-
-
+    fetchTime();
+  }, [storeUser, store, setOptionsTime, appointmentDate]);
 
   return {};
 };

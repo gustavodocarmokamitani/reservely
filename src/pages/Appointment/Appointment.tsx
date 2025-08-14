@@ -73,7 +73,8 @@ export function Appointment() {
     setDecodedData,
     setClosedDates,
     setOperatingDays,
-    appointmentDate
+    appointmentDate,
+    appointmentTime
   );
 
   const handleSubmit = async () => {
