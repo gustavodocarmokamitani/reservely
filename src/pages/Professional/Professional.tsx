@@ -107,18 +107,7 @@ function Professional() {
     decodedData,
     handleShowEditProfessionalModal
   );
-const options1: SelectOption[] = [
-  { value: 1, label: "Opção 1" },
-  { value: 2, label: "Opção 2" },
-  { value: 3, label: "Opção 3" },
-  { value: 4, label: "Opção 4" },
-  { value: 5, label: "Opção 5" },
-  { value: 6, label: "Opção 6" },
-  { value: 7, label: "Opção 7" },
-  { value: 8, label: "Opção 8" },
-  { value: 9, label: "Opção 9" },
-  { value: 10, label: "Opção 10" },
-];
+
   return (
     <>
       {isLoading && <Loading />}
@@ -235,7 +224,7 @@ const options1: SelectOption[] = [
                 <Select
                   setData={setEmployeeSelect}
                   value={employeeSelect}
-                  options={options1}
+                  options={options}
                   placeholder="Selecione um funcionário"
                 />
               </Col>
