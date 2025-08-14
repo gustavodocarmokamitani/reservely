@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { Appointment } from "../../models/Appointment";
 import { capitalizeFirstLetter } from "../../services/system/globalService";
 import * as S from "./TimeAppointment.styles";
@@ -21,7 +21,7 @@ export default function TimeAppointment({
   const closingDays = storeData?.closingDays;
   const operatingHours = storeData?.operatingHours;
   const operatingDays = storeData?.operatingDays;
-  const [slotsByDate, setSlotsByDate] = React.useState<
+  const [slotsByDate, setSlotsByDate] = useState<
     Record<string, string[]>
   >({});
 
@@ -39,7 +39,7 @@ export default function TimeAppointment({
 
   function generateNextDays(weeks = 4): Date[] {
     const days: Date[] = [];
-    const today = new Date(); 
+    const today = new Date();
     
     const mappedOperatingDays =
       operatingDays?.map((d) => normalizeDayName(d)) || [];
@@ -100,7 +100,7 @@ export default function TimeAppointment({
     operatingHours: string,
     appointments: Appointment[]
   ): Promise<string[]> {
-    const [start, end] = operatingHours.split(" - "); 
+    const [start, end] = operatingHours.split(" - ");
     
     const startHour = parseTimeToDate(start);
     var endHour = startHour;
@@ -143,7 +143,6 @@ export default function TimeAppointment({
   }
 
   const days = generateNextDays(4);
-
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const scroll = (direction: "left" | "right") => {
@@ -157,42 +156,51 @@ export default function TimeAppointment({
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function calculateAllSlots() {
       const result: Record<string, string[]> = {};
+      const todayFormatted = new Date().toISOString().split("T")[0];
+      const now = new Date();
 
       for (const day of days) {
         const formattedDate = day.toISOString().split("T")[0];
         const appointments = appointmentData?.[formattedDate] || [];
 
-        const slots = await generateTimeSlots(
+        let slots = await generateTimeSlots(
           operatingHours ? operatingHours : "",
           appointments
         );
 
+        // Se o dia processado for hoje, filtre os horários
+        if (formattedDate === todayFormatted) {
+          slots = slots.filter((slot) => {
+            const [hours, minutes] = slot.split(":").map(Number);
+            const slotDateTime = new Date();
+            slotDateTime.setHours(hours, minutes, 0, 0);
+
+            // Retorna apenas os horários que ainda não passaram
+            return slotDateTime > now;
+          });
+        }
         result[formattedDate] = slots;
       }
-
       setSlotsByDate(result);
     }
 
     calculateAllSlots();
-  }, [appointmentData]); 
+  }, [appointmentData, operatingHours]);
 
   return (
     <>
       <h2 className="mt-5 mb-3 px-3">Horários</h2>
       <S.TimeContainer>
         <S.LeftButton onClick={() => scroll("left")}>◀</S.LeftButton>
-
         <S.RightButton onClick={() => scroll("right")}>▶</S.RightButton>
-
         <S.TimeContent ref={scrollContainerRef}>
           {days.map((day) => {
             const formattedDate = day.toISOString().split("T")[0];
             const timeSlots = slotsByDate[formattedDate] || [];
-       
-            
+
             return (
               <S.HeaderColumns
                 key={formattedDate}
