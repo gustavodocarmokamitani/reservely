@@ -3,7 +3,7 @@ name: Build and Deploy Docker
 on:
   push:
     branches:
-      - main  # ou sua branch principal
+      - main
 
 jobs:
   build-and-deploy:
@@ -13,6 +13,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./  # ajuste se necessário
+
+      - name: Build React app
+        run: npm run build
+        working-directory: ./
+
       - name: Login no Docker Hub
         uses: docker/login-action@v2
         with:
@@ -20,12 +28,10 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
-        run: |
-          docker build -t gustavokamitani/reservely-frontend:latest .
+        run: docker build -t gustavokamitani/reservely-frontend:latest .
 
       - name: Push Docker image
-        run: |
-          docker push gustavokamitani/reservely-frontend:latest
+        run: docker push gustavokamitani/reservely-frontend:latest
 
       - name: Deploy to server via SSH
         uses: appleboy/ssh-action@v0.1.6
