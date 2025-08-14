@@ -23,7 +23,7 @@ jobs:
       # 3️⃣ Instala dependências e build do frontend
       - name: Instalar dependências e buildar
         run: |
-          cd frontend
+          cd reservely
           npm ci
           npm run build
           # Copia build para o contexto do Docker
