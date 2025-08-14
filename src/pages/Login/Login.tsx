@@ -37,7 +37,7 @@ const Login = () => {
             }}
           >
             <div className="text-center">
-              <TypingText numLetters={26}>Bem vindo 👋</TypingText>
+              <TypingText numLetters={26}>Bem vindo@@@@ 👋</TypingText>
             </div>
             <div className="text-center">
               <p className="pt-2">
