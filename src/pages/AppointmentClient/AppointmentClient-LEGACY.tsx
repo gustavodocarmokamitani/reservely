@@ -71,7 +71,8 @@ export function AppointmentClientLEGACY() {
     setIsLoading,
     setDecodedData,
     setClosedDates,
-    setOperatingDays
+    setOperatingDays,
+    appointmentDate
   );
 
   const handleSubmit = async () => {
