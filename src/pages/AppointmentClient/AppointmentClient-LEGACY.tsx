@@ -72,7 +72,8 @@ export function AppointmentClientLEGACY() {
     setDecodedData,
     setClosedDates,
     setOperatingDays,
-    appointmentDate
+    appointmentDate,
+    appointmentTime
   );
 
   const handleSubmit = async () => {
@@ -161,7 +162,7 @@ export function AppointmentClientLEGACY() {
               </S.AppointmentContent>
 
               <S.AppointmentContent>
-                <div style={{marginBottom: "25px"}}>
+                <div style={{ marginBottom: "25px" }}>
                   <Paragraph text="Horário" />
                   <Select
                     setData={setAppointmentTime}
