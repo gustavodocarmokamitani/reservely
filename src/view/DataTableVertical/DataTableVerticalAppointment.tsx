@@ -92,141 +92,162 @@ const DataTableVerticalAppointment: React.FC<
   return (
     <>
       <S.Container>
-        {visibleDataWithInfo.map((item) => (
-          <S.WrapperItem
-            key={item.id}
-            style={{
-              padding: "16px",
-              border: "1px solid #ddd",
-              borderRadius: "15px",
-              background: "#fff",
-              marginBottom: "50px",
-            }}
-          >
-            <Row style={{ width: "100%" }}>
-              <Col>
-                <Row
-                  style={{
-                    width: "100%",
-                    padding: "15px 0",
-                    borderBottom: "1px solid #eee",
-                  }}
-                >
-                  <Col xs={6} style={{ fontWeight: "600" }}>
-                    Serviço:{" "}
-                    <span style={{ fontWeight: "400" }}>
-                      {item.serviceName}
-                    </span>
-                  </Col>
-                  <Col xs={6} style={{ textAlign: "end" }}>
-                    <P.CheckboxContainer>
-                      <P.HiddenCheckbox
-                        onChange={() => handleCheckboxChange(item.id)}
-                      />
-                      <P.StyledCheckbox />
-                    </P.CheckboxContainer>
-                  </Col>
-                </Row>
-
-                <Row
-                  style={{
-                    width: "100%",
-                    padding: "15px 0",
-                    borderBottom: "1px solid #eee",
-                  }}
-                >
-                  <Col xs={3} style={{ fontWeight: "600" }}>
-                    Status:
-                  </Col>
-                  <Col xs={9} style={{ textAlign: "end" }}>
-                    <div
-                      style={{
-                        background:
-                          statusColors[item.appointmentStatusId] || "#28a745",
-                        color: "#fff",
-                        borderRadius: "15px",
-                        padding: "5px 12px",
-                        fontSize: "0.9rem",
-                        display: "inline-block",
-                      }}
-                    >
-                      {item.appointmentStatus}
-                    </div>
-                  </Col>
-                </Row>
-
-                <Row
-                  style={{
-                    width: "100%",
-                    padding: "15px 0",
-                    borderBottom: "1px solid #eee",
-                  }}
-                >
-                  <Col xs={5} style={{ fontWeight: "600" }}>
-                    Profissional:
-                  </Col>
-                  <Col xs={7} style={{ textAlign: "end" }}>
-                    <span>{item.employeeFullName}</span>
-                  </Col>
-                </Row>
-
-                <Row
-                  style={{
-                    width: "100%",
-                    padding: "15px 0",
-                    borderBottom: "1px solid #eee",
-                  }}
-                >
-                  <Col xs={5} style={{ fontWeight: "600" }}>
-                    Data:
-                  </Col>
-                  <Col xs={7} style={{ textAlign: "end" }}>
-                    <span>{formatDate(item.appointmentDate)}</span>
-                  </Col>
-                </Row>
-
-                <Row style={{ width: "100%", padding: "8px 0" }}>
-                  <Col xs={5} style={{ fontWeight: "600" }}>
-                    Horário:
-                  </Col>
-                  <Col xs={7} style={{ textAlign: "end" }}>
-                    <span>{item.appointmentTime}</span>
-                  </Col>
-                </Row>
-
-                <Row style={{ width: "100%", padding: "15px 0" }}>
-                  <Col
-                    xs={5}
+        {[...visibleDataWithInfo]
+          .sort(
+            (a, b) =>
+              new Date(b.appointmentDate).getTime() -
+              new Date(a.appointmentDate).getTime()
+          ) 
+          .map((item) => (
+            <S.WrapperItem
+              key={item.id}
+              style={{
+                padding: "16px",
+                border: "1px solid #ddd",
+                borderRadius: "15px",
+                background: "#fff",
+                marginBottom: "50px",
+              }}
+            >
+              <Row style={{ width: "100%" }}>
+                <Col>
+                  <Row
                     style={{
-                      fontWeight: "600",
                       width: "100%",
+                      padding: "15px 0",
+                      borderBottom: "1px solid #eee",
                     }}
                   >
-                    {item.employeeFullName !== "Removido" ? (
+                    <Col xs={6} style={{ fontWeight: "600" }}>
+                      Serviço:{" "}
+                      <span style={{ fontWeight: "400" }}>
+                        {item.serviceName}
+                      </span>
+                    </Col>
+                    <Col xs={6} style={{ textAlign: "end" }}>
+                      <P.CheckboxContainer>
+                        <P.HiddenCheckbox
+                          onChange={() => handleCheckboxChange(item.id)}
+                        />
+                        <P.StyledCheckbox />
+                      </P.CheckboxContainer>
+                    </Col>
+                  </Row>
+
+                  <Row
+                    style={{
+                      width: "100%",
+                      padding: "15px 0",
+                      borderBottom: "1px solid #eee",
+                    }}
+                  >
+                    <Col xs={5} style={{ fontWeight: "600" }}>
+                      Cliente:
+                    </Col>
+                    <Col xs={7} style={{ textAlign: "end" }}>
+                      <span>{item.clientId}</span>
+                    </Col>
+                  </Row>
+
+                  <Row
+                    style={{
+                      width: "100%",
+                      padding: "15px 0",
+                      borderBottom: "1px solid #eee",
+                    }}
+                  >
+                    <Col xs={3} style={{ fontWeight: "600" }}>
+                      Status:
+                    </Col>
+                    <Col xs={9} style={{ textAlign: "end" }}>
                       <div
                         style={{
-                          width: "100%",
-                          height: "50px",
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          background: "#2c2c2c",
+                          background:
+                            statusColors[item.appointmentStatusId] || "#28a745",
+                          color: "#fff",
                           borderRadius: "15px",
-                          cursor: "pointer",
+                          padding: "5px 12px",
+                          fontSize: "0.9rem",
+                          display: "inline-block",
                         }}
-                        onClick={() =>
-                          handleShowAppointmentStatusModal(true, item.id)
-                        }
                       >
-                        <span style={{ color: "white" }}>Alterar Status</span>
+                        {item.appointmentStatus}
                       </div>
-                    ) : null}
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-          </S.WrapperItem>
-        ))}
+                    </Col>
+                  </Row>
+
+                  <Row
+                    style={{
+                      width: "100%",
+                      padding: "15px 0",
+                      borderBottom: "1px solid #eee",
+                    }}
+                  >
+                    <Col xs={5} style={{ fontWeight: "600" }}>
+                      Profissional:
+                    </Col>
+                    <Col xs={7} style={{ textAlign: "end" }}>
+                      <span>{item.employeeFullName}</span>
+                    </Col>
+                  </Row>
+
+                  <Row
+                    style={{
+                      width: "100%",
+                      padding: "15px 0",
+                      borderBottom: "1px solid #eee",
+                    }}
+                  >
+                    <Col xs={5} style={{ fontWeight: "600" }}>
+                      Data:
+                    </Col>
+                    <Col xs={7} style={{ textAlign: "end" }}>
+                      <span>{formatDate(item.appointmentDate)}</span>
+                    </Col>
+                  </Row>
+
+                  <Row style={{ width: "100%", padding: "8px 0" }}>
+                    <Col xs={5} style={{ fontWeight: "600" }}>
+                      Horário:
+                    </Col>
+                    <Col xs={7} style={{ textAlign: "end" }}>
+                      <span>{item.appointmentTime}</span>
+                    </Col>
+                  </Row>
+
+                  <Row style={{ width: "100%", padding: "15px 0" }}>
+                    <Col
+                      xs={5}
+                      style={{
+                        fontWeight: "600",
+                        width: "100%",
+                      }}
+                    >
+                      {item.employeeFullName !== "Removido" ? (
+                        <div
+                          style={{
+                            width: "100%",
+                            height: "50px",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            background: "#2c2c2c",
+                            borderRadius: "15px",
+                            cursor: "pointer",
+                          }}
+                          onClick={() =>
+                            handleShowAppointmentStatusModal(true, item.id)
+                          }
+                        >
+                          <span style={{ color: "white" }}>Alterar Status</span>
+                        </div>
+                      ) : null}
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+            </S.WrapperItem>
+          ))}
 
         {visibleCount < data.length && (
           <div style={{ textAlign: "center", margin: "0px 0 30px 0" }}>
@@ -275,7 +296,7 @@ const DataTableVerticalAppointment: React.FC<
           {Array.isArray(statusAppointment) &&
             statusAppointment.some((item) => item.value === 4) && (
               <Row>
-                <S.AppointmentContent style={{ marginLeft: "20%" }}>
+                <S.AppointmentContent style={{ marginLeft: "0%" }}>
                   <SelectDataPicker
                     setDate={setAppointmentDate}
                     type="appointment"

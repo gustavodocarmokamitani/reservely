@@ -76,10 +76,16 @@ const Modal: React.FC<ModalProps> = ({
         {/* Conteúdo com scroll interno */}
         <div
           style={{
-            flex: 1, 
+            flex: 1,
           }}
         >
-          <div>
+          <div
+            style={
+              window.innerWidth <= 768
+                ? { maxHeight: "80vh", overflowY: "auto" }
+                : {}
+            }
+          >
             {children}
 
             {/* Botões dentro da área scrollável */}

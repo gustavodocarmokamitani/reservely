@@ -28,8 +28,8 @@ interface AppointmentDataTableProps {
   setAppointmentTime: React.Dispatch<React.SetStateAction<SelectOption[]>>;
   optionsTime: SelectOption[];
   setAppointmentDate: React.Dispatch<React.SetStateAction<Date[]>>;
-  closedDates: string[],
-  operatingDays: string[],
+  closedDates: string[];
+  operatingDays: string[];
 }
 
 const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
@@ -68,10 +68,7 @@ const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
           initialState={{
             pagination: { paginationModel: { pageSize: 13 } },
             sorting: {
-              sortModel: [
-                { field: "appointmentStatus", sort: "asc" },
-                { field: "appointmentDate", sort: "desc" },
-              ],
+              sortModel: [{ field: "appointmentDate", sort: "desc" }],
             },
           }}
           pageSizeOptions={[13, 20, 25]}
