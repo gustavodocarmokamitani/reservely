@@ -23,6 +23,8 @@ interface DataTableVerticalAppointmentProps {
   setAppointmentTime: React.Dispatch<React.SetStateAction<SelectOption[]>>;
   optionsTime: SelectOption[];
   setAppointmentDate: React.Dispatch<React.SetStateAction<Date[]>>;
+  closedDates: string[];
+  operatingDays: string[];
 }
 
 const DataTableVerticalAppointment: React.FC<
@@ -41,6 +43,8 @@ const DataTableVerticalAppointment: React.FC<
   setAppointmentTime,
   optionsTime,
   setAppointmentDate,
+  closedDates,
+  operatingDays,
 }) => {
   const [visibleCount, setVisibleCount] = useState(5);
   const [visibleDataWithInfo, setVisibleDataWithInfo] = useState<any[]>([]);
@@ -300,8 +304,8 @@ const DataTableVerticalAppointment: React.FC<
                   <SelectDataPicker
                     setDate={setAppointmentDate}
                     type="appointment"
-                    closedDates={[]}
-                    operatingDays={[]}
+                    closedDates={closedDates}
+                    operatingDays={operatingDays}
                   />
                 </S.AppointmentContent>
               </Row>

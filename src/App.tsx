@@ -1,17 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import {
   BrowserRouter as Router,
   Route,
   Routes,
-  Navigate,
-  useLocation,
+  Navigate, 
 } from "react-router-dom";
 
 import { AppContext } from "./context/AppContext";
 
 import "./App.css";
-
-import Navigation from "./view/Sidebar/Sidebar";
 
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
@@ -82,7 +79,7 @@ function App() {
             <Route
               path="/*"
               element={
-                // <ProtectedRoute>
+                <ProtectedRoute>
                   <React.Fragment>
                     <div style={{ flexGrow: 1, overflowX: "hidden" }}>
                       <ProtectedLayout>
@@ -131,7 +128,7 @@ function App() {
                       </ProtectedLayout>
                     </div>
                   </React.Fragment>
-                // </ProtectedRoute>
+                </ProtectedRoute>
               }
             />
           </Routes>

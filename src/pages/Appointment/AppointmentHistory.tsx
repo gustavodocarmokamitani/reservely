@@ -178,6 +178,8 @@ function AppointmentHistory() {
               setAppointmentTime,
               optionsTime,
               setAppointmentDate,
+              closedDates,
+              operatingDays,
             }}
           />
         </div>

@@ -135,7 +135,19 @@ const DataTableVerticalService: React.FC<DataTableVerticalServiceProps> = ({
                     Duração:
                   </Col>
                   <Col xs={7} style={{ textAlign: "end" }}>
-                    <span>{item.durationMinutes}</span>
+                    <span>
+                      {(() => {
+                        const hours = Math.floor(item.durationMinutes / 60);
+                        const minutes = item.durationMinutes % 60;
+                        if (hours > 0 && minutes === 0) {
+                          return `${hours}h`;
+                        }
+                        if (hours > 0 && minutes > 0) {
+                          return `${hours}h ${minutes}m`;
+                        } 
+                        return `${minutes}m`;
+                      })()}
+                    </span>
                   </Col>
                 </Row>
 

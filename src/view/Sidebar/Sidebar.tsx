@@ -196,11 +196,10 @@ const Navigation = () => {
           </div>
           <div
             style={{
-              display: "flex",
-              justifyContent: "start",
-              alignItems: "center",
-              height: "100vh",
-              width: "50px",
+              position: "fixed",
+              left: `${!sidebarCollapse ? "20rem" : "0"}`,
+              top: "40%",
+              zIndex: "9999", 
             }}
           >
             <div
