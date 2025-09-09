@@ -22,7 +22,7 @@ interface AppointmentDataTableProps {
   containerRef: React.RefObject<HTMLDivElement>;
   statusAppointment: SelectOption[];
   setStatusAppointment: React.Dispatch<React.SetStateAction<SelectOption[]>>;
-  handleSubmitAppointmentHistoryStatus: () => void;
+  handleSubmitAppointmentHistoryStatus: (statusType: number) => void;
   options: SelectOption[];
   appointmentTime: SelectOption[];
   setAppointmentTime: React.Dispatch<React.SetStateAction<SelectOption[]>>;
@@ -111,7 +111,7 @@ const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
         <Modal
           title="Alterar Status do Apontamento"
           subTitle="Gerencie o status associados a este apontamento."
-          handleSubmit={handleSubmitAppointmentHistoryStatus}
+          handleSubmit={() => handleSubmitAppointmentHistoryStatus(statusAppointment[0]?.value)}
           size="small"
           {...{ handleClose }}
         >

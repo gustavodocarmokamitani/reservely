@@ -24,9 +24,9 @@ export const useAction = (
 ) => {
   const { enqueueSnackbar } = useSnackbar();
 
-  const handleSubmitAppointmentHistoryStatus = async () => {
-    setIsLoading(true); 
-    
+  const handleSubmitAppointmentHistoryStatus = async (statusType: number) => {
+    setIsLoading(true);
+
     try {
       const response = await getAppointmentById(selectedAppointmentHistoryId);
       const formattedDate =
@@ -36,31 +36,37 @@ export const useAction = (
 
       const selectedDate = appointmentDate[appointmentDate.length - 1];
 
-      const responseStore = await getStoreById(storeUser);
-      if (responseStore.multipleAppointments === false) {
-        const isAvailable = await getValidateAppointment(
-          response.employeeId,
-          selectedDate,
-          appointmentTime[appointmentTime.length - 1].label,
-          response.serviceIds[0]
-        );
+      if (statusType === 4) {
+        const responseStore = await getStoreById(storeUser);
+        if (responseStore.multipleAppointments === false) {
+          const selectedTime = (appointmentTime.length > 0 && appointmentTime[appointmentTime.length - 1]?.label)
+            ? appointmentTime[appointmentTime.length - 1].label
+            : response.appointmentTime;
+          const isAvailable = await getValidateAppointment(
+            response.employeeId,
+            selectedDate,
+            selectedTime,
+            response.serviceIds[0]
+          );
 
-        if (!isAvailable) {
-          enqueueSnackbar("Este horário já está ocupado.", {
-            variant: "warning",
-          });
-          setIsLoading(false);
-          return;
+          if (!isAvailable) {
+            enqueueSnackbar("Este horário já está ocupado.", {
+              variant: "warning",
+            });
+            setIsLoading(false);
+            return;
+          }
         }
       }
 
       const mappedAppointment: Appointment =
-        statusAppointment[statusAppointment.length - 1].value !== 4
+        statusType !== 4
           ? {
               ...response,
               id: selectedAppointmentHistoryId,
-              appointmentStatusId:
-                statusAppointment[statusAppointment.length - 1].value,
+              appointmentDate: response.appointmentDate,
+              appointmentTime: response.appointmentTime,
+              appointmentStatusId: statusType,
               storeId: Number(storeUser),
             }
           : {
@@ -68,12 +74,14 @@ export const useAction = (
               id: selectedAppointmentHistoryId,
               appointmentDate: formattedDate,
               appointmentTime:
-                appointmentTime[appointmentTime.length - 1].label,
-              appointmentStatusId:
-                statusAppointment[statusAppointment.length - 1].value,
+                appointmentTime.length > 0 &&
+                appointmentTime[appointmentTime.length - 1]?.label
+                  ? appointmentTime[appointmentTime.length - 1].label
+                  : response.appointmentTime,
+              appointmentStatusId: statusType,
               storeId: Number(storeUser),
             };
-            
+
       const responseAppointment = await updateAppointment(
         mappedAppointment.id,
         mappedAppointment

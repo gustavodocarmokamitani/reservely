@@ -14,7 +14,7 @@ interface DataTableVerticalAppointmentProps {
   setSelectedAppointmentIds: React.Dispatch<React.SetStateAction<number[]>>;
   showModalAppointmentHistoryStatus: boolean;
   handleShowAppointmentStatusModal: (status: boolean, id: number) => void;
-  handleSubmitAppointmentHistoryStatus: () => void;
+  handleSubmitAppointmentHistoryStatus: (statusType: number) => void;
   handleClose: () => void;
   statusAppointment: SelectOption[];
   setStatusAppointment: React.Dispatch<React.SetStateAction<SelectOption[]>>;
@@ -101,7 +101,7 @@ const DataTableVerticalAppointment: React.FC<
             (a, b) =>
               new Date(b.appointmentDate).getTime() -
               new Date(a.appointmentDate).getTime()
-          ) 
+          )
           .map((item) => (
             <S.WrapperItem
               key={item.id}
@@ -266,7 +266,7 @@ const DataTableVerticalAppointment: React.FC<
         <Modal
           title="Alterar Status do Apontamento"
           subTitle="Gerencie o status associados a este apontamento."
-          handleSubmit={handleSubmitAppointmentHistoryStatus}
+          handleSubmit={() => handleSubmitAppointmentHistoryStatus(statusAppointment[0]?.value)}
           size="small"
           {...{ handleClose }}
         >
