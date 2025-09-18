@@ -58,10 +58,10 @@ export const useFetch = (
         setServiceData(allServiceData);
 
         const responseProfessional = await getUserByUseTypeStore(2, responseStore.id);
-
+        
         setProfessionalData(responseProfessional);
 
-        const responseAppointment = await getAppointmentByStoreId(1);
+        const responseAppointment = await getAppointmentByStoreId(responseStore.id);
 
         const appointmentByDate = responseAppointment.reduce(
           (acc: any, appointment: Appointment) => {
@@ -73,8 +73,8 @@ export const useFetch = (
             return acc;
           },
           {} as Record<string, typeof responseAppointment>
-        );
-
+        ); 
+        
         setAppointmentData(appointmentByDate);
       } catch (error) {
         console.error("Erro ao buscar dados da loja:", error);

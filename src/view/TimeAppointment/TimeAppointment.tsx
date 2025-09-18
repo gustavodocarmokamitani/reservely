@@ -23,8 +23,8 @@ export default function TimeAppointment({
   const operatingDays = storeData?.operatingDays;
   const [slotsByDate, setSlotsByDate] = useState<
     Record<string, string[]>
-  >({});
-
+  >({});  
+  
   const normalizeDayName = (day: string) => {
     day = day.toLowerCase();
     if (day.includes("terça")) return "terça";
@@ -165,7 +165,8 @@ export default function TimeAppointment({
       for (const day of days) {
         const formattedDate = day.toISOString().split("T")[0];
         const appointments = appointmentData?.[formattedDate] || [];
-
+        console.log(appointmentData);
+        
         let slots = await generateTimeSlots(
           operatingHours ? operatingHours : "",
           appointments
