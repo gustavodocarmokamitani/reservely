@@ -10,8 +10,11 @@ import {
   getAppointmentMostRequestedServices,
   getAppointmentRevenue,
   getAppointmentStatusCount,
+  GetEmployeePerformance,
 } from "../../services/AppointmentServices";
 import { formatYearMonth } from "../../services/system/globalService";
+import EmployeePerformanceBarChart from "../../components/Charts/EmployeePerformanceBarChart";
+import EmployeeMostServiceBarChart from "../../components/Charts/EmployeeMostServiceBarChart";
 
 const ChartDashboard: React.FC = () => {
   const storeUser = Number(localStorage.getItem("storeUser"));
@@ -34,6 +37,11 @@ const ChartDashboard: React.FC = () => {
   const [busyTimes, setBusyTimes] = useState<{
     labels: string[];
     data: number[];
+  }>();
+  const [employeePerformance, setEmployeePerformance] = useState<{
+    employeeNames: string[];
+    totalRevenue: number[];
+    totalServices: number[];
   }>();
 
   useEffect(() => {
@@ -92,6 +100,34 @@ const ChartDashboard: React.FC = () => {
           const data = Object.values(frequencyMap);
 
           setBusyTimes({ labels, data });
+        }
+        const employeeData = await GetEmployeePerformance(storeUser);
+        if (employeeData && Array.isArray(employeeData)) {
+          const names: string[] = [];
+          const revenues: number[] = [];
+          const servicesCompleted: number[] = [];
+
+          employeeData.forEach((employee: any) => {
+            names.push(employee.employeeName);
+ 
+            const totalRevenue = employee.monthlyPerformance.reduce(
+              (sum: number, month: any) => sum + month.totalRevenue,
+              0
+            );
+            revenues.push(totalRevenue);
+ 
+            const totalServices = employee.monthlyPerformance.reduce(
+              (sum: number, month: any) => sum + month.servicesCompleted,
+              0
+            );
+            servicesCompleted.push(totalServices);
+          });
+
+          setEmployeePerformance({
+            employeeNames: names,
+            totalRevenue: revenues,
+            totalServices: servicesCompleted, 
+          });
         }
       } catch (error) {
         console.error("Erro ao buscar dados de receita:", error);
@@ -153,6 +189,27 @@ const ChartDashboard: React.FC = () => {
             />
           </S.ChartDashboardContent>
         </S.ChartDashboardWrapper>
+
+          <S.ChartDashboardWrapper>
+          <h4>Receita Total por Funcionário</h4>
+          <S.ChartDashboardContent>
+            <EmployeePerformanceBarChart
+              data={employeePerformance?.totalRevenue || []}
+              labels={employeePerformance?.employeeNames || []}
+            />
+          </S.ChartDashboardContent>
+        </S.ChartDashboardWrapper>
+
+          <S.ChartDashboardWrapper>
+          <h4>Quantidade de Serviços Realizado por Funcionário</h4>
+          <S.ChartDashboardContent>
+            <EmployeeMostServiceBarChart
+              data={employeePerformance?.totalServices || []}
+              labels={employeePerformance?.employeeNames || []}
+            />
+          </S.ChartDashboardContent>
+        </S.ChartDashboardWrapper>
+
       </S.ChartDashboardContainer>
     </>
   );

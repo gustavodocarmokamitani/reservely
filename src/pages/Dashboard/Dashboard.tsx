@@ -81,7 +81,7 @@ const Dashboard = () => {
         <Col xs={12} xl={4}>
           <Card
             type="dashboard"
-            title="Valor Recebido"
+            title="Valor Total Recebido"
             value={formatCurrencyBRL(amountReceived)}
             icon="arrowUp"
           />

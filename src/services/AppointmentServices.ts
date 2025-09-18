@@ -21,15 +21,24 @@ export const getAppointmentById = async (id: number) => {
     }
 };
 
+export const GetEmployeePerformance = async (storeId: number) => {
+    try {
+        const response = await api.get(`Appointment/employee-performance/${storeId}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error getting Performance Employee:", error);
+        throw error;
+    }
+};
+
 export const getAppointmentRevenue = async (storeId: number) => {
     try {
         const response = await api.get(`Appointment/revenue/${storeId}`);
         return response.data;
     } catch (error) {
-        console.error("Error getting Appointment:", error);
+        console.error("Error getting Appointment Revenue:", error);
         throw error;
     }
-
 };
 
 export const getAppointmentStatusCount = async (storeId: number) => {
@@ -37,7 +46,7 @@ export const getAppointmentStatusCount = async (storeId: number) => {
         const response = await api.get(`Appointment/status-count/${storeId}`);
         return response.data;
     } catch (error) {
-        console.error("Error getting Appointment:", error);
+        console.error("Error getting Appointment Status Count:", error);
         throw error;
     }
 };
@@ -47,7 +56,7 @@ export const getAppointmentMostRequestedServices = async (storeId: number) => {
         const response = await api.get(`Appointment/most-requested-services/${storeId}`);
         return response.data;
     } catch (error) {
-        console.error("Error getting Appointment:", error);
+        console.error("Error getting Appointment Most Requested Services:", error);
         throw error;
     }
 };
@@ -57,7 +66,7 @@ export const getAppointmentByDay = async (storeId: number) => {
         const response = await api.get(`Appointment/appointments-by-day/${storeId}`);
         return response.data;
     } catch (error) {
-        console.error("Error getting Appointment:", error);
+        console.error("Error getting Appointment by Day:", error);
         throw error;
     }
 };
@@ -67,7 +76,7 @@ export const getAppointmentByEmployeeId = async (id: number) => {
         const response = await api.get(`Appointment/employee/${id}`);
         return response.data;
     } catch (error) {
-        console.error("Error getting Appointment:", error);
+        console.error("Error getting Appointment by Employee ID:", error);
         return;
     }
 };
@@ -77,7 +86,7 @@ export const getAppointmentByStoreId = async (id: number) => {
         const response = await api.get(`Appointment/store/${id}`);
         return response.data;
     } catch (error) {
-        console.error("Error getting Appointment:", error);
+        console.error("Error getting Appointment by Store ID:", error);
         return;
     }
 };
@@ -89,7 +98,7 @@ export const getValidateAppointment = async (
     serviceIds: string
 ): Promise<boolean | undefined> => {
     try {
-        const formattedDate = appointmentDate.toISOString().split("T")[0]; // Converte para "YYYY-MM-DD"
+        const formattedDate = appointmentDate.toISOString().split("T")[0];  
         
         const response = await api.get(`Appointment/validate-appointment`, {
             params: {
