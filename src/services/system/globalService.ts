@@ -8,9 +8,8 @@ export const formatYearMonth = (data: string) => {
     "Jan", "Fev", "Mar", "Abr", "Mai", "Jun",
     "Jul", "Ago", "Set", "Out", "Nov", "Dez"
   ];
-  
-  const [mes] = data.split("-");
-  return `${mesesPt[parseInt(mes, 10) - 1]}`; 
+  const [year, month] = data.split("-");
+  return `${mesesPt[parseInt(month, 10) - 1]}/${year}`;
 };
 
 export const formatCurrencyBRL = (valor: number): string => {

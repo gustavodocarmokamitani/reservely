@@ -55,7 +55,7 @@ export const useFetch = (
     setAmountReceived,
     setAppointmentCount,
     setAppointmentPercentageCanceled,
-  ]); // ✅ Dependências corretas
+  ]); 
 
   useEffect(() => {
     if (!fetchDataRef.current) {

@@ -10,7 +10,6 @@ export const ChartDashboardContainer = styled.div`
 
 export const ChartDashboardWrapper = styled.div`
   width: 49.5%;
-  width: 400px;
   padding: 25px;
   margin: 15px 0px;
   border: 1px solid rgba(0, 0, 0, 0.25);
