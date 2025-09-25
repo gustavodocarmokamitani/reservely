@@ -44,6 +44,6 @@ jobs:
             docker stop frontend || true
             docker rm frontend || true
             docker run -d --name frontend -p 3000:80 \
-            -e VITE_API_URL=${{ secrets.VITE_API_URL }} \
+            -e VITE_GOOGLE_CLIENT_ID=${{ secrets.VITE_GOOGLE_CLIENT_ID }} \
             gustavokamitani/reservely-frontend:latest
             docker network connect reservely-net frontend
