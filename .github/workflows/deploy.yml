@@ -39,11 +39,9 @@ jobs:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
-         script: |
+          script: |
             docker pull gustavokamitani/reservely-frontend:latest
             docker stop frontend || true
             docker rm frontend || true
-            docker run -d --name frontend -p 3000:80 \
-            -e VITE_GOOGLE_CLIENT_ID=${{ secrets.VITE_GOOGLE_CLIENT_ID }} \
-            gustavokamitani/reservely-frontend:latest
+            docker run -d --name frontend -p 3000:80 -e VITE_GOOGLE_CLIENT_ID=${{ secrets.VITE_GOOGLE_CLIENT_ID }} gustavokamitani/reservely-frontend:latest
             docker network connect reservely-net frontend
