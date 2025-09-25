@@ -1,4 +1,6 @@
 import React, { createContext, useState, ReactNode, useEffect } from "react";
+import { DecodedToken } from "../models/DecodedToken";
+import { decodeToken } from "../services/AuthService";
 
 export interface User {
   id: number;
@@ -51,6 +53,7 @@ interface AppContextType {
   setAuthToken: React.Dispatch<React.SetStateAction<string | null>>;
   login: (token: string) => void;
   logout: () => void;
+  decodedToken: DecodedToken | null;
 }
 
 export const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -69,6 +72,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     localStorage.getItem("authToken")
   );
 
+  const [decodedToken, setDecodedToken] = useState<DecodedToken | null>(null);
+
   const login = (token: string) => {
     setAuthToken(token);
     localStorage.setItem("authToken", token);
@@ -76,15 +81,24 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
 
   const logout = () => {
     setAuthToken(null);
+    setDecodedToken(null);
     localStorage.removeItem("authToken");
   };
 
   useEffect(() => {
-    const tokenFromStorage = localStorage.getItem("authToken");
-    if (tokenFromStorage) {
-      setAuthToken(tokenFromStorage);
+    if (authToken) {
+      (async () => {
+        try {
+          const decoded = await decodeToken(authToken);  
+          setDecodedToken(decoded !== null ? decoded : null);
+        } catch {
+          setDecodedToken(null);
+        }
+      })();
+    } else {
+      setDecodedToken(null);
     }
-  }, []);
+  }, [authToken]);
 
   return (
     <AppContext.Provider
@@ -99,6 +113,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
         setAuthToken,
         login,
         logout,
+        decodedToken,
       }}
     >
       {children}

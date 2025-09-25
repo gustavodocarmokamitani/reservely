@@ -164,8 +164,7 @@ export default function TimeAppointment({
 
       for (const day of days) {
         const formattedDate = day.toISOString().split("T")[0];
-        const appointments = appointmentData?.[formattedDate] || [];
-        console.log(appointmentData);
+        const appointments = appointmentData?.[formattedDate] || []; 
         
         let slots = await generateTimeSlots(
           operatingHours ? operatingHours : "",

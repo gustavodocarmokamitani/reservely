@@ -1,9 +1,23 @@
+
+// React & Hooks
 import { useContext, useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+
+// Router
+import { useNavigate, Link, useLocation } from "react-router-dom";
+
+// Context
 import { AppContext } from "../../context/AppContext";
+
+// Bootstrap
 import { Col, Row } from "react-bootstrap";
+
+// Styles
 import * as S from "./Sidebar.styles";
+
+// Components
 import OptionNavigation from "../../components/OptionNavigation/OptionNavigation";
+
+// Assets
 import store from "../../assets/store.svg";
 import dashboard from "../../assets/dashboard.svg";
 import service from "../../assets/service.svg";
@@ -13,10 +27,14 @@ import calendar from "../../assets/calendar.svg";
 import professionalCheck from "../../assets/professionalCheck.svg";
 import professionalRegister from "../../assets/professionalRegister.svg";
 import appointmentHistory from "../../assets/apppointmentHistory.svg";
+import subscript from "../../assets/subscript.svg";
 import exit from "../../assets/exit.svg";
 import arrow from "../../assets/arrow.svg";
-import { Link, useLocation } from "react-router-dom";
+
+// Models
 import { DecodedToken } from "../../models/DecodedToken";
+
+// Services
 import { decodeToken } from "../../services/AuthService";
 
 const Navigation = () => {
@@ -51,6 +69,7 @@ const Navigation = () => {
   const menuOptions =
     decodedData?.userRole !== "Client"
       ? [
+          { path: "/subscription", icon: subscript, text: "Assinatura" },
           { path: "/appointment", icon: chamada, text: "Agendamento" },
           {
             path: "/history-appointment",
@@ -199,7 +218,7 @@ const Navigation = () => {
               position: "fixed",
               left: `${!sidebarCollapse ? "20rem" : "0"}`,
               top: "40%",
-              zIndex: "9999", 
+              zIndex: "9999",
             }}
           >
             <div

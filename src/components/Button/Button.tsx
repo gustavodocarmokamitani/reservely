@@ -26,7 +26,8 @@ interface ButtonProps {
   type: "button" | "submit" | "reset";
   onClick?: () => void;
   disabled?: boolean;
-  $noIcon?: boolean;
+  $noIcon?: boolean; 
+  $isUpgrade?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -49,6 +50,7 @@ const Button: React.FC<ButtonProps> = ({
   type,
   $noIcon,
   onClick,
+  $isUpgrade,
 }) => {
   let icon = null;
   let buttonText = "";
@@ -124,6 +126,8 @@ const Button: React.FC<ButtonProps> = ({
     buttonText = "Escolher";
   } else if ($isAppointment) {
     buttonText = "Agendar";
+  } else if ($isUpgrade) {
+    buttonText = "Upgrade";
   } else if ($isGoogle) {
     icon = (
       <img
@@ -154,6 +158,7 @@ const Button: React.FC<ButtonProps> = ({
       $isRescheduling={$isRescheduling}
       $isRating={$isRating}
       $isAppointment={$isAppointment}
+      $isUpgrade={$isUpgrade}
       style={{ margin: "0 1rem" }}
       onClick={onClick}
     >

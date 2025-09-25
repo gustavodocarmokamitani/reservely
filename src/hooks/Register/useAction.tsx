@@ -2,7 +2,8 @@ import { useSnackbar } from "notistack";
 import {
   checkEmail,
   registerUser,
-  registerUserWithGoogle,
+  registerUserClientWithGoogle,
+  registerUserStoreWithGoogle,
 } from "../../services/AuthService";
 import { createStore, deleteStore } from "../../services/StoreServices";
 
@@ -21,14 +22,28 @@ export const useAction = (
 ) => {
   const { enqueueSnackbar } = useSnackbar();
 
-  const handleRegisterWithGoogle = async (credentialResponse: any) => {
+  const handleRegisterStoreWithGoogle = async (credentialResponse: any) => { 
+    
     const googleToken = credentialResponse.credential;
 
     if (googleToken) {
-      const response = await registerUserWithGoogle(googleToken);
+      const response = await registerUserStoreWithGoogle(googleToken);
 
       if (response) {
-        window.location.href = "/register-google";
+        window.location.href = "/login";
+      }
+    }
+  };
+
+  const handleRegisterClientWithGoogle = async (credentialResponse: any) => { 
+    
+    const googleToken = credentialResponse.credential;
+
+    if (googleToken) {
+      const response = await registerUserClientWithGoogle(googleToken);
+
+      if (response) {
+        window.location.href = "/login";
       }
     }
   };
@@ -182,7 +197,8 @@ export const useAction = (
   };
 
   return {
-    handleRegisterWithGoogle,
+    handleRegisterStoreWithGoogle,
+    handleRegisterClientWithGoogle,
     handleRegisterStore,
     handleRegisterClient,
     handleNavigationHome,

@@ -4,10 +4,11 @@ import Loading from "../../components/Loading/loading";
 import Input from "../../components/Input/Input";
 import { useStateCustom } from "../../hooks/Login/useStateCustom";
 import { useAction } from "../../hooks/Login/useAction";
-import { ContainerRegister } from "../Styles/_Page.styles";
+import { ContainerRegister, ParagraphThin } from "../Styles/_Page.styles";
 import * as S from "./Login.styles";
 import { TypingText } from "../Styles/animationTyping.styles";
 import { useParams } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
   const { storeCodeParams } = useParams();
@@ -16,7 +17,12 @@ const Login = () => {
   const { email, setEmail, password, setPassword, isLoading, setIsLoading } =
     useStateCustom();
 
-  const { handleLogin } = useAction(setIsLoading, email, password, storeCode);
+  const { handleLoginWithGoogle, handleLogin } = useAction(
+    setIsLoading,
+    email,
+    password,
+    storeCode
+  );
 
   return (
     <>
@@ -25,7 +31,7 @@ const Login = () => {
         <Row
           style={{
             justifyContent: "center",
-            paddingTop: `${window.innerWidth < 600 ? 100 : 180}px`,
+            paddingTop: `${window.innerWidth < 600 ? 100 : 130}px`,
           }}
         >
           <Col
@@ -67,25 +73,25 @@ const Login = () => {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-              <Row className="text-center pt-4">
+              <Row className="text-center pt-2">
                 <Col>
-                  <p className="mb-4">
+                  <p className="mb-3">
                     <a href="/reset-password">Esqueci minha senha</a>
                   </p>
                   <Button $isLogin type="submit" disabled={isLoading} />
-                  <p className="mt-5">
+                  <div className="my-3">
+                    <GoogleLogin
+                      onSuccess={handleLoginWithGoogle}
+                      text="continue_with"
+                    />
+                  </div>
+                  <p className="mt-3">
                     Não tem uma conta? <a href="/">Inscreva-se</a>
                   </p>
-                      <p className="mt-2">
-                    Não recebeu e-mail de confirmação ou token expirou? <a href="/resend-email">Clique aqui para reenviar o e-mail.</a>
+                  <p className="mt-2">
+                    Não recebeu e-mail de confirmação ou token expirou?{" "}
+                    <a href="/resend-email">Clique aqui para reenviar.</a>
                   </p>
-
-                  {/* <ParagraphThin>Or login with</ParagraphThin>
-                <Button $isGoogle type="button" />
-                <ParagraphThin className="mt-4 mb-4">
-                  Having difficulty logging in?{" "}
-                  <a href="/help-login">Get help</a>
-                </ParagraphThin> */}
                 </Col>
               </Row>
             </S.FormContainer>

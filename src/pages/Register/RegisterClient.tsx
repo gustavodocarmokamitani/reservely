@@ -22,7 +22,7 @@ const RegisterClient = () => {
   };
 
   const {
-    handleRegisterWithGoogle,
+    handleRegisterClientWithGoogle,
     handleRegisterClient,
     handleNavigationHome,
   } = useAction(setIsLoading, formData, storeCode);
@@ -34,7 +34,7 @@ const RegisterClient = () => {
         <Row
           style={{
             justifyContent: "center",
-            paddingTop: `${window.innerWidth < 1281 ? 50 : 180}px`,
+            paddingTop: `${window.innerWidth < 1281 ? 50 : 100}px`,
           }}
         >
           <Col
@@ -141,7 +141,7 @@ const RegisterClient = () => {
             </S.ContainerRegister>
 
             <Row className="text-center" style={{ padding: "15px 0 50px 0" }}>
-              <Col style={{ margin: "25px 0" }}>
+              <Col className="my-2">
                 <div style={{ marginBottom: "1rem" }}>
                   <Button
                     $isRegisterClient
@@ -157,13 +157,15 @@ const RegisterClient = () => {
                   onClick={handleNavigationHome}
                   disabled={isLoading}
                 />
-                <p className="mt-5 mb-4">
+                <div className="my-4">
+                  <GoogleLogin
+                    text="signup_with"
+                    onSuccess={handleRegisterClientWithGoogle}
+                  />
+                </div>
+                <p>
                   Você já possui uma conta? <a href="/login">Login</a>
                 </p>
-                {/* <ParagraphThin>Or sign up with</ParagraphThin>
-                <GoogleLogin
-                  onSuccess={handleRegisterWithGoogle}
-                /> */}
               </Col>
             </Row>
           </Col>

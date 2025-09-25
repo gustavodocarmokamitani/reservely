@@ -27,7 +27,7 @@ const Home = () => {
     } else if (registerStore) {
       navigate("/register-store");
     } else if (registerClient) {
-        if (storeCode !== "" && storeCode.includes("_")) {
+      if (storeCode !== "" && storeCode.includes("_")) {
         navigate(`/register-client/${storeCode}`);
       } else {
         navigate("/register-client/:");
@@ -50,11 +50,13 @@ const Home = () => {
           />
         </ContentButton>
         <ContentButton>
-          <Button
-            $isRegisterStore
-            type="button"
-            onClick={() => handleButtonClick(false, true, false)}
-          />
+          {storeCode === "" ? (
+            <Button
+              $isRegisterStore
+              type="button"
+              onClick={() => handleButtonClick(false, true, false)}
+            />
+          ) : null}
 
           <Button
             $isRegisterClient

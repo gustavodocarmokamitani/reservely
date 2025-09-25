@@ -19,7 +19,7 @@ const RegisterStore = () => {
   };
 
   const {
-    handleRegisterWithGoogle,
+    handleRegisterStoreWithGoogle,
     handleRegisterStore,
     handleNavigationHome,
   } = useAction(setIsLoading, formData, ":");
@@ -31,7 +31,7 @@ const RegisterStore = () => {
         <Row
           style={{
             justifyContent: "center",
-            paddingTop: `${window.innerWidth < 1281 ? 50 : 180}px`,
+            paddingTop: `${window.innerWidth < 1281 ? 50 : 100}px`,
           }}
         >
           <Col
@@ -173,14 +173,15 @@ const RegisterStore = () => {
                   onClick={handleNavigationHome}
                   disabled={isLoading}
                 />
+                <div className="my-4">
+                  <GoogleLogin
+                    text="signup_with"
+                    onSuccess={handleRegisterStoreWithGoogle}
+                  />
+                </div>
                 <p className="mt-5 mb-4">
                   Você já possui uma conta? <a href="/login">Login</a>
                 </p>
-                {/* <ParagraphThin>Or sign up with</ParagraphThin>
-                <GoogleLogin
-                  onSuccess={handleRegisterWithGoogle}
-                  
-                /> */}
               </Col>
             </Row>
           </Col>

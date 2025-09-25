@@ -2,13 +2,45 @@ import api from "../axiosInstance";
 import { RegisterData } from "../models/RegisterData";
 import { LoginData } from "../models/LoginData";
 import { RegisterEmployee } from "../models/RegisterEmployee";
-import { GoogleLoginRequest } from "../models/GoogleLoginRequest";
+import {
+  GoogleLoginRequest,
+  LoginResponse,
+} from "../models/GoogleLoginRequest";
 
-export const registerUserWithGoogle = async (
+export const loginWithGoogle = async (
+  credential: string
+): Promise<LoginResponse> => {
+  try {
+    const response = await api.post<LoginResponse>("/auth/login-with-google", {
+      credential,
+    });
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const registerUserStoreWithGoogle = async (
   credential: GoogleLoginRequest
 ) => {
   try {
-    const response = await api.post("/auth/register-with-google", credential);
+    const response = await api.post("/auth/register-store-with-google", {
+      credential,
+    });
+    return response;
+  } catch (error) {
+    console.error("Error registering user:", error);
+    throw new Error("Ocorreu um erro ao registrar o profissional.");
+  }
+};
+export const registerUserClientWithGoogle = async (
+  credential: GoogleLoginRequest
+) => {
+  try {
+    const response = await api.post("/auth/register-client-with-google", {
+      credential,
+    });
     return response;
   } catch (error) {
     console.error("Error registering user:", error);
@@ -94,6 +126,16 @@ export const decodeToken = async (token: string) => {
     return response.data;
   } catch (error) {
     console.error("Error decoding token:", error);
+    throw error;
+  }
+};
+
+export const refreshToken = async (token: string) => {
+  try {
+    const response = await api.post("/auth/refresh-token", { token: token });
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao renovar o token:", error);
     throw error;
   }
 };
