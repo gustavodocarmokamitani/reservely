@@ -173,7 +173,10 @@ const RegisterStore = () => {
                   onClick={handleNavigationHome}
                   disabled={isLoading}
                 />
-                <div className="my-4">
+                <div
+                  className="my-3"
+                  style={{ display: "flex", justifyContent: "center" }}
+                >
                   <GoogleLogin
                     text="signup_with"
                     onSuccess={handleRegisterStoreWithGoogle}

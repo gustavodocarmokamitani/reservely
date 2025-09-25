@@ -79,7 +79,10 @@ const Login = () => {
                     <a href="/reset-password">Esqueci minha senha</a>
                   </p>
                   <Button $isLogin type="submit" disabled={isLoading} />
-                  <div className="my-3">
+                  <div
+                    className="my-3"
+                    style={{ display: "flex", justifyContent: "center" }}
+                  >
                     <GoogleLogin
                       onSuccess={handleLoginWithGoogle}
                       text="continue_with"
