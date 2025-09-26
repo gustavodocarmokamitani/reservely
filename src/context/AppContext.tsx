@@ -54,6 +54,7 @@ interface AppContextType {
   login: (token: string) => void;
   logout: () => void;
   decodedToken: DecodedToken | null;
+  isLoading: boolean;
 }
 
 export const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -67,7 +68,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [employeeContext, setEmployeeContext] = useState<Employee | null>(null);
   const [userEmployeeContext, setUserEmployeeContext] =
     useState<UserEmployee | null>(null);
-
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [authToken, setAuthToken] = useState<string | null>(
     localStorage.getItem("authToken")
   );
@@ -86,19 +87,47 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   };
 
   useEffect(() => {
-    if (authToken) {
+    const tokenFromStorage = localStorage.getItem("authToken");
+
+    const initializeAuth = async () => {
+      if (tokenFromStorage) {
+        setAuthToken(tokenFromStorage); // Define o token no estado
+        try {
+          const decoded = await decodeToken(tokenFromStorage);
+          setDecodedToken(decoded !== null ? decoded : null);
+        } catch {
+          // Se a decodificação falhar (token inválido/expirado), limpa o token
+          setAuthToken(null);
+          localStorage.removeItem("authToken");
+          setDecodedToken(null);
+        }
+      }
+      setIsLoading(false); // 🚨 Define como FALSE após toda a inicialização
+    };
+
+    initializeAuth();
+  }, []); // Executa apenas na montagem
+
+  // SEGUNDO useEffect (manter o seu original para decodificar NOVOS tokens)
+  useEffect(() => {
+    // Não precisa verificar o `authToken` aqui, pois o token já foi definido.
+    // Esta função é acionada apenas quando o `authToken` muda *após* a inicialização (ex: login/logout).
+    // Opcional: Você pode manter uma versão simplificada se `decodeToken` não for assíncrono ou se for rápido.
+    // Já que você usa `await decodeToken`, vamos refatorar a sua versão para ser acionada em mudanças.
+    if (authToken && !isLoading) {
+      // Decodifica quando o token muda E não estamos na inicialização
       (async () => {
         try {
-          const decoded = await decodeToken(authToken);  
+          const decoded = await decodeToken(authToken);
           setDecodedToken(decoded !== null ? decoded : null);
         } catch {
           setDecodedToken(null);
         }
       })();
-    } else {
+    } else if (!authToken) {
       setDecodedToken(null);
     }
-  }, [authToken]);
+  }, [authToken, isLoading]);
 
   return (
     <AppContext.Provider
@@ -114,6 +143,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
         login,
         logout,
         decodedToken,
+        isLoading
       }}
     >
       {children}

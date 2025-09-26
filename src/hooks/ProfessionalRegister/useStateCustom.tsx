@@ -24,6 +24,7 @@ export const useStateCustom = () => {
   const [selectedEmployeeId, setSelectedEmployeeId] = useState<number>();
   const [combinedData, setCombinedData] = useState<CombinedData | null>(null);
   const [loading, setLoading] = useState(false);
+  const [blockAddUser, setBlockAddUser] = useState(false);
   const [columnWidth, setColumnWidth] = useState(250);
   const [formValuesProfessionalRegister, setFormValuesProfessionalRegister] =
     useState<UserEmployee>({
@@ -64,6 +65,8 @@ export const useStateCustom = () => {
     setColumnWidth,
     isLoading,
     setIsLoading,
-    size
+    size,
+    setBlockAddUser,
+    blockAddUser,
   };
 };

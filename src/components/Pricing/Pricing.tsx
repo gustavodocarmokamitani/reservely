@@ -53,7 +53,7 @@ export default function Pricing({
           marginBottom: "3rem",
           color: "white",
           backgroundColor: "#2c2c2c",
-          padding: "0.5rem 5rem",
+          padding: "0.5rem 1rem",
           borderRadius: "9999px",
           boxShadow: "0 2px 8px rgba(0,0,0,0.9)",
           cursor: "pointer",

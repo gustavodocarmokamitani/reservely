@@ -44,13 +44,17 @@ export const SubTitle = styled.p<{ $isPopular: boolean }>`
 `;
 
 export const PricingContainer = styled(motion.div)`
-  display: grid;
+  /* display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  justify-items: center; */
+  display: flex;
+  justify-content: center;
   gap: 2rem;
   padding: 0 4rem;
   margin-bottom: 8rem;
   @media (max-width: ${MOBILE_BREAKPOINT}) {
-    grid-template-columns: repeat(1, minmax(0, 1fr));
+    /* grid-template-columns: repeat(1, minmax(0, 1fr)); */
+    flex-direction: column;
     gap: 1.5rem;
     padding: 0 1rem;
   }

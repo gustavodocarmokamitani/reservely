@@ -6,8 +6,8 @@ import { decodeToken, refreshToken } from "../../services/AuthService";
 import { DecodedToken } from "../../models/DecodedToken";
 import { getPaymentLink } from "../../services/MercadoPagoService";
 import Button from "../../components/Button/Button";
-import Pricing from "../../components/Pricing/Pricing";  
-import Plan from "../../components/Plan/Plan"; 
+import Pricing from "../../components/Pricing/Pricing";
+import Plan from "../../components/Plan/Plan";
 
 function Subscription() {
   const [decodedData, setDecodedData] = useState<DecodedToken | null>(null);
@@ -48,7 +48,7 @@ function Subscription() {
     try {
       const initPoint = await getPaymentLink(planId);
       if (initPoint) {
-        window.location.href = initPoint;
+        window.open(initPoint, "_blank");
       }
     } catch (error) {
       console.error("Erro ao iniciar a assinatura:", error);
@@ -59,7 +59,7 @@ function Subscription() {
     try {
       const initPoint = await getPaymentLink(planId);
       if (initPoint) {
-        window.location.href = initPoint;
+        window.open(initPoint, "_blank");
       }
     } catch (error) {
       console.error("Erro ao iniciar a assinatura:", error);
@@ -67,8 +67,6 @@ function Subscription() {
   };
 
   const isSubscriptionActive = decodedData?.isSubscriptionActive === "True";
-
-  console.log(decodedData);
 
   const plansData = {
     monthly: [
@@ -139,7 +137,7 @@ function Subscription() {
         price: "1.648,90",
         per: "/ano",
         planId: 6,
-        discountedPrice: "137,4", 
+        discountedPrice: "137,4",
         features: [
           "Tudo do Profissional",
           "Funcionários ilimitados",

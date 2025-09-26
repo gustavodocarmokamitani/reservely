@@ -14,7 +14,6 @@ import Input from "../../components/Input/Input";
 import { capitalizeFirstLetter } from "../../services/system/globalService";
 import Loading from "../../components/Loading/loading";
 
-import homeClient from "../../assets/homeClient.svg";
 import UserMenu from "../../components/UserMenu/UserMenu";
 import DataTableVerticalProfessionalRegister from "../../view/DataTableVertical/DataTableVerticalProfessionalRegister";
 
@@ -39,6 +38,8 @@ function ProfessionalRegister() {
     setColumnWidth,
     isLoading,
     setIsLoading,
+    setBlockAddUser,
+    blockAddUser,
   } = useStateCustom();
 
   const { fetchData, fetchLoadEditFormValues } = useFetch(
@@ -47,7 +48,9 @@ function ProfessionalRegister() {
     setFormValuesProfessionalRegister,
     setRows,
     setDecodedData,
-    setIsLoading
+    setIsLoading,
+    decodedData,
+    setBlockAddUser
   );
 
   const {
@@ -99,7 +102,7 @@ function ProfessionalRegister() {
             </P.SubTitle>
           </P.ContentHeader>
           <P.ContentHeaderImg align="end">
-            {decodedData?.userRole === "Admin" && (
+            {decodedData?.userRole === "Admin" && !blockAddUser && (
               <div
                 style={{
                   display: "flex",

@@ -1,21 +1,42 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useContext, useEffect, useRef } from "react";
 import {
   getAppointmentByStoreId,
   getAppointmentRevenue,
 } from "../../services/AppointmentServices";
+import { AppContext } from "../../context/AppContext";
+import { decodeToken } from "../../services/AuthService";
+import { DecodedToken } from "../../models/DecodedToken";
 
 export const useFetch = (
   storeUser: number,
   setAmountReceived: React.Dispatch<React.SetStateAction<number>>,
   setAppointmentCount: React.Dispatch<React.SetStateAction<number>>,
+  setDecodedData: React.Dispatch<React.SetStateAction<DecodedToken | null>>,
   setAppointmentPercentageCanceled: React.Dispatch<React.SetStateAction<number>>
 ) => {
+  const context = useContext(AppContext);
+  const authToken = context?.authToken;
+
+  useEffect(() => {
+    const fetchDecodedToken = async () => {
+      if (authToken) {
+        try {
+          const decoded = await decodeToken(authToken);
+          setDecodedData(decoded);
+        } catch (error) {
+          console.error("Erro ao decodificar o token:", error);
+        }
+      }
+    };
+    fetchDecodedToken();
+  }, [authToken]);
+
   const fetchDataRef = useRef(false);
 
   const fetchData = useCallback(async () => {
     try {
       const responseRevenue = await getAppointmentRevenue(storeUser);
-      
+
       if (!Array.isArray(responseRevenue)) return;
 
       const totalRevenue = responseRevenue.reduce(
@@ -55,7 +76,7 @@ export const useFetch = (
     setAmountReceived,
     setAppointmentCount,
     setAppointmentPercentageCanceled,
-  ]); 
+  ]);
 
   useEffect(() => {
     if (!fetchDataRef.current) {

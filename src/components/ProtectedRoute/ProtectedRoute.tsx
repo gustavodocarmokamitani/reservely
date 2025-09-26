@@ -13,6 +13,10 @@ export const ProtectedRoute = ({
 }: ProtectedRouteProps) => {
   const context = useContext(AppContext);
 
+  if (context?.isLoading || !context) { 
+    return null;
+  }
+  
   // Verifica se o usuário está autenticado
   if (!context?.authToken) {
     return <Navigate to="/login" />;

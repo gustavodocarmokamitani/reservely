@@ -96,12 +96,6 @@ const Plan: React.FC<PlanProps> = ({
   subscriptionStatus,
 }) => {
   const mappedId = mapPlanId(subscriptionPlanId);
-  console.log(
-    subscriptionPlanId,
-    subscriptionStartDate,
-    subscriptionDueDate,
-    subscriptionStatus
-  );
 
   const activePlan = currentPlans.find((p) => p.id === mappedId);
 
@@ -114,9 +108,12 @@ const Plan: React.FC<PlanProps> = ({
       style={{
         display: "flex",
         justifyContent: "center",
+        flexDirection: "column",
+        alignItems: "center",
         marginBottom: "4rem",
       }}
     >
+      <h1 style={{ marginBottom: "2rem" }}>Plano Atual</h1>
       <S.Container
         key={activePlan.name}
         $popular={activePlan.popular}
