@@ -26,8 +26,9 @@ interface ButtonProps {
   type: "button" | "submit" | "reset";
   onClick?: () => void;
   disabled?: boolean;
-  $noIcon?: boolean; 
+  $noIcon?: boolean;
   $isUpgrade?: boolean;
+  $isBuy?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -51,6 +52,7 @@ const Button: React.FC<ButtonProps> = ({
   $noIcon,
   onClick,
   $isUpgrade,
+  $isBuy,
 }) => {
   let icon = null;
   let buttonText = "";
@@ -112,6 +114,8 @@ const Button: React.FC<ButtonProps> = ({
     buttonText = "Voltar";
   } else if ($isLogin) {
     buttonText = "Login";
+  } else if ($isBuy) {
+    buttonText = "COMEÇAR AGORA";
   } else if ($isRegisterStore) {
     buttonText = "Registrar Empresa";
   } else if ($isRegisterClient) {
@@ -159,6 +163,7 @@ const Button: React.FC<ButtonProps> = ({
       $isRating={$isRating}
       $isAppointment={$isAppointment}
       $isUpgrade={$isUpgrade}
+      $isBuy={$isBuy}
       style={{ margin: "0 1rem" }}
       onClick={onClick}
     >

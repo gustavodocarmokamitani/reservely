@@ -16,6 +16,8 @@
     "@react-oauth/google": "^0.12.1",
     "@schedule-x/calendar-controls": "^2.21.0",
     "file-saver": "^2.0.5",
+    "framer-motion": "^12.23.22",
+    "lucide-react": "^0.544.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "xlsx": "^0.18.5"

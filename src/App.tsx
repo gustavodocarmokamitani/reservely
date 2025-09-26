@@ -54,8 +54,7 @@ import api from "./axiosInstance";
 import { ProtectedRoute } from "./components/ProtectedRoute/ProtectedRoute";
 
 function App() {
-  const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-  console.log(clientId);
+  const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID; 
   
   const context = useContext(AppContext);
   const authToken = context?.authToken;

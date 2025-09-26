@@ -12,6 +12,31 @@ export const formatYearMonth = (data: string) => {
   return `${mesesPt[parseInt(month, 10) - 1]}/${year}`;
 };
 
+export const formatDataMonth = (data: string) => {
+  const mesesPt = [
+    "Jan", "Fev", "Mar", "Abr", "Mai", "Jun",
+    "Jul", "Ago", "Set", "Out", "Nov", "Dez"
+  ];
+  
+  // 1. Extrai apenas a parte da data (YYYY-MM-DD), ignorando 'T' e o restante.
+  // Se a entrada for "2025-09-23T21:40:12.4084780Z", dataOnly será "2025-09-23".
+  const dataOnly = data.split('T')[0];
+
+  // 2. Agora o split com '-' funciona corretamente.
+  const [year, month, day] = dataOnly.split("-");
+  
+  // Converte o mês para índice (0-11)
+  const monthIndex = parseInt(month, 10) - 1;
+
+  // Verificação de segurança
+  if (monthIndex < 0 || monthIndex >= mesesPt.length) {
+      return `${day} ${month}/${year}`; // Retorna a data em formato dd/mm/aaaa como fallback
+  }
+
+  // Retorna no formato: DD Mês AAAA (Ex: "23 Set 2025")
+  return `${day} ${mesesPt[monthIndex]} ${year}`;
+};
+
 export const formatCurrencyBRL = (valor: number): string => {
   return new Intl.NumberFormat("pt-BR", {
     style: "currency",
