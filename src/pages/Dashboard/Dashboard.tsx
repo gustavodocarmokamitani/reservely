@@ -43,18 +43,6 @@ const plansData = {
   ],
   annually: [
     {
-      name: "Essencial",
-      price: "548,90",
-      per: "/ano",
-      planId: 99,
-      discountedPrice: "45,74",
-      features: [
-        "Até 2 funcionários",
-        `Agendamento Online ilimitado`,
-        "Notificação de agendamento",
-      ],
-    },
-    {
       name: "Profissional",
       price: "1.098,84",
       popular: true,
@@ -102,7 +90,7 @@ const Dashboard = () => {
     setAppointmentCount,
     setDecodedData,
     setAppointmentPercentageCanceled
-  ); 
+  );
 
   const handleExportExcel = () => {
     const data = [
