@@ -108,7 +108,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   }, []);  
  
   useEffect(() => { 
-    if (authToken && !isLoading) { 
+    if (authToken && isLoading) { 
       (async () => {
         try {
           const decoded = await decodeToken(authToken);
