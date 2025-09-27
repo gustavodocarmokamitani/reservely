@@ -28,7 +28,7 @@ function Subscription() {
       }
     };
     refreshNewToken();
-  }, []);
+  }, []); 
 
   useEffect(() => {
     const fetchDecodedToken = async () => {
@@ -72,7 +72,7 @@ function Subscription() {
     monthly: [
       {
         name: "Essencial",
-        price: "49,90",
+        price: "1,00",
         per: "/mês",
         planId: 98,
         features: [
@@ -86,7 +86,7 @@ function Subscription() {
         price: "99,90",
         popular: true,
         per: "/mês",
-        planId: 2, // Adicione o ID do plano
+        planId: 2,  
         features: [
           "Tudo do Essencial",
           "Até 10 funcionários",
@@ -97,7 +97,7 @@ function Subscription() {
         name: "Enterprise",
         price: "149,90",
         per: "/mês",
-        planId: 3, // Adicione o ID do plano
+        planId: 3,  
         features: [
           "Tudo do Profissional",
           "Funcionários ilimitados",
@@ -111,7 +111,7 @@ function Subscription() {
         name: "Essencial",
         price: "548,90",
         per: "/ano",
-        planId: 99,
+        planId: 4,
         discountedPrice: "45,74",
         features: [
           "Até 2 funcionários",

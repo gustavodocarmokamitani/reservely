@@ -167,7 +167,7 @@ const Dashboard = () => {
         </button> */}
       </P.ContainerHeader>
 
-      {decodedData?.subscriptionPlanId === "1" ? (
+      {decodedData?.subscriptionPlanId !== "1" || "4" ? (
         <div
           style={{
             display: "flex",
