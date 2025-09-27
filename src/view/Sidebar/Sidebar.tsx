@@ -1,4 +1,3 @@
-
 // React & Hooks
 import { useContext, useState, useEffect, useRef } from "react";
 
@@ -120,11 +119,10 @@ const Navigation = () => {
       if (itemRef) {
         const offsetTop = itemRef.offsetTop;
         const itemHeight = itemRef.offsetHeight;
-        window.innerWidth <= 768
-          ? setIndicatorTop((offsetTop + itemHeight / 2 - itemHeight + 28) / 16)
-          : setIndicatorTop(
-              (offsetTop + itemHeight / 2 - itemHeight + 22) / 16
-            );
+        // window.innerWidth <= 768
+        // ? setIndicatorTop((offsetTop + itemHeight / 2 - itemHeight + 28) / 16)
+        // :
+        setIndicatorTop((offsetTop + itemHeight / 2 - itemHeight + 22) / 16);
       }
     } else {
       setSelectedIndex(-1);

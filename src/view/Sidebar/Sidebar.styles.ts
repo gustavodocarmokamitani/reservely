@@ -38,19 +38,11 @@ export const Indicator = styled.div<IndicatorProps>`
   position: absolute;
   top: ${(props) => props.top}rem;
   left: 10px;
-  width: 92%;
+  width: 93.5%;
   height: 2.75rem;
   background-color: #f5f5f5ff;
   border-radius: 25px;
   transition: top 0.5s ease-in-out;
   box-shadow: 0px 0px 2px rgba(241, 104, 85, 0.1);
   z-index: -1;
-
-  @media (max-width: 1680px) {
-    
-    & {
-      top: ${(props) => props.top - 0.4}rem !important;
-    }
-  }
-    
 `;
