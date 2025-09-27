@@ -123,7 +123,7 @@ const Navigation = () => {
         window.innerWidth <= 768
           ? setIndicatorTop((offsetTop + itemHeight / 2 - itemHeight + 28) / 16)
           : setIndicatorTop(
-              (offsetTop + itemHeight / 2 - itemHeight + 28) / 16
+              (offsetTop + itemHeight / 2 - itemHeight + 24) / 16
             );
       }
     } else {
