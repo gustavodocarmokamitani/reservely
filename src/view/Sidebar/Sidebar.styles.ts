@@ -43,6 +43,6 @@ export const Indicator = styled.div<IndicatorProps>`
   background-color: #f5f5f5ff;
   border-radius: 25px;
   transition: top 0.5s ease-in-out;
-  box-shadow: 0px 0px 2px rgba(241, 104, 85, 0.1);
+  box-shadow: 0px 0px 3px .5px rgba(2, 2, 2, 0.1);
   z-index: -1;
 `;

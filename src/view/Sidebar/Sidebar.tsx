@@ -201,12 +201,6 @@ const Navigation = () => {
                     style={{ height: "100%", paddingLeft: "20px" }}
                     onClick={logout}
                   >
-                    {/* <OptionNavigation
-                      icon={
-                        <img src={exit} alt="exit" style={{ width: "25px" }} />
-                      }
-                      text="Sair"
-                    /> */}
                   </Row>
                 </S.MenuContainer>
               </div>
