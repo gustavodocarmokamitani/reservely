@@ -19,6 +19,16 @@ export const getAppointmentById = async (id: number) => {
         console.error("Error getting Appointment:", error);
         throw error;
     }
+}; 
+
+export const getAppointmentHistoryById = async (id: number) => {
+    try {
+        const response = await api.get(`Appointment/client/${id}/history-details`);
+        return response.data;
+    } catch (error) {
+        console.error("Error getting Appointment:", error);
+        throw error;
+    }
 };
 
 export const GetEmployeePerformance = async (storeId: number) => {

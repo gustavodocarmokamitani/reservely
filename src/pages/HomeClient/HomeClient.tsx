@@ -5,7 +5,10 @@ import { AppContext } from "../../context/AppContext";
 import { DecodedToken } from "../../models/DecodedToken";
 import { decodeToken } from "../../services/AuthService";
 import { Appointment } from "../../models/Appointment";
-import { getAppointmentByClienteId } from "../../services/AppointmentServices";
+import {
+  getAppointmentByClienteId,
+  getAppointmentHistoryById,
+} from "../../services/AppointmentServices";
 import { getEmployeeById } from "../../services/EmployeeServices";
 import { getUserById } from "../../services/UserServices";
 import { getServiceTypeById } from "../../services/ServiceTypeServices";
@@ -26,6 +29,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { Store } from "../../models/Store";
 import UserMenu from "../../components/UserMenu/UserMenu";
+import { ClientAppointmentHistoryDTO } from "../../models/ClientAppointmentHistoryDTO";
 
 export const HomeClient = () => {
   const { storeCodeParams } = useParams();
@@ -56,134 +60,85 @@ export const HomeClient = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      // Validação inicial do ID do usuário
       if (!decodedData?.userId) {
         console.warn("decodedData.userId está ausente ou inválido.");
         return;
       }
 
       try {
-        if (storeCode !== ":") {
-          const responseStoreActive = await getStoreByStoreCode(storeCode);
-          setStoreActive(responseStoreActive);
-        }
-
         const userId = parseFloat(decodedData.userId);
+
         if (isNaN(userId)) {
           console.error("userId não é um número válido:", decodedData.userId);
           return;
         }
 
-        const responseAppointments = await getAppointmentByClienteId(userId);
-
-        if (!responseAppointments || responseAppointments.length === 0) {
-          console.warn("Nenhum agendamento encontrado para o usuário:", userId);
+        // 1. CHAME APENAS O NOVO ENDPOINT OTIMIZADO!
+        // O getAppointmentHistoryById faz uma única chamada para buscar todos os detalhes.
+        const response = await getAppointmentHistoryById(userId); 
+        
+        // Certifique-se de que a resposta é um array e tem dados
+        if (!response || response.length === 0) {
+          console.warn(
+            "Nenhum histórico de agendamento detalhado encontrado para o usuário:",
+            userId
+          );
+          setData([]); // Limpa os dados, se necessário
           return;
         }
 
-        const appointmentsWithDetails = (
-          await Promise.all(
-            responseAppointments.map(async (appointment: Appointment) => {
-              try {
-                if (!appointment.employeeId || !appointment.storeId) {
-                  console.error(
-                    "Dados de agendamento incompletos:",
-                    appointment
-                  );
-                  return null;
-                }
+        // Os dados já vêm prontos e agregados, basta atribuí-los
+        // O backend já fez:
+        // - Busca de todos os agendamentos
+        // - Agregação de dados do Cliente/Funcionário/Loja/Status
+        // - Cálculo do Preço Total
+        // - Inclusão dos nomes dos serviços
 
-                const responseEmployee = await getEmployeeById(
-                  appointment.employeeId
-                );
+        // Se você precisa que o nome do funcionário esteja capitalizado (Primeira Letra Maiúscula),
+        // você deve fazer isso no frontend, pois a resposta do backend é apenas a string.
 
-                if (!responseEmployee) {
-                  console.error(
-                    "Funcionário não encontrado:",
-                    appointment.employeeId
-                  );
-                  return null;
-                }
+        const appointmentsReady = response.map(
+          (appointment: ClientAppointmentHistoryDTO) => {
+            // Se a capitalização de nome/sobrenome for necessária, faça aqui:
+            // Ex: Se o nome vier como "maria silva" e você quer "Maria Silva"
+            // O backend já retornou EmployeeName no formato "Nome Sobrenome"
 
-                const responseUser = await getUserById(responseEmployee.id);
+            // O backend também já retornou o campo appointmentStatus como string (ex: "Finalizado")
 
-                if (!responseUser) {
-                  console.error(
-                    "Usuário não encontrado para o funcionário:",
-                    responseEmployee.id
-                  );
-                  return null;
-                }
+            return {
+              storeName: appointment.storeName,
+              storeCode: appointment.storeCode,
+              appointmentDate: appointment.appointmentDate,
+              appointmentTime: appointment.appointmentTime,
+              appointmentStatus: appointment.appointmentStatus, // Já é o nome do status
+              employeeName: appointment.employeeName, // Já está no formato "Nome Sobrenome"
+              services: appointment.services.map((s) => ({ name: s.name })), // Mapeia para o formato que você usava antes
+              professionalNumber: appointment.professionalPhoneNumber,
+              totalPrice: appointment.totalPrice,
+            };
+          }
+        );
 
-                const responseStore = await getStoreById(appointment.storeId);
+        setData(appointmentsReady);
 
-                if (!responseStore) {
-                  console.error("Loja não encontrada:", appointment.storeId);
-                  return null;
-                }
-
-                const services = await Promise.all(
-                  appointment.serviceIds.map(async (serviceId) => {
-                    try {
-                      const service = await getServiceTypeById(serviceId);
-
-                      return service;
-                    } catch (error) {
-                      console.error(
-                        "Erro ao buscar serviceId:",
-                        serviceId,
-                        error
-                      );
-                      return null;
-                    }
-                  })
-                );
-
-                const filteredServices = services.filter((service) => service);
-                const totalPrice = filteredServices.reduce(
-                  (sum, service) => sum + (service?.data.value || 0),
-                  0
-                );
-
-                return {
-                  storeName: responseStore.name,
-                  storeCode: responseStore.storeCode,
-                  appointmentDate: appointment.appointmentDate,
-                  appointmentTime: appointment.appointmentTime,
-                  appointmentStatus: appointment.appointmentStatusId,
-                  employeeName: `${capitalizeFirstLetter(
-                    responseUser.name
-                  )} ${capitalizeFirstLetter(responseUser.lastName)}`,
-                  services: filteredServices.map((service) => ({
-                    name: service?.data.name,
-                  })),
-                  totalPrice,
-                };
-              } catch (error) {
-                console.error(
-                  "Erro ao processar agendamento:",
-                  appointment,
-                  error
-                );
-                return null;
-              }
-            })
-          )
-        ).filter((appointment) => appointment);
-
-        if (appointmentsWithDetails.length > 0) {
-          setData(appointmentsWithDetails);
-        } else {
-          console.warn(
-            "Nenhum agendamento válido encontrado após o processamento."
-          );
+        // Se você ainda precisa do storeCode para outra lógica,
+        // pode buscar a Store Active no bloco try acima se for o caso:
+        if (storeCode && storeCode !== ":") {
+          const responseStoreActive = await getStoreByStoreCode(storeCode);
+          setStoreActive(responseStoreActive);
         }
       } catch (error) {
-        console.error("Erro geral ao buscar ou processar os dados:", error);
+        console.error(
+          "Erro geral ao buscar o histórico de agendamentos:",
+          error
+        );
+        // Dependendo da necessidade, você pode lançar o erro novamente ou apenas logar.
       }
     };
 
     fetchData();
-  }, [decodedData]);
+  }, [decodedData, storeCode, getStoreByStoreCode, setData, setStoreActive]); // Adicione as dependências do useState
 
   const handleNavigateAppointmentClient = () => {
     if (storeCode === ":") {

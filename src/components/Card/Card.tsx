@@ -10,6 +10,7 @@ import Button from "../Button/Button";
 import star from "../../assets/star.png";
 import moment from "moment";
 import { formatToBRL } from "../../services/system/globalService";
+import { Store } from "../../models/Store";
 
 interface CardProps {
   type:
@@ -64,190 +65,239 @@ const Card: React.FC<CardProps> = ({
     3: "Cancelado",
     4: "Remarcado",
     5: "Finalizado",
-  };
+  }; 
 
   return (
     <>
       {type === "homeClient" ? (
-        <div
-          style={{
-            borderRadius: "15px",
-            boxShadow: "4px 4px 15px 0px rgba(0, 0, 0, 0.5)",
-            overflow: "hidden",
-            margin: "25px 0px 25px 0",
-          }}
+        <S.CardHomeClientPlanContainer
+          $isHistory={!!history}
+          variants={{ center: { opacity: 1, y: 0, scale: 1 } }}
+          initial="center"
+          transition={{ duration: 0.15, delay: 0 }}
+          style={{ marginBottom: "25px", margin: "25px auto" }}
         >
-          <S.CardTitleHomeClientContainer>
-            <h4>{data.storeName}</h4>
-          </S.CardTitleHomeClientContainer>
-          <S.CardBodyHomeClientContainer>
-            {history && (
-              <>
-                <S.CardContent>
-                  <S.TextCard>
-                    <div
+          <S.CardHomeClientTitle $isHistory={!!history}>
+            {data.storeName}
+          </S.CardHomeClientTitle>
+
+          {history && (
+            <>
+              <S.CardContent>
+                <S.TextCard>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      width: "100%",
+                    }}
+                  >
+                    <S.Paragraph
                       style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        width: "100%",
+                        width: "9.25rem",
+                        fontWeight: "500",
+                        fontSize: "1.2rem",
+                        marginBottom: "1rem",
                       }}
                     >
-                      {/* <img src={employeeDefault} alt="employee" width="75px" /> */}
+                      {data.employeeName}
+                    </S.Paragraph>
+                  </div>
+                </S.TextCard>
+                <S.TextCard>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "space-around",
+                      width: "100%",
+                      marginBottom: "1rem",
+                    }}
+                  >
+                    {/* Bloco de Valor */}
+                    <div style={{ display: "flex", flexDirection: "column" }}>
                       <S.Paragraph
                         style={{
-                          width: "9.25rem",
+                          color: "#f16855",
                           fontWeight: "500",
-                          fontSize: "1.2rem",
-                          marginBottom: "1rem",
+                          padding: "0px",
+                          fontSize: "1rem",
                         }}
                       >
-                        {data.employeeName}
+                        Valor
+                      </S.Paragraph>
+                      <S.Paragraph style={{ width: "5.25rem" }}>
+                        {formatToBRL(String(data.totalPrice * 100))}
                       </S.Paragraph>
                     </div>
-                  </S.TextCard>
-                  <S.TextCard>
-                    <div
+
+                    {/* Bloco de Data */}
+                    <div style={{ display: "flex", flexDirection: "column" }}>
+                      <S.Paragraph
+                        style={{
+                          color: "#f16855",
+                          fontWeight: "500",
+                          padding: "0px",
+                          fontSize: "1rem",
+                        }}
+                      >
+                        Data
+                      </S.Paragraph>
+                      <S.Paragraph style={{ width: "5.25rem" }}>
+                        {moment(data.appointmentDate).format("DD/MM/YYYY")}
+                      </S.Paragraph>
+                    </div>
+
+                    {/* Bloco de Horário */}
+                    <div style={{ display: "flex", flexDirection: "column" }}>
+                      <S.Paragraph
+                        style={{
+                          color: "#f16855",
+                          fontWeight: "500",
+                          padding: "0px",
+                          fontSize: "1rem",
+                        }}
+                      >
+                        Horário
+                      </S.Paragraph>
+                      <S.Paragraph style={{ width: "5.25rem" }}>
+                        {data.appointmentTime}
+                      </S.Paragraph>
+                    </div>
+                  </div>
+                </S.TextCard>
+
+                {/* Linha 2 de Dados (Serviço, Status) */}
+                <S.TextCard>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      width: "100%",
+                      margin: ".5rem 0",
+                    }}
+                  >
+                    <S.TextCard
                       style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
+                        flexDirection: "column",
+                        margin: "0 0 1rem 0",
                       }}
                     >
-                      <div style={{ display: "flex", flexDirection: "column" }}>
+                      <S.Paragraph
+                        style={{
+                          color: "#f16855",
+                          fontWeight: "500",
+                          padding: "0px",
+                          fontSize: "1rem",
+                        }}
+                      >
+                        Serviço
+                      </S.Paragraph>
+                      {data.services?.map((service: any, index: number) => (
                         <S.Paragraph
+                          key={index}
                           style={{
-                            color: "#f16855",
-                            fontWeight: "500",
-                            padding: "0px",
-                            fontSize: "1rem",
+                            padding: "0.25rem 0.15rem",
+                            textAlign: "left",
                           }}
                         >
-                          Valor
+                          {service.name}
                         </S.Paragraph>
-                        <S.Paragraph style={{ width: "5.25rem" }}>
-                          {formatToBRL(String(data.totalPrice * 100))}
-                        </S.Paragraph>
-                      </div>
+                      ))}
+                    </S.TextCard>
 
-                      <div style={{ display: "flex", flexDirection: "column" }}>
-                        <S.Paragraph
-                          style={{
-                            color: "#f16855",
-                            fontWeight: "500",
-                            padding: "0px",
-                            fontSize: "1rem",
-                          }}
-                        >
-                          Data
-                        </S.Paragraph>
-                        <S.Paragraph style={{ width: "5.25rem" }}>
-                          {moment(data.appointmentDate).format("DD/MM/YYYY")}
-                        </S.Paragraph>
-                      </div>
-
-                      <div style={{ display: "flex", flexDirection: "column" }}>
-                        <S.Paragraph
-                          style={{
-                            color: "#f16855",
-                            fontWeight: "500",
-                            padding: "0px",
-                            fontSize: "1rem",
-                          }}
-                        >
-                          Horário
-                        </S.Paragraph>
-                        <S.Paragraph style={{ width: "5.25rem" }}>
-                          {data.appointmentTime}
-                        </S.Paragraph>
-                      </div>
-                    </div>
-                  </S.TextCard>
-                  <S.TextCard>
-                    <div
+                    <S.TextCard
                       style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        width: "100%",
-                        margin: ".5rem 0",
+                        flexDirection: "column",
                       }}
                     >
-                      <S.TextCard>
-                        <div
-                          style={{ display: "flex", flexDirection: "column" }}
-                        >
-                          <S.Paragraph
-                            style={{
-                              color: "#f16855",
-                              fontWeight: "500",
-                              padding: "0px",
-                              fontSize: "1rem",
-                            }}
-                          >
-                            Serviço
-                          </S.Paragraph>
-                          {data.services?.map((service: any, index: number) => (
-                            <S.Paragraph key={index}>
-                              {service.name}
-                            </S.Paragraph>
-                          ))}
-                        </div>
-                      </S.TextCard>
-                      <S.TextCard>
-                        <div
-                          style={{ display: "flex", flexDirection: "column" }}
-                        >
-                          <S.Paragraph
-                            style={{
-                              color: "#f16855",
-                              fontWeight: "500",
-                              padding: "0px",
-                              fontSize: "1rem",
-                            }}
-                          >
-                            Status
-                          </S.Paragraph>
-                          <S.Paragraph
-                            style={{
-                              height: "2.25rem",
-                            }}
-                          >
-                            {appointmentStatusMap[
-                              data.appointmentStatus as keyof typeof appointmentStatusMap
-                            ] || "Status Desconhecido"}
-                          </S.Paragraph>
-                        </div>
-                      </S.TextCard>
-                    </div>
-                  </S.TextCard>
-                </S.CardContent>
-              </>
-            )}
-            {rating && (
-              <>
-                <Row>
-                  <Col md={12}>
-                    <p style={{ width: "100%", textAlign: "center" }}>
-                      Profissional habilidoso, atencioso e pontual. Atendimento
-                      de qualidade, com ambiente confortável e resultados sempre
-                      impecáveis. Recomendo para quem busca cortes precisos e
-                      estilo personalizado.
-                    </p>
-                  </Col>
-                </Row>
-              </>
-            )}
-          </S.CardBodyHomeClientContainer>
-          <S.CardFooterHomeClientContainer>
+                      <S.Paragraph
+                        style={{
+                          color: "#f16855",
+                          fontWeight: "500",
+                          padding: "0px",
+                          fontSize: "1rem",
+                        }}
+                      >
+                        Status
+                      </S.Paragraph>
+                      <S.Paragraph
+                        style={{
+                          height: "2.25rem",
+                          padding: "0.25rem 0.15rem",
+                          textAlign: "center",
+                        }}
+                      >
+                        {appointmentStatusMap[
+                          data.appointmentStatus as keyof typeof appointmentStatusMap
+                        ] || "Status Desconhecido"}
+                      </S.Paragraph>
+                    </S.TextCard>
+                    <S.TextCard
+                      style={{
+                        flexDirection: "column",
+                        margin: "0 0 1rem 0",
+                      }}
+                    >
+                      <S.Paragraph
+                        style={{
+                          color: "#f16855",
+                          fontWeight: "500",
+                          padding: "0px",
+                          fontSize: "1rem",
+                        }}
+                      >
+                        Telefone
+                      </S.Paragraph>
+
+                      <S.Paragraph
+                        style={{
+                          padding: "0.25rem 0.15rem",
+                          textAlign: "left",
+                        }}
+                      >
+                        {data.professionalNumber}
+                      </S.Paragraph>
+                    </S.TextCard>
+                  </div>
+                </S.TextCard>
+              </S.CardContent>
+            </>
+          )}
+
+          {/* Seção de Rating */}
+          {rating && (
+            <Row style={{ marginTop: "1rem", padding: "0 1rem" }}>
+              <Col md={12}>
+                <p
+                  style={{
+                    width: "100%",
+                    textAlign: "center",
+                    color: "#4b5563" /* Cor similar ao PlanDescription */,
+                  }}
+                >
+                  Profissional habilidoso, atencioso e pontual. Atendimento de
+                  qualidade, com ambiente confortável e resultados sempre
+                  impecáveis. Recomendo para quem busca cortes precisos e estilo
+                  personalizado.
+                </p>
+              </Col>
+            </Row>
+          )}
+
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              margin: "1.2rem 0",
+            }}
+          >
             {history && (
               <>
-                {/* <Button
-                  $isRating
-                  type="button"
-                  onClick={handleNavigateRating}
-                /> */}
                 <Button
                   $isRescheduling
                   type="button"
@@ -258,15 +308,35 @@ const Card: React.FC<CardProps> = ({
 
             {rating && (
               <>
-                <img src={star} alt="star rating" />
-                <img src={star} alt="star rating" />
-                <img src={star} alt="star rating" />
-                <img src={star} alt="star rating" />
-                <img src={star} alt="star rating" />
+                <img
+                  src={star}
+                  alt="star rating"
+                  style={{ width: "1.5rem", margin: "0 0.25rem" }}
+                />
+                <img
+                  src={star}
+                  alt="star rating"
+                  style={{ width: "1.5rem", margin: "0 0.25rem" }}
+                />
+                <img
+                  src={star}
+                  alt="star rating"
+                  style={{ width: "1.5rem", margin: "0 0.25rem" }}
+                />
+                <img
+                  src={star}
+                  alt="star rating"
+                  style={{ width: "1.5rem", margin: "0 0.25rem" }}
+                />
+                <img
+                  src={star}
+                  alt="star rating"
+                  style={{ width: "1.5rem", margin: "0 0.25rem" }}
+                />
               </>
             )}
-          </S.CardFooterHomeClientContainer>
-        </div>
+          </div>
+        </S.CardHomeClientPlanContainer>
       ) : (
         <S.CardStoreContainer>
           <div>
