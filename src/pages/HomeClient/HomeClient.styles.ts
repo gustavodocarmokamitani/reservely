@@ -47,7 +47,7 @@ export const WrapperHomeClient = styled.div`
   align-items: center;
   width: 100%;
   max-width: 300px;
-  margin: 0 15px 0 0; 
+  margin: 0 15px 1rem 1rem; 
   position: relative;
 `;
 

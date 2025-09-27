@@ -59,8 +59,7 @@ export const HomeClient = () => {
   }, [authToken]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      // Validação inicial do ID do usuário
+    const fetchData = async () => { 
       if (!decodedData?.userId) {
         console.warn("decodedData.userId está ausente ou inválido.");
         return;
@@ -73,47 +72,29 @@ export const HomeClient = () => {
           console.error("userId não é um número válido:", decodedData.userId);
           return;
         }
-
-        // 1. CHAME APENAS O NOVO ENDPOINT OTIMIZADO!
-        // O getAppointmentHistoryById faz uma única chamada para buscar todos os detalhes.
+ 
         const response = await getAppointmentHistoryById(userId); 
-        
-        // Certifique-se de que a resposta é um array e tem dados
+         
         if (!response || response.length === 0) {
           console.warn(
             "Nenhum histórico de agendamento detalhado encontrado para o usuário:",
             userId
           );
-          setData([]); // Limpa os dados, se necessário
+          setData([]); 
           return;
         }
-
-        // Os dados já vêm prontos e agregados, basta atribuí-los
-        // O backend já fez:
-        // - Busca de todos os agendamentos
-        // - Agregação de dados do Cliente/Funcionário/Loja/Status
-        // - Cálculo do Preço Total
-        // - Inclusão dos nomes dos serviços
-
-        // Se você precisa que o nome do funcionário esteja capitalizado (Primeira Letra Maiúscula),
-        // você deve fazer isso no frontend, pois a resposta do backend é apenas a string.
-
+ 
         const appointmentsReady = response.map(
-          (appointment: ClientAppointmentHistoryDTO) => {
-            // Se a capitalização de nome/sobrenome for necessária, faça aqui:
-            // Ex: Se o nome vier como "maria silva" e você quer "Maria Silva"
-            // O backend já retornou EmployeeName no formato "Nome Sobrenome"
-
-            // O backend também já retornou o campo appointmentStatus como string (ex: "Finalizado")
+          (appointment: ClientAppointmentHistoryDTO) => { 
 
             return {
               storeName: appointment.storeName,
               storeCode: appointment.storeCode,
               appointmentDate: appointment.appointmentDate,
               appointmentTime: appointment.appointmentTime,
-              appointmentStatus: appointment.appointmentStatus, // Já é o nome do status
-              employeeName: appointment.employeeName, // Já está no formato "Nome Sobrenome"
-              services: appointment.services.map((s) => ({ name: s.name })), // Mapeia para o formato que você usava antes
+              appointmentStatus: appointment.appointmentStatus,  
+              employeeName: appointment.employeeName,  
+              services: appointment.services.map((s) => ({ name: s.name })),  
               professionalNumber: appointment.professionalPhoneNumber,
               totalPrice: appointment.totalPrice,
             };
@@ -121,9 +102,7 @@ export const HomeClient = () => {
         );
 
         setData(appointmentsReady);
-
-        // Se você ainda precisa do storeCode para outra lógica,
-        // pode buscar a Store Active no bloco try acima se for o caso:
+ 
         if (storeCode && storeCode !== ":") {
           const responseStoreActive = await getStoreByStoreCode(storeCode);
           setStoreActive(responseStoreActive);
@@ -132,13 +111,12 @@ export const HomeClient = () => {
         console.error(
           "Erro geral ao buscar o histórico de agendamentos:",
           error
-        );
-        // Dependendo da necessidade, você pode lançar o erro novamente ou apenas logar.
+        ); 
       }
     };
 
     fetchData();
-  }, [decodedData, storeCode, getStoreByStoreCode, setData, setStoreActive]); // Adicione as dependências do useState
+  }, [decodedData, storeCode, getStoreByStoreCode, setData, setStoreActive]); 
 
   const handleNavigateAppointmentClient = () => {
     if (storeCode === ":") {

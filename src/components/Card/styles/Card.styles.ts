@@ -4,9 +4,9 @@ import styled from "styled-components";
 export const CardHomeClientPlanContainer = styled(motion.div)<{
   $isHistory: boolean;
 }>`
-  border-radius: 0.75rem;
+  border-radius: 0.75rem; 
   padding: 2rem;
-  border: 2px solid "#868686ff";
+  border: 2px solid "#ca2929ff";
   background-color: white;
   transition: all 0.3s;
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.9);

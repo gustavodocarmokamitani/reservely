@@ -65,7 +65,8 @@ const Card: React.FC<CardProps> = ({
     3: "Cancelado",
     4: "Remarcado",
     5: "Finalizado",
-  }; 
+  };
+  console.log(data);
 
   return (
     <>
@@ -211,7 +212,7 @@ const Card: React.FC<CardProps> = ({
 
                     <S.TextCard
                       style={{
-                        flexDirection: "column",
+                        flexDirection: "column", 
                       }}
                     >
                       <S.Paragraph
