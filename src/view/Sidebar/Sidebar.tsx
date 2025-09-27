@@ -66,6 +66,7 @@ const Navigation = () => {
     fetchDecodedToken();
   }, [authToken]);
 
+  //QUANDO ADICIONAR NOVA ROTA, ADICIONAR TAMBÉM AQUI   (offsetTop + itemHeight / 2 - itemHeight + 28) / 16
   const menuOptions =
     decodedData?.userRole !== "Client"
       ? [
@@ -122,7 +123,7 @@ const Navigation = () => {
         window.innerWidth <= 768
           ? setIndicatorTop((offsetTop + itemHeight / 2 - itemHeight + 28) / 16)
           : setIndicatorTop(
-              (offsetTop + itemHeight / 2 - itemHeight + 22) / 16
+              (offsetTop + itemHeight / 2 - itemHeight + 28) / 16
             );
       }
     } else {

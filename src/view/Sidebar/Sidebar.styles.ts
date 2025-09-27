@@ -40,10 +40,10 @@ export const Indicator = styled.div<IndicatorProps>`
   left: 10px;
   width: 92%;
   height: 2.75rem;
-  background-color: #fff;
+  background-color: #f5f5f5ff;
   border-radius: 25px;
   transition: top 0.5s ease-in-out;
-  box-shadow: 2px 0px 7px rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 0px 2px rgba(241, 104, 85, 0.1);
   z-index: -1;
 
   @media (max-width: 1680px) {

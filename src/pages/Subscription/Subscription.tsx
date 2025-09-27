@@ -28,7 +28,7 @@ function Subscription() {
       }
     };
     refreshNewToken();
-  }, []); 
+  }, []);
 
   useEffect(() => {
     const fetchDecodedToken = async () => {
@@ -86,7 +86,7 @@ function Subscription() {
         price: "99,90",
         popular: true,
         per: "/mês",
-        planId: 2,  
+        planId: 2,
         features: [
           "Tudo do Essencial",
           "Até 10 funcionários",
@@ -97,7 +97,7 @@ function Subscription() {
         name: "Enterprise",
         price: "149,90",
         per: "/mês",
-        planId: 3,  
+        planId: 3,
         features: [
           "Tudo do Profissional",
           "Funcionários ilimitados",
@@ -201,14 +201,15 @@ function Subscription() {
       </P.ContainerHeader>
 
       {/* Renderização Condicional Principal */}
-      {isSubscriptionActive && !showPlans ? (
+      {isSubscriptionActive && !showPlans && (
         <Plan
           subscriptionPlanId={1}
           subscriptionStartDate={decodedData?.subscriptionStartDate}
           subscriptionDueDate={decodedData?.subscriptionDueDate}
           subscriptionStatus={decodedData?.subscriptionStatus}
         />
-      ) : (
+      )}
+      {isSubscriptionActive && showPlans && (
         <div
           style={{
             display: "flex",
