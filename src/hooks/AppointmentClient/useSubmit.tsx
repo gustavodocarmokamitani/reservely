@@ -59,8 +59,8 @@ export const useSubmit = (
       const responseStoreCode = await getStoreByStoreCode(formattedStoreCode);
       if (responseStoreCode) {
         storeUser = responseStoreCode.id;
-      };
-      
+      }
+
       const newAppointment = {
         id: 0,
         clientId: Number(decodedData.userId),
@@ -72,7 +72,7 @@ export const useSubmit = (
         serviceIds: [selectedService],
         storeId: storeUser,
       };
-      
+
       const response = await createAppointment([newAppointment]);
       if (response) {
         enqueueSnackbar("Agendamento criado com sucesso!", {
@@ -87,7 +87,6 @@ export const useSubmit = (
     setSelectedService(null);
     setSelectedProfessional([]);
     setSelectedTime({ date: "", time: "" });
-    window.location.reload();
 
     setIsLoading(false);
   };
