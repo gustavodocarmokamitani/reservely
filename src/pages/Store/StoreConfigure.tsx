@@ -230,14 +230,14 @@ function StoreConfigure() {
                         <Card
                           type="time"
                           selectedTimes={selectedTimes}
-                          title="Hora de abertura"
+                          title="Abertura"
                           icon="confirm"
                         />
                         {selectedTimes[1] !== undefined && (
                           <Card
                             type="time"
                             selectedTimes={selectedTimes}
-                            title="Hora de fechamento"
+                            title="Fechamento"
                             icon="confirm"
                           />
                         )}

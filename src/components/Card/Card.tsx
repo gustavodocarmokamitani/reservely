@@ -65,8 +65,7 @@ const Card: React.FC<CardProps> = ({
     3: "Cancelado",
     4: "Remarcado",
     5: "Finalizado",
-  };
-  console.log(data);
+  }; 
 
   return (
     <>
@@ -96,7 +95,7 @@ const Card: React.FC<CardProps> = ({
                   >
                     <S.Paragraph
                       style={{
-                        width: "9.25rem",
+                        width: "18.25rem", 
                         fontWeight: "500",
                         fontSize: "1.2rem",
                         marginBottom: "1rem",
@@ -422,7 +421,9 @@ const Card: React.FC<CardProps> = ({
                     </>
                   ) : (
                     <p style={{ textAlign: "center", margin: 0 }}>
-                      {selectedTimes ? selectedTimes[1] : null}
+                      {selectedTimes && selectedTimes[1] !== "string"
+                          ? selectedTimes[1]
+                          : null}
                     </p>
                   )}
                 </Col>
