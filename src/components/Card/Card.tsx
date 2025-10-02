@@ -65,7 +65,7 @@ const Card: React.FC<CardProps> = ({
     3: "Cancelado",
     4: "Remarcado",
     5: "Finalizado",
-  }; 
+  };
 
   return (
     <>
@@ -95,7 +95,7 @@ const Card: React.FC<CardProps> = ({
                   >
                     <S.Paragraph
                       style={{
-                        width: "18.25rem", 
+                        width: "18.25rem",
                         fontWeight: "500",
                         fontSize: "1.2rem",
                         marginBottom: "1rem",
@@ -211,7 +211,7 @@ const Card: React.FC<CardProps> = ({
 
                     <S.TextCard
                       style={{
-                        flexDirection: "column", 
+                        flexDirection: "column",
                       }}
                     >
                       <S.Paragraph
@@ -231,9 +231,9 @@ const Card: React.FC<CardProps> = ({
                           textAlign: "center",
                         }}
                       >
-                        {appointmentStatusMap[
+                        {
                           data.appointmentStatus as keyof typeof appointmentStatusMap
-                        ] || "Status Desconhecido"}
+                        }
                       </S.Paragraph>
                     </S.TextCard>
                     <S.TextCard
@@ -422,8 +422,8 @@ const Card: React.FC<CardProps> = ({
                   ) : (
                     <p style={{ textAlign: "center", margin: 0 }}>
                       {selectedTimes && selectedTimes[1] !== "string"
-                          ? selectedTimes[1]
-                          : null}
+                        ? selectedTimes[1]
+                        : null}
                     </p>
                   )}
                 </Col>
