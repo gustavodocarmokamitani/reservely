@@ -7,7 +7,7 @@ import { useAction } from "../../hooks/Login/useAction";
 import { ContainerRegister, ParagraphThin } from "../Styles/_Page.styles";
 import * as S from "./Login.styles";
 import { TypingText } from "../Styles/animationTyping.styles";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
@@ -23,6 +23,11 @@ const Login = () => {
     password,
     storeCode
   );
+
+  const navigate = useNavigate();
+  const handleButtonClick = () => {
+    navigate(`/register-client/${storeCode}`);
+  };
 
   return (
     <>
@@ -88,8 +93,8 @@ const Login = () => {
                       text="continue_with"
                     />
                   </div>
-                  <p className="mt-3">
-                    Não tem uma conta? <a href="/">Inscreva-se</a>
+                  <p className="mt-3" >
+                    Não tem uma conta? <a style={{color: "rgb(13, 110, 253)", cursor: "pointer", textDecoration: "underline"}} onClick={handleButtonClick}>Inscreva-se</a>
                   </p>
                   <p className="mt-2">
                     Não recebeu e-mail de confirmação ou token expirou?{" "}

@@ -21,7 +21,8 @@ export const useAction = (
   setFormValuesProfessionalRegister: React.Dispatch<
     React.SetStateAction<UserEmployee>
   >,
-  selectedUserIds: number[]
+  selectedUserIds: number[],
+  setBlockAddUser: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   const { enqueueSnackbar } = useSnackbar();
 
@@ -141,6 +142,7 @@ export const useAction = (
         );
         fetchData();
         setSelectedUserIds([]);
+        setBlockAddUser(false);
       } catch (error) {
         console.error("Erro ao remover os usuários:", error);
       }

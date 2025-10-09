@@ -52,6 +52,8 @@ function Professional() {
     setRows,
     isLoading,
     setIsLoading,
+    blockAddUser,
+    setBlockAddUser,
   } = useStateCustom();
 
   const {
@@ -67,7 +69,9 @@ function Professional() {
     setCombinedData,
     setSelectedServices,
     setRows,
-    setIsLoading
+    setIsLoading,
+    decodedData,
+    setBlockAddUser
   );
 
   const {
@@ -97,7 +101,8 @@ function Professional() {
     storeUser,
     formValuesProfessional,
     setFormValuesProfessional,
-    selectedUserIds
+    selectedUserIds,
+    setBlockAddUser
   );
 
   const { containerRef, columns } = useEffectCustom(
@@ -106,7 +111,7 @@ function Professional() {
     setColumnWidth,
     decodedData,
     handleShowEditProfessionalModal
-  );
+  ); 
 
   return (
     <>
@@ -136,13 +141,16 @@ function Professional() {
               >
                 {window.innerWidth <= 768 ? (
                   <>
-                    <div style={{ marginBottom: "15px" }}>
-                      <Button
-                        $isAdd
-                        type="button"
-                        onClick={handleShowAddProfessionalModal}
-                      />
-                    </div>
+                    {!blockAddUser && (
+                      <div style={{ marginBottom: "15px" }}>
+                        asd
+                        <Button
+                          $isAdd
+                          type="button"
+                          onClick={handleShowAddProfessionalModal}
+                        />
+                      </div>
+                    )}
                     <Button
                       $isRemove
                       type="button"
@@ -158,11 +166,13 @@ function Professional() {
                         onClick={handleDeleteUsers}
                       />
                     </div>
-                    <Button
-                      $isAdd
-                      type="button"
-                      onClick={handleShowAddProfessionalModal}
-                    />
+                    {!blockAddUser && (
+                      <Button
+                        $isAdd
+                        type="button"
+                        onClick={handleShowAddProfessionalModal}
+                      />
+                    )}
                   </>
                 )}
               </div>

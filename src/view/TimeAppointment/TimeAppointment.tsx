@@ -7,9 +7,12 @@ import { getServiceTypeById } from "../../services/ServiceTypeServices";
 
 interface TimeAppointmentProps {
   storeData?: Store;
+
   appointmentData: Record<string, Appointment[]>;
   selectedTime: { date: string; time: string } | null;
   setSelectedTime: (time: { date: string; time: string }) => void;
+
+  selectedProfessional: number[];
 }
 
 export default function TimeAppointment({
@@ -17,14 +20,13 @@ export default function TimeAppointment({
   appointmentData,
   selectedTime,
   setSelectedTime,
+  selectedProfessional,
 }: TimeAppointmentProps) {
   const closingDays = storeData?.closingDays;
   const operatingHours = storeData?.operatingHours;
   const operatingDays = storeData?.operatingDays;
-  const [slotsByDate, setSlotsByDate] = useState<
-    Record<string, string[]>
-  >({});  
-  
+  const [slotsByDate, setSlotsByDate] = useState<Record<string, string[]>>({});
+
   const normalizeDayName = (day: string) => {
     day = day.toLowerCase();
     if (day.includes("terça")) return "terça";
@@ -37,10 +39,18 @@ export default function TimeAppointment({
     return day;
   };
 
+  function formatLocalISODate(date: Date): string {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+
   function generateNextDays(weeks = 4): Date[] {
     const days: Date[] = [];
     const today = new Date();
-    
+    today.setHours(0, 0, 0, 0);
+
     const mappedOperatingDays =
       operatingDays?.map((d) => normalizeDayName(d)) || [];
 
@@ -48,7 +58,7 @@ export default function TimeAppointment({
       const date = new Date(today);
       date.setDate(today.getDate() + i);
 
-      const formattedDate = date.toISOString().split("T")[0];
+      const formattedDate = formatLocalISODate(date);
 
       const mappedClosingDays =
         closingDays?.map((d) => new Date(d).toISOString().split("T")[0]) || [];
@@ -70,24 +80,40 @@ export default function TimeAppointment({
 
   async function fetchServiceDuration(serviceId: number): Promise<number> {
     const serviceData = await getServiceTypeById(serviceId);
-    return serviceData?.data.durationMinutes || 0;
+    const duration = serviceData?.data.durationMinutes;
+    const finalDuration = duration && duration > 0 ? duration : 30;
+    return finalDuration;
   }
 
   async function getOccupiedTimeSlots(
-    appointments: Appointment[]
+    appointments: Appointment[],
+    selectedProfessional: number[]
   ): Promise<Set<string>> {
     const occupiedSlots = new Set<string>();
 
-    for (const appointment of appointments) {
+    const appointmentsToConsider =
+      selectedProfessional.length > 0
+        ? appointments.filter((app) =>
+            selectedProfessional.includes(app.employeeId || -1)
+          )
+        : appointments;
+
+    for (const appointment of appointmentsToConsider) {
+      if (!appointment.serviceIds || appointment.serviceIds.length === 0)
+        continue;
+
       const serviceId = appointment.serviceIds[0];
       const durationMinutes = await fetchServiceDuration(serviceId);
 
       let remainingMinutes = durationMinutes;
       const startTime = parseTimeToDate(appointment.appointmentTime);
       const current = new Date(startTime);
+      const blockedSlots: string[] = [];
 
       while (remainingMinutes > 0) {
-        occupiedSlots.add(formatTime(current));
+        const slot = formatTime(current);
+        occupiedSlots.add(slot);
+        blockedSlots.push(slot);
         current.setMinutes(current.getMinutes() + 30);
         remainingMinutes -= 30;
       }
@@ -98,13 +124,14 @@ export default function TimeAppointment({
 
   async function generateTimeSlots(
     operatingHours: string,
-    appointments: Appointment[]
+    appointments: Appointment[],
+    selectedProfessional: number[]
   ): Promise<string[]> {
     const [start, end] = operatingHours.split(" - ");
-    
+
     const startHour = parseTimeToDate(start);
     var endHour = startHour;
-    if(end !== undefined) {
+    if (end !== undefined) {
       endHour = parseTimeToDate(end);
     }
 
@@ -113,7 +140,7 @@ export default function TimeAppointment({
 
     const occupiedSlots =
       !storeData?.multipleAppointments === true
-        ? await getOccupiedTimeSlots(appointments)
+        ? await getOccupiedTimeSlots(appointments, selectedProfessional)
         : new Set<string>();
 
     while (current <= endHour) {
@@ -159,26 +186,34 @@ export default function TimeAppointment({
   useEffect(() => {
     async function calculateAllSlots() {
       const result: Record<string, string[]> = {};
-      const todayFormatted = new Date().toISOString().split("T")[0];
+
+      const todayFormatted = formatLocalISODate(new Date());
       const now = new Date();
 
+      const professionalIds = Array.isArray(selectedProfessional)
+        ? selectedProfessional
+        : [selectedProfessional].filter(
+            (id) => id !== undefined && id !== null
+          );
+
       for (const day of days) {
-        const formattedDate = day.toISOString().split("T")[0];
-        const appointments = appointmentData?.[formattedDate] || []; 
-        
+        const formattedDate = formatLocalISODate(day);
+
+        const appointments: Appointment[] =
+          appointmentData?.[formattedDate] || [];
+
         let slots = await generateTimeSlots(
           operatingHours ? operatingHours : "",
-          appointments
+          appointments,
+          professionalIds
         );
 
-        // Se o dia processado for hoje, filtre os horários
         if (formattedDate === todayFormatted) {
           slots = slots.filter((slot) => {
             const [hours, minutes] = slot.split(":").map(Number);
             const slotDateTime = new Date();
             slotDateTime.setHours(hours, minutes, 0, 0);
 
-            // Retorna apenas os horários que ainda não passaram
             return slotDateTime > now;
           });
         }
@@ -188,7 +223,13 @@ export default function TimeAppointment({
     }
 
     calculateAllSlots();
-  }, [appointmentData, operatingHours]);
+  }, [
+    JSON.stringify(selectedProfessional),
+    appointmentData,
+    operatingHours,
+    operatingDays,
+    closingDays,
+  ]);
 
   return (
     <>
@@ -198,7 +239,7 @@ export default function TimeAppointment({
         <S.RightButton onClick={() => scroll("right")}>▶</S.RightButton>
         <S.TimeContent ref={scrollContainerRef}>
           {days.map((day) => {
-            const formattedDate = day.toISOString().split("T")[0];
+            const formattedDate = formatLocalISODate(day);
             const timeSlots = slotsByDate[formattedDate] || [];
 
             return (
@@ -224,7 +265,7 @@ export default function TimeAppointment({
                       setSelectedTime({ date: formattedDate, time: slot });
                       window.scrollTo({
                         top: 0,
-                        behavior: "smooth",  
+                        behavior: "smooth",
                       });
                     }}
                     selected={

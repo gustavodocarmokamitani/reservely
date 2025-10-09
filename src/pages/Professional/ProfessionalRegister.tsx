@@ -48,9 +48,7 @@ function ProfessionalRegister() {
     setFormValuesProfessionalRegister,
     setRows,
     setDecodedData,
-    setIsLoading,
-    decodedData,
-    setBlockAddUser
+    setIsLoading, 
   );
 
   const {
@@ -102,7 +100,7 @@ function ProfessionalRegister() {
             </P.SubTitle>
           </P.ContentHeader>
           <P.ContentHeaderImg align="end">
-            {decodedData?.userRole === "Admin" && !blockAddUser && (
+            {decodedData?.userRole === "Admin" && (
               <div
                 style={{
                   display: "flex",

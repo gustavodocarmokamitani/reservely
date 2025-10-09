@@ -33,6 +33,7 @@ export const useStateCustom = () => {
   const [selectedUserIds, setSelectedUserIds] = useState<number[]>([]);
   const [show, setShow] = useState<boolean>(false);
   const [post, setPost] = useState<boolean>(false);
+  const [blockAddUser, setBlockAddUser] = useState(false);
   const [employee, setEmployee] = useState<SelectOption | null>(null);
   const [formValuesProfessional, setFormValuesProfessional] =
     useState<UserEmployee>({
@@ -76,6 +77,8 @@ export const useStateCustom = () => {
     setShow,
     post,
     setPost,
+    blockAddUser,
+    setBlockAddUser,
     employee,
     setEmployee,
     decodedData,

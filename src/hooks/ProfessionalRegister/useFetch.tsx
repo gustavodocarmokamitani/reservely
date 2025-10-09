@@ -30,8 +30,6 @@ export const useFetch = (
   setRows: React.Dispatch<React.SetStateAction<Rows[]>>,
   setDecodedData: React.Dispatch<React.SetStateAction<DecodedToken | null>>,
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
-  decodedData: DecodedToken | null,
-  setBlockAddUser: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
   const storedToken = localStorage.getItem("authToken");
   const fetchDataRef = useRef(false);
@@ -47,8 +45,7 @@ export const useFetch = (
         console.error("Erro ao decodificar token:", error);
       }
     }
-
-    Number(decodedData?.subscriptionPlanId) !== 1 && setBlockAddUser(true);
+ 
 
     try {
       const usersData = await getUserByUseTypeStore(2, storeUser);

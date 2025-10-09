@@ -28,8 +28,8 @@ export const useFetch = (
     const fetchDecodedToken = async () => {
       if (authToken) {
         try {
-          const decoded = await decodeToken(authToken); 
-          
+          const decoded = await decodeToken(authToken);
+
           setDecodedData(decoded);
         } catch (error) {
           console.error("Erro ao decodificar o token:", error);
@@ -38,15 +38,22 @@ export const useFetch = (
     };
 
     fetchDecodedToken();
-  }, [authToken]); 
+  }, [authToken]);
+
+  function formatLocalISODate(date: Date): string {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const formattedStoreCode = storeCode.toUpperCase().replace("_", "#");
         const responseStore = await getStoreByStoreCode(formattedStoreCode);
-        setStoreData(responseStore); 
-        
+        setStoreData(responseStore);
+
         const servicePromises = responseStore.ServiceIds.map((id: any) =>
           getServiceTypeById(id)
         );
@@ -57,24 +64,38 @@ export const useFetch = (
 
         setServiceData(allServiceData);
 
-        const responseProfessional = await getUserByUseTypeStore(2, responseStore.id);
-        
+        const responseProfessional = await getUserByUseTypeStore(
+          2,
+          responseStore.id
+        );
+
         setProfessionalData(responseProfessional);
 
-        const responseAppointment = await getAppointmentByStoreId(responseStore.id);
+        const responseAppointment = await getAppointmentByStoreId(
+          responseStore.id
+        );
 
-        const appointmentByDate = responseAppointment.reduce(
+        const validAppointments = responseAppointment.filter(
+          (appointment: Appointment) => appointment.employeeId !== null
+        );
+
+        const appointmentByDate = validAppointments.reduce(
           (acc: any, appointment: Appointment) => {
-            const dateKey = new Date(appointment.appointmentDate)
-              .toISOString()
-              .split("T")[0];
+            const dateUTC = new Date(appointment.appointmentDate);
+
+            const localDate = new Date(
+              dateUTC.getTime() + dateUTC.getTimezoneOffset() * 60000
+            );
+
+            const dateKey = formatLocalISODate(localDate);
+
             if (!acc[dateKey]) acc[dateKey] = [];
             acc[dateKey].push(appointment);
             return acc;
           },
           {} as Record<string, typeof responseAppointment>
-        ); 
-        
+        );
+
         setAppointmentData(appointmentByDate);
       } catch (error) {
         console.error("Erro ao buscar dados da loja:", error);

@@ -68,7 +68,9 @@ const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
           initialState={{
             pagination: { paginationModel: { pageSize: 13 } },
             sorting: {
-              sortModel: [{ field: "appointmentDate", sort: "desc" }],
+              sortModel: [  
+                { field: "appointmentStatus", sort: "asc" },
+              ],
             },
           }}
           pageSizeOptions={[13, 20, 25]}
@@ -111,7 +113,9 @@ const AppointmentDataTable: React.FC<AppointmentDataTableProps> = ({
         <Modal
           title="Alterar Status do Apontamento"
           subTitle="Gerencie o status associados a este apontamento."
-          handleSubmit={() => handleSubmitAppointmentHistoryStatus(statusAppointment[0]?.value)}
+          handleSubmit={() =>
+            handleSubmitAppointmentHistoryStatus(statusAppointment[0]?.value)
+          }
           size="small"
           {...{ handleClose }}
         >

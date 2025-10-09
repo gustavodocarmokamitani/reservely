@@ -42,32 +42,35 @@ export const useFetch = (
   setCombinedData: React.Dispatch<React.SetStateAction<CombinedData | null>>,
   setSelectedServices: React.Dispatch<React.SetStateAction<number[]>>,
   setRows: React.Dispatch<React.SetStateAction<Rows[]>>,
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
+  decodedData: DecodedToken | null,
+  setBlockAddUser: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   const storedToken = localStorage.getItem("authToken");
 
   const fetchDataRef = useRef(false);
 
   const fetchData = useCallback(async () => {
+    let data = null;
     if (storedToken) {
       try {
-        const data = await decodeToken(storedToken);
+        data = await decodeToken(storedToken);
         setDecodedData(data);
       } catch (error) {
         console.error("Erro ao decodificar token:", error);
       }
     }
-  
+
     setIsLoading(true);
-  
+
     try {
       const usersData = await getUserByUseTypeStore(2, storeUser);
       const employeesData = await getEmployeesByStoreId(storeUser);
-  
+
       const mappedRows: Rows[] = employeesData
         .map((employee: Employee) => {
           const user = usersData.find((u: any) => u.id === employee.userId);
-  
+
           if (user) {
             return {
               id: user.id,
@@ -83,18 +86,25 @@ export const useFetch = (
           return null;
         })
         .filter(Boolean) as Rows[];
-  
+
       setRows(mappedRows);
+
+      if (
+        (data?.subscriptionPlanId === "1" && employeesData.length >= 2) ||
+        (data?.subscriptionPlanId === "2" && employeesData.length >= 10)
+      ) {
+        setBlockAddUser(true);
+      }
     } catch (error) {
       console.error("Erro ao buscar dados:", error);
     }
-  
+
     setIsLoading(false);
-  }, [storedToken, storeUser, setDecodedData, setIsLoading, setRows]);   
+  }, [storedToken, storeUser, setDecodedData, setIsLoading, setRows]);
 
   useEffect(() => {
     if (!fetchDataRef.current) {
-      fetchData();      
+      fetchData();
       fetchDataRef.current = true;
     }
   }, [fetchData]);

@@ -13,8 +13,9 @@ export default function ProfessionalAppointment({
   filteredEmployees,
   selectedProfessional,
   setSelectedProfessional,
-}: ProfessionalAppointmentProps) {
+}: ProfessionalAppointmentProps) { 
   return (
+    
     <>
       <h2 className="mt-5 mb-3 px-3">Profissionais</h2>
       <S.AppointmentContainer>

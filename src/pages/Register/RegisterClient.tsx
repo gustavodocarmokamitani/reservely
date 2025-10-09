@@ -150,13 +150,6 @@ const RegisterClient = () => {
                     disabled={isLoading}
                   />
                 </div>
-                <Button
-                  $isBack
-                  $noIcon
-                  type="button"
-                  onClick={handleNavigationHome}
-                  disabled={isLoading}
-                />
                 <div
                   className="my-3"
                   style={{ display: "flex", justifyContent: "center" }}
