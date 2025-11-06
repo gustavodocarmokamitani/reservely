@@ -5,10 +5,12 @@ import { SelectOption } from "../../models/SelectOptions";
 export const useStateCustom = () => {
   const [formValuesStore, setFormValuesStore] = useState<{
     name: string;
+    storeCode: string;
     active: boolean;
     multipleAppointments: boolean;
   }>({
     name: "",
+    storeCode: "",
     active: false,
     multipleAppointments: false,
   });

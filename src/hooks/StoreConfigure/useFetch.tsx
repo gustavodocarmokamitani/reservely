@@ -8,6 +8,7 @@ export const useFetch = (
   setFormValuesStore: React.Dispatch<
     React.SetStateAction<{
       name: string;
+      storeCode: string;
       active: boolean;
       multipleAppointments: boolean;
     }>
@@ -34,6 +35,7 @@ export const useFetch = (
         setFormValuesStore((prev) => ({
           ...prev,
           name: response.name,
+          storeCode: response.storeCode,
           active: response.status,
           multipleAppointments: response.multipleAppointments,
         }));

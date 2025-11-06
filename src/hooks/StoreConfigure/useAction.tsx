@@ -12,12 +12,14 @@ export const useAction = (
   setOpeningWeekDay: React.Dispatch<React.SetStateAction<string[]>>,
   formValuesStore: {
     name: string;
+    storeCode: string;
     active: boolean;
     multipleAppointments: boolean;
   },
   setFormValuesStore: React.Dispatch<
     React.SetStateAction<{
       name: string;
+      storeCode: string;
       active: boolean;
       multipleAppointments: boolean;
     }>
@@ -30,12 +32,27 @@ export const useAction = (
 
   const navigate = useNavigate();
 
+  const isValidStoreCode = (storeCode: string) => {
+    const regex = /#\d{3}$/;
+    return regex.test(storeCode || "");
+  };
+
   const handleSubmit = async () => {
     if (!store) return;
+
+    if (!isValidStoreCode(formValuesStore.storeCode)) {
+      enqueueSnackbar(
+        `O Código da Loja ("${formValuesStore.storeCode}") é inválido. Ele deve terminar com o padrão #001 (Ex: ${formValuesStore.storeCode}#001).`,
+        { variant: "error", autoHideDuration: 6000 }
+      );
+      return;
+    };
+
     setIsLoading(true);
     const storeMapped: Store = {
       ...store,
       name: formValuesStore.name,
+      storeCode: formValuesStore.storeCode,
       status: formValuesStore.active,
       multipleAppointments: formValuesStore.multipleAppointments,
       operatingHours: selectedTimes.join(" - "),

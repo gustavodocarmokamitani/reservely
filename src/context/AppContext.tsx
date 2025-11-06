@@ -101,7 +101,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
           setDecodedToken(null);
         }
       }
-      setIsLoading(false); // 🚨 Define como FALSE após toda a inicialização
+      setIsLoading(false);  
     };
 
     initializeAuth();

@@ -23,8 +23,7 @@ export const useAction = (
 
   const context = useContext(AppContext);
   const { setAuthToken } = context || {};
-
-  // 3. Tipagem do parâmetro e da resposta
+ 
   const handleLoginWithGoogle = async (
     credentialResponse: CredentialResponse
   ) => {
@@ -35,8 +34,7 @@ export const useAction = (
       }
 
       const response = await loginWithGoogle(credentialResponse.credential);
-
-      // 4. A desestruturação agora é segura e livre de erros
+ 
       const { token, storeId, name, lastName } = response;
 
       if (response.sucesso && token) {

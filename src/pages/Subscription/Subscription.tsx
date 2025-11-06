@@ -14,14 +14,14 @@ function Subscription() {
   const [showPlans, setShowPlans] = useState(false);
 
   const context = useContext(AppContext);
-  const authToken = context?.authToken; 
-
+  const authToken = context?.authToken;
+ 
   useEffect(() => {
     const refreshNewToken = async () => {
       if (authToken) {
         try {
           const response = await refreshToken(authToken);
-          context?.setAuthToken(response.token); 
+          context?.setAuthToken(response.token);
           
         } catch (error) {
           console.error("Erro ao atualizar o token:", error);
@@ -36,8 +36,7 @@ function Subscription() {
       if (authToken) {
         try {
           const decoded = await decodeToken(authToken);
-          setDecodedData(decoded); 
-          
+          setDecodedData(decoded);
         } catch (error) {
           console.error("Erro ao decodificar o token:", error);
         }
@@ -211,7 +210,7 @@ function Subscription() {
           subscriptionStatus={decodedData?.subscriptionStatus}
         />
       )}
-      {isSubscriptionActive && showPlans && (
+      {!isSubscriptionActive && !showPlans && (
         <div
           style={{
             display: "flex",

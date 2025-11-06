@@ -140,6 +140,15 @@ function StoreConfigure() {
                   />
                 </S.StoreContent>
                 <S.StoreContent>
+                  <p>Código da Loja</p>
+                  <Input
+                    type="text"
+                    name="storeCode"
+                    value={formValuesStore.storeCode}
+                    onChange={handleInputChangeStore}
+                  />
+                </S.StoreContent>
+                <S.StoreContent>
                   <p>Loja</p>
                   <Input
                     type="toggle"
