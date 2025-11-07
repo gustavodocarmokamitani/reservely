@@ -74,6 +74,7 @@ function Subscription() {
       {
         name: "Essencial",
         price: "1,00",
+        discount: "",
         per: "/mês",
         planId: 98,
         features: [
@@ -86,6 +87,7 @@ function Subscription() {
         name: "Profissional",
         price: "99,90",
         popular: true,
+        discount: "",
         per: "/mês",
         planId: 2,
         features: [
@@ -97,6 +99,7 @@ function Subscription() {
       {
         name: "Enterprise",
         price: "149,90",
+        discount: "",
         per: "/mês",
         planId: 3,
         features: [
@@ -111,6 +114,7 @@ function Subscription() {
       {
         name: "Essencial",
         price: "548,90",
+        discount: "598,80",
         per: "/ano",
         planId: 4,
         discountedPrice: "45,74",
@@ -124,6 +128,7 @@ function Subscription() {
         name: "Profissional",
         price: "1.098,84",
         popular: true,
+        discount: "1198,80",
         per: "/ano",
         planId: 5,
         discountedPrice: "91,57",
@@ -136,6 +141,7 @@ function Subscription() {
       {
         name: "Enterprise",
         price: "1.648,90",
+        discount: "1798,80",
         per: "/ano",
         planId: 6,
         discountedPrice: "137,4",
@@ -210,7 +216,7 @@ function Subscription() {
           subscriptionStatus={decodedData?.subscriptionStatus}
         />
       )}
-      {!isSubscriptionActive && !showPlans && (
+      {!isSubscriptionActive || showPlans && (
         <div
           style={{
             display: "flex",

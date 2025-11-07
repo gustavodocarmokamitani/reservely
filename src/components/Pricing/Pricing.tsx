@@ -9,6 +9,7 @@ interface Plan {
   name: string;
   price: string;
   discountedPrice?: string;
+  discount?: string;
   per: string;
   popular?: boolean;
   features: string[];
@@ -92,7 +93,7 @@ export default function Pricing({
           >
             Anual
           </span>
-          Economize 8.33%
+          Ganhe 1 mês grátis
         </span>
       </div>
 
@@ -204,7 +205,7 @@ export default function Pricing({
                       color: plan.popular ? "#b1aeae" : "#b1aeae",
                     }}
                   >
-                    {plan.price}
+                    {plan.discount}
                   </span>
                   <span
                     style={{
@@ -258,17 +259,16 @@ export default function Pricing({
                       color: plan.popular ? "#f16855" : "#f16855",
                     }}
                   >
-                    Economize{" "}
+                    Ganhe{" "}
                     <span
                       style={{
                         fontSize: "1.15rem",
                         color: plan.popular ? "#2c2c2c" : "#fff",
                       }}
                     >
-                      8.33%
+                      1 Mês
                     </span>{" "}
-                    com <br />
-                    plano anual
+                    Grátis
                   </span>
                 </div>
               )}
@@ -295,6 +295,7 @@ export default function Pricing({
                   display: "flex",
                   flexDirection: "column",
                   gap: "1rem",
+                  paddingLeft: ".6rem",
                 }}
               >
                 {plan.features.map((feature: string) => (

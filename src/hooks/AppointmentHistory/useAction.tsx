@@ -89,7 +89,7 @@ export const useAction = (
 
       setIsLoading(false);
       if (responseAppointment) {
-        enqueueSnackbar("Status do appointment editado com sucesso!", {
+        enqueueSnackbar("Status do agendamento editado com sucesso!", {
           variant: "success",
         });
       }
@@ -98,7 +98,7 @@ export const useAction = (
         `Erro ao editar appointment ${selectedAppointmentHistoryId}:`,
         error
       );
-      enqueueSnackbar("Erro ao editar o status do appointment.", {
+      enqueueSnackbar("Erro ao editar o status do agendamento.", {
         variant: "error",
       });
     }

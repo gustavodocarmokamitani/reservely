@@ -21,25 +21,17 @@ export const useEffectCustom = (
       setColumnWidth(Math.floor(totalWidth / columnsCount));
     }
   }, [decodedData, setColumnWidth]);
-  
+
   useEffect(() => {
     updateColumnWidth();
     window.addEventListener("resize", updateColumnWidth);
-  
+
     return () => {
       window.removeEventListener("resize", updateColumnWidth);
     };
-  }, [updateColumnWidth]); 
-  
+  }, [updateColumnWidth]);
 
   const columns: GridColDef[] = [
-    {
-      field: "id",
-      headerName: "ID",
-      flex: 1,
-      align: "center" as const,
-      headerAlign: "center" as const,
-    },
     {
       field: "name",
       headerName: "Nome",
@@ -123,5 +115,5 @@ export const useEffectCustom = (
         ]
       : []),
   ];
-  return {columns, containerRef };
+  return { columns, containerRef };
 };

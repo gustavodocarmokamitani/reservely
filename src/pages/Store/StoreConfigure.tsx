@@ -202,7 +202,7 @@ function StoreConfigure() {
                   />
                 </S.StoreContent>
                 <S.StoreContent>
-                  <p>Datas de fechamento</p>
+                  <p>Dias sem atendimento</p>
                   <SelectDataPicker
                     type="store"
                     setDate={handleSetDatesFromPicker}

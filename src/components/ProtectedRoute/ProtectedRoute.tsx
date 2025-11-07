@@ -17,17 +17,9 @@ export const ProtectedRoute = ({
 
   const context = useContext(AppContext);
 
-  if (context?.isLoading || !context) {
-    return null;
-  }
-
-  if (!context?.authToken) {
-    return <Navigate to="/login" />;
-  }
-
   useEffect(() => {
     const fetchDecodedToken = async () => {
-      if (context.authToken) {
+      if (context?.authToken) {
         try {
           const decoded = await decodeToken(context.authToken);
           setDecodedToken(decoded);
@@ -37,7 +29,15 @@ export const ProtectedRoute = ({
       }
     };
     fetchDecodedToken();
-  }, [context.authToken]);
+  }, [context?.authToken]);
+
+  if (context?.isLoading || !context) {
+    return null;
+  }
+
+  if (!context?.authToken) {
+    return <Navigate to="/login" />;
+  }
 
   if (requiresSubscription && decodedToken?.isSubscriptionActive !== "True") {
     return <Navigate to="/subscription" />;

@@ -32,9 +32,9 @@ export const Button = styled.button<ButtonProps>`
     if (props.$isAdd ) return "#000";
     if (props.$isRemove) return "#CDCDCD";
     if (props.$isClosed ) return "#FF3535";
-    if (props.$isConfirm || props.$isUpgrade || props.$isBuy) return "#1A8439";
+    if (props.$isConfirm || props.$isUpgrade || props.$isBuy || props.$isAppointment) return "#1A8439";
     if (props.$isConfigure || props.$isResend) return "#000";
-    if (props.$isBack || props.$isRescheduling || props.$isRating || props.$isAppointment || props.$isSelected) return "#000";
+    if (props.$isBack || props.$isRescheduling || props.$isRating || props.$isSelected) return "#000";
     if (props.$isLogin) return "#2A2A2A";
     if (props.$isRegisterStore || props.$isRegisterClient) return "#fff";
     if (props.$isGoogle) return "#fff";

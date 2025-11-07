@@ -26,6 +26,7 @@ export default function TimeAppointment({
   const operatingHours = storeData?.operatingHours;
   const operatingDays = storeData?.operatingDays;
   const [slotsByDate, setSlotsByDate] = useState<Record<string, string[]>>({});
+  console.log(appointmentData);
 
   const normalizeDayName = (day: string) => {
     day = day.toLowerCase();
@@ -91,12 +92,14 @@ export default function TimeAppointment({
   ): Promise<Set<string>> {
     const occupiedSlots = new Set<string>();
 
+    const activeAppointments = appointments.filter((appointment) => appointment.appointmentStatusId !== 3);
+
     const appointmentsToConsider =
       selectedProfessional.length > 0
-        ? appointments.filter((app) =>
+        ? activeAppointments.filter((app) =>
             selectedProfessional.includes(app.employeeId || -1)
           )
-        : appointments;
+        : activeAppointments;
 
     for (const appointment of appointmentsToConsider) {
       if (!appointment.serviceIds || appointment.serviceIds.length === 0)
