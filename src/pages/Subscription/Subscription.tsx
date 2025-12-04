@@ -15,14 +15,13 @@ function Subscription() {
 
   const context = useContext(AppContext);
   const authToken = context?.authToken;
- 
+
   useEffect(() => {
     const refreshNewToken = async () => {
       if (authToken) {
         try {
           const response = await refreshToken(authToken);
           context?.setAuthToken(response.token);
-          
         } catch (error) {
           console.error("Erro ao atualizar o token:", error);
         }
@@ -98,10 +97,10 @@ function Subscription() {
       },
       {
         name: "Enterprise",
-        price: "149,90",
+        price: "1,00",
         discount: "",
         per: "/mês",
-        planId: 3,
+        planId: 99,
         features: [
           "Tudo do Profissional",
           "Funcionários ilimitados",
@@ -208,15 +207,14 @@ function Subscription() {
       </P.ContainerHeader>
 
       {/* Renderização Condicional Principal */}
-      {isSubscriptionActive && !showPlans && (
+      {isSubscriptionActive && !showPlans ? (
         <Plan
-          subscriptionPlanId={1}
+          subscriptionPlanId={3}
           subscriptionStartDate={decodedData?.subscriptionStartDate}
           subscriptionDueDate={decodedData?.subscriptionDueDate}
           subscriptionStatus={decodedData?.subscriptionStatus}
         />
-      )}
-      {!isSubscriptionActive || showPlans && (
+      ) : (
         <div
           style={{
             display: "flex",

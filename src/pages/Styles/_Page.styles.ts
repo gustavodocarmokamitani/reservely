@@ -4,7 +4,7 @@ export const ContainerPage = styled.div`
   width: 100%;
   height: 100%;
   padding: 5rem;
-  background: #fafafa;
+  background: rgba(249, 249, 249, 1);
 
   @media (max-width: 900px) {
     flex-direction: column;

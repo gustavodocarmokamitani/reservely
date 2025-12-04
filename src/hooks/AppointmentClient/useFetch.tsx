@@ -95,8 +95,9 @@ export const useFetch = (
           },
           {} as Record<string, typeof responseAppointment>
         );
-
-        setAppointmentData(appointmentByDate);
+        
+        setAppointmentData(appointmentByDate); 
+        
       } catch (error) {
         console.error("Erro ao buscar dados da loja:", error);
       }

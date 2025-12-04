@@ -10,7 +10,7 @@ export const StoreContent = styled.div`
   margin-bottom: 30px;
 
   & input {
-    margin: 0 !important; 
+    margin: 0 !important;
   }
 `;
 
@@ -34,11 +34,11 @@ export const Store = styled.div`
 `;
 
 export const StoreSectionOne = styled.div`
-    max-width: 350px;
-    flex-shrink: 0;
+  max-width: 350px;
+  flex-shrink: 0;
 
-    @media (max-width: 1200px) {
-    width: 100%; 
+  @media (max-width: 1200px) {
+    width: 100%;
   }
 `;
 
@@ -61,7 +61,8 @@ export const Copy = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  padding: 8px;
+  padding: 5px 2px;
+  border: 1px solid #eee;
   border-radius: 15px;
   box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.3);
   cursor: pointer;

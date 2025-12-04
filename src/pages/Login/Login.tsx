@@ -23,10 +23,12 @@ const Login = () => {
     password,
     storeCode
   );
+  console.log(storeCode.length);
 
   const navigate = useNavigate();
   const handleButtonClick = () => {
-    navigate(`/register-client/${storeCode}`);
+    if (storeCode.length == 0)  navigate(`/home`);
+    else navigate(`/register-client/${storeCode}`);
   };
 
   return (
@@ -93,8 +95,18 @@ const Login = () => {
                       text="continue_with"
                     />
                   </div>
-                  <p className="mt-3" >
-                    Não tem uma conta? <a style={{color: "rgb(13, 110, 253)", cursor: "pointer", textDecoration: "underline"}} onClick={handleButtonClick}>Inscreva-se</a>
+                  <p className="mt-3">
+                    Não tem uma conta?{" "}
+                    <a
+                      style={{
+                        color: "rgb(13, 110, 253)",
+                        cursor: "pointer",
+                        textDecoration: "underline",
+                      }}
+                      onClick={handleButtonClick}
+                    >
+                      Inscreva-se
+                    </a>
                   </p>
                   <p className="mt-2">
                     Não recebeu e-mail de confirmação ou token expirou?{" "}

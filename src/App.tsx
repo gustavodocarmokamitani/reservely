@@ -52,6 +52,7 @@ import { ProtectedLayout } from "./ProtectedLayout";
 // Axios Instance
 import api from "./axiosInstance";
 import { ProtectedRoute } from "./components/ProtectedRoute/ProtectedRoute";
+import Landing from "./pages/Landing/Landing";
 
 function App() {
   const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID; 
@@ -73,7 +74,8 @@ function App() {
         <Router>
           <Routes>
             {/* Rotas Públicas */}
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Landing />} />
+            <Route path="/home" element={<Home />} />
             <Route path="/code/:storeCodeParams" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/login-code/:storeCodeParams" element={<Login />} />

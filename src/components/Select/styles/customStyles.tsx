@@ -8,7 +8,7 @@ const customStyles = {
     border: "1px solid rgba(0, 0, 0, 0.25)",
     borderRadius: "0.93rem",
     boxShadow: "4px 4px 15px 0px rgba(0, 0, 0, 0.25)",
-    backgroundColor: "#fafafa",
+    backgroundColor: "#ffffff",
     borderColor: "#ccc",
     "&:hover": {
       borderColor: "#888",

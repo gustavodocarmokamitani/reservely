@@ -7,12 +7,15 @@ export const StyledDatePicker = styled.div`
   max-height: 500px;
   margin-bottom: 50px;
 
+  & .react-datepicker {
+    background-color: white !important;
+  }
   & .react-datepicker__day {
     height: 1.875rem;
     width: 1.875rem;
     text-align: center;
     line-height: 1.8625rem;
-
+    
     @media (max-width: 1200px) {
       width: 1.275rem;
     }
@@ -59,7 +62,7 @@ export const StyledDatePicker = styled.div`
   }
 
   & .react-datepicker__header {
-    background-color: #f8f8f8;
+     background-color: white !important;
     color: white;
     border-bottom: 1px solid #ddd;
     border-top-left-radius: 0.3125rem;

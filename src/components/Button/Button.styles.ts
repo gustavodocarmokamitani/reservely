@@ -26,7 +26,7 @@ export const Button = styled.button<ButtonProps>`
   min-width: 9.375rem;
   height: 2.812rem;
   border: transparent;
-  border-radius: 50px;
+  border-radius: 10px;
   box-shadow: 4px 4px 15px 0px rgba(0, 0, 0, 0.5);
   background-color: ${(props) => {
     if (props.$isAdd ) return "#000";

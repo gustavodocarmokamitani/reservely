@@ -17,7 +17,9 @@
     "@schedule-x/calendar-controls": "^2.21.0",
     "file-saver": "^2.0.5",
     "framer-motion": "^12.23.22",
+    "gsap": "^3.13.0",
     "lucide-react": "^0.544.0",
+    "ogl": "^1.0.11",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "xlsx": "^0.18.5"

@@ -38,6 +38,7 @@ export const CardStoreContainer = styled.div`
   justify-content: center;
   align-items: center;
   margin: 0 15px 25px 0;
+  background-color: white;
 
   & img {
     margin-bottom: 10px;

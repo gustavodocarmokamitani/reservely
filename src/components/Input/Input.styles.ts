@@ -39,6 +39,7 @@ export const Input = styled.input`
 `;
 
 export const ToggleWrapper = styled.div`
+background-color: white;
   display: flex;
   align-items: center;
   justify-content: space-between; /* Adicione esta linha */

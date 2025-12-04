@@ -193,7 +193,7 @@ export const useAction = (
   };
 
   const handleNavigationHome = () => {
-    window.location.href = "/";
+    window.location.href = "/home";
   };
 
   return {

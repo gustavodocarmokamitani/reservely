@@ -4,19 +4,8 @@ import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/AppContext";
 import { DecodedToken } from "../../models/DecodedToken";
 import { decodeToken } from "../../services/AuthService";
-import { Appointment } from "../../models/Appointment";
-import {
-  getAppointmentByClienteId,
-  getAppointmentHistoryById,
-} from "../../services/AppointmentServices";
-import { getEmployeeById } from "../../services/EmployeeServices";
-import { getUserById } from "../../services/UserServices";
-import { getServiceTypeById } from "../../services/ServiceTypeServices";
-import {
-  getStoreById,
-  getStoreByStoreCode,
-} from "../../services/StoreServices";
-import { capitalizeFirstLetter } from "../../services/system/globalService";
+import { getAppointmentHistoryById } from "../../services/AppointmentServices";
+import { getStoreByStoreCode } from "../../services/StoreServices";
 import Button from "../../components/Button/Button";
 import {
   ContainerHeader,
@@ -59,7 +48,7 @@ export const HomeClient = () => {
   }, [authToken]);
 
   useEffect(() => {
-    const fetchData = async () => { 
+    const fetchData = async () => {
       if (!decodedData?.userId) {
         console.warn("decodedData.userId está ausente ou inválido.");
         return;
@@ -72,29 +61,28 @@ export const HomeClient = () => {
           console.error("userId não é um número válido:", decodedData.userId);
           return;
         }
- 
-        const response = await getAppointmentHistoryById(userId); 
-         
+
+        const response = await getAppointmentHistoryById(userId);
+
         if (!response || response.length === 0) {
           console.warn(
             "Nenhum histórico de agendamento detalhado encontrado para o usuário:",
             userId
           );
-          setData([]); 
+          setData([]);
           return;
         }
- 
-        const appointmentsReady = response.map(
-          (appointment: ClientAppointmentHistoryDTO) => { 
 
+        const appointmentsReady = response.map(
+          (appointment: ClientAppointmentHistoryDTO) => {
             return {
               storeName: appointment.storeName,
               storeCode: appointment.storeCode,
               appointmentDate: appointment.appointmentDate,
               appointmentTime: appointment.appointmentTime,
-              appointmentStatus: appointment.appointmentStatus,  
-              employeeName: appointment.employeeName,  
-              services: appointment.services.map((s) => ({ name: s.name })),  
+              appointmentStatus: appointment.appointmentStatus,
+              employeeName: appointment.employeeName,
+              services: appointment.services.map((s) => ({ name: s.name })),
               professionalNumber: appointment.professionalPhoneNumber,
               totalPrice: appointment.totalPrice,
             };
@@ -102,7 +90,7 @@ export const HomeClient = () => {
         );
 
         setData(appointmentsReady);
- 
+
         if (storeCode && storeCode !== ":") {
           const responseStoreActive = await getStoreByStoreCode(storeCode);
           setStoreActive(responseStoreActive);
@@ -111,12 +99,12 @@ export const HomeClient = () => {
         console.error(
           "Erro geral ao buscar o histórico de agendamentos:",
           error
-        ); 
+        );
       }
     };
 
     fetchData();
-  }, [decodedData, storeCode, getStoreByStoreCode, setData, setStoreActive]); 
+  }, [decodedData, storeCode, getStoreByStoreCode, setData, setStoreActive]);
 
   const handleNavigateAppointmentClient = () => {
     if (storeCode === ":") {
