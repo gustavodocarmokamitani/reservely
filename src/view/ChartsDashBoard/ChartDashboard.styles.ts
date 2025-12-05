@@ -19,6 +19,7 @@ export const ChartDashboardWrapper = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 20px;
+  background-color: white;
 
   @media (max-width: 1200px) {
     width: 100%;
