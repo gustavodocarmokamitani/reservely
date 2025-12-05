@@ -32,31 +32,13 @@ export const useAction = (
 
   const navigate = useNavigate();
 
-const isValidStoreCode = (storeCode: string) => {
-    // A regex agora valida se toda a string contém APENAS letras, números e o caractere #
-    // ^: Início da string
-    // [a-zA-Z0-9#]+: Um ou mais (+) caracteres que sejam letras, números ou #
-    // $: Fim da string
-    const regex = /^[a-zA-Z0-9#]+$/;
-    return regex.test(storeCode || "");
-};
-
   const handleSubmit = async () => {
     if (!store) return;
-
-    if (!isValidStoreCode(formValuesStore.storeCode)) {
-      enqueueSnackbar(
-        `O Código da Loja ("${formValuesStore.storeCode}") é inválido. Ele deve terminar com o padrão #001 (Ex: ${formValuesStore.storeCode}#001).`,
-        { variant: "error", autoHideDuration: 6000 }
-      );
-      return;
-    };
 
     setIsLoading(true);
     const storeMapped: Store = {
       ...store,
       name: formValuesStore.name,
-      storeCode: formValuesStore.storeCode.replace(/\s/g, '').toUpperCase(),
       status: formValuesStore.active,
       multipleAppointments: formValuesStore.multipleAppointments,
       operatingHours: selectedTimes.join(" - "),
