@@ -131,7 +131,7 @@ function StoreConfigure() {
             <S.StoreSectionOne>
               <S.StoreContainer>
                 <S.StoreContent>
-                  <p>Name</p>
+                  <p>Nome</p>
                   <Input
                     type="text"
                     name="name"

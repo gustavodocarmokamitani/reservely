@@ -215,22 +215,22 @@ export default function UserConfig() {
 
         <Row className="px-5 px-sm-0">
           <Col sx={12} md={6} lg={6} xl={3} className="my-2">
-            <Paragraph text="Fistname" />
+            <Paragraph text="Nome" />
             <Input
               name="name"
               onChange={handleInputChange}
               type="text"
-              placeholder="Fistname"
+              placeholder="Nome"
               value={capitalizeFirstLetter(formData?.name)}
             />
           </Col>
           <Col sx={12} md={6} lg={6} xl={3} className="my-2">
-            <Paragraph text="Lastname" />
+            <Paragraph text="Sobrenome" />
             <Input
               name="lastName"
               onChange={handleInputChange}
               type="text"
-              placeholder="Lastname"
+              placeholder="Sobrenome"
               value={capitalizeFirstLetter(formData?.lastName)}
             />
           </Col>
@@ -245,43 +245,43 @@ export default function UserConfig() {
             />
           </Col>
           <Col sx={12} md={6} lg={6} xl={3} className="my-2">
-            <Paragraph text="Phone" />
+            <Paragraph text="Telefone" />
             <Input
               name="phone"
               onChange={handleInputChange}
               phone
               type="text"
-              placeholder="Phone"
+              placeholder="Telefone"
               value={formData?.phone}
             />
           </Col>
         </Row>
         <Row className="px-5 px-sm-0 pt-2">
           <Col sx={12} md={6} lg={6} xl={3} className="my-2">
-            <Paragraph text="Password" />
+            <Paragraph text="Senha" />
             <Input
               name="password"
               onChange={handleInputChange}
               type="password"
-              placeholder="Password"
+              placeholder="Senha"
             />
           </Col>
           <Col sx={12} md={6} lg={6} xl={3} className="my-2">
-            <Paragraph text="New Password" />
+            <Paragraph text="Nova Senha" />
             <Input
               name="newPassword"
               onChange={handleInputChange}
               type="password"
-              placeholder="New Password"
+              placeholder="Nova Senha"
             />
           </Col>
           <Col sx={12} md={6} lg={6} xl={3} className="mt-2 mb-5 pb-5">
-            <Paragraph text="Confirm Password" />
+            <Paragraph text="Confirmar Senha" />
             <Input
               name="confirmPassword"
               onChange={handleInputChange}
               type="password"
-              placeholder="Confirm Password"
+              placeholder="Confirmar Senha"
             />
           </Col>
         </Row>

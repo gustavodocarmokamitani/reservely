@@ -54,7 +54,7 @@ export default function TimeAppointment({
     const mappedOperatingDays =
       operatingDays?.map((d) => normalizeDayName(d)) || [];
 
-    for (let i = 0; i < weeks * 7; i++) {
+    for (let i = 0; i < weeks * 14; i++) {
       const date = new Date(today);
       date.setDate(today.getDate() + i);
 
@@ -152,7 +152,7 @@ export default function TimeAppointment({
       }
       current.setMinutes(current.getMinutes() + 30);
     }
-
+    
     return slots;
   }
 
