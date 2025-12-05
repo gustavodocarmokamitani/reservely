@@ -32,10 +32,14 @@ export const useAction = (
 
   const navigate = useNavigate();
 
-  const isValidStoreCode = (storeCode: string) => {
-    const regex = /#\d{3}$/;
+const isValidStoreCode = (storeCode: string) => {
+    // A regex agora valida se toda a string contém APENAS letras, números e o caractere #
+    // ^: Início da string
+    // [a-zA-Z0-9#]+: Um ou mais (+) caracteres que sejam letras, números ou #
+    // $: Fim da string
+    const regex = /^[a-zA-Z0-9#]+$/;
     return regex.test(storeCode || "");
-  };
+};
 
   const handleSubmit = async () => {
     if (!store) return;
@@ -46,16 +50,13 @@ export const useAction = (
         { variant: "error", autoHideDuration: 6000 }
       );
       return;
-    }
+    };
 
     setIsLoading(true);
     const storeMapped: Store = {
       ...store,
       name: formValuesStore.name,
-      storeCode: formValuesStore.storeCode
-        .replace(/[^a-zA-Z0-9]/g, "")
-        .replace(/\s/g, "")
-        .toUpperCase(),
+      storeCode: formValuesStore.storeCode.replace(/\s/g, '').toUpperCase(),
       status: formValuesStore.active,
       multipleAppointments: formValuesStore.multipleAppointments,
       operatingHours: selectedTimes.join(" - "),
