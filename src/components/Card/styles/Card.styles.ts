@@ -1,11 +1,8 @@
 import { motion } from "framer-motion";
 import styled from "styled-components";
 
-export const CardHomeClientPlanContainer = styled(motion.div)<{
-  $isHistory: boolean;
-}>`
-  border-radius: 0.75rem; 
-  padding: 2rem;
+export const CardHomeClientPlanContainer = styled(motion.div)<{$isHistory: boolean}>`
+  border-radius: 0.75rem;  
   border: 2px solid "#ca2929ff";
   background-color: white;
   transition: all 0.3s;
@@ -20,11 +17,13 @@ export const CardHomeClientPlanContainer = styled(motion.div)<{
 `;
  
 export const CardHomeClientTitle = styled.h4<{ $isHistory: boolean }>`
-  font-size: 1.5rem;
+  font-size: 1.2rem !important;
+  padding: 0.75rem 0.5rem;
+  border-radius: 0.75rem 0.75rem 0rem 0rem;
   font-weight: bold;
-  text-align: center;
-  margin-bottom: 0.5rem;
-  color: ${({ $isHistory }) => ($isHistory ? "#2c2c2c" : "#F16855")};
+  text-align: center; 
+  color: ${({ $isHistory }) => ($isHistory ? "white" : "#F16855")}!important;
+  background-color: #2c2c2c;
 `;
 
 export const CardStoreContainer = styled.div`
