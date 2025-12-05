@@ -79,6 +79,12 @@ const mapPlanId = (input: string | number | undefined): string | undefined => {
       return "plan-essencial";
     case "3":
       return "plan-enterprise";
+    case "98":
+      return "plan-basico";
+    case "99":
+      return "plan-enterprise";
+    case "100":
+      return "plan-essencial";
     // Caso o input já venha formatado corretamente
     case "plan-basico":
     case "plan-essencial":
@@ -98,6 +104,7 @@ const Plan: React.FC<PlanProps> = ({
   const mappedId = mapPlanId(subscriptionPlanId);
 
   const activePlan = currentPlans.find((p) => p.id === mappedId);
+  console.log(activePlan);
 
   if (!activePlan) {
     return null;

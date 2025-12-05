@@ -52,7 +52,7 @@ export const useAction = (
     const storeMapped: Store = {
       ...store,
       name: formValuesStore.name,
-      storeCode: formValuesStore.storeCode,
+      storeCode: formValuesStore.storeCode.replace(/\s/g, '').toUpperCase(),
       status: formValuesStore.active,
       multipleAppointments: formValuesStore.multipleAppointments,
       operatingHours: selectedTimes.join(" - "),

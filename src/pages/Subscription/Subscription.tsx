@@ -67,7 +67,8 @@ function Subscription() {
   };
 
   const isSubscriptionActive = decodedData?.isSubscriptionActive === "True";
-
+  // console.log(decodedData?.subscriptionPlanId);
+  
   const plansData = {
     monthly: [
       {
@@ -209,7 +210,7 @@ function Subscription() {
       {/* Renderização Condicional Principal */}
       {isSubscriptionActive && !showPlans ? (
         <Plan
-          subscriptionPlanId={3}
+          subscriptionPlanId={decodedData?.subscriptionPlanId}
           subscriptionStartDate={decodedData?.subscriptionStartDate}
           subscriptionDueDate={decodedData?.subscriptionDueDate}
           subscriptionStatus={decodedData?.subscriptionStatus}
