@@ -46,13 +46,16 @@ export const useAction = (
         { variant: "error", autoHideDuration: 6000 }
       );
       return;
-    };
+    }
 
     setIsLoading(true);
     const storeMapped: Store = {
       ...store,
       name: formValuesStore.name,
-      storeCode: formValuesStore.storeCode.replace(/\s/g, '').toUpperCase(),
+      storeCode: formValuesStore.storeCode
+        .replace(/[^a-zA-Z0-9]/g, "")
+        .replace(/\s/g, "")
+        .toUpperCase(),
       status: formValuesStore.active,
       multipleAppointments: formValuesStore.multipleAppointments,
       operatingHours: selectedTimes.join(" - "),
