@@ -67,7 +67,7 @@ function Subscription() {
   };
 
   const isSubscriptionActive = decodedData?.isSubscriptionActive === "True";
-  // console.log(decodedData?.subscriptionPlanId);
+  
   
   const plansData = {
     monthly: [

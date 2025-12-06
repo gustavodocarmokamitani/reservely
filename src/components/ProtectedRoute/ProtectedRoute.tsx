@@ -39,6 +39,10 @@ export const ProtectedRoute = ({
     return <Navigate to="/login" />;
   }
 
+  if (decodedToken?.userRole === "Employee") {
+    return children;
+  }
+  
   if (requiresSubscription && decodedToken?.isSubscriptionActive !== "True") {
     return <Navigate to="/subscription" />;
   }

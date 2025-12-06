@@ -75,7 +75,7 @@ export const StartButton = styled.span`
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(73, 73, 73, 0.4);
   transition: background-color 0.2s;
-z-index: 1;
+  z-index: 1;
   &:hover {
     background-color: #d85c49; // Tonalidade mais escura
   }
@@ -94,6 +94,10 @@ export const About = styled(SectionBase)`
   max-width: 1200px; /* Largura máxima para centralizar o conteúdo */
   margin: 0 auto;
   padding: 5rem 10rem; /* Padding para telas pequenas */
+
+  @media (max-width: 768px) {
+    padding: 2rem 2rem;
+  }
 
   & h3 {
     text-align: center;
@@ -138,16 +142,15 @@ export const AnalyticsValue = styled.span`
   line-height: 1;
   color: ${PRIMARY_COLOR};
   margin: 0.5rem 0;
-  
 `;
 
 export const Feature = styled(SectionBase)`
   background-color: white;
   border-radius: 15px;
   padding: 5rem 1rem;
-  max-width: 1200px; 
+  max-width: 1200px;
   margin: 0 auto;
-  min-height: 87vh; 
+  min-height: 87vh;
 
   & h3 {
     max-width: 800px;
@@ -206,8 +209,7 @@ export const PricingCard = styled.div`
   padding: 2rem;
   margin: 1rem 0;
   text-align: center;
-  transition: box-shadow 0.3s, border-color 0.3s; 
-  
+  transition: box-shadow 0.3s, border-color 0.3s;
 
   &:hover {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
