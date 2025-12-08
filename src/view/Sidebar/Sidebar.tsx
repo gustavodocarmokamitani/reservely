@@ -66,41 +66,54 @@ const Navigation = () => {
   }, [authToken]);
 
   //QUANDO ADICIONAR NOVA ROTA, ADICIONAR TAMBÉM AQUI   (offsetTop + itemHeight / 2 - itemHeight + 28) / 16
-  const menuOptions =
-    decodedData?.userRole !== "Client"
-      ? [
-          { path: "/subscription", icon: subscript, text: "Assinatura" },
-          { path: "/appointment", icon: chamada, text: "Agendamento" },
-          {
-            path: "/history-appointment",
-            icon: appointmentHistory,
-            text: "Histórico Agendamento",
-          },
-          { path: "/calendar", icon: calendar, text: "Calendário" },
-          { path: "/dashboard", icon: dashboard, text: "Dashboard" },
-          { path: "/service", icon: service, text: "Serviços" },
-          {
-            path: "/professional-register",
-            icon: professionalRegister,
-            text: "Registrar Profissionais",
-          },
-          {
-            path: "/professional",
-            icon: professionalCheck,
-            text: "Profissionais",
-          },
-          { path: "/store", icon: store, text: "Loja" },
-          // { path: "/payment", icon: payment, text: "Formas de Pagamentos" },
-        ]
-      : [
-          { path: "/home-client/:", icon: professionalCheck, text: "Home" },
-          // {
-          //   path: "/appointment-client/:",
-          //   icon: chamada,
-          //   text: "Agendamento",
-          // },
-          // { path: "/rating", icon: calendar, text: "Avaliação" },
-        ];
+const menuOptions =
+    // 1. SE o usuário for "Client", exibe as opções de Cliente.
+    decodedData?.userRole === "Client"
+        ? [
+              { path: "/home-client/:", icon: professionalCheck, text: "Home" },
+              // Opções adicionais do Cliente...
+          ]
+        // 2. CASO CONTRÁRIO (NÃO é Client), verifica se é "Employee".
+        : decodedData?.userRole === "Employee" 
+        ? [ 
+              { path: "/appointment", icon: chamada, text: "Agendamento" },
+              {
+                  path: "/history-appointment",
+                  icon: appointmentHistory,
+                  text: "Histórico Agendamento",
+              },
+              { path: "/calendar", icon: calendar, text: "Calendário" },
+              { path: "/service", icon: service, text: "Serviços" },
+              {
+                  path: "/professional",
+                  icon: professionalCheck,
+                  text: "Profissionais",
+              },
+              { path: "/store", icon: store, text: "Loja" }, 
+          ] 
+        : [  
+              { path: "/subscription", icon: subscript, text: "Assinatura" },
+              { path: "/appointment", icon: chamada, text: "Agendamento" },
+              {
+                  path: "/history-appointment",
+                  icon: appointmentHistory,
+                  text: "Histórico Agendamento",
+              },
+              { path: "/calendar", icon: calendar, text: "Calendário" },
+              { path: "/dashboard", icon: dashboard, text: "Dashboard" },
+              { path: "/service", icon: service, text: "Serviços" },
+              {
+                  path: "/professional-register",
+                  icon: professionalRegister,
+                  text: "Registrar Profissionais",
+              },
+              {
+                  path: "/professional",
+                  icon: professionalCheck,
+                  text: "Profissionais",
+              },
+              { path: "/store", icon: store, text: "Loja" }, 
+          ];
 
   useEffect(() => {
     const path = location.pathname;
@@ -200,8 +213,7 @@ const Navigation = () => {
                     className="d-flex align-items-center justify-content-center"
                     style={{ height: "100%", paddingLeft: "20px" }}
                     onClick={logout}
-                  >
-                  </Row>
+                  ></Row>
                 </S.MenuContainer>
               </div>
             </S.SidebarContainer>

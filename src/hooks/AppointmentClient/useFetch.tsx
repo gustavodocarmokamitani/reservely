@@ -67,8 +67,8 @@ export const useFetch = (
         const responseProfessional = await getUserByUseTypeStore(
           2,
           responseStore.id
-        );
-
+        ); 
+        
         setProfessionalData(responseProfessional);
 
         const responseAppointment = await getAppointmentByStoreId(

@@ -172,10 +172,10 @@ export const useAction = (
       const response = await registerUser(storeCode, {
         name: formData.name,
         lastName: formData.lastname,
-        email: formData.email,
+        email: formData.email.toLowerCase(),
         phone: formData.phone,
         password: formData.password,
-        userName: formData.email,
+        userName: formData.email.toLowerCase(),
         userTypeId: 3,
         storeId: 0,
       });

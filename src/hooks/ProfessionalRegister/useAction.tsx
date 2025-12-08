@@ -140,7 +140,7 @@ export const useAction = (
     const professionalData = {
       name: formatString(formValuesProfessionalRegister.name),
       lastName: formatString(formValuesProfessionalRegister.lastName),
-      email: formatString(formValuesProfessionalRegister.email),
+      email: formatString(formValuesProfessionalRegister.email).toLowerCase(),
       phone: formValuesProfessionalRegister.phone,
       userTypeId: 2,
       storeId: storeUser,

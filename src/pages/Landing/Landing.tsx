@@ -92,7 +92,7 @@ function Landing() {
       {/* Seção Hero */}
       <S.Hero className="pt-5 mt-5">
         <Particles
-         particleColors={['#2c2c2c', '#f16d55']}
+          particleColors={["#2c2c2c", "#f16d55"]}
           particleCount={100}
           particleSpread={10}
           speed={0.1}
@@ -182,8 +182,19 @@ function Landing() {
             </Col>
             <Col lg={4} md={12}>
               <div className="d-flex flex-column justify-content-center align-items-center">
-                <S.AnalyticsValue style={{ fontSize: "3rem" }}>
-                  &infin;
+                <S.AnalyticsValue>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    width="50"
+                    height="50"
+                    color="#f16d55"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                  >
+                    <path d="M12 12C12 12 9.26142 17 6.5 17C3.73858 17 2 14.7614 2 12C2 9.23858 3.73858 7 6.5 7C9.26142 7 12 12 12 12ZM12 12C12 12 14.7386 17 17.5 17C20.2614 17 22 14.7614 22 12C22 9.23858 20.2614 7 17.5 7C14.7386 7 12 12 12 12Z" />
+                  </svg>
                 </S.AnalyticsValue>
                 <p className="mt-2 text-center">
                   Agendamentos{" "}

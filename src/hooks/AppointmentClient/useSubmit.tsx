@@ -88,6 +88,7 @@ export const useSubmit = (
     setSelectedProfessional([]);
     setSelectedTime({ date: "", time: "" });
 
+    window.location.reload();
     setIsLoading(false);
   };
 };

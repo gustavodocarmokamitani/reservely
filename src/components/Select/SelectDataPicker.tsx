@@ -12,6 +12,14 @@ interface SelectDataPickerProps {
   closedDates: string[];
 }
 
+const isSameDay = (date1: Date, date2: Date): boolean => {
+  return (
+    date1.getFullYear() === date2.getFullYear() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getDate() === date2.getDate()
+  );
+};
+
 const SelectDataPicker: React.FC<SelectDataPickerProps> = ({
   setDate,
   isClearable,
@@ -37,14 +45,19 @@ const SelectDataPicker: React.FC<SelectDataPickerProps> = ({
       : [0, 1, 2, 3, 4, 5, 6];
 
   const parseDateLocal = (dateString: string) => {
-    const date = new Date(dateString);
-    date.setHours(0, 0, 0, 0);
+    const parts = dateString.split('T')[0].split(/-|\//).map(Number);
+    const year = parts[0];
+    const month = parts[1];
+    const day = parts[2];
+
+    const date = new Date(year, month - 1, day);
+ 
     return date;
   };
 
   const parsedClosedDates =
     closedDates.length > 0 ? closedDates.map(parseDateLocal) : [];
-
+    
   const filterWeekDays = (date: Date) => {
     const dayOfWeek = date.getDay();
     return workingDays.includes(dayOfWeek);
@@ -82,7 +95,7 @@ const SelectDataPicker: React.FC<SelectDataPickerProps> = ({
         filterDate={(date) =>
           filterWeekDays(date) &&
           !parsedClosedDates.some(
-            (closed) => closed.toDateString() === date.toDateString()
+            (closed) => isSameDay(closed, date)
           )
         }
       />

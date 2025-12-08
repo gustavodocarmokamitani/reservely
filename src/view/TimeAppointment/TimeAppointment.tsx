@@ -3,7 +3,8 @@ import { Appointment } from "../../models/Appointment";
 import { capitalizeFirstLetter } from "../../services/system/globalService";
 import * as S from "./TimeAppointment.styles";
 import { Store } from "../../models/Store";
-import { getServiceTypeById } from "../../services/ServiceTypeServices";
+import { getServiceTypeById } from "../../services/ServiceTypeServices"; 
+import Loading from "../../components/Loading/loading";
 
 interface TimeAppointmentProps {
   storeData?: Store;
@@ -25,7 +26,9 @@ export default function TimeAppointment({
   const closingDays = storeData?.closingDays;
   const operatingHours = storeData?.operatingHours;
   const operatingDays = storeData?.operatingDays;
-  const [slotsByDate, setSlotsByDate] = useState<Record<string, string[]>>({}); 
+  const [slotsByDate, setSlotsByDate] = useState<Record<string, string[]>>({});
+  // Corrigido: Inicializar como true para exibir o loading na montagem inicial
+  const [isLoading, setIsLoading] = useState(true); 
 
   const normalizeDayName = (day: string) => {
     day = day.toLowerCase();
@@ -60,8 +63,14 @@ export default function TimeAppointment({
 
       const formattedDate = formatLocalISODate(date);
 
+      // CORREÇÃO DE FUZOHORÁRIO: Evitando .toISOString() para datas de fechamento
+      // para prevenir o deslocamento de dia em fusos horários negativos (GMT-x).
       const mappedClosingDays =
-        closingDays?.map((d) => new Date(d).toISOString().split("T")[0]) || [];
+        closingDays?.map((dateString) => {
+            // Cria a data localmente para que o formatLocalISODate retorne a data correta (YYYY-MM-DD)
+            const d = new Date(dateString);
+            return formatLocalISODate(d);
+        }) || [];
 
       const weekday = normalizeDayName(
         date.toLocaleDateString("pt-BR", { weekday: "long" })
@@ -110,12 +119,11 @@ export default function TimeAppointment({
       let remainingMinutes = durationMinutes;
       const startTime = parseTimeToDate(appointment.appointmentTime);
       const current = new Date(startTime);
-      const blockedSlots: string[] = [];
+      // Removida variável blockedSlots não utilizada
 
       while (remainingMinutes > 0) {
         const slot = formatTime(current);
         occupiedSlots.add(slot);
-        blockedSlots.push(slot);
         current.setMinutes(current.getMinutes() + 30);
         remainingMinutes -= 30;
       }
@@ -129,6 +137,7 @@ export default function TimeAppointment({
     appointments: Appointment[],
     selectedProfessional: number[]
   ): Promise<string[]> {
+    
     const [start, end] = operatingHours.split(" - ");
 
     const startHour = parseTimeToDate(start);
@@ -187,6 +196,9 @@ export default function TimeAppointment({
 
   useEffect(() => {
     async function calculateAllSlots() {
+      // 1. Inicia o carregamento antes de começar as operações assíncronas
+      setIsLoading(true); 
+      
       const result: Record<string, string[]> = {};
 
       const todayFormatted = formatLocalISODate(new Date());
@@ -223,6 +235,8 @@ export default function TimeAppointment({
       } 
       
       setSlotsByDate(result);
+      // 2. Finaliza o carregamento após concluir e atualizar o estado
+      setIsLoading(false);
     }
 
     calculateAllSlots();
@@ -233,6 +247,14 @@ export default function TimeAppointment({
     operatingDays,
     closingDays,
   ]);
+   
+  if (isLoading) {
+    return (
+      <> 
+        <Loading /> 
+      </>
+    );
+  }
 
   return (
     <>

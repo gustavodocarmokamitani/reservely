@@ -39,10 +39,18 @@ export const ProtectedRoute = ({
     return <Navigate to="/login" />;
   }
 
+  const restrictedPathsForEmployee = ["/dashboard", "/subscription", "/professional/register"];
+  const currentPath = location.pathname; // Pega o caminho atual
+
   if (decodedToken?.userRole === "Employee") {
-    return children;
+    if (restrictedPathsForEmployee.includes(currentPath)) { 
+      return <Navigate to="/calendar" />;
+    } else {
+      return children;
+    }
+    // Se for Employee, mas a rota não for restrita, permite o acesso (cai no return children)
   }
-  
+
   if (requiresSubscription && decodedToken?.isSubscriptionActive !== "True") {
     return <Navigate to="/subscription" />;
   }
